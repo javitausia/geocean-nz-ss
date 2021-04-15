@@ -1,0 +1,7 @@
+All the tidal gauge data from linz can be downloaded in near real time from the linz website (https://sealevel-data.linz.govt.nz/index.html). The data on that website is the raw readings from the gauges and has undergone no processing hence each station comes with a readme file that contains informations on the time-series, in particular on any change of datum. A copy of those readme files is stored in the **raw** folder with the raw data. That information will need to be accounted for when processing it.
+
+The tidal gauges in this folder deliver data since 2007 at the best at the frequency of 1 minute in most cases. Each tidal gauge is set with 2 sensors generally numbered 40 and 41 whose purpose is to act as backup to each other. Hence, bad data from one sensor can sometimes be replaced by good data from the other sensor. However, one has to be careful that datum are not necessarily identical for the 2 sensors.
+
+The **raw** folder contains the raw data packed in NetCDF4 format with one file per station. Each file contains the time series of water elevation for all sensors available (the *elev* variable has one dimension called *sensor*, one called *time*
+
+The **processed** folder will contain the processed data wwhen processing has been done.
