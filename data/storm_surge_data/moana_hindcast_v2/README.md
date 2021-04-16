@@ -19,3 +19,4 @@ File description:
    * *ss* is the storm surge in meters extracted using a second order cosine-Laczos filter of cut-off period of 40 hours.
    * *res* is the residual in meters left after filetring out all the other components.
 
+Moreover, the *moana_closest.nc* file contains the closest moana virtual nodes to our (GeoOcean) preprocessed tidal gauges.
