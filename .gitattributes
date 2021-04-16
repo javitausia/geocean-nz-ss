@@ -1,2 +1,2 @@
-*.tar.xz filter=lfs diff=lfs merge=lfs -text
+data/storm_surge_data/dac_reanalysis/DAC_SS_6H_1993_2020.tar.xz filter=lfs diff=lfs merge=lfs -text
 *.tar.gz filter=lfs diff=lfs merge=lfs -text
