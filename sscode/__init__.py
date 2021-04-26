@@ -1,5 +1,5 @@
 """
-Module attrs
+This init file contains the basic information of sscode
 """
 
 __version__     = '0.1.0'
@@ -10,8 +10,11 @@ __description__ = 'Collection of customized tools for statistical storm surge da
 __keywords__    = 'ocean data statistical analysis storm-surge'
 
 
-from . import common
-from . import statistical
-from . import kma
-from . import mda
-# from . import pca
+from . import config
+from . import data
+#from . import statistical
+#from . import mda
+#from . import kma
+#from . import pca
+#from . import sce
+
