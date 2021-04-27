@@ -35,6 +35,16 @@ def compare_datasets(dataset1, dataset1_coords,
     print('\n Lets compare data in {} with {}!! \n'.format(
         dataset1_coords[3],dataset2_coords[3]
     ))
+    # check name coord in hindcast dataset
+    if not dataset1_coords[2]:
+        dataset1 = dataset1.expand_dims(dim='name').assign_coords(
+            {'name':((dataset1_coords[1],dataset1_coords[0]),
+             np.arange(len(dataset1[dataset1_coords[1]].values)*\
+                       len(dataset1[dataset1_coords[0]].values))\
+                .reshape(len(dataset1[dataset1_coords[1]].values),
+                         len(dataset1[dataset1_coords[0]].values)))}
+        )
+        dataset1_coords = (dataset1_coords[0],dataset1_coords[1],'name',dataset1_coords[3])
     # resample if requested
     if time_resample:
         print('\n resampling to {}... \n'.format(time_resample))
@@ -78,6 +88,8 @@ def compare_datasets(dataset1, dataset1_coords,
     dataset1 = dataset1.isel(
         {dataset1_coords[2]:data1_clos_data2}
     )
+    # list to save ss stats
+    ss_stats = []
     # validate/plot data1 with data2 (inside the loop)
     for istat in range(len(data1_clos_data2)):
         # figure spec-grid
@@ -124,7 +136,7 @@ def compare_datasets(dataset1, dataset1_coords,
             )
             # fig and axes decorators
             fig_title = dataset2[dataset2_coords[2]].values[istat].upper() + '\n'
-            fig_title += generate_stats(
+            fig_title_last, stats = generate_stats(
                 dataset1.isel({dataset1_coords[2]:istat,
                     'time':times_to_scatter[1]})[comparison_variables[0][axi]].values,
                 dataset2.isel({dataset2_coords[2]:istat,
@@ -135,6 +147,9 @@ def compare_datasets(dataset1, dataset1_coords,
                     (~np.isnan(dataset2.isel({dataset2_coords[2]:istat,
                         'time':times_to_scatter[2]})[comparison_variables[1][axi]].values)))[0]
             ) # generate title with stats
+            fig_title += fig_title_last
+            if axi==0:
+                ss_stats.append(stats) # append site stats to global
             if axi==0:
                 fig.suptitle(
                     fig_title,
@@ -147,25 +162,35 @@ def compare_datasets(dataset1, dataset1_coords,
         # plot current results
         plt.show()
 
-    return dataset1.assign_coords({'tg_names':((dataset1_coords[2]),dataset2.name.values)})
+    return dataset1.assign_coords({'tg_names':((dataset1_coords[2]),dataset2.name.values)})\
+        .assign({'bias':((dataset1_coords[2]),np.array(ss_stats)[:,0]),
+                 'si':((dataset1_coords[2]),np.array(ss_stats)[:,1]),
+                 'rmse':((dataset1_coords[2]),np.array(ss_stats)[:,2]),
+                 'pearson':((dataset1_coords[2]),np.array(ss_stats)[:,3]),
+                 'spearman':((dataset1_coords[2]),np.array(ss_stats)[:,4])}), ss_stats
 
 
 def generate_stats(data1, data2, not_nan_idxs=None):
     """
     Generates the title given two datasets
-    - BIAS, SI and RMSE
+    - BIAS, SI and RMSE, and correlations!!
 
     """
 
+    # calculate statistics
+    biasd = bias(data1[not_nan_idxs],data2[not_nan_idxs])
+    sid = si(data1[not_nan_idxs],data2[not_nan_idxs])
+    rmsed = rmse(data1[not_nan_idxs],data2[not_nan_idxs])
+    pearsond = pearsonr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
+    spearmand = spearmanr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
     return_title = 'Data comparison is -- BIAS: {0:.2f}, SI: {0:.2f}, RMSE: {0:.2f}'.format(
-        bias(data1,data2),si(data1,data2),rmse(data1,data2)
+        biasd,sid,rmsed
     )
-    return_title += ' and Correlation (Spearman, Pearson): ({0:.2f}, {0:.2f})'.format(
-        spearmanr(data1[not_nan_idxs],data2[not_nan_idxs])[0],
-        pearsonr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
+    return_title += ' and Correlation (Pearson, Spearman): ({0:.2f}, {0:.2f})'.format(
+        pearsond,spearmand
     )
 
-    return return_title
+    return return_title, [biasd,sid,rmsed,pearsond,spearmand]
 
 
 def si(predictions,targets):
@@ -174,14 +199,14 @@ def si(predictions,targets):
     return np.sqrt(np.nansum(((predictions-pred_mean)-(targets-tar_mean))**2)/((np.nansum(targets**2))))
 
 def rmse(predictions,targets):
-    return np.sqrt(np.nansum((targets-predictions)**2))
+    return np.sqrt(np.nanmean((targets-predictions)**2))
 
 def bias(predictions,targets):
     return np.nanmean(targets-predictions)
 
 
 def calc_closest_data2_in_data1(data1, data2, 
-                                min_dist_th: float = 20):
+                                min_dist_th: float = 50):
     """
     This function calculates the closest stations of data1 to data2
 

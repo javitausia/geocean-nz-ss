@@ -14,7 +14,7 @@ from .config import data_path, default_location # get config params
 from .utils import calculate_relative_winds
 from .validation import compare_datasets
 from .plotting.data import plot_era5
-from .plotting.config import _figsize, _fontsize_title
+from .plotting.config import _figsize, _fontsize_title, _figsize_width
 
 # warnings
 import warnings
@@ -23,7 +23,7 @@ warnings.filterwarnings('ignore')
 
 # loader dicts summary
 loader_dict_options = {
-    'predictor': ['era5'],
+    'predictor': ['cfsr','era5'],
     'predictand': ['dac','moana','codec'],
     'validator': ['uhslc','geotgs']
 }
@@ -38,14 +38,18 @@ datasets_attrs = {
 
 class Loader(object):
     """
-    This class loads the data that will be used in future parts
+    This class loads the data that will be used in future parts. This class is
+    useful if all the data is wanted to be loaded at the same time, and then the
+    methods in the class can be easily used, especifying just the list with all
+    the datasets in the correct order
 
     Args:
         object ([type]): [description]
     """
 
 
-    def __init__(self, data_to_load: list = ['era5','moana','uhslc']):
+    def __init__(self, data_to_load: list = ['era5','moana','uhslc'],
+                 location: tuple = default_location):
         """
         Loader class constructor
 
@@ -53,10 +57,12 @@ class Loader(object):
             data_to_load (list, optional): [description]. Defaults to ['era5','moana','uhslc'].
         """
 
+        # save location
+        self.location = location
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
             if data_to_load[0]=='era5':
-                predictor = load_era5(time='1D',load_winds=(True,default_location))
+                predictor = load_era5(time='1D',load_winds=(True,location))
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
@@ -66,6 +72,10 @@ class Loader(object):
                 print('\n data not available for the predictor!! \n')
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
+            if data_to_load[1]=='dac':
+                self.predictand = load_dac()
+                self.predictand_attrs = datasets_attrs[data_to_load[1]]
+
             if data_to_load[1]=='moana':
                 self.predictand = load_moana_hindcast()
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
@@ -77,7 +87,7 @@ class Loader(object):
         # load the validator
         if data_to_load[2] in loader_dict_options['validator']:
             if data_to_load[2]=='uhslc':
-                self.validator = join_load_uhslc_tgs()
+                self.validator = join_load_uhslc_tgs(plot=True)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='geotgs':
                 self.validator = load_geocean_tgs()
@@ -90,14 +100,11 @@ class Loader(object):
                           comparison_variables: list = [['ss','msea'],['ss','msea']],
                           time_resample = None):
         """
-        This class validates the loaded data
+        This method validates the loaded data with the compare_datasets funtion
 
-        Args:
-            comparison_variables (list, optional): [description]. Defaults to [['ss','msea'],['ss','msl']].
-            time_resample ([type], optional): [description]. Defaults to None.
         """
 
-        self.predictand_reduced = compare_datasets(
+        self.predictand_reduced, self.ss_stats = compare_datasets(
             self.predictand,self.predictand_attrs,
             self.validator,self.validator_attrs,
             comparison_variables=comparison_variables,
@@ -110,13 +117,16 @@ def load_era5(data_path: str = data_path,
               load_winds: bool = (True,default_location)):
     """
     This function loas era5 data and crops it to a time frame
-    of a year, as it is very difficult to work will all the data at
-    the same time
+    of a year, or resamples it daily, as it is very difficult to 
+    work will all the data at the same time. The winds can be easily
+    loaded, and also cropped and projected in the direction of a
+    location if requested
 
     Args:
         data_path (str, optional): Data path folder in repository. 
-        Defaults to data_path.
+            - Defaults to data_path.
         time (str, optional): Year to crop the data. Defaults to '1997'.
+        load_winds: this indicates wheter the winds are loaded or not
 
     Returns:
         [list]: This is a list with the data loaded
@@ -177,8 +187,21 @@ def load_era5(data_path: str = data_path,
     return return_data
 
 
+def load_cfsr(data_path: str = 
+              data_path+'/cfsr/CFSR_MSLP_1H_1979_2020_NZ.nc'):
+    """
+    This function loads the CFSR sea-level-pressure
+
+    Returns:
+        [xarray.Dataset]: xarray dataset with the slp
+    """
+
+    return xr.open_dataarray(data_path)
+
+
 def join_load_uhslc_tgs(files_path: str = 
-    data_path+'/storm_surge_data/nz_tidal_gauges/uhslc/processed/*.nc'):
+    data_path+'/storm_surge_data/nz_tidal_gauges/uhslc/processed/*.nc',
+    plot: bool = False):
 
     """
     Join all the uhslc tgs in a single xarrray dataset to play with it
@@ -201,27 +224,29 @@ def join_load_uhslc_tgs(files_path: str =
         )
     # join and plot
     uhslc_tgs = xr.concat(uhslc_tgs_list,dim='name',combine_attrs='drop')
-    fig, ax = plt.subplots(figsize=_figsize)
-    hue_plot = uhslc_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
-    fig.suptitle('UHSLC tidal gauges',fontsize=_fontsize_title)
-    ax.legend(list(uhslc_tgs.name.values),loc='lower left',ncol=6)
-    fig, axes = plt.subplots(ncols=2,nrows=6,figsize=(13,6),
-                             sharex=True,sharey=True)
-    for axi in range(len(uhslc_tgs.name.values)):
-        uhslc_tgs.isel(name=axi).ss.plot(
-            ax=axes.flatten()[axi],c=hue_plot[axi].get_color(),alpha=0.6,
-            label=uhslc_tgs.name.values[axi].upper()
-        )
-        axes.flatten()[axi].legend(loc='lower left')
-        axes.flatten()[axi].set_title('')
-        axes.flatten()[axi].set_xlabel('')
-        axes.flatten()[axi].set_ylabel('')
+    if plot: # plot if specified
+        fig, ax = plt.subplots(figsize=_figsize)
+        hue_plot = uhslc_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
+        fig.suptitle('UHSLC tidal gauges',fontsize=_fontsize_title)
+        ax.legend(list(uhslc_tgs.name.values),loc='lower left',ncol=6)
+        fig, axes = plt.subplots(ncols=2,nrows=6,figsize=(_figsize_width,6),
+                                sharex=True,sharey=True)
+        for axi in range(len(uhslc_tgs.name.values)):
+            uhslc_tgs.isel(name=axi).ss.plot(
+                ax=axes.flatten()[axi],c=hue_plot[axi].get_color(),alpha=0.6,
+                label=uhslc_tgs.name.values[axi].upper()
+            )
+            axes.flatten()[axi].legend(loc='lower left')
+            axes.flatten()[axi].set_title('')
+            axes.flatten()[axi].set_xlabel('')
+            axes.flatten()[axi].set_ylabel('')
 
     return uhslc_tgs
 
 
 def load_geocean_tgs(file_path: str = 
-    data_path+'/storm_surge_data/nz_tidal_gauges/geocean/tgs_geocean_NZ.nc'):
+    data_path+'/storm_surge_data/nz_tidal_gauges/geocean/tgs_geocean_NZ.nc',
+    plot: bool = False):
 
     """
     Load all the geocean tgs in a single xarrray dataset to play with it
@@ -233,17 +258,19 @@ def load_geocean_tgs(file_path: str =
     # load and plot all the geocean tgs
     print('\n Loading and plotting the GeoOcean tidal guages... \n')
     geocean_tgs = xr.open_dataset(file_path)
-    fig, ax = plt.subplots(figsize=_figsize)
-    geocean_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
-    fig.suptitle('GeoOcean tidal gauges',fontsize=_fontsize_title)
-    ax.legend(list(geocean_tgs.name.values),loc='lower left',ncol=7)
-    geocean_tgs.ss.plot(col='name',col_wrap=3,figsize=(12,7))
+    if plot: # plot if specified
+        fig, ax = plt.subplots(figsize=_figsize)
+        geocean_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
+        fig.suptitle('GeoOcean tidal gauges',fontsize=_fontsize_title)
+        ax.legend(list(geocean_tgs.name.values),loc='lower left',ncol=7)
+        geocean_tgs.ss.plot(col='name',col_wrap=3,figsize=(12,7))
 
     return geocean_tgs
 
 
 def load_moana_hindcast(file_path: str = 
-    data_path+'/storm_surge_data/moana_hindcast_v2/moana_coast.zarr/'):
+    data_path+'/storm_surge_data/moana_hindcast_v2/moana_coast.zarr/',
+    plot: bool = False):
 
     """
     Load the moana hindcast (saved as .zarr) in a single xarray dataset
@@ -267,11 +294,14 @@ def load_dac(file_path: str =
         [xarray.Dataset]: xarray dataset with all the DAC data
     """
 
-    return xr.open_dataset(file_path)
+    print('\n Loading the DAC hindcast data... \n')
+
+    return xr.open_dataarray(file_path)
 
 
 def load_codec_hindcast(file_path: str = 
-    data_path+'/storm_surge_data/codec_reanalysis/codec_geocean_NZ.nc'):
+    data_path+'/storm_surge_data/codec_reanalysis/codec_geocean_NZ.nc',
+    plot: bool = False):
 
     """
     Load the CoDEC hindcast in a single xarray dataset
@@ -283,11 +313,12 @@ def load_codec_hindcast(file_path: str =
     # load and plot codec
     print('\n Loading and plotting the CoDEC numerical data... \n')
     codec_hind = xr.open_dataset(file_path).sel(time=slice('1980','2021'))
-    fig, ax = plt.subplots(figsize=_figsize)
-    codec_hind.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
-    fig.suptitle('CoDEC numerical model',fontsize=_fontsize_title)
-    ax.legend(list(codec_hind.name.values),loc='lower left',ncol=7)
-    codec_hind.ss.plot(col='name',col_wrap=3,figsize=(12,7))
+    if plot: # plot if specified
+        fig, ax = plt.subplots(figsize=_figsize)
+        codec_hind.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
+        fig.suptitle('CoDEC numerical model',fontsize=_fontsize_title)
+        ax.legend(list(codec_hind.name.values),loc='lower left',ncol=7)
+        codec_hind.ss.plot(col='name',col_wrap=3,figsize=(12,7))
 
     return codec_hind
 
