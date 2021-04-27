@@ -77,29 +77,31 @@ def plot_all_data(geocean_tgs = None,
     if moana_hind:
         ax.scatter(
             moana_hind.lon.values,moana_hind.lat.values,
-            transform=ccrs.PlateCarree(),
-            label='Moana v2 hindcast',c='orange'
+            transform=ccrs.PlateCarree(),s=40,
+            label='Moana v2 hindcast',c='orange',
+            zorder=12
         )
     if codec_hind:
         ax.scatter(
-            codec_hind.codec_coords_lon.values,
-            codec_hind.codec_coords_lat.values,
-            transform=ccrs.PlateCarree(),
-            label='CoDEC hindcast',c='red',zorder=20
+            codec_hind.codec_coords_lon.values+0.1,
+            codec_hind.codec_coords_lat.values-0.1,
+            transform=ccrs.PlateCarree(),s=50,
+            label='CoDEC hindcast',c='red',zorder=14
         )
     if geocean_tgs:
         ax.scatter(
             geocean_tgs.longitude.values,
             geocean_tgs.latitude.values,
-            transform=ccrs.PlateCarree(),label='GeoOcean tidal gauges',
-            c='darkblue',s=100,alpha=0.7,zorder=20
+            transform=ccrs.PlateCarree(),
+            label='GeoOcean tidal gauges',
+            c='darkblue',s=80,alpha=0.8,zorder=16
         )
     if uhslc_tgs:
         ax.scatter(
             uhslc_tgs.longitude.values,
             uhslc_tgs.latitude.values,
             transform=ccrs.PlateCarree(),label='UHSLC tidal gauges',
-            c='green',s=100,alpha=0.9,zorder=20
+            c='green',s=80,alpha=0.8,zorder=16
         )
     ax.legend(loc='lower right',fontsize=_fontsize_legend)
     # plot the map

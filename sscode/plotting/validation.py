@@ -96,6 +96,9 @@ def scatterplot(x, y, ax=None, **kwargs):
         x ([type]): [description]
         y ([type]): [description]
         ax ([type], optional): [description]. Defaults to None.
+
+    TODO...
+    
     """
 
     # Get current axes if none are provided
