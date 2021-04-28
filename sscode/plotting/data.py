@@ -56,7 +56,7 @@ def plot_all_data(geocean_tgs = None,
                   codec_hind = None, 
                   moana_hind = None):
     """
-    Plot all data available
+    Plot all data available, both in a map and the time series
 
     Args:
         geocean_tgs ([type]): [description]
@@ -65,7 +65,7 @@ def plot_all_data(geocean_tgs = None,
         codec_hind ([type]): [description]
     """
 
-    # fig general attrs
+    # map plot
     fig, ax = plt.subplots(
         figsize=(10,10),
         subplot_kw={'projection':ccrs.PlateCarree(
@@ -83,8 +83,8 @@ def plot_all_data(geocean_tgs = None,
         )
     if codec_hind:
         ax.scatter(
-            codec_hind.codec_coords_lon.values+0.1,
-            codec_hind.codec_coords_lat.values-0.1,
+            codec_hind.codec_coords_lon.values+0.2,
+            codec_hind.codec_coords_lat.values-0.2,
             transform=ccrs.PlateCarree(),s=50,
             label='CoDEC hindcast',c='red',zorder=14
         )
@@ -98,12 +98,14 @@ def plot_all_data(geocean_tgs = None,
         )
     if uhslc_tgs:
         ax.scatter(
-            uhslc_tgs.longitude.values,
-            uhslc_tgs.latitude.values,
+            uhslc_tgs.longitude.values-0.2,
+            uhslc_tgs.latitude.values+0.2,
             transform=ccrs.PlateCarree(),label='UHSLC tidal gauges',
             c='green',s=80,alpha=0.8,zorder=16
         )
     ax.legend(loc='lower right',fontsize=_fontsize_legend)
     # plot the map
     plot_ccrs_nz([ax])
+
+    # TODO: add time series from forensic.ipynb
 

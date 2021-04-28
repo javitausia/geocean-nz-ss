@@ -11,10 +11,10 @@ import matplotlib.pyplot as plt
 
 # custom
 from .config import data_path, default_location # get config params
+from .plotting.config import _figsize, _figsize_width, _fontsize_title
 from .utils import calculate_relative_winds
 from .validation import compare_datasets
 from .plotting.data import plot_era5
-from .plotting.config import _figsize, _fontsize_title, _figsize_width
 
 # warnings
 import warnings
@@ -27,6 +27,7 @@ loader_dict_options = {
     'predictand': ['dac','moana','codec'],
     'validator': ['uhslc','geotgs']
 }
+# dataset attrs
 datasets_attrs = {
     'dac': ('longitude','latitude',None,'DAC global reanalysis'),
     'moana': ('lon','lat','site','Moana v2 hindcast'),
@@ -40,11 +41,9 @@ class Loader(object):
     """
     This class loads the data that will be used in future parts. This class is
     useful if all the data is wanted to be loaded at the same time, and then the
-    methods in the class can be easily used, especifying just the list with all
+    methods in the class can be easily used, specifying just the list with all
     the datasets in the correct order
 
-    Args:
-        object ([type]): [description]
     """
 
 
@@ -54,11 +53,15 @@ class Loader(object):
         Loader class constructor
 
         Args:
-            data_to_load (list, optional): [description]. Defaults to ['era5','moana','uhslc'].
+            data_to_load (list, optional): List with the predictor, predictand 
+            and validator. 
+                - Defaults to ['era5','moana','uhslc'].
+
         """
 
         # save location
         self.location = location
+
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
             if data_to_load[0]=='era5':
@@ -70,6 +73,8 @@ class Loader(object):
                     self.predictor_wind = predictor[1]
             else:
                 print('\n data not available for the predictor!! \n')
+            # TODO: add CFSR??
+
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
             if data_to_load[1]=='dac':
@@ -84,6 +89,7 @@ class Loader(object):
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
             else:
                 print('\n data not available for the predictand!! \n')
+
         # load the validator
         if data_to_load[2] in loader_dict_options['validator']:
             if data_to_load[2]=='uhslc':
@@ -96,7 +102,7 @@ class Loader(object):
                 print('\n data not available for the validation!! \n')
                 
                 
-    def validate_datasets(self, 
+    def validate_datasets(self, # this is prepared for UHSLC-Moana
                           comparison_variables: list = [['ss','msea'],['ss','msea']],
                           time_resample = None):
         """
@@ -167,8 +173,11 @@ def load_era5(data_path: str = data_path,
     else:
         mslp = xr.open_dataset(data_path+'/era_5/ERA5_MSLP_1H_1979_2021.nc')['msl']
         # try year cropping
-        mslp = mslp.sel(time=time)
-        print(' cropping the data to {} \n'.format(int(time)))
+        if time:
+            mslp = mslp.sel(time=time)
+            print(' cropping the data to {} \n'.format(int(time)))
+        else:
+            print('\n LOADING ALL THE MSLP DATA (be careful with memory) \n')
         if load_winds[0]:
             print('\n loading the winds... \n')
             uw = xr.open_dataset(data_path+'/era_5/ERA5_10mu_1H_1979_2021.nc')['u10']\
@@ -181,6 +190,7 @@ def load_era5(data_path: str = data_path,
             plot_era5([mslp,wind])
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
+
     # return the loaded datasets
     return_data = [mslp] if not load_winds[0] else [mslp,wind]
 
@@ -222,6 +232,7 @@ def join_load_uhslc_tgs(files_path: str =
                 'longitude':(('name'),[uhslc_tg.longitude])}
             ) 
         )
+
     # join and plot
     uhslc_tgs = xr.concat(uhslc_tgs_list,dim='name',combine_attrs='drop')
     if plot: # plot if specified
@@ -258,6 +269,7 @@ def load_geocean_tgs(file_path: str =
     # load and plot all the geocean tgs
     print('\n Loading and plotting the GeoOcean tidal guages... \n')
     geocean_tgs = xr.open_dataset(file_path)
+
     if plot: # plot if specified
         fig, ax = plt.subplots(figsize=_figsize)
         geocean_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
@@ -281,10 +293,12 @@ def load_moana_hindcast(file_path: str =
 
     print('\n Loading the Moana v2 hindcast data... \n')
 
+    # TODO: add basic plotting
+
     return xr.open_zarr(file_path)
 
 
-def load_dac(file_path: str = 
+def load_dac_hindcast(file_path: str = 
     data_path+'/storm_surge_data/dac_reanalysis/DAC_SS_6H_1993_2020.nc'):
 
     """
@@ -295,6 +309,8 @@ def load_dac(file_path: str =
     """
 
     print('\n Loading the DAC hindcast data... \n')
+
+    # TODO: add basic plotting
 
     return xr.open_dataarray(file_path)
 
@@ -313,6 +329,10 @@ def load_codec_hindcast(file_path: str =
     # load and plot codec
     print('\n Loading and plotting the CoDEC numerical data... \n')
     codec_hind = xr.open_dataset(file_path).sel(time=slice('1980','2021'))
+    codec_hind = codec_hind.assign_coords(
+        {'time':pd.to_datetime(codec_hind.time.values).round('H')}
+    )
+
     if plot: # plot if specified
         fig, ax = plt.subplots(figsize=_figsize)
         codec_hind.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
