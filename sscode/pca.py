@@ -1,13 +1,85 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# common
+# time
 from datetime import datetime
 
-# pip
+# arrays and math
 import numpy as np
 import xarray as xr
+from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+
+# custom
+from .config import default_region_reduced
+from .utils import spatial_gradient
+
+
+def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
+                    calculate_gradient: bool = True,
+                    winds: tuple = (True,None),
+                    wind_vars: tuple = ('wind_proj','longitude','latitude'),
+                    time_lapse: int = 2,
+                    region: tuple = (True,default_region_reduced)):
+    '''
+    '''
+
+    # crop slp and winds to the region selected
+    if region[0]:
+        pres = pres.sel({
+            pres_vars[1]:slice(region[1][0],region[1][1]),
+            pres_vars[2]:slice(region[1][2],region[1][3])
+        })
+        if winds[0]:
+            wind = winds[1].sel({
+                wind_vars[1]:slice(region[1][0],region[1][1]),
+                wind_vars[2]:slice(region[1][2],region[1][3])
+            })
+    # check if data is daily grouped and dropna
+    pres = pres.resample(time='1D').mean().dropna(dim='time')
+    if winds[0]:
+        wind = wind[wind_vars[0]].resample(time='1D').mean().fillna(0.0)\
+            .interp(coords={wind_vars[1]:pres[pres_vars[1]],
+                            wind_vars[2]:pres[pres_vars[2]]}
+                    ) # interp to pressure coords
+        wind_add = 1 # for the pcs matrix
+    else:
+        wind_add = 0
+    # calculate the gradient
+    if calculate_gradient:
+        pres = spatial_gradient(pres,pres_vars[0])
+        grad_add = 2
+    else:
+        grad_add = 1
+    # lets now create the PCs matrix
+    x_shape = len(pres.time.values)-1
+    y_shape = len(pres[pres_vars[1]].values)*len(pres[pres_vars[2]].values)
+    pcs_matrix = np.zeros((x_shape,(time_lapse*grad_add+wind_add)*y_shape))
+    # fill the pcs_matrix array with data
+    for t in range(1,x_shape):
+        for tl in range(time_lapse):
+            pcs_matrix[t-1,y_shape*tl:y_shape*(tl+1)] = \
+                pres.isel(time=t-tl)[pres_vars[0]].values.reshape(-1)
+            pcs_matrix[t-1,y_shape*(tl+1):y_shape*(tl+2)] = \
+                pres.isel(time=t-tl)[pres_vars[0]+'_gradient'].values.reshape(-1)
+        if wind_add:
+            pcs_matrix[t-1,y_shape*(tl+2):] = \
+                wind.isel(time=t-tl).values.reshape(-1)
+    pcs_matrix = pcs_matrix[:-2]
+    # standarize the features
+    pcs_stan = StandardScaler().fit_transform(pcs_matrix)
+    pcs_stan[np.isnan(pcs_stan)] = 0.0 # check additional nans
+    # calculate de PCAs
+    pca_fit = PCA(n_components==min(pcs_stan.shape[0],pcs_stan.shape[1]))
+    PCs = pca_fit.fit_transform(pcs_stan)
+
+    return xr.Dataset(
+        data_vars = {
+            'PCs': (('time', 'n_components'), PCs),
+            'EOFs': (('n_components','n_features'), pca_fit.components_),
+            'variance': (('n_components',), pca_fit.explained_variance_),
+        },
+        coords = {
+            'time': pres.time.values[1:-1]
+        }
+    )
 
 
 def running_mean(x, N, mode_str='mean'):
@@ -53,6 +125,7 @@ def running_mean(x, N, mode_str='mean'):
     cumsum = np.cumsum(np.insert(x, 0, 0))
     return (cumsum[nn:] - cumsum[:-nn]) / float(nn)
 
+
 def RunnningMean_Monthly(xds, var_name, window=5):
     '''
     Calculate running average grouped by months
@@ -87,6 +160,7 @@ def RunnningMean_Monthly(xds, var_name, window=5):
         tempdata_runavg)
 
     return xds
+
 
 def PCA_LatitudeAverage(xds, var_name, y1, y2, m1, m2):
     '''
@@ -163,6 +237,7 @@ def PCA_LatitudeAverage(xds, var_name, y1, y2, m1, m2):
             'method': 'anomalies, latitude averaged',
         }
     )
+
 
 def PCA_EstelaPred(xds, pred_name):
     '''
