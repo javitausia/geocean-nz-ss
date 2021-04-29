@@ -1,10 +1,10 @@
 This folder contains raw and processed data originating from various tidal gauges around the country.
 
-The data is stored in 3 subfolders that are representative of the source of the data:
+The data is stored in 4 subfolders that are representative of the source of the data:
 - **uhslc** contains hourly research grade data downloaded from the University of Hwai Sea Level Center (https://uhslc.soest.hawaii.edu/datainfo/)
 - **linz** contains high resolution data downloaded from the Land Information New Zealand Website (LINZ) (https://sealevel-data.linz.govt.nz/index.html)
-- **other** contains high resolution data that were sourced by approaching various regional councils and port authorities around New Zealand.
-- **geocean** contains the processed tidal gauges used in previous works.
+- **other** contains high resolution data that were sourced by approaching various regional councils and port authorities around New Zealand (private)
+- **geocean** contains the processed tidal gauges used in previous works (private)
 
 Each subfolder has the following structure:
 - a **raw** folder that contains the data in a shape as close as possible to the original data (i.e. if the data was downloaded as NetCDF it is left in its original shape, if it was obtained in either other shape it was packed in NetCDF 4 format before storing in the folder.
