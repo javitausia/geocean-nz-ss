@@ -10,17 +10,46 @@ from sklearn.decomposition import PCA
 # custom
 from .config import default_region_reduced
 from .utils import spatial_gradient
+from .plotting.pca import plot_pcs
 
 
 def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
                     calculate_gradient: bool = True,
-                    winds: tuple = (True,None),
+                    winds: tuple = (False,None),
                     wind_vars: tuple = ('wind_proj','longitude','latitude'),
-                    time_lapse: int = 2,
-                    region: tuple = (True,default_region_reduced)):
-    '''
-    '''
+                    time_lapse: int = 2, # 1 equals to NO time delay 
+                    time_resample: str = '1D',
+                    region: tuple = (True,default_region_reduced),
+                    pca_plot: bool = True):
+    """
+    Perform PCA decomposition given the pressure, winds...
 
+    Args:
+        pres (xarray.Dataarray/Dataset): These are the sea-level-pressure fields,
+            that could be loaded  both with load_era5() or load_cfsr()
+        pres_vars (tuple, optional): These are the slp xarray coordinates. 
+            - Defaults to ('msl','longitude','latitude').
+        calculate_gradient (bool, optional): weather to calculate or not the slp gradient.
+            - Defaults to False.
+        winds (tuple, optional): This is the wind data, if available...
+            - Defaults to (False,None), data must be xarray!!
+        wind_vars (tuple, optional): These are the wind coordinates. 
+            - Defaults to ('wind_proj','longitude','latitude').
+        time_lapse (int, optional): Time delay for the dynamic predictor. 
+            - Defaults to 2.
+        time_resample (str, optional): This is the time resample.
+            - Defaults to '1D'.
+        region (tuple, optional): Region to crop the slp to. 
+            - Defaults to (True,default_region_reduced).
+        pca_plot (bool, optional): Weather to plot or not the final results.
+            - Defaults to True.
+
+    Returns:
+        [xarray.Dataset]: PCA decomposition final results
+    """
+
+    # perform pca analysis
+    print('\n lets calculate the PCs... \n')
     # crop slp and winds to the region selected
     if region[0]:
         pres = pres.sel({
@@ -28,58 +57,82 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
             pres_vars[2]:slice(region[1][2],region[1][3])
         })
         if winds[0]:
+            print('\n adding the wind to the predictor... \n')
             wind = winds[1].sel({
                 wind_vars[1]:slice(region[1][0],region[1][1]),
                 wind_vars[2]:slice(region[1][2],region[1][3])
             })
-    # check if data is daily grouped and dropna
-    pres = pres.resample(time='1D').mean().dropna(dim='time')
+
+    # check if data is resampled and dropna
+    pres = pres.resample(time=time_resample).mean().dropna(dim='time')
     if winds[0]:
-        wind = wind[wind_vars[0]].resample(time='1D').mean().fillna(0.0)\
+        wind = wind[wind_vars[0]].resample(time=time_resample).mean().fillna(0.0)\
             .interp(coords={wind_vars[1]:pres[pres_vars[1]],
                             wind_vars[2]:pres[pres_vars[2]]}
-                    ) # interp to pressure coords
+                    )\
+            .sel(time=pres.time) # interp to pressure coords
+        print('\n winds predictor with shape: \n {} \n'.format(wind.shape))
         wind_add = 1 # for the pcs matrix
     else:
         wind_add = 0
+
     # calculate the gradient
     if calculate_gradient:
+        print('\n calculating the gradient of the sea-level-pressure fields... \n')
         pres = spatial_gradient(pres,pres_vars[0])
+        print('\n pressure/gradient predictor both with shape: \n {} \n'\
+            .format(pres[pres_vars[0]].shape))
         grad_add = 2
     else:
         grad_add = 1
+
     # lets now create the PCs matrix
-    x_shape = len(pres.time.values)-1
+    x_shape = len(pres.time.values)-time_lapse
     y_shape = len(pres[pres_vars[1]].values)*len(pres[pres_vars[2]].values)
     pcs_matrix = np.zeros((x_shape,(time_lapse*grad_add+wind_add)*y_shape))
     # fill the pcs_matrix array with data
-    for t in range(1,x_shape):
-        for tl in range(time_lapse):
-            pcs_matrix[t-1,y_shape*tl:y_shape*(tl+1)] = \
-                pres.isel(time=t-tl)[pres_vars[0]].values.reshape(-1)
-            pcs_matrix[t-1,y_shape*(tl+1):y_shape*(tl+2)] = \
-                pres.isel(time=t-tl)[pres_vars[0]+'_gradient'].values.reshape(-1)
+    for t in range(x_shape):
+        for tl in range(0,time_lapse*grad_add,grad_add):
+            try:
+                pcs_matrix[t,y_shape*tl:y_shape*(tl+1)] = \
+                    pres.isel(time=t-tl)[pres_vars[0]].values.reshape(-1)
+            except:
+                pcs_matrix[t,y_shape*tl:y_shape*(tl+1)] = \
+                    pres.isel(time=t-tl).values.reshape(-1)
+            if calculate_gradient:
+                pcs_matrix[t,y_shape*(tl+1):y_shape*(tl+2)] = \
+                    pres.isel(time=t-tl)[pres_vars[0]+'_gradient'].values.reshape(-1)
         if wind_add:
-            pcs_matrix[t-1,y_shape*(tl+2):] = \
+            pcs_matrix[t,y_shape*(tl+2):] = \
                 wind.isel(time=t-tl).values.reshape(-1)
-    pcs_matrix = pcs_matrix[:-2]
+    print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape))
+
     # standarize the features
     pcs_stan = StandardScaler().fit_transform(pcs_matrix)
     pcs_stan[np.isnan(pcs_stan)] = 0.0 # check additional nans
     # calculate de PCAs
-    pca_fit = PCA(n_components==min(pcs_stan.shape[0],pcs_stan.shape[1]))
+    pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
     PCs = pca_fit.fit_transform(pcs_stan)
 
-    return xr.Dataset(
+    # return data
+    PCA_return = xr.Dataset(
         data_vars = {
             'PCs': (('time', 'n_components'), PCs),
             'EOFs': (('n_components','n_features'), pca_fit.components_),
-            'variance': (('n_components',), pca_fit.explained_variance_),
+            'variance': (('n_components'), pca_fit.explained_variance_),
+            'pcs_lon': (('n_lon'), pres.longitude.values),
+            'pcs_lat': (('n_lat'), pres.latitude.values)
         },
         coords = {
-            'time': pres.time.values[1:-1]
+            'time': pres.time.values[:-time_lapse]
         }
     )
+
+    # if plot, plot
+    if pca_plot:
+        plot_pcs(PCA_return,n_plot=3,region=region[1])
+
+    return PCA_return
 
 
 def running_mean(x, N, mode_str='mean'):

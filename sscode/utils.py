@@ -8,7 +8,9 @@ from .config import default_location
 
 
 def calculate_relative_winds(location: tuple = default_location,
-                             uw = None, vw = None):
+                             uw = None, vw = None,
+                             lat_name: str = 'lat',
+                             lon_name: str = 'lon'):
     """
     This function calculates the projected winds in the direction to
     the given location. Winds with an angle greater than 90º with this
@@ -38,8 +40,8 @@ def calculate_relative_winds(location: tuple = default_location,
                              wind[vw.name].values) * 180/np.pi
     wind_direcs = np.where(wind_direcs<0,wind_direcs+360,wind_direcs)
     # calculate bearing for each lat/lon
-    bearings = calculate_bearings(wind.latitude.values,
-                                  wind.longitude.values,
+    bearings = calculate_bearings(wind[lat_name].values,
+                                  wind[lon_name].values,
                                   location=location)
     # calculate relative directions
     rel_direcs = bearings.reshape(1,*bearings.shape) - wind_direcs
@@ -49,9 +51,9 @@ def calculate_relative_winds(location: tuple = default_location,
     rel_direcs = np.where((rel_direcs>90)|(rel_direcs<-90),np.nan,rel_direcs)
 
     return wind.assign({
-        'wind_proj': (('time','latitude','longitude'),np.cos(rel_direcs*np.pi/180)),
-        'bearings': (('latitude','longitude'),bearings),
-        'direc_proj_math': (('latitude','longitude'),trans_geosdeg2mathdeg(bearings)*np.pi/180)
+        'wind_proj': (('time',lat_name,lon_name),np.cos(rel_direcs*np.pi/180)),
+        'bearings': ((lat_name,lon_name),bearings),
+        'direc_proj_math': ((lat_name,lon_name),trans_geosdeg2mathdeg(bearings)*np.pi/180)
     }) # final dataset
 
 
@@ -104,14 +106,14 @@ def trans_geosdeg2mathdeg(geosdir):
 
 
 def spatial_gradient(xdset, var_name='msl'):
-    '''
+    """
     Calculate spatial gradient
 
     xdset:
         (longitude, latitude, time), var_name
 
     returns xdset with new variable "var_name_gradient"
-    '''
+    """
 
     # TODO:check/ ADD ONE ROW/COL EACH SIDE
     try:

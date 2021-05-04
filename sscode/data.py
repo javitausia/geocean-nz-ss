@@ -14,7 +14,7 @@ from .config import data_path, default_location # get config params
 from .plotting.config import _figsize, _figsize_width, _fontsize_title
 from .utils import calculate_relative_winds
 from .validation import compare_datasets
-from .plotting.data import plot_era5
+from .plotting.data import plot_pres_winds
 
 # warnings
 import warnings
@@ -56,7 +56,6 @@ class Loader(object):
             data_to_load (list, optional): List with the predictor, predictand 
             and validator. 
                 - Defaults to ['era5','moana','uhslc'].
-
         """
 
         # save location
@@ -71,9 +70,15 @@ class Loader(object):
                 else:
                     self.predictor_slp = predictor[0]
                     self.predictor_wind = predictor[1]
+            elif data_to_load[0]=='cfsr':
+                predictor = load_cfsr(time='1D',load_winds=(True,location))
+                if len(predictor)==1:
+                    self.predictor_slp = predictor
+                else:
+                    self.predictor_slp = predictor[0]
+                    self.predictor_wind = predictor[1]
             else:
                 print('\n data not available for the predictor!! \n')
-            # TODO: add CFSR??
 
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
@@ -149,7 +154,7 @@ def load_era5(data_path: str = data_path,
             if load_winds[0]:
                 wind = xr.open_dataset(data_path+'/era_5/ERA5_WINDs_daily.nc')
                 # plot the data
-                plot_era5([mslp,wind])
+                plot_pres_winds([mslp,wind],data_name='ERA5')
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
@@ -165,9 +170,13 @@ def load_era5(data_path: str = data_path,
             vw = xr.open_dataset(data_path+'/era_5/ERA5_10mv_1H_1979_2021.nc')['v10']\
                 .resample(time='1D').mean()
             wind = calculate_relative_winds(location=load_winds[1],
-                                            uw=uw,vw=vw)
+                                            uw=uw,vw=vw,
+                                            lat_name='latitude',
+                                            lon_name='longitude')
             # plot the data
-            plot_era5([mslp,wind])
+            plot_pres_winds([mslp,wind],data_name='ERA5',
+                            lat_name='latitude',lon_name='longitude',
+                            u_name='u10',v_name='v10')
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
@@ -185,9 +194,13 @@ def load_era5(data_path: str = data_path,
             vw = xr.open_dataset(data_path+'/era_5/ERA5_10mv_1H_1979_2021.nc')['v10']\
                 .sel(time=time)
             wind = calculate_relative_winds(location=load_winds[1],
-                                            uw=uw,vw=vw)
+                                            uw=uw,vw=vw,
+                                            lat_name='latitude',
+                                            lon_name='longitude')
             # plot the data
-            plot_era5([mslp,wind])
+            plot_pres_winds([mslp,wind],data_name='ERA5',
+                            lat_name='latitude',lon_name='longitude',
+                            u_name='u10',v_name='v10')
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
 
@@ -197,16 +210,83 @@ def load_era5(data_path: str = data_path,
     return return_data
 
 
-def load_cfsr(data_path: str = 
-              data_path+'/cfsr/CFSR_MSLP_1H_1979_2020_NZ.nc'):
+def load_cfsr(data_path: str = data_path,
+              time: str = '1997', # time cropping recommended
+              load_winds: bool = (False,default_location)):
     """
-    This function loads the CFSR sea-level-pressure
+    This function loas cfsr data and crops it to a time frame
+    of a year, or resamples it daily, as it is very difficult to 
+    work will all the data at the same time. The winds can be easily
+    loaded, and also cropped and projected in the direction of a
+    location if requested
+
+    Args:
+        data_path (str, optional): Data path folder in repository. 
+            - Defaults to data_path.
+        time (str, optional): Year to crop the data. Defaults to '1997'.
+        load_winds: this indicates wheter the winds are loaded or not
 
     Returns:
-        [xarray.Dataset]: xarray dataset with the slp
+        [list]: This is a list with the data loaded
     """
 
-    return xr.open_dataarray(data_path)
+    # load/calculate... xarray datasets
+    print('\n loading the sea-level-pressure fields... \n')
+    if time=='1D' or time=='6H':
+        # resample to daily
+        if os.path.isfile(data_path+'/cfsr/CFSR_MSLP_daily.nc'):
+            print('\n loading daily resampled data... \n')
+            # loading resampled data
+            mslp = xr.open_dataarray(data_path+'/cfsr/CFSR_MSLP_daily.nc')
+            if load_winds[0]:
+                wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily.nc')
+                # plot the data
+                plot_pres_winds([mslp,wind],data_name='CFSR')
+            # return data
+            return_data = [mslp] if not load_winds[0] else [mslp,wind]
+            return return_data
+
+        else:
+            print('\n resampling data to {}... \n'.format(time))
+            mslp = xr.open_dataset(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')['SLP']\
+                .resample(time=time).mean()
+        if load_winds[0]:
+            print('\n loading the winds... \n')
+            uw = xr.open_dataset(data_path+'/cfsr/CFSR_uwnd_1H_1990_2011.nc')['U_GRD_L103']\
+                .resample(time=time).mean()
+            vw = xr.open_dataset(data_path+'/cfsr/CFSR_vwnd_1H_1990_2011.nc')['V_GRD_L103']\
+                .resample(time=time).mean()
+            wind = calculate_relative_winds(location=load_winds[1],
+                                            uw=uw,vw=vw)
+            # plot the data
+            plot_pres_winds([mslp,wind],data_name='CFSR')
+        else:
+            print('\n projected winds will not be calculated... returning the SLP... \n')
+    else:
+        mslp = xr.open_dataset(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')['SLP']
+        # try year cropping
+        if time:
+            mslp = mslp.sel(time=time)
+            print(' cropping the data to {} \n'.format(int(time)))
+        else:
+            print('\n LOADING ALL THE MSLP DATA (be careful with memory) \n')
+        if load_winds[0]:
+            print('\n loading the winds... \n')
+            uw = xr.open_dataset(data_path+'/cfsr/CFSR_30mu_1H_1990_2020.nc')['u30']\
+                .resample(time=time).mean()
+            vw = xr.open_dataset(data_path+'/cfsr/CFSR_30mv_1H_1990_2020.nc')['v30']\
+                .resample(time=time).mean()
+            wind = calculate_relative_winds(location=load_winds[1],
+                                            uw=uw,vw=vw)
+            # plot the data
+            plot_pres_winds([mslp,wind],data_name='CFSR')
+        else:
+            print('\n projected winds will not be calculated... returning the SLP... \n')
+
+    # return the loaded datasets
+    return_data = [mslp] if not load_winds[0] else [mslp,wind]
+
+    return return_data
 
 
 def join_load_uhslc_tgs(files_path: str = 
@@ -240,7 +320,7 @@ def join_load_uhslc_tgs(files_path: str =
         hue_plot = uhslc_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
         fig.suptitle('UHSLC tidal gauges',fontsize=_fontsize_title)
         ax.legend(list(uhslc_tgs.name.values),loc='lower left',ncol=6)
-        fig, axes = plt.subplots(ncols=2,nrows=6,figsize=(_figsize_width,6),
+        fig, axes = plt.subplots(ncols=2,nrows=6,figsize=(_figsize_width*4,6),
                                 sharex=True,sharey=True)
         for axi in range(len(uhslc_tgs.name.values)):
             uhslc_tgs.isel(name=axi).ss.plot(
@@ -292,6 +372,42 @@ def load_moana_hindcast(file_path: str =
     """
 
     print('\n Loading the Moana v2 hindcast data... \n')
+
+    # TODO: add basic plotting
+
+    return xr.open_zarr(file_path)
+
+
+def load_moana_hindcast_ss(file_path: str = 
+    data_path+'/storm_surge_data/moana_hindcast_v2/ss/',
+    plot: bool = False):
+
+    """
+    Load the moana hindcast (ss) in a single xarray dataset
+
+    Returns:
+        [xarray.Dataset]: xarray dataset with all the ss moana data
+    """
+
+    print('\n Loading the Moana v2 hindcast data (ss)... \n')
+
+    # TODO: add basic plotting
+
+    return xr.open_zarr(file_path)
+
+
+def load_moana_hindcast_msea(file_path: str = 
+    data_path+'/storm_surge_data/moana_hindcast_v2/msea/',
+    plot: bool = False):
+
+    """
+    Load the moana hindcast (msea) in a single xarray dataset
+
+    Returns:
+        [xarray.Dataset]: xarray dataset with all the msea moana data
+    """
+
+    print('\n Loading the Moana v2 hindcast data (msea)... \n')
 
     # TODO: add basic plotting
 

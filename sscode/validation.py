@@ -93,7 +93,7 @@ def compare_datasets(dataset1, dataset1_coords,
     # validate/plot data1 with data2 (inside the loop)
     for istat in range(len(data1_clos_data2)):
         # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*1.5,_figsize_height*2.2))
+        fig = plt.figure(figsize=(_figsize_width*4.2,_figsize_height*1.8))
         fig.subplots_adjust(hspace=0.3)
         gs = gridspec.GridSpec(nrows=2,ncols=5)
         # do the analysis for both variables
@@ -178,15 +178,23 @@ def generate_stats(data1, data2, not_nan_idxs=None):
     """
 
     # calculate statistics
-    biasd = bias(data1[not_nan_idxs],data2[not_nan_idxs])
-    sid = si(data1[not_nan_idxs],data2[not_nan_idxs])
-    rmsed = rmse(data1[not_nan_idxs],data2[not_nan_idxs])
-    pearsond = pearsonr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
-    spearmand = spearmanr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
-    return_title = 'Data comparison is -- BIAS: {0:.2f}, SI: {0:.2f}, RMSE: {0:.2f}'.format(
+    try: 
+        biasd = bias(data1[not_nan_idxs],data2[not_nan_idxs])
+        sid = si(data1[not_nan_idxs],data2[not_nan_idxs])
+        rmsed = rmse(data1[not_nan_idxs],data2[not_nan_idxs])
+        pearsond = pearsonr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
+        spearmand = spearmanr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
+    except:
+        biasd = bias(data1,data2)
+        sid = si(data1,data2)
+        rmsed = rmse(data1,data2)
+        pearsond = pearsonr(data1,data2)[0]
+        spearmand = spearmanr(data1,data2)[0]
+    # customize title
+    return_title = 'Data comparison is -- BIAS: {:.2f}, SI: {:.2f}, RMSE: {:.2f}'.format(
         biasd,sid,rmsed
     )
-    return_title += ' and Correlation (Pearson, Spearman): ({0:.2f}, {0:.2f})'.format(
+    return_title += '\n and Correlation (Pearson, Spearman): ({:.2f}, {:.2f})'.format(
         pearsond,spearmand
     )
 
