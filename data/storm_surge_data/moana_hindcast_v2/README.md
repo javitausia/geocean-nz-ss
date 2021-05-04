@@ -18,5 +18,13 @@ File description:
    * *msea* The monthly mean sea level variation in meters extracted using a second order cosine-Laczos filter with cut-off period of 30 days.
    * *ss* is the storm surge in meters extracted using a second order cosine-Laczos filter of cut-off period of 40 hours.
    * *res* is the residual in meters left after filetring out all the other components.
-
-Moreover, the *moana_closest.nc* will contain the closest moana virtual nodes to our (GeoOcean) preprocessed tidal gauges...
+- **ss.tar.gz**: The file contains storm surge data every fourth point of the Moana model grid in all direction. The tarball contains a dataset in zarr format which can be opened using the python library xarray (function open_zarr). The following variables are available in the file:
+   * *lon*: The longitude of the nodes at which the water level data were extracted.
+   * *lat*: The latitude of the nodes at which the water level data were extracted.
+   * *time*: The time
+   * *ss*: The storm surge field in meters.
+- **msea.tar.gz**: The file contains monthly mean sea level variation data every fourth point of the Moana model grid in all direction. The tarball contains a dataset in zarr format which can be opened using the python library xarray (function open_zarr). The following variables are available in the file:
+   * *lon*: The longitude of the nodes at which the water level data were extracted.
+   * *lat*: The latitude of the nodes at which the water level data were extracted.
+   * *time*: The time
+   * *msea*: The monthly mean sea level variation field in meters.
