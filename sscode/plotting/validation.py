@@ -8,7 +8,8 @@ import numbers
 import matplotlib.pyplot as plt
 
 
-def qqplot(x, y, quantiles=None, interpolation='nearest', ax=None, rug=False,
+def qqplot(x, y, min_value=-0.3, max_value=0.6,
+           quantiles=None, interpolation='nearest', ax=None, rug=False,
            rug_length=0.05, rug_kwargs=None, **kwargs):
     """Draw a quantile-quantile plot for `x` versus `y`.
 
@@ -83,12 +84,15 @@ def qqplot(x, y, quantiles=None, interpolation='nearest', ax=None, rug=False,
 
     # Draw the q-q plot
     ax.scatter(x_quantiles, y_quantiles, **kwargs)
-    ax.plot([-0.3,0.6],[-0.3,0.6],c='royalblue',lw=3,zorder=10)
-    ax.set_xlim(-0.3,0.6)
-    ax.set_ylim(-0.3,0.6)
+    ax.plot([min_value,max_value],[min_value,max_value],
+            c='royalblue',lw=3,zorder=10)
+    ax.set_xlim(min_value,max_value)
+    ax.set_ylim(min_value,max_value)
     ax.axis('square')
 
-def scatterplot(x, y, ax=None, **kwargs):
+def scatterplot(x, y, ax=None, 
+                min_value=-0.3, max_value=0.6,
+                **kwargs):
     """
     Plots the data in a scatter plot
 
@@ -107,8 +111,9 @@ def scatterplot(x, y, ax=None, **kwargs):
 
     # plot the scatter
     ax.scatter(x,y,**kwargs)
-    ax.plot([-0.3,0.6],[-0.3,0.6],c='royalblue',lw=3,zorder=10)
-    ax.set_xlim(-0.3,0.6)
-    ax.set_ylim(-0.3,0.6)
+    ax.plot([min_value,max_value],[min_value,max_value],
+            c='royalblue',lw=3,zorder=10)
+    ax.set_xlim(min_value,max_value)
+    ax.set_ylim(min_value,max_value)
     ax.axis('square')
 

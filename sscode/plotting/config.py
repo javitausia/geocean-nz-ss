@@ -1,9 +1,9 @@
 # common fig parameters
 _figaspect = 2
-_figsize = (14,4)
+_figsize = (16,4)
 _figdpi = 128
-_figsize_width = 14
-_figsize_height = 4
+_figsize_width = 4
+_figsize_height = 5
 
 # common font parameters
 _fontsize_label = 12
