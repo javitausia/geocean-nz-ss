@@ -1,0 +1,14 @@
+# Table of content
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+- file: README
+  numbered: false
+
+- part: Chapters
+  chapters:
+  - file: notebooks/data_visualization
+  - file: notebooks/analysis_pca
+  - file: notebooks/analysis_cca
+  - file: notebooks/models_linear
+  - file: notebooks/models_knn
+  - file: notebooks/forensic
