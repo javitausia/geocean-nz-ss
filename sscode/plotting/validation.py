@@ -6,6 +6,12 @@ import numbers
 
 # plotting
 import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+
+# custom
+from ..config import default_location
+from .config import _figsize_width, _figsize_height
+from .utils import plot_ccrs_nz
 
 
 def qqplot(x, y, min_value=-0.3, max_value=0.6,
@@ -55,7 +61,7 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
 
     if quantiles is None:
         # quantiles = min(len(x), len(y))
-        quantiles = 1000
+        quantiles = 2000
 
     # Compute quantiles of the two samples
     if isinstance(quantiles, numbers.Integral):
@@ -116,4 +122,38 @@ def scatterplot(x, y, ax=None,
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
     ax.axis('square')
+
+
+def plot_stats(model_longitudes, model_latitudes,
+               statistics_array, **kwargs):
+
+    # TODO: add docstring
+
+    # create fig and axes
+    fig, axes = plt.subplots(
+        ncols=2,nrows=2,
+        figsize=(_figsize_width*3.6,_figsize_height*2.6),
+        subplot_kw={
+            'projection':ccrs.PlateCarree(
+                central_longitude=default_location[0]
+            )
+        }
+    )
+    for i,var,ax in zip(range(4),['bias','si','rmse','pearson'],axes.flatten()):
+        p = ax.scatter(
+            model_longitudes, model_latitudes,
+            c=statistics_array[:,i],
+            transform=ccrs.PlateCarree(),
+            s=30,zorder=40,cmap='jet',
+            **kwargs # add extra parameters
+        )
+        pos_ax = ax.get_position()
+        pos_colbar = fig.add_axes([
+            pos_ax.x0 + pos_ax.width + 0.07, pos_ax.y0, 0.02, pos_ax.height
+        ])
+        fig.colorbar(p,cax=pos_colbar)
+        ax.set_facecolor('lightblue')
+        ax.set_title(var,fontsize=20)
+    # plot map
+    plot_ccrs_nz(axes.flatten(),plot_labels=[True,10,10])
 

@@ -7,7 +7,7 @@ import cartopy.crs as ccrs
 
 # custom
 from .utils import plot_ccrs_nz
-from .config import _figsize, _fontsize_title, _fontsize_legend
+from .config import _figsize, _fontsize_title, _fontsize_legend, _figsize_width, _figsize_height
 from ..config import default_location, default_region
 
 
@@ -17,7 +17,7 @@ def plot_pres_winds(data, data_name='CFSR',
                     u_name: str = 'U_GRD_L103',
                     v_name: str = 'V_GRD_L103'):
     """
-    This funtion plots the previously loaded era5 data
+    This funtion plots the previously loaded pressure data
 
     Args:
         data (list): This is a list with the era5 data
@@ -25,7 +25,7 @@ def plot_pres_winds(data, data_name='CFSR',
 
     # figure and axis
     fig, axes = plt.subplots(
-        ncols=3,figsize=_figsize, 
+        ncols=3,figsize=(_figsize_width*3.6,_figsize_height*1.2), 
         subplot_kw={'projection':ccrs.PlateCarree(
             central_longitude=default_location[0]
         )}
@@ -43,17 +43,19 @@ def plot_pres_winds(data, data_name='CFSR',
                        color=np.sqrt(data[1][u_name].mean(dim='time').values**2 +
                                      data[1][v_name].mean(dim='time').values**2),
                        cmap='jet',density=8,transform=ccrs.PlateCarree())
-    quiv_step = 5
+    quiv_step = 8
     axes[2].quiver(data[1][lon_name].values[::quiv_step],
                    data[1][lat_name].values[::quiv_step],
                    data[1]['wind_proj'].mean(dim='time').values[::quiv_step,::quiv_step]*\
-                       np.cos(data[1]['direc_proj_math'].values[::quiv_step,::quiv_step]),
+                       np.cos(data[1]['direc_proj_math'].values[::quiv_step,::quiv_step])*10,
                    data[1]['wind_proj'].mean(dim='time').values[::quiv_step,::quiv_step]*\
-                       np.sin(data[1]['direc_proj_math'].values[::quiv_step,::quiv_step]),
+                       np.sin(data[1]['direc_proj_math'].values[::quiv_step,::quiv_step])*10,
                    transform=ccrs.PlateCarree())
     axes[2].set_facecolor('lightblue')
     # plot map and points
-    plot_ccrs_nz(axes.flatten())
+    plot_ccrs_nz(axes.flatten(),plot_region=(True,default_region),
+                 plot_location=(True,default_location),
+                 plot_labels=(True,10,10))
     fig.suptitle(data_name+' data available',fontsize=_fontsize_title)
 
 
@@ -67,10 +69,7 @@ def plot_all_data(geocean_tgs = None,
     Plot all data available, both in a map and the time series
 
     Args:
-        geocean_tgs ([type]): [description]
-        uhslc_tgs ([type]): [description]
-        moana_hind ([type]): [description]
-        codec_hind ([type]): [description]
+        all the args are the data loaded in the data.py file
     """
 
     # map plot
@@ -151,4 +150,31 @@ def plot_all_data(geocean_tgs = None,
     plot_ccrs_nz([ax],plot_region=(True,default_region))
 
     # TODO: add time series from forensic.ipynb
+
+
+def plot_winds(wind_data, time_step,
+               quiv_step: int = 8,
+               wind_coords: tuple = ('lon','lat'),
+               wind_vars: tuple = ('U_GRD_L103','V_GRD_L103')):
+
+    # TODO: add docstring
+
+    fig, ax = plt.subplots(
+        figsize=(_figsize_width*1.2,_figsize_height),
+        subplot_kw={
+            'projection': ccrs.PlateCarree(
+                central_longitude=180
+            )
+        }
+    )
+
+    wind_data.sel(time=time_step).wind_proj.plot(
+        ax=ax,cmap='jet',vmin=0,vmax=1
+    )
+    ax.plot(
+        wind_data[wind_coords[0]].values[::step],
+        wind_data[wind_coords[1]].values[::step],
+        wind_data.sel(time=time)[wind_vars[0]].values[::step,::step],
+        wind_data.sel(time=time)[wind_vars[1]].values[::step,::step]
+    )
 

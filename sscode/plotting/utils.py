@@ -25,10 +25,16 @@ def plot_ccrs_nz(axes, # all axes to plot the map
         to be plotted
     """
 
+    # check size of region to plot
+    if plot_region[0]:
+        dist = plot_region[1][1]-plot_region[1][0]
+        default_dist = default_region_reduced[1]-default_region_reduced[0]
+        plot_region = plot_region if dist>default_dist else (True,default_region_reduced)
+
     for ax in axes:
         if plot_location[0]:
-            ax.scatter(*plot_location[1],s=100,c='red',
-                       transform=ccrs.PlateCarree())
+            ax.scatter(*plot_location[1],s=50,c='red',
+                       zorder=20,transform=ccrs.PlateCarree())
         if plot_coastline[0]:
             ax.coastlines(resolution=plot_coastline[1],linewidth=2)
         if plot_land:
