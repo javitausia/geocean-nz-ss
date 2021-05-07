@@ -9,14 +9,17 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cross_decomposition import CCA
 
 # custom
-from .config import default_region_reduced
+from .config import default_region_reduced, default_region
+from .pca import PCA_DynamicPred
 from .plotting.cca import plot_ccs
 
 
-def CCA_Analysis(pres, pres_vars: tuple = ('msl','longitude','latitude'),
-                 ss, ss_vars: tuple = ('dac','longitude','latitude'),
+def CCA_Analysis(pres, ss, # pressure and ss datasets
+                 pres_vars: tuple = ('msl','longitude','latitude'),
+                 ss_vars: tuple = ('ss','lon','lat'),
                  time_resample: str = '1D',
-                 region: tuple = (True,default_region_reduced,default_region_reduced),
+                 region: tuple = (True,default_region,default_region_reduced),
+                 percentage_PCs: float = 0.96,
                  cca_plot: bool = True):
 
     # TODO: add docstring
@@ -30,35 +33,59 @@ def CCA_Analysis(pres, pres_vars: tuple = ('msl','longitude','latitude'),
             pres_vars[2]:slice(region[1][2],region[1][3])
         })
         ss = ss.sel({
-            pres_vars[1]:slice(region[2][0],region[2][1]),
-            pres_vars[2]:slice(region[2][3],region[2][2])
+            ss_vars[1]:slice(region[2][0],region[2][1]),
+            ss_vars[2]:slice(region[2][3],region[2][2])
         })
         # TODO: check order in lat/lon coords!!
 
     # check if data is resampled and dropna
     pres = pres.resample(time=time_resample).mean().dropna(dim='time')
-    ss = ss.resample(time=time_resample).mean().dropna(dim='time')
+    ss = ss.resample(time=time_resample).max().dropna(dim='time',how='all')
+
+    # extract PCs from SLP and SS
+    pcs_pres, pres_scaler = PCA_DynamicPred(
+        pres,time_resample='1D',
+        region=(False,None),
+        pca_plot=False
+    )
+    pcs_ss, ss_scaler = PCA_DynamicPred(
+        ss,pres_vars=ss_vars,
+        time_resample='1D',
+        region=(False,None),
+        pca_plot=False
+    )
+    
+    # num of pcs to use
+    num_pcs_pres = int(
+        np.where(np.cumsum(pcs_pres.variance.values/\
+            np.sum(pcs_pres.variance.values))>percentage_PCs
+            )[0][0]
+    ) + 4
+    num_pcs_ss = int(
+        np.where(np.cumsum(pcs_ss.variance.values/\
+            np.sum(pcs_ss.variance.values))>percentage_PCs
+            )[0][0]
+    ) + 4
+    print('\n we will use {} PCs from the pressure and {} from the ss \n'.format(
+        num_pcs_pres, num_pcs_ss
+    ))
 
     # input same time frames
     common_times = np.intersect1d(
-        pd.to_datetime(pres.time.values).round('H'),
-        pd.to_datetime(ss.time.values).round('H'),
+        pd.to_datetime(pcs_pres.time.values).round('H'),
+        pd.to_datetime(pcs_ss.time.values).round('H'),
         return_indices=True
     )
-    pres = pres.isel(time=common_times[1])
-    ss = ss.isel(time=common_times[2])
-
-    # get data ready to CCA
-    pres_data = pres.values.reshape(len(pres.time.values),-1)
-    stan_scal = StandardScaler() # standarize SLP data
-    pres_stan = stan_scal.fit_transform(pres_data)
-    pres_stan[np.isnan(pres_stan)] = 0.0 # check additional nans
-    ss_data = pres.values.reshape(len(ss.time.values),-1)
+    pres_data = pcs_pres.isel(time=common_times[1]).PCs.values[:,:num_pcs_pres]
+    ss_data = pcs_ss.isel(time=common_times[2]).PCs.values[:,:num_pcs_ss]
 
     # calculate the CCAs
-    cca = CCA(n_components=min(pres_stan.shape[0],pres_stan.shape[1]))
-    cca.fit(pres_stan, ss_stan) # fit the object
-    pres_c, ss_c = cca.transform(pres_stan, ss_stan)
+    cca = CCA(n_components=min(
+        pres_data.shape[0],pres_data.shape[1],ss_data.shape[1]
+        )
+    )
+    cca.fit(pres_data, ss_data) # fit the object
+    pres_cca, ss_cca = cca.transform(pres_data, ss_data)
 
     # lons/lats for pres and ss
     pres_lons, pres_lats = pres[pres_vars[1]].values, pres[pres_vars[2]].values
@@ -67,23 +94,24 @@ def CCA_Analysis(pres, pres_vars: tuple = ('msl','longitude','latitude'),
     # return data
     CCA_return = xr.Dataset(
         data_vars = {
-            'x_loadings': (('pres_longitude','pres_latitude','n_components'),
-                cca.x_loadings_.reshape(len(pres_lons),len(pres_lats),-1)),
-            'y_loadings': (('ss_longitude','ss_latitude','n_components'), 
-                cca.y_loadings_.reshape(len(ss_lons),len(ss_lats)),-1),
-            'x_rotations': (('pres_longitude','pres_latitude','n_components'), 
-                cca.x_rotations_.reshape(len(pres_lons),len(pres_lats)),-1),
-            'y_rotations': (('ss_longitude','ss_latitude','n_components'), 
-                cca.y_rotations_.reshape(len(ss_lons),len(ss_lats)),-1),
+            'x_scores': (('time','n_components'), pres_cca),
+            'y_scores': (('time','n_components'), ss_cca),
+            'x_loadings': (('n_features','n_components'), cca.x_loadings_),
+            'y_loadings': (('n_targets','n_components'), cca.y_loadings_),
+            'x_rotations': (('n_features','n_components'), cca.x_rotations_),
+            'y_rotations': (('n_targets','n_components'), cca.y_rotations_),
             'coefs': (('n_features','n_targets'), cca.coef_)
         },
-        coords = {
-            'pres_longitude': pres_lons, 'pres_latitude': pres_lats,
-            'ss_longitude': ss_lons, 'pres_latitude': ss_lats
+        coords={
+            'time': common_times[0]
         }
     )
 
-    # TODO: plot the data
+    # if plot: plot
+    region_plot = region[1] if region[0] else default_region
+    if cca_plot:
+        plot_ccs(CCA_return,(pcs_pres,pcs_ss),(pres_scaler,ss_scaler),
+                 n_plot=3,region=region_plot)
 
-    return cca, CCA_return
+    return CCA_return, (pcs_pres,pcs_ss), (pres_scaler,ss_scaler)
 

@@ -8,13 +8,15 @@ import xarray as xr
 
 # plotting
 import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location # get config params
-from .plotting.config import _figsize, _figsize_width, _fontsize_title
+from .plotting.config import _figsize, _figsize_width, _figsize_height, _fontsize_title
 from .utils import calculate_relative_winds
 from .validation import compare_datasets
 from .plotting.data import plot_pres_winds
+from .plotting.utils import plot_ccrs_nz
 
 # warnings
 import warnings
@@ -47,7 +49,7 @@ class Loader(object):
     """
 
 
-    def __init__(self, data_to_load: list = ['era5','moana','uhslc'],
+    def __init__(self, data_to_load: list = ['cfsr','moana','uhslc'],
                  location: tuple = default_location):
         """
         Loader class constructor
@@ -87,7 +89,7 @@ class Loader(object):
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
 
             if data_to_load[1]=='moana':
-                self.predictand = load_moana_hindcast()
+                self.predictand = load_moana_hindcast(plot=True)
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
             elif data_to_load[1]=='codec':
                 self.predictand = load_codec_hindcast()
@@ -125,7 +127,7 @@ class Loader(object):
 
 def load_era5(data_path: str = data_path,
               time: str = '1997', # time cropping recommended
-              load_winds: bool = (True,default_location)):
+              load_winds: tuple = (True,default_location)):
     """
     This function loas era5 data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
@@ -136,8 +138,11 @@ def load_era5(data_path: str = data_path,
     Args:
         data_path (str, optional): Data path folder in repository. 
             - Defaults to data_path.
-        time (str, optional): Year to crop the data. Defaults to '1997'.
-        load_winds: this indicates wheter the winds are loaded or not
+        time (str, optional): Year to crop the data. It can also be a time
+            step to resample the data as 1H, 6H, 1D...
+            - Defaults to '1997'.
+        load_winds: this indicates wheter the winds are loaded or not, and
+            the location of the projected winds
 
     Returns:
         [list]: This is a list with the data loaded
@@ -145,7 +150,7 @@ def load_era5(data_path: str = data_path,
 
     # load/calculate... xarray datasets
     print('\n loading the sea-level-pressure fields... \n')
-    if time=='1D':
+    if time=='1D' or time=='6H':
         # resample to daily
         if os.path.isfile(data_path+'/era_5/ERA5_MSLP_daily.nc'):
             print('\n loading daily resampled data... \n')
@@ -154,21 +159,23 @@ def load_era5(data_path: str = data_path,
             if load_winds[0]:
                 wind = xr.open_dataset(data_path+'/era_5/ERA5_WINDs_daily.nc')
                 # plot the data
-                plot_pres_winds([mslp,wind],data_name='ERA5')
+                plot_pres_winds([mslp,wind],data_name='ERA5',
+                                lat_name='latitude',lon_name='longitude',
+                                u_name='u10',v_name='v10')
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
 
         else:
-            print('\n resampling data to daily... \n')
+            print('\n resampling data to {}... \n'.format(time))
             mslp = xr.open_dataset(data_path+'/era_5/ERA5_MSLP_1H_1979_2021.nc')['msl']\
-                .resample(time='1D').mean()
+                .resample(time=time).mean()
         if load_winds[0]:
             print('\n loading the winds... \n')
             uw = xr.open_dataset(data_path+'/era_5/ERA5_10mu_1H_1979_2021.nc')['u10']\
-                .resample(time='1D').mean()
+                .resample(time=time).mean()
             vw = xr.open_dataset(data_path+'/era_5/ERA5_10mv_1H_1979_2021.nc')['v10']\
-                .resample(time='1D').mean()
+                .resample(time=time).mean()
             wind = calculate_relative_winds(location=load_winds[1],
                                             uw=uw,vw=vw,
                                             lat_name='latitude',
@@ -212,7 +219,7 @@ def load_era5(data_path: str = data_path,
 
 def load_cfsr(data_path: str = data_path,
               time: str = '1997', # time cropping recommended
-              load_winds: bool = (False,default_location)):
+              load_winds: tuple = (False,default_location)):
     """
     This function loas cfsr data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
@@ -223,8 +230,11 @@ def load_cfsr(data_path: str = data_path,
     Args:
         data_path (str, optional): Data path folder in repository. 
             - Defaults to data_path.
-        time (str, optional): Year to crop the data. Defaults to '1997'.
-        load_winds: this indicates wheter the winds are loaded or not
+        time (str, optional): Year to crop the data. It can also be a time
+            step to resample the data as 1H, 6H, 1D...
+            - Defaults to '1997'.
+        load_winds: this indicates wheter the winds are loaded or not, and
+            the location of the projected winds
 
     Returns:
         [list]: This is a list with the data loaded
@@ -301,7 +311,7 @@ def join_load_uhslc_tgs(files_path: str =
     """
 
     # join files assigning a name to each
-    print('\n Loading and plotting the UHSLC tidal guages... \n')
+    print('\n loading and plotting the UHSLC tidal guages... \n')
     uhslc_tgs_list = []
     for file in glob.glob(files_path):
         uhslc_tg = xr.open_dataset(file)
@@ -347,7 +357,7 @@ def load_geocean_tgs(file_path: str =
     """
 
     # load and plot all the geocean tgs
-    print('\n Loading and plotting the GeoOcean tidal guages... \n')
+    print('\n loading and plotting the GeoOcean tidal guages... \n')
     geocean_tgs = xr.open_dataset(file_path)
 
     if plot: # plot if specified
@@ -365,22 +375,57 @@ def load_moana_hindcast(file_path: str =
     plot: bool = False):
 
     """
-    Load the moana hindcast (saved as .zarr) in a single xarray dataset
+    Load and plot the moana hindcast (saved as .zarr) in a single xarray dataset
 
     Returns:
         [xarray.Dataset]: xarray dataset with all the moana data
     """
 
-    print('\n Loading the Moana v2 hindcast data... \n')
+    print('\n loading the Moana v2 hindcast data... \n')
 
-    # TODO: add basic plotting
+    # load moana
+    moana = xr.open_zarr(file_path)
 
-    return xr.open_zarr(file_path)
+    if plot: # plot if specified
+        # calculate 99% quantile
+        threshold = moana.ss.load().max(dim='time').mean()
+        # values to plot
+        moana_to_plot = moana.ss.load().groupby('time.season').max()-threshold
+        # plot some stats
+        fig, axes = plt.subplots(
+            ncols=2,nrows=2,figsize=(_figsize_width*3.3,_figsize_height*2.6),
+            subplot_kw={
+                'projection':ccrs.PlateCarree(
+                    central_longitude=180
+                )
+            }
+        )
+        fig.suptitle('Moana shore nodes quantiles anomalies',
+                     fontsize=_fontsize_title)
+        for seas,ax in zip(moana_to_plot.season.values,axes.flatten()):
+            p = ax.scatter(
+                moana.lon.values,moana.lat.values,
+                c=moana_to_plot.sel(season=seas).values,
+                transform=ccrs.PlateCarree(),
+                s=20,zorder=40,cmap='jet',
+                vmin=-0.2,vmax=0.2
+            )
+            pos_ax = ax.get_position()
+            pos_colbar = fig.add_axes([
+                pos_ax.x0 + pos_ax.width + 0.01, pos_ax.y0, 0.02, pos_ax.height
+            ])
+            fig.colorbar(p,cax=pos_colbar)
+            ax.set_facecolor('lightblue')
+            ax.set_title(seas,fontsize=_fontsize_title)
+        # plot NZ map
+        plot_ccrs_nz(axes.flatten(),plot_labels=[True,10,10])
+
+    return moana
 
 
 def load_moana_hindcast_ss(file_path: str = 
-    data_path+'/storm_surge_data/moana_hindcast_v2/ss/',
-    plot: bool = False):
+    data_path+'/storm_surge_data/moana_hindcast_v2/',
+    plot: bool = False, daily: bool = True):
 
     """
     Load the moana hindcast (ss) in a single xarray dataset
@@ -389,11 +434,16 @@ def load_moana_hindcast_ss(file_path: str =
         [xarray.Dataset]: xarray dataset with all the ss moana data
     """
 
-    print('\n Loading the Moana v2 hindcast data (ss)... \n')
+    print('\n loading the Moana v2 hindcast data (ss)... \n')
 
     # TODO: add basic plotting
 
-    return xr.open_zarr(file_path)
+    if os.path.isfile(file_path+'moana_ss_daily.nc') and daily:
+        return xr.open_dataarray(
+            file_path+'moana_ss_daily.nc'
+        )
+    else:
+        return xr.open_zarr(file_path+'ss/')
 
 
 def load_moana_hindcast_msea(file_path: str = 
@@ -407,7 +457,7 @@ def load_moana_hindcast_msea(file_path: str =
         [xarray.Dataset]: xarray dataset with all the msea moana data
     """
 
-    print('\n Loading the Moana v2 hindcast data (msea)... \n')
+    print('\n loading the Moana v2 hindcast data (msea)... \n')
 
     # TODO: add basic plotting
 
@@ -424,7 +474,7 @@ def load_dac_hindcast(file_path: str =
         [xarray.Dataset]: xarray dataset with all the DAC data
     """
 
-    print('\n Loading the DAC hindcast data... \n')
+    print('\n loading the DAC hindcast data... \n')
 
     # TODO: add basic plotting
 
@@ -443,7 +493,7 @@ def load_codec_hindcast(file_path: str =
     """
 
     # load and plot codec
-    print('\n Loading and plotting the CoDEC numerical data... \n')
+    print('\n loading and plotting the CoDEC numerical data... \n')
     codec_hind = xr.open_dataset(file_path).sel(time=slice('1980','2021'))
     codec_hind = codec_hind.assign_coords(
         {'time':pd.to_datetime(codec_hind.time.values).round('H')}

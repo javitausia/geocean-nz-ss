@@ -8,25 +8,27 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 # custom
-from .config import default_region_reduced
+from .config import default_region_reduced, default_region
 from .utils import spatial_gradient
 from .plotting.pca import plot_pcs
 
 
-def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
-                    calculate_gradient: bool = True,
+def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
+                    calculate_gradient: bool = False,
                     winds: tuple = (False,None),
-                    wind_vars: tuple = ('wind_proj','longitude','latitude'),
-                    time_lapse: int = 2, # 1 equals to NO time delay 
+                    wind_vars: tuple = ('wind_proj','lon','lat'),
+                    time_lapse: int = 1, # 1 equals to NO time delay 
                     time_resample: str = '1D',
-                    region: tuple = (True,default_region_reduced),
-                    pca_plot: bool = True):
+                    region: tuple = (True,default_region),
+                    pca_plot: bool = True,
+                    verbose: bool = True):
     """
     Perform PCA decomposition given the pressure, winds...
 
     Args:
         pres (xarray.Dataarray/Dataset): These are the sea-level-pressure fields,
             that could be loaded  both with load_era5() or load_cfsr()
+            ** this parameter can be used to calculate PCA with different data **
         pres_vars (tuple, optional): These are the slp xarray coordinates. 
             - Defaults to ('msl','longitude','latitude').
         calculate_gradient (bool, optional): weather to calculate or not the slp gradient.
@@ -40,7 +42,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
         time_resample (str, optional): This is the time resample.
             - Defaults to '1D'.
         region (tuple, optional): Region to crop the slp to. 
-            - Defaults to (True,default_region_reduced).
+            - Defaults to (True,default_region).
         pca_plot (bool, optional): Weather to plot or not the final results.
             - Defaults to True.
 
@@ -61,10 +63,13 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
             wind = winds[1].sel({
                 wind_vars[1]:slice(region[1][0],region[1][1]),
                 wind_vars[2]:slice(region[1][2],region[1][3])
-            })
+            }) # TODO: check lat order when cropping
 
     # check if data is resampled and dropna
-    pres = pres.resample(time=time_resample).mean().dropna(dim='time')
+    if pres_vars[0]=='wind_proj': # when just winds are loaded
+        pres = pres.resample(time=time_resample).mean().fillna(0.0)
+    else:
+        pres = pres.resample(time=time_resample).mean().dropna(dim='time',how='all')
     if winds[0]:
         wind = wind[wind_vars[0]].resample(time=time_resample).mean().fillna(0.0)\
             .interp(coords={wind_vars[1]:pres[pres_vars[1]],
@@ -108,7 +113,8 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
     print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape))
 
     # standarize the features
-    pcs_stan = StandardScaler().fit_transform(pcs_matrix)
+    pcs_scaler = StandardScaler()
+    pcs_stan = pcs_scaler.fit_transform(pcs_matrix)
     pcs_stan[np.isnan(pcs_stan)] = 0.0 # check additional nans
     # calculate de PCAs
     pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
@@ -117,11 +123,11 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
     # return data
     PCA_return = xr.Dataset(
         data_vars = {
-            'PCs': (('time', 'n_components'), PCs),
+            'PCs': (('time','n_components'), PCs),
             'EOFs': (('n_components','n_features'), pca_fit.components_),
             'variance': (('n_components'), pca_fit.explained_variance_),
-            'pcs_lon': (('n_lon'), pres.longitude.values),
-            'pcs_lat': (('n_lat'), pres.latitude.values)
+            'pcs_lon': (('n_lon'), pres[pres_vars[1]].values),
+            'pcs_lat': (('n_lat'), pres[pres_vars[2]].values)
         },
         coords = {
             'time': pres.time.values[:-time_lapse]
@@ -129,10 +135,12 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('msl','longitude','latitude'),
     )
 
     # if plot, plot
+    region_plot = region[1] if region[0] else default_region
     if pca_plot:
-        plot_pcs(PCA_return,n_plot=3,region=region[1])
+        plot_pcs(PCA_return,pcs_scaler=None,
+                 n_plot=2,region=region_plot)
 
-    return PCA_return
+    return PCA_return, pcs_scaler
 
 
 def running_mean(x, N, mode_str='mean'):

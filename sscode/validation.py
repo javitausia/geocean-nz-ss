@@ -11,7 +11,8 @@ import matplotlib.gridspec as gridspec
 
 # custom
 from .plotting.validation import qqplot, scatterplot
-from .plotting.config import _fontsize_title, _fontsize_legend, _figsize, _figsize_width, _figsize_height
+from .plotting.config import _fontsize_title, _fontsize_legend, \
+    _figsize, _figsize_width, _figsize_height
 
 
 def compare_datasets(dataset1, dataset1_coords,
@@ -93,7 +94,7 @@ def compare_datasets(dataset1, dataset1_coords,
     # validate/plot data1 with data2 (inside the loop)
     for istat in range(len(data1_clos_data2)):
         # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*4.2,_figsize_height*1.8))
+        fig = plt.figure(figsize=(_figsize_width*4.9,_figsize_height*1.8))
         fig.subplots_adjust(hspace=0.3)
         gs = gridspec.GridSpec(nrows=2,ncols=5)
         # do the analysis for both variables
@@ -153,7 +154,8 @@ def compare_datasets(dataset1, dataset1_coords,
             if axi==0:
                 fig.suptitle(
                     fig_title,
-                    fontsize=_fontsize_title
+                    fontsize=_fontsize_title,
+                    y=1.1
                 )
             ax_time.set_title('')
             ax_time.legend(loc='upper right',fontsize=_fontsize_legend)
