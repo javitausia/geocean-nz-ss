@@ -1,7 +1,8 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Storm Surge NZ - Monday Summary
+# basic configurations
+title: Storm Surge NZ - Wednesday Summary
 author: Javier Tausía Hoyal
 logo: media/images/logo.jpeg
 

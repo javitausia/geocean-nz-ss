@@ -1,0 +1,17 @@
+# install with `conda env create -f environment.yml`
+
+name: ssnz
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - notebook
+  - numpy
+  - pandas
+  - xarray
+  - matplotlib
+  - cartopy
+  - pip
+  - pip:
+    - progressbar2
