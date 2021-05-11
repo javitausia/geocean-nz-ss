@@ -13,10 +13,10 @@ from ..config import default_location, default_region_reduced
 
 def plot_ccrs_nz(axes, # all axes to plot the map
                  plot_location: tuple = (False,default_location),
-                 plot_coastline: tuple = (True,'50m'), # ['110m','50m','10m']
+                 plot_coastline: tuple = (True,'50m',2), # ['110m','50m','10m']
                  plot_land: bool = True,
                  plot_region: tuple = (True,default_region_reduced),
-                 plot_labels: bool = (True,5,5)):
+                 plot_labels: bool = (True,10,10)):
     """
     Plot the New Zealand basic map with cartopy
 
@@ -31,12 +31,15 @@ def plot_ccrs_nz(axes, # all axes to plot the map
         default_dist = default_region_reduced[1]-default_region_reduced[0]
         plot_region = plot_region if dist>default_dist else (True,default_region_reduced)
 
+    # plot map in all the axes
     for ax in axes:
         if plot_location[0]:
             ax.scatter(*plot_location[1],s=50,c='red',
                        zorder=20,transform=ccrs.PlateCarree())
         if plot_coastline[0]:
-            ax.coastlines(resolution=plot_coastline[1],linewidth=2)
+            ax.coastlines(resolution=plot_coastline[1],
+                          linewidth=plot_coastline[2],
+                          zorder=12)
         if plot_land:
             ax.add_feature(cfeature.LAND,zorder=10)
         if plot_region[0]:

@@ -46,7 +46,7 @@ def plot_ccs(cca_data, # this is all the CCA returned data
 
         # plot EOFs
         fig, axes = plt.subplots(ncols=2,
-            figsize=(_figsize_width*3.2,_figsize_height*1.3),
+            figsize=(_figsize_width*3.8,_figsize_height*1.4),
             subplot_kw={'projection':ccrs.PlateCarree(
                 central_longitude=default_location[0]
             )}

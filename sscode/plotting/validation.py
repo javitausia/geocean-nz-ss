@@ -1,5 +1,6 @@
 # arrays
 import numpy as np
+import xarray as xr
 
 # maths
 import numbers
@@ -10,13 +11,15 @@ import cartopy.crs as ccrs
 
 # custom
 from ..config import default_location
-from .config import _figsize_width, _figsize_height
+from .config import _figsize_width, _figsize_height, _figsize, \
+    _fontsize_title
 from .utils import plot_ccrs_nz
 
 
 def qqplot(x, y, min_value=-0.3, max_value=0.6,
            quantiles=None, interpolation='nearest', ax=None, rug=False,
            rug_length=0.05, rug_kwargs=None, **kwargs):
+
     """Draw a quantile-quantile plot for `x` versus `y`.
 
     Parameters
@@ -95,6 +98,7 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
     ax.axis('square')
+    
 
 def scatterplot(x, y, ax=None, 
                 min_value=-0.3, max_value=0.6,
@@ -102,12 +106,7 @@ def scatterplot(x, y, ax=None,
     """
     Plots the data in a scatter plot
 
-    Args:
-        x ([type]): [description]
-        y ([type]): [description]
-        ax ([type], optional): [description]. Defaults to None.
-
-    TODO...
+    TODO... 
     
     """
 
@@ -124,36 +123,39 @@ def scatterplot(x, y, ax=None,
     ax.axis('square')
 
 
-def plot_stats(model_longitudes, model_latitudes,
-               statistics_array, **kwargs):
+def plot_stats(statistics_data, plot_stats, **kwargs):
+    """
+    Plots the validation data in a map plot
 
-    # TODO: add docstring
+    TODO... 
+    
+    """
 
     # create fig and axes
+    n_plots = len(plot_stats)
     fig, axes = plt.subplots(
-        ncols=2,nrows=2,
-        figsize=(_figsize_width*3.6,_figsize_height*2.6),
+        ncols=n_plots, # maybe just pearson, r_score and si
+        figsize=(_figsize_width*5.0,_figsize_height),
         subplot_kw={
             'projection':ccrs.PlateCarree(
                 central_longitude=default_location[0]
             )
         }
     )
-    for i,var,ax in zip(range(4),['bias','si','rmse','pearson'],axes.flatten()):
-        p = ax.scatter(
-            model_longitudes, model_latitudes,
-            c=statistics_array[:,i],
-            transform=ccrs.PlateCarree(),
-            s=30,zorder=40,cmap='jet',
-            **kwargs # add extra parameters
-        )
-        pos_ax = ax.get_position()
-        pos_colbar = fig.add_axes([
-            pos_ax.x0 + pos_ax.width + 0.07, pos_ax.y0, 0.02, pos_ax.height
-        ])
-        fig.colorbar(p,cax=pos_colbar)
+    for i,var,ax in zip(range(n_plots),plot_stats,axes.flatten()):
+        p = xr.plot.scatter(
+            statistics_data, # this is the data
+            x='longitude',y='latitude',hue=var,cmap='jet',
+            ax=ax,transform=ccrs.PlateCarree(),zorder=40
+        ) # TODO: add kwargs
         ax.set_facecolor('lightblue')
         ax.set_title(var,fontsize=20)
     # plot map
-    plot_ccrs_nz(axes.flatten(),plot_labels=[True,10,10])
+    plot_ccrs_nz(axes.flatten(),plot_labels=(True,5,5),
+                 plot_coastline=(False,None,None))
+    # figure title
+    fig.suptitle('Model statistics for all the stations!!',
+                 fontsize=_fontsize_title,y=1.1)
+    # show results
+    plt.show()
 

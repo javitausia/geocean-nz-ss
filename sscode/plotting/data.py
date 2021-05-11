@@ -7,7 +7,8 @@ import cartopy.crs as ccrs
 
 # custom
 from .utils import plot_ccrs_nz
-from .config import _figsize, _fontsize_title, _fontsize_legend, _figsize_width, _figsize_height
+from .config import _figsize, _figsize_width, _figsize_height, \
+    _fontsize_title, _fontsize_legend
 from ..config import default_location, default_region
 
 
@@ -55,8 +56,11 @@ def plot_pres_winds(data, data_name='CFSR',
     # plot map and points
     plot_ccrs_nz(axes.flatten(),plot_region=(True,default_region),
                  plot_location=(True,default_location),
-                 plot_labels=(True,10,10))
+                 plot_land=False)
     fig.suptitle(data_name+' data available',fontsize=_fontsize_title)
+
+    # show results
+    plt.show()
 
 
 def plot_all_data(geocean_tgs = None, 
@@ -86,7 +90,7 @@ def plot_all_data(geocean_tgs = None,
             moana_hind.lon.values,moana_hind.lat.values,
             transform=ccrs.PlateCarree(),s=30,
             label='Moana v2 hindcast shore - 5 km',
-            c='red',alpha=0.8,zorder=12
+            c='red',alpha=0.8,zorder=14
         )
     if moana_hind_all:
         ax.scatter(
@@ -100,14 +104,14 @@ def plot_all_data(geocean_tgs = None,
             )[1].reshape(-1),
             transform=ccrs.PlateCarree(),s=5,
             label='Moana v2 hindcast offshore - 20 km',
-            c='orange',alpha=0.5,zorder=4
+            c='orange',alpha=0.5,zorder=8
         )
     if codec_hind:
         ax.scatter(
             codec_hind.codec_coords_lon.values,
             codec_hind.codec_coords_lat.values,
             transform=ccrs.PlateCarree(),s=50,
-            label='CoDEC hindcast',c='red',zorder=14
+            label='CoDEC hindcast',c='red',zorder=15
         )
     if geocean_tgs:
         ax.scatter(
@@ -144,10 +148,15 @@ def plot_all_data(geocean_tgs = None,
     # legend attrs
     ax.legend(
         loc='lower left', # bbox_to_anchor=(-0.1,1.05),
-        ncol=2,fancybox=True,shadow=True
-    )
+        ncol=2,fancybox=True,shadow=True,
+        fontsize=_fontsize_legend
+    ).set_zorder(20)
     # plot the map
-    plot_ccrs_nz([ax],plot_region=(True,default_region))
+    plot_ccrs_nz([ax],plot_region=(True,default_region),
+                 plot_coastline=(False,None,None))
+
+    # show results
+    plt.show()
 
     # TODO: add time series from forensic.ipynb
 
@@ -157,7 +166,7 @@ def plot_winds(wind_data, time_step,
                wind_coords: tuple = ('lon','lat'),
                wind_vars: tuple = ('U_GRD_L103','V_GRD_L103')):
 
-    # TODO: add docstring
+    # TODO: add docstring, check winds!!
 
     fig, ax = plt.subplots(
         figsize=(_figsize_width*1.2,_figsize_height),

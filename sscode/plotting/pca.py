@@ -50,7 +50,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
         # plot EOFs
         eof_width = _figsize[0] / n_EOFs
         fig, axes = plt.subplots(ncols=n_EOFs,
-            figsize=(eof_width*n_EOFs*1.3,_figsize_height*1.3),
+            figsize=(eof_width*n_EOFs*1.2,_figsize_height),
             subplot_kw={'projection':ccrs.PlateCarree(
                 central_longitude=default_location[0]
             )}
@@ -66,6 +66,8 @@ def plot_pcs(pca_data, pcs_scaler = None,
                     np.sqrt(variance[i_comp]).reshape(-1)
         # different EOFs
         axes = axes if n_EOFs>1 else [axes] # allow individual plotting
+        # plot colorbars
+        plot_cbar = True if n_EOFs<=3 else False
         for ix,ax in enumerate(axes): # num_axes = n_EOFs
             eofp = ax.pcolormesh(
                 pca_data.pcs_lon.values,
@@ -77,15 +79,16 @@ def plot_pcs(pca_data, pcs_scaler = None,
                 cmap='RdBu_r',clim=(-1,1)
             )
             ax.set_title(pca_EOFs_ttls[ix])
-            pos_ax = ax.get_position()
-            pos_colbar = fig.add_axes([
-                pos_ax.x0 + pos_ax.width + 0.01, 
-                pos_ax.y0, 0.02, pos_ax.height
-            ])
-            fig.colorbar(eofp,cax=pos_colbar)
+            if plot_cbar:
+                pos_ax = ax.get_position()
+                pos_colbar = fig.add_axes([
+                    pos_ax.x0 + pos_ax.width + 0.01, 
+                    pos_ax.y0, 0.02, pos_ax.height
+                ])
+                fig.colorbar(eofp,cax=pos_colbar)
         # plot nz map
         plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
-                     plot_labels=(True,10,10))
+                     plot_labels=(True,5,5))
         # plot variance in title
         fig.suptitle('EOF {}: {:.1%} of explained variance'.format(
             i_comp+1, (variance/np.sum(variance))[i_comp]
@@ -154,13 +157,15 @@ def plot_recon_pcs(pca_data, pcs_scaler,
     # plot EOFs
     eof_width = _figsize[0] / n_EOFs
     fig, axes = plt.subplots(ncols=n_EOFs,
-        figsize=(eof_width*n_EOFs*1.8,_figsize_height*1.4),
+        figsize=(eof_width*n_EOFs*1.2,_figsize_height),
         subplot_kw={'projection':ccrs.PlateCarree(
             central_longitude=default_location[0]
         )}
     )
     # different EOFs
     axes = axes if n_EOFs>1 else [axes] # allow individual plotting
+    # plot colorbars
+    plot_cbar = True if n_EOFs<=3 else False
     for ix,ax in enumerate(axes): # num_axes = n_EOFs
         eofp = ax.pcolormesh(
             pca_data.pcs_lon.values,
@@ -171,15 +176,16 @@ def plot_recon_pcs(pca_data, pcs_scaler,
             cmap='RdBu_r',clim=(-1,1)
         )
         ax.set_title(pca_EOFs_ttls[ix])
-        pos_ax = ax.get_position()
-        pos_colbar = fig.add_axes([
-            pos_ax.x0 + pos_ax.width + 0.01, 
-            pos_ax.y0, 0.02, pos_ax.height
-        ])
-        fig.colorbar(eofp,cax=pos_colbar)
+        if plot_cbar:
+            pos_ax = ax.get_position()
+            pos_colbar = fig.add_axes([
+                pos_ax.x0 + pos_ax.width + 0.01, 
+                pos_ax.y0, 0.02, pos_ax.height
+            ])
+            fig.colorbar(eofp,cax=pos_colbar)
     # plot nz map
     plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
-                 plot_labels=(True,10,10))
+                 plot_labels=(True,5,5))
     # plot variance in title
     fig.suptitle(
         'Reconstructed SLP from {} PCs in {}'.format(
