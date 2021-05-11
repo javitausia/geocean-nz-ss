@@ -87,6 +87,11 @@ def CCA_Analysis(pres, ss, # pressure and ss datasets
     cca.fit(pres_data, ss_data) # fit the object
     pres_cca, ss_cca = cca.transform(pres_data, ss_data)
 
+    # check model results    
+    print('\n R score: {} -- in TEST data'.format(
+        round(cca.score(pres_data,ss_data),2)
+    ))
+
     # lons/lats for pres and ss
     pres_lons, pres_lats = pres[pres_vars[1]].values, pres[pres_vars[2]].values
     ss_lons, ss_lats = ss[ss_vars[1]].values, ss[ss_vars[2]].values

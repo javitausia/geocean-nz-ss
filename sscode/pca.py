@@ -21,7 +21,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                     time_resample: str = '1D',
                     region: tuple = (True,default_region),
                     pca_plot: bool = True,
-                    verbose: bool = True):
+                    verbose: bool = True): # TODO: add verbose options
     """
     Perform PCA decomposition given the pressure, winds...
 
@@ -51,7 +51,8 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     """
 
     # perform pca analysis
-    print('\n lets calculate the PCs... \n')
+    if verbose:
+        print('\n lets calculate the PCs... \n')
     # crop slp and winds to the region selected
     if region[0]:
         pres = pres.sel({
@@ -59,7 +60,8 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
             pres_vars[2]:slice(region[1][2],region[1][3])
         })
         if winds[0]:
-            print('\n adding the wind to the predictor... \n')
+            if verbose:
+                print('\n adding the wind to the predictor... \n')
             wind = winds[1].sel({
                 wind_vars[1]:slice(region[1][0],region[1][1]),
                 wind_vars[2]:slice(region[1][2],region[1][3])
@@ -76,17 +78,20 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                             wind_vars[2]:pres[pres_vars[2]]}
                     )\
             .sel(time=pres.time) # interp to pressure coords
-        print('\n winds predictor with shape: \n {} \n'.format(wind.shape))
+        if verbose:
+            print('\n winds predictor with shape: \n {} \n'.format(wind.shape))
         wind_add = 1 # for the pcs matrix
     else:
         wind_add = 0
 
     # calculate the gradient
     if calculate_gradient:
-        print('\n calculating the gradient of the sea-level-pressure fields... \n')
+        if verbose:
+            print('\n calculating the gradient of the sea-level-pressure fields... \n')
         pres = spatial_gradient(pres,pres_vars[0])
-        print('\n pressure/gradient predictor both with shape: \n {} \n'\
-            .format(pres[pres_vars[0]].shape))
+        if verbose:
+            print('\n pressure/gradient predictor both with shape: \n {} \n'\
+                .format(pres[pres_vars[0]].shape))
         grad_add = 2
     else:
         grad_add = 1
@@ -108,9 +113,10 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                 pcs_matrix[t,y_shape*(tl+1):y_shape*(tl+2)] = \
                     pres.isel(time=t-tl)[pres_vars[0]+'_gradient'].values.reshape(-1)
         if wind_add:
-            pcs_matrix[t,y_shape*(tl+2):] = \
+            pcs_matrix[t,y_shape*(tl+grad_add):] = \
                 wind.isel(time=t-tl).values.reshape(-1)
-    print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape))
+    if verbose:
+        print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape))
 
     # standarize the features
     pcs_scaler = StandardScaler()

@@ -12,7 +12,8 @@ import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location # get config params
-from .plotting.config import _figsize, _figsize_width, _figsize_height, _fontsize_title
+from .plotting.config import _figsize, _figsize_width, _figsize_height, \
+    _fontsize_title, _fontsize_legend
 from .utils import calculate_relative_winds
 from .validation import compare_datasets
 from .plotting.data import plot_pres_winds
@@ -50,14 +51,17 @@ class Loader(object):
 
 
     def __init__(self, data_to_load: list = ['cfsr','moana','uhslc'],
-                 location: tuple = default_location):
+                 location: tuple = default_location,
+                 plot: bool = True):
         """
         Loader class constructor
 
         Args:
             data_to_load (list, optional): List with the predictor, predictand 
-            and validator. 
+            and validator: 
                 - Defaults to ['era5','moana','uhslc'].
+            location: location if required
+            plot: whether to plot or not the loaded data
         """
 
         # save location
@@ -89,10 +93,10 @@ class Loader(object):
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
 
             if data_to_load[1]=='moana':
-                self.predictand = load_moana_hindcast(plot=True)
+                self.predictand = load_moana_hindcast(plot=plot)
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
             elif data_to_load[1]=='codec':
-                self.predictand = load_codec_hindcast()
+                self.predictand = load_codec_hindcast(plot=plot)
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
             else:
                 print('\n data not available for the predictand!! \n')
@@ -103,7 +107,7 @@ class Loader(object):
                 self.validator = join_load_uhslc_tgs(plot=True)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='geotgs':
-                self.validator = load_geocean_tgs()
+                self.validator = load_geocean_tgs(plot=plot)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             else:
                 print('\n data not available for the validation!! \n')
@@ -341,6 +345,8 @@ def join_load_uhslc_tgs(files_path: str =
             axes.flatten()[axi].set_title('')
             axes.flatten()[axi].set_xlabel('')
             axes.flatten()[axi].set_ylabel('')
+        # show results
+        plt.show()
 
     return uhslc_tgs
 
@@ -366,6 +372,8 @@ def load_geocean_tgs(file_path: str =
         fig.suptitle('GeoOcean tidal gauges',fontsize=_fontsize_title)
         ax.legend(list(geocean_tgs.name.values),loc='lower left',ncol=7)
         geocean_tgs.ss.plot(col='name',col_wrap=3,figsize=(12,7))
+        # show results
+        plt.show()
 
     return geocean_tgs
 
@@ -393,7 +401,7 @@ def load_moana_hindcast(file_path: str =
         moana_to_plot = moana.ss.load().groupby('time.season').max()-threshold
         # plot some stats
         fig, axes = plt.subplots(
-            ncols=2,nrows=2,figsize=(_figsize_width*3.3,_figsize_height*2.6),
+            ncols=2,nrows=2,figsize=(_figsize_width*3.6,_figsize_height*2.6),
             subplot_kw={
                 'projection':ccrs.PlateCarree(
                     central_longitude=180
@@ -408,7 +416,7 @@ def load_moana_hindcast(file_path: str =
                 c=moana_to_plot.sel(season=seas).values,
                 transform=ccrs.PlateCarree(),
                 s=20,zorder=40,cmap='jet',
-                vmin=-0.2,vmax=0.2
+                vmin=-0.3,vmax=0.3
             )
             pos_ax = ax.get_position()
             pos_colbar = fig.add_axes([
@@ -418,7 +426,11 @@ def load_moana_hindcast(file_path: str =
             ax.set_facecolor('lightblue')
             ax.set_title(seas,fontsize=_fontsize_title)
         # plot NZ map
-        plot_ccrs_nz(axes.flatten(),plot_labels=[True,10,10])
+        plot_ccrs_nz(axes.flatten(),
+                     plot_coastline=(False,None,None),
+                     plot_labels=(True,5,5))
+        # show results
+    plt.show()
 
     return moana
 
@@ -505,6 +517,8 @@ def load_codec_hindcast(file_path: str =
         fig.suptitle('CoDEC numerical model',fontsize=_fontsize_title)
         ax.legend(list(codec_hind.name.values),loc='lower left',ncol=7)
         codec_hind.ss.plot(col='name',col_wrap=3,figsize=(12,7))
+        # show results
+        plt.show()
 
     return codec_hind
 
