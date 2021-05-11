@@ -8,6 +8,8 @@ below, a summary of the region and data involved in the first part of the analys
 
 ![gif](/media/videos/example.gif)
 
+jupyter book for wednesday [here](https://javitausia.github.io/geocean-nz-ss/)
+
 ## 1. Description
 
 The storm surge ...
@@ -28,18 +30,18 @@ To run the toolbox you first need to install the required Python packages in an 
 
 Once you have installed it on your PC, open the Anaconda prompt (in Mac and Linux, open a terminal window) and use the `cd` command to go to the folder where you have cloned this repository.
 
-Create a new environment named `stormsurge` with all the required packages:
+Create a new environment named `ssnz` with all the required packages:
 
 ```
-conda env create -f environment.yml -n stormsurge
+conda env create -f environment.yml
 ```
 
 ### 4.2 Activate conda environment
 
-All the required packages have been now installed in an environment called `stormsurge`. Now, activate this new environment:
+All the required packages have been now installed in an environment called `ssnz`. Now, activate this new environment:
 
 ```
-conda activate stormsurge
+conda activate ssnz
 ```
 
 ## Additional support:
@@ -49,3 +51,4 @@ Data used in the project and a detailed explanation of the acquisition can be re
 ## Authors:
 
 * Javier Tausía Hoyal
+

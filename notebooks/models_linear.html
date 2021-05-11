@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LINEAR REGRESSION &#8212; Storm Surge NZ - Monday Summary</title>
+    <title>4. LINEAR REGRESSION &#8212; Storm Surge NZ - Wednesday Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="KNN REGRESSOR" href="models_knn.html" />
-    <link rel="prev" title="CCA ANALYSIS" href="analysis_cca.html" />
+    <link rel="next" title="5. KNN REGRESSOR" href="models_knn.html" />
+    <link rel="prev" title="3. CCA ANALYSIS" href="analysis_cca.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -77,7 +77,7 @@
   <img src="../_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Monday Summary</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Wednesday Summary</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -100,32 +100,32 @@
 <ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   DATA VISUALIZATION / VALIDATION
+   1. DATA VISUALIZATION / VALIDATION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   PCA ANALYSIS
+   2. PCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_cca.html">
-   CCA ANALYSIS
+   3. CCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   LINEAR REGRESSION
+   4. LINEAR REGRESSION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   KNN REGRESSOR
+   5. KNN REGRESSOR
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="forensic.html">
-   STORMS VISUALIZATION
+   6. STORMS VISUALIZATION
   </a>
  </li>
 </ul>
@@ -232,13 +232,23 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-data">
+   4.1. load the data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-calculate-the-pcs">
+   4.2. load / calculate the pcs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-regional-predictor">
-   Linear regression with regional predictor
+   4.3. linear regression with regional predictor
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-local-predictor">
-   Linear regression with local predictor
+   4.4. linear regression with local predictor
   </a>
  </li>
 </ul>
@@ -254,11 +264,12 @@
               <div>
                 
   <div class="section" id="linear-regression">
-<h1>LINEAR REGRESSION<a class="headerlink" href="#linear-regression" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4. </span>LINEAR REGRESSION<a class="headerlink" href="#linear-regression" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">progressbar</span>
 
 <span class="c1"># arrays</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -273,13 +284,12 @@
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># data viewer</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.cca</span> <span class="kn">import</span> <span class="n">CCA_Analysis</span>
 <span class="kn">from</span> <span class="nn">sscode.linear</span> <span class="kn">import</span> <span class="n">MultiLinear_Regression</span>
-<span class="kn">from</span> <span class="nn">sscode.knn</span> <span class="kn">import</span> <span class="n">KNN_Regression</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
-<span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
 
 <span class="c1"># warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -288,6 +298,8 @@
 </div>
 </div>
 </div>
+<div class="section" id="load-the-data">
+<h2><span class="section-number">4.1. </span>load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
@@ -302,18 +314,18 @@
 
 
  loading daily resampled data... 
-
-
- loading the Moana v2 hindcast data... 
-
-
- loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_2_1.png" src="../_images/models_linear_2_1.png" />
-<img alt="../_images/models_linear_2_2.png" src="../_images/models_linear_2_2.png" />
-<img alt="../_images/models_linear_2_3.png" src="../_images/models_linear_2_3.png" />
-<img alt="../_images/models_linear_2_4.png" src="../_images/models_linear_2_4.png" />
+<img alt="../_images/models_linear_3_1.png" src="../_images/models_linear_3_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_3_3.png" src="../_images/models_linear_3_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_3_5.png" src="../_images/models_linear_3_5.png" />
+<img alt="../_images/models_linear_3_6.png" src="../_images/models_linear_3_6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -328,6 +340,9 @@
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="load-calculate-the-pcs">
+<h2><span class="section-number">4.2. </span>load / calculate the pcs<a class="headerlink" href="#load-calculate-the-pcs" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
@@ -365,39 +380,73 @@
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_4_1.png" src="../_images/models_linear_4_1.png" />
-<img alt="../_images/models_linear_4_2.png" src="../_images/models_linear_4_2.png" />
-<img alt="../_images/models_linear_4_3.png" src="../_images/models_linear_4_3.png" />
-<img alt="../_images/models_linear_4_4.png" src="../_images/models_linear_4_4.png" />
-<img alt="../_images/models_linear_4_5.png" src="../_images/models_linear_4_5.png" />
-<img alt="../_images/models_linear_4_6.png" src="../_images/models_linear_4_6.png" />
+<img alt="../_images/models_linear_6_1.png" src="../_images/models_linear_6_1.png" />
+<img alt="../_images/models_linear_6_2.png" src="../_images/models_linear_6_2.png" />
+<img alt="../_images/models_linear_6_3.png" src="../_images/models_linear_6_3.png" />
+<img alt="../_images/models_linear_6_4.png" src="../_images/models_linear_6_4.png" />
+<img alt="../_images/models_linear_6_5.png" src="../_images/models_linear_6_5.png" />
+<img alt="../_images/models_linear_6_6.png" src="../_images/models_linear_6_6.png" />
+</div>
 </div>
 </div>
 <div class="section" id="linear-regression-with-regional-predictor">
-<h2>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3. </span>linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform the Multilinear-Regression</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-    <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">5</span>
-<span class="p">)</span>
-<span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">sites</span><span class="p">:</span>
-    <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
-        <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
-        <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+    <span class="c1"># perform the Multilinear-Regression (regional)</span>
+    <span class="n">stats_regional</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sites_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">5</span>
     <span class="p">)</span>
-    <span class="n">stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
-<span class="c1"># plot stats</span>
-<span class="n">plot_stats</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-           <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-           <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_regional</span><span class="p">):</span>
+        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
+            <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span> <span class="c1"># pre-loaded pcs</span>
+        <span class="n">stats_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
+    <span class="c1"># save the statistics</span>
+    <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;bias&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s1">&#39;si&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s1">&#39;rmse&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="mi">2</span><span class="p">]),</span>
+            <span class="s1">&#39;pearson&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="mi">3</span><span class="p">]),</span>
+            <span class="s1">&#39;spearman&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="mi">4</span><span class="p">]),</span>
+            <span class="s1">&#39;rscore&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="mi">5</span><span class="p">]),</span>
+            <span class="s1">&#39;latitude&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span>
+            <span class="s1">&#39;longitude&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;station&#39;</span><span class="p">:</span> <span class="n">sites_regional</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="c1"># local copy</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">stats_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
+<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_6_0.png" src="../_images/models_linear_6_0.png" />
+<img alt="../_images/models_linear_9_0.png" src="../_images/models_linear_9_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -419,35 +468,201 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_7_0.png" src="../_images/models_linear_7_0.png" />
-<img alt="../_images/models_linear_7_1.png" src="../_images/models_linear_7_1.png" />
-<img alt="../_images/models_linear_7_2.png" src="../_images/models_linear_7_2.png" />
-<img alt="../_images/models_linear_7_3.png" src="../_images/models_linear_7_3.png" />
-<img alt="../_images/models_linear_7_4.png" src="../_images/models_linear_7_4.png" />
-<img alt="../_images/models_linear_7_5.png" src="../_images/models_linear_7_5.png" />
-<img alt="../_images/models_linear_7_6.png" src="../_images/models_linear_7_6.png" />
-<img alt="../_images/models_linear_7_7.png" src="../_images/models_linear_7_7.png" />
-<img alt="../_images/models_linear_7_8.png" src="../_images/models_linear_7_8.png" />
-<img alt="../_images/models_linear_7_9.png" src="../_images/models_linear_7_9.png" />
-<img alt="../_images/models_linear_7_10.png" src="../_images/models_linear_7_10.png" />
-<img alt="../_images/models_linear_7_11.png" src="../_images/models_linear_7_11.png" />
-<img alt="../_images/models_linear_7_12.png" src="../_images/models_linear_7_12.png" />
-<img alt="../_images/models_linear_7_13.png" src="../_images/models_linear_7_13.png" />
-<img alt="../_images/models_linear_7_14.png" src="../_images/models_linear_7_14.png" />
-<img alt="../_images/models_linear_7_15.png" src="../_images/models_linear_7_15.png" />
-<img alt="../_images/models_linear_7_16.png" src="../_images/models_linear_7_16.png" />
-<img alt="../_images/models_linear_7_17.png" src="../_images/models_linear_7_17.png" />
-<img alt="../_images/models_linear_7_18.png" src="../_images/models_linear_7_18.png" />
-<img alt="../_images/models_linear_7_19.png" src="../_images/models_linear_7_19.png" />
-<img alt="../_images/models_linear_7_20.png" src="../_images/models_linear_7_20.png" />
-<img alt="../_images/models_linear_7_21.png" src="../_images/models_linear_7_21.png" />
-<img alt="../_images/models_linear_7_22.png" src="../_images/models_linear_7_22.png" />
-<img alt="../_images/models_linear_7_23.png" src="../_images/models_linear_7_23.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_1.png" src="../_images/models_linear_10_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.62, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.82, 0.82)
+ R score: 0.67 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_3.png" src="../_images/models_linear_10_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_5.png" src="../_images/models_linear_10_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.80, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.72, 0.71)
+ R score: 0.52 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_7.png" src="../_images/models_linear_10_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_9.png" src="../_images/models_linear_10_9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.57, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.84, 0.84)
+ R score: 0.69 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_11.png" src="../_images/models_linear_10_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_13.png" src="../_images/models_linear_10_13.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.80, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.74, 0.67)
+ R score: 0.55 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_15.png" src="../_images/models_linear_10_15.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_17.png" src="../_images/models_linear_10_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.57, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.84, 0.84)
+ R score: 0.69 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_19.png" src="../_images/models_linear_10_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_21.png" src="../_images/models_linear_10_21.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.84, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.71, 0.69)
+ R score: 0.5 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_23.png" src="../_images/models_linear_10_23.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_25.png" src="../_images/models_linear_10_25.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.72, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.80, 0.80)
+ R score: 0.63 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_27.png" src="../_images/models_linear_10_27.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_29.png" src="../_images/models_linear_10_29.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.60, RMSE: 0.06
+ and Correlation (Pearson, Spearman): (0.81, 0.80)
+ R score: 0.64 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_31.png" src="../_images/models_linear_10_31.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_33.png" src="../_images/models_linear_10_33.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.69, RMSE: 0.06
+ and Correlation (Pearson, Spearman): (0.77, 0.75)
+ R score: 0.58 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_35.png" src="../_images/models_linear_10_35.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_37.png" src="../_images/models_linear_10_37.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.73, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.76, 0.74)
+ R score: 0.57 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_39.png" src="../_images/models_linear_10_39.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_41.png" src="../_images/models_linear_10_41.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.67, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.80, 0.79)
+ R score: 0.63 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_43.png" src="../_images/models_linear_10_43.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72 PCs (0.9 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_45.png" src="../_images/models_linear_10_45.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.81, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.72, 0.72)
+ R score: 0.52 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_10_47.png" src="../_images/models_linear_10_47.png" />
 </div>
 </div>
 </div>
 <div class="section" id="linear-regression-with-local-predictor">
-<h2>Linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4. </span>linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+    <span class="c1"># perform the Multilinear-Regression (local)</span>
+    <span class="n">stats_local</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sites_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">10</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_local</span><span class="p">):</span>
+        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
+            <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
+                <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.1</span><span class="p">,</span>
+                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.1</span><span class="p">,</span>
+                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.1</span><span class="p">,</span>
+                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.1</span>
+                <span class="p">)),</span>
+                <span class="n">pca_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">ss_moana</span><span class="p">,</span> <span class="c1"># tidal gauge (moana v2)</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">stats_local</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
+    <span class="c1"># save the statistics</span>
+    <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;bias&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s1">&#39;si&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s1">&#39;rmse&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="mi">2</span><span class="p">]),</span>
+            <span class="s1">&#39;pearson&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="mi">3</span><span class="p">]),</span>
+            <span class="s1">&#39;spearman&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="mi">4</span><span class="p">]),</span>
+            <span class="s1">&#39;rscore&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="mi">5</span><span class="p">]),</span>
+            <span class="s1">&#39;latitude&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_local</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span>
+            <span class="s1">&#39;longitude&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_local</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;station&#39;</span><span class="p">:</span> <span class="n">sites_local</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="c1"># local copy</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">stats_local</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_local_daily.nc&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_local_daily.nc&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
+<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/models_linear_13_0.png" src="../_images/models_linear_13_0.png" />
+</div>
+</div>
 </div>
 </div>
 
@@ -476,8 +691,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="analysis_cca.html" title="previous page">CCA ANALYSIS</a>
-    <a class='right-next' id="next-link" href="models_knn.html" title="next page">KNN REGRESSOR</a>
+    <a class='left-prev' id="prev-link" href="analysis_cca.html" title="previous page"><span class="section-number">3. </span>CCA ANALYSIS</a>
+    <a class='right-next' id="next-link" href="models_knn.html" title="next page"><span class="section-number">5. </span>KNN REGRESSOR</a>
 
         </div>
         

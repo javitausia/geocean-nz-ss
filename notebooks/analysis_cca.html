@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CCA ANALYSIS &#8212; Storm Surge NZ - Monday Summary</title>
+    <title>3. CCA ANALYSIS &#8212; Storm Surge NZ - Wednesday Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="LINEAR REGRESSION" href="models_linear.html" />
-    <link rel="prev" title="PCA ANALYSIS" href="analysis_pca.html" />
+    <link rel="next" title="4. LINEAR REGRESSION" href="models_linear.html" />
+    <link rel="prev" title="2. PCA ANALYSIS" href="analysis_pca.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -77,7 +77,7 @@
   <img src="../_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Monday Summary</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Wednesday Summary</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -100,32 +100,32 @@
 <ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   DATA VISUALIZATION / VALIDATION
+   1. DATA VISUALIZATION / VALIDATION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   PCA ANALYSIS
+   2. PCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   CCA ANALYSIS
+   3. CCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   LINEAR REGRESSION
+   4. LINEAR REGRESSION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   KNN REGRESSOR
+   5. KNN REGRESSOR
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="forensic.html">
-   STORMS VISUALIZATION
+   6. STORMS VISUALIZATION
   </a>
  </li>
 </ul>
@@ -235,7 +235,7 @@
               <div>
                 
   <div class="section" id="cca-analysis">
-<h1>CCA ANALYSIS<a class="headerlink" href="#cca-analysis" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3. </span>CCA ANALYSIS<a class="headerlink" href="#cca-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
@@ -283,18 +283,18 @@
 
 
  loading daily resampled data... 
-
-
- loading the Moana v2 hindcast data... 
-
-
- loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
 <img alt="../_images/analysis_cca_2_1.png" src="../_images/analysis_cca_2_1.png" />
-<img alt="../_images/analysis_cca_2_2.png" src="../_images/analysis_cca_2_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
 <img alt="../_images/analysis_cca_2_3.png" src="../_images/analysis_cca_2_3.png" />
-<img alt="../_images/analysis_cca_2_4.png" src="../_images/analysis_cca_2_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/analysis_cca_2_5.png" src="../_images/analysis_cca_2_5.png" />
+<img alt="../_images/analysis_cca_2_6.png" src="../_images/analysis_cca_2_6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -311,7 +311,8 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccs_data</span><span class="p">,</span> <span class="n">pcs</span><span class="p">,</span> <span class="n">scalers</span> <span class="o">=</span> <span class="n">CCA_Analysis</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the canonical correlations</span>
+<span class="n">ccs_data</span><span class="p">,</span> <span class="n">pcs</span><span class="p">,</span> <span class="n">scalers</span> <span class="o">=</span> <span class="n">CCA_Analysis</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
         <span class="n">longitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span><span class="mi">190</span><span class="p">),</span>
         <span class="n">latitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
@@ -345,6 +346,8 @@
 
  we will use 18 PCs from the pressure and 17 from the ss 
 
+
+ R score: -0.14 -- in TEST data
 
  plotting 3 components with slp and ss EOFs... 
 
@@ -387,8 +390,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="analysis_pca.html" title="previous page">PCA ANALYSIS</a>
-    <a class='right-next' id="next-link" href="models_linear.html" title="next page">LINEAR REGRESSION</a>
+    <a class='left-prev' id="prev-link" href="analysis_pca.html" title="previous page"><span class="section-number">2. </span>PCA ANALYSIS</a>
+    <a class='right-next' id="next-link" href="models_linear.html" title="next page"><span class="section-number">4. </span>LINEAR REGRESSION</a>
 
         </div>
         

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>geocean-nz-ss &#8212; Storm Surge NZ - Monday Summary</title>
+    <title>geocean-nz-ss &#8212; Storm Surge NZ - Wednesday Summary</title>
     
   <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,7 +54,7 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="DATA VISUALIZATION / VALIDATION" href="notebooks/data_visualization.html" />
+    <link rel="next" title="1. DATA VISUALIZATION / VALIDATION" href="notebooks/data_visualization.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -76,7 +76,7 @@
   <img src="_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Monday Summary</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Wednesday Summary</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -99,32 +99,32 @@
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/data_visualization.html">
-   DATA VISUALIZATION / VALIDATION
+   1. DATA VISUALIZATION / VALIDATION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/analysis_pca.html">
-   PCA ANALYSIS
+   2. PCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/analysis_cca.html">
-   CCA ANALYSIS
+   3. CCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_linear.html">
-   LINEAR REGRESSION
+   4. LINEAR REGRESSION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_knn.html">
-   KNN REGRESSOR
+   5. KNN REGRESSOR
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/forensic.html">
-   STORMS VISUALIZATION
+   6. STORMS VISUALIZATION
   </a>
  </li>
 </ul>
@@ -273,6 +273,7 @@
 <p>updated info at: <a class="reference external" href="https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing">https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing</a></p>
 <p>below, a summary of the region and data involved in the first part of the analysis can be seen:</p>
 <p><img alt="gif" src="_images/example.gif" /></p>
+<p>jupyter book for wednesday <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/">here</a></p>
 <div class="section" id="description">
 <h2>1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The storm surge …</p>
@@ -291,15 +292,15 @@
 <h3>4.1 Create an environment in conda<a class="headerlink" href="#create-an-environment-in-conda" title="Permalink to this headline">¶</a></h3>
 <p>To run the toolbox you first need to install the required Python packages in an environment. To do this we will see <strong>Anaconda</strong>, which can be downloaded freely <a class="reference external" href="https://www.anaconda.com/download/">here</a>.</p>
 <p>Once you have installed it on your PC, open the Anaconda prompt (in Mac and Linux, open a terminal window) and use the <code class="docutils literal notranslate"><span class="pre">cd</span></code> command to go to the folder where you have cloned this repository.</p>
-<p>Create a new environment named <code class="docutils literal notranslate"><span class="pre">stormsurge</span></code> with all the required packages:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">environment</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">n</span> <span class="n">stormsurge</span>
+<p>Create a new environment named <code class="docutils literal notranslate"><span class="pre">ssnz</span></code> with all the required packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="activate-conda-environment">
 <h3>4.2 Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
-<p>All the required packages have been now installed in an environment called <code class="docutils literal notranslate"><span class="pre">stormsurge</span></code>. Now, activate this new environment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">stormsurge</span>
+<p>All the required packages have been now installed in an environment called <code class="docutils literal notranslate"><span class="pre">ssnz</span></code>. Now, activate this new environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">ssnz</span>
 </pre></div>
 </div>
 </div>
@@ -343,7 +344,7 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='right-next' id="next-link" href="notebooks/data_visualization.html" title="next page">DATA VISUALIZATION / VALIDATION</a>
+    <a class='right-next' id="next-link" href="notebooks/data_visualization.html" title="next page"><span class="section-number">1. </span>DATA VISUALIZATION / VALIDATION</a>
 
         </div>
         

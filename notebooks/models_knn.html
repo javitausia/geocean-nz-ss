@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KNN REGRESSOR &#8212; Storm Surge NZ - Monday Summary</title>
+    <title>5. KNN REGRESSOR &#8212; Storm Surge NZ - Wednesday Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="STORMS VISUALIZATION" href="forensic.html" />
-    <link rel="prev" title="LINEAR REGRESSION" href="models_linear.html" />
+    <link rel="next" title="6. STORMS VISUALIZATION" href="forensic.html" />
+    <link rel="prev" title="4. LINEAR REGRESSION" href="models_linear.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -77,7 +77,7 @@
   <img src="../_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Monday Summary</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Wednesday Summary</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -100,32 +100,32 @@
 <ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   DATA VISUALIZATION / VALIDATION
+   1. DATA VISUALIZATION / VALIDATION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   PCA ANALYSIS
+   2. PCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_cca.html">
-   CCA ANALYSIS
+   3. CCA ANALYSIS
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   LINEAR REGRESSION
+   4. LINEAR REGRESSION
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   KNN REGRESSOR
+   5. KNN REGRESSOR
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="forensic.html">
-   STORMS VISUALIZATION
+   6. STORMS VISUALIZATION
   </a>
  </li>
 </ul>
@@ -232,8 +232,18 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-data">
+   5.1. load the data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-calculate-the-pcs">
+   5.2. load / calculate the pcs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#knn-regression-with-regional-predictor">
-   KNN regression with regional predictor
+   5.3. KNN regression with regional predictor
   </a>
  </li>
 </ul>
@@ -249,7 +259,7 @@
               <div>
                 
   <div class="section" id="knn-regressor">
-<h1>KNN REGRESSOR<a class="headerlink" href="#knn-regressor" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">5. </span>KNN REGRESSOR<a class="headerlink" href="#knn-regressor" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
@@ -268,6 +278,7 @@
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># data viewer</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.cca</span> <span class="kn">import</span> <span class="n">CCA_Analysis</span>
@@ -283,6 +294,8 @@
 </div>
 </div>
 </div>
+<div class="section" id="load-the-data">
+<h2><span class="section-number">5.1. </span>load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
@@ -297,18 +310,18 @@
 
 
  loading daily resampled data... 
-
-
- loading the Moana v2 hindcast data... 
-
-
- loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/models_knn_2_1.png" src="../_images/models_knn_2_1.png" />
-<img alt="../_images/models_knn_2_2.png" src="../_images/models_knn_2_2.png" />
-<img alt="../_images/models_knn_2_3.png" src="../_images/models_knn_2_3.png" />
-<img alt="../_images/models_knn_2_4.png" src="../_images/models_knn_2_4.png" />
+<img alt="../_images/models_knn_3_1.png" src="../_images/models_knn_3_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_3_3.png" src="../_images/models_knn_3_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_3_5.png" src="../_images/models_knn_3_5.png" />
+<img alt="../_images/models_knn_3_6.png" src="../_images/models_knn_3_6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -323,6 +336,9 @@
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="load-calculate-the-pcs">
+<h2><span class="section-number">5.2. </span>load / calculate the pcs<a class="headerlink" href="#load-calculate-the-pcs" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
@@ -360,69 +376,162 @@
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/models_knn_4_1.png" src="../_images/models_knn_4_1.png" />
-<img alt="../_images/models_knn_4_2.png" src="../_images/models_knn_4_2.png" />
-<img alt="../_images/models_knn_4_3.png" src="../_images/models_knn_4_3.png" />
-<img alt="../_images/models_knn_4_4.png" src="../_images/models_knn_4_4.png" />
-<img alt="../_images/models_knn_4_5.png" src="../_images/models_knn_4_5.png" />
-<img alt="../_images/models_knn_4_6.png" src="../_images/models_knn_4_6.png" />
+<img alt="../_images/models_knn_6_1.png" src="../_images/models_knn_6_1.png" />
+<img alt="../_images/models_knn_6_2.png" src="../_images/models_knn_6_2.png" />
+<img alt="../_images/models_knn_6_3.png" src="../_images/models_knn_6_3.png" />
+<img alt="../_images/models_knn_6_4.png" src="../_images/models_knn_6_4.png" />
+<img alt="../_images/models_knn_6_5.png" src="../_images/models_knn_6_5.png" />
+<img alt="../_images/models_knn_6_6.png" src="../_images/models_knn_6_6.png" />
+</div>
 </div>
 </div>
 <div class="section" id="knn-regression-with-regional-predictor">
-<h2>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
 <p>This is a snippet of the model outlook:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># perform the knn regression</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+    <span class="c1"># perform the knn regression</span>
     <span class="n">neigh</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">()</span> <span class="c1"># TODO: add params</span>
     <span class="c1"># specify parameters to test</span>
     <span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">k_neighbors</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+        <span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">k_neighbors</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+        <span class="s1">&#39;weights&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;algorithm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;ball_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;kd_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;brute&#39;</span><span class="p">]</span>
     <span class="p">}</span>
     <span class="c1"># use gridsearch to test all values for n_neighbors</span>
-    <span class="n">knn_gscv</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">knn_gscv</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
+        <span class="n">neigh</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv_folds</span><span class="p">,</span>
+        <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;explained_variance&#39;</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span> 
+    <span class="c1"># TODO: add verbose and cv, DONE!!</span>
+
     <span class="c1"># fit model to data</span>
-    <span class="n">knn_gscv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-    <span class="n">prediction</span> <span class="o">=</span> <span class="n">knn_gscv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">knn_gscv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># input total data</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">knn_gscv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    
 </pre></div>
 </div>
 <p>where the best number of neighbors is selected, cross-validating the training and testing sizes!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform the Multilinear-Regression</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-    <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">100</span>
-<span class="p">)</span>
-<span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">sites</span><span class="p">:</span>
-    <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
-        <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-        <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+    <span class="c1"># validate model with tgs</span>
+    <span class="n">stats_knn</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># select sites and append closest to UHSLC tgs</span>
+    <span class="n">clos_to_uhslc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">689</span><span class="p">,</span> <span class="mi">328</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">949</span><span class="p">,</span> <span class="mi">708</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clos_to_uhslc</span><span class="p">):</span>
+        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
+            <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
+                <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
+            <span class="p">),</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span>
+        <span class="p">)</span>
+        <span class="n">stats_knn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
+    <span class="c1"># save the statistics</span>
+    <span class="n">stats_knn</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;bias&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s1">&#39;si&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s1">&#39;rmse&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">)[:,</span><span class="mi">2</span><span class="p">]),</span>
+            <span class="s1">&#39;pearson&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">)[:,</span><span class="mi">3</span><span class="p">]),</span>
+            <span class="s1">&#39;spearman&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">)[:,</span><span class="mi">4</span><span class="p">]),</span>
+            <span class="s1">&#39;rscore&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">)[:,</span><span class="mi">5</span><span class="p">]),</span>
+            <span class="s1">&#39;latitude&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">clos_to_uhslc</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span>
+            <span class="s1">&#39;longitude&#39;</span><span class="p">:((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span>
+                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">clos_to_uhslc</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;station&#39;</span><span class="p">:</span> <span class="n">clos_to_uhslc</span>
+        <span class="p">}</span>
     <span class="p">)</span>
-    <span class="n">stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
-<span class="c1"># plot stats</span>
-<span class="n">plot_stats</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-           <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-           <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats</span><span class="p">))</span>
+    <span class="c1"># local copy</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">stats_knn</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_knn_regional_daily.nc&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">stats_knn</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_knn_regional_daily.nc&#39;</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_knn_7_0.png" src="../_images/models_knn_7_0.png" />
-<img alt="../_images/models_knn_7_1.png" src="../_images/models_knn_7_1.png" />
-<img alt="../_images/models_knn_7_2.png" src="../_images/models_knn_7_2.png" />
-<img alt="../_images/models_knn_7_3.png" src="../_images/models_knn_7_3.png" />
-<img alt="../_images/models_knn_7_4.png" src="../_images/models_knn_7_4.png" />
-<img alt="../_images/models_knn_7_5.png" src="../_images/models_knn_7_5.png" />
-<img alt="../_images/models_knn_7_6.png" src="../_images/models_knn_7_6.png" />
-<img alt="../_images/models_knn_7_7.png" src="../_images/models_knn_7_7.png" />
-<img alt="../_images/models_knn_7_8.png" src="../_images/models_knn_7_8.png" />
-<img alt="../_images/models_knn_7_9.png" src="../_images/models_knn_7_9.png" />
-<img alt="../_images/models_knn_7_10.png" src="../_images/models_knn_7_10.png" />
-<img alt="../_images/models_knn_7_11.png" src="../_images/models_knn_7_11.png" />
-<img alt="../_images/models_knn_7_12.png" src="../_images/models_knn_7_12.png" />
-<img alt="../_images/models_knn_7_13.png" src="../_images/models_knn_7_13.png" />
-<img alt="../_images/models_knn_7_14.png" src="../_images/models_knn_7_14.png" />
-<img alt="../_images/models_knn_7_15.png" src="../_images/models_knn_7_15.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_1.png" src="../_images/models_knn_9_1.png" />
+<img alt="../_images/models_knn_9_2.png" src="../_images/models_knn_9_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_4.png" src="../_images/models_knn_9_4.png" />
+<img alt="../_images/models_knn_9_5.png" src="../_images/models_knn_9_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_7.png" src="../_images/models_knn_9_7.png" />
+<img alt="../_images/models_knn_9_8.png" src="../_images/models_knn_9_8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_10.png" src="../_images/models_knn_9_10.png" />
+<img alt="../_images/models_knn_9_11.png" src="../_images/models_knn_9_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_13.png" src="../_images/models_knn_9_13.png" />
+<img alt="../_images/models_knn_9_14.png" src="../_images/models_knn_9_14.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_16.png" src="../_images/models_knn_9_16.png" />
+<img alt="../_images/models_knn_9_17.png" src="../_images/models_knn_9_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_19.png" src="../_images/models_knn_9_19.png" />
+<img alt="../_images/models_knn_9_20.png" src="../_images/models_knn_9_20.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_22.png" src="../_images/models_knn_9_22.png" />
+<img alt="../_images/models_knn_9_23.png" src="../_images/models_knn_9_23.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_25.png" src="../_images/models_knn_9_25.png" />
+<img alt="../_images/models_knn_9_26.png" src="../_images/models_knn_9_26.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_28.png" src="../_images/models_knn_9_28.png" />
+<img alt="../_images/models_knn_9_29.png" src="../_images/models_knn_9_29.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_31.png" src="../_images/models_knn_9_31.png" />
+<img alt="../_images/models_knn_9_32.png" src="../_images/models_knn_9_32.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> KNN regression with 8 neighbors 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_9_34.png" src="../_images/models_knn_9_34.png" />
+<img alt="../_images/models_knn_9_35.png" src="../_images/models_knn_9_35.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
+<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_knn</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/models_knn_10_0.png" src="../_images/models_knn_10_0.png" />
 </div>
 </div>
 </div>
@@ -453,8 +562,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="models_linear.html" title="previous page">LINEAR REGRESSION</a>
-    <a class='right-next' id="next-link" href="forensic.html" title="next page">STORMS VISUALIZATION</a>
+    <a class='left-prev' id="prev-link" href="models_linear.html" title="previous page"><span class="section-number">4. </span>LINEAR REGRESSION</a>
+    <a class='right-next' id="next-link" href="forensic.html" title="next page"><span class="section-number">6. </span>STORMS VISUALIZATION</a>
 
         </div>
         
