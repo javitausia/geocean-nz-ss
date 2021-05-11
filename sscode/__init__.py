@@ -12,9 +12,5 @@ __keywords__    = 'ocean data statistical analysis storm-surge'
 
 from . import config
 from . import data
-#from . import statistical
-#from . import mda
-#from . import kma
-#from . import pca
-#from . import sce
+from . import pca
 
