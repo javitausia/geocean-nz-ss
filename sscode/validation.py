@@ -12,7 +12,7 @@ import matplotlib.gridspec as gridspec
 # custom
 from .plotting.validation import qqplot, scatterplot
 from .plotting.config import _fontsize_title, _fontsize_legend, \
-    _figsize, _figsize_width, _figsize_height
+    _figsize, _figsize_width, _figsize_height, _fontsize_label
 
 
 def compare_datasets(dataset1, dataset1_coords,
@@ -94,13 +94,12 @@ def compare_datasets(dataset1, dataset1_coords,
     # validate/plot data1 with data2 (inside the loop)
     for istat in range(len(data1_clos_data2)):
         # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*4.9,_figsize_height*1.8))
-        fig.subplots_adjust(hspace=0.3)
-        gs = gridspec.GridSpec(nrows=2,ncols=5)
+        fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height*2.0))
+        gs = gridspec.GridSpec(nrows=2,ncols=3)
         # do the analysis for both variables
         for axi in range(len(comparison_variables[0])): # ss and msea
             # time regular plot
-            ax_time = fig.add_subplot(gs[axi,0:3])
+            ax_time = fig.add_subplot(gs[axi,0:2])
             dataset1[comparison_variables[0][axi]].isel({dataset1_coords[2]:istat}).plot(
                 c='k',alpha=0.7,label=dataset1_coords[3],ax=ax_time
             )
@@ -116,23 +115,22 @@ def compare_datasets(dataset1, dataset1_coords,
                 return_indices=True
             )
             # scatter plot for the data
-            ax_scatter = fig.add_subplot(gs[axi,3])
+            ax_vali = fig.add_subplot(gs[axi,2:])
             scatterplot(
                 dataset1.isel({dataset1_coords[2]:istat,
                     'time':times_to_scatter[1]})[comparison_variables[0][axi]].values,
                 dataset2.isel({dataset2_coords[2]:istat,
                     'time':times_to_scatter[2]})[comparison_variables[1][axi]].values,
-                ax=ax_scatter,c='grey',alpha=0.7,edgecolor='k',
+                ax=ax_vali,c='k',alpha=0.7,edgecolor='grey',
                 s=5,label='Scatter plot -- {}'.format(comparison_variables[0][axi].upper())
             )
             # qqplot for the data
-            ax_qq = fig.add_subplot(gs[axi,4])
             qqplot(
                 dataset1[comparison_variables[0][axi]].isel({dataset1_coords[2]:istat})\
                     .dropna(dim='time').values, 
                 dataset2[comparison_variables[1][axi]].isel({dataset2_coords[2]:istat})\
                     .dropna(dim='time').values, 
-                ax=ax_qq,c='red',alpha=0.6,edgecolor='k',rug=False,
+                ax=ax_vali,c='red',alpha=0.6,edgecolor='orange',rug=False,
                 label='Q-Q plot -- {}'.format(comparison_variables[0][axi].upper())
             )
             # fig and axes decorators
@@ -159,8 +157,9 @@ def compare_datasets(dataset1, dataset1_coords,
                 )
             ax_time.set_title('')
             ax_time.legend(loc='upper right',fontsize=_fontsize_legend)
-            ax_scatter.legend(loc='lower right',fontsize=_fontsize_legend)
-            ax_qq.legend(loc='lower right',fontsize=_fontsize_legend)
+            ax_vali.legend(loc='lower right',fontsize=_fontsize_legend)
+            ax_vali.set_xlabel('Observation',fontsize=_fontsize_label)
+            ax_vali.set_ylabel('Prediction',fontsize=_fontsize_label)
         # plot current results
         plt.show()
 
@@ -250,4 +249,61 @@ def calc_closest_data2_in_data1(data1, data2,
         sites_list.append(site), sites_dist.append(min_dist)
 
     return sites_list, sites_dist
+
+
+def validata_w_tgs(X,validator,model,
+                   plot_results: bool = True):
+    """
+    Validate linear regression with the TGs
+
+    Args:
+        X ([type]): [description]
+        validator ([type]): [description]
+        model ([type]): [description]
+        plot_results (bool, optional): [description]. Defaults to True.
+    """
+
+    # check time coherence
+    common_times = np.intersect1d(
+        pd.to_datetime(X.time.values),
+        pd.to_datetime(validator.time.values),
+        return_indices=True
+    )
+    
+    # prepare X and y arrays
+    X = X.isel(time=common_times[1]).values
+    validator = validator.isel(time=common_times[2]).values
+
+    # perform the prediction
+    prediction = model.predict(X)
+
+    # check model results
+    title, stats = generate_stats(validator,prediction)
+    title += '\n R score: {} -- UHSLC TGs'.format(
+        round(model.score(X,validator),2)
+    )
+
+    # plot results
+    if plot_results:
+        # figure spec-grid
+        fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
+        gs = gridspec.GridSpec(nrows=1,ncols=3)
+        # time regular plot
+        ax_time = fig.add_subplot(gs[:,:2])
+        ax_time.plot(common_times[0],validator,label='UHSLC tgs validator',c='k')
+        ax_time.plot(common_times[0],prediction,label='Linear model predictions',
+                     c='red',linestyle='--',alpha=0.5)
+        ax_time.legend(fontsize=_fontsize_legend)
+        # validation plot
+        ax_vali = fig.add_subplot(gs[:,2:])
+        ax_vali.set_xlabel('Observation')
+        ax_vali.set_ylabel('Prediction')
+        scatterplot(validator,prediction,ax=ax_vali,c='grey',edgecolor='k')
+        qqplot(validator,prediction,ax=ax_vali,c='red',edgecolor='orange')
+        # add title
+        fig.suptitle(
+            title,fontsize=_fontsize_title,y=1.15
+        )
+        # show the results
+        plt.show()
 

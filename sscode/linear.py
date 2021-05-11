@@ -15,19 +15,41 @@ from .config import default_region
 from .plotting.config import _figsize, _fontsize_title, _figsize_width, _figsize_height, _fontsize_legend
 from .plotting.pca import plot_recon_pcs
 from .plotting.validation import qqplot, scatterplot
-from .validation import generate_stats
+from .validation import generate_stats, validata_w_tgs
 
 
 def MultiLinear_Regression(
     X_set, y_set, pcs_scaler = None,
-    validator: tuple = (False,None,'ss'),
+    validator: tuple = (False,None,None),
     X_set_var: str = 'PCs', y_set_var: str = 'ss',
     train_size: float = 0.8,
     percentage_PCs: float = 0.9,
     plot_results: bool = False,
-    region: tuple = default_region):
+    verbose: bool = True):
 
-    # TODO: add docstring
+    """
+    Multilinear regression analysis to perform over the PCs,
+    to predict the storm surge in all the requested locations
+
+    Args:
+        X_set (xarray.Predictor): This is the predictor, usually the PCs
+        y_set (xarray.Predictand): This is the predictand, usually the SS
+        pcs_scaler (sklearn.LinReg, optional): This is the pcs scaler to
+            re-standarize the data. Defaults to None.
+        validator (tuple, optional): This is the optional tuple to validate
+            the data if required. Defaults to (False,None,None), but an
+            example is (True,xarray.Validator(ss),'ss')
+        X_set_var (str): This is the predictor var name. Defaults to 'PCs'.
+        y_set_var (str): This is the predictand var name. Defaults to 'ss'.
+        train_size (float, optional): Training set size out of 1. Defaults to 0.8.
+        percentage_PCs (float, optional): Percentage of PCs to predict. Defaults to 0.9.
+        plot_results (bool, optional): Wheter to plot the results or not. 
+            Defaults to False.
+        verbose (bool, optional): Indicator of prints. Defaults to True.
+
+    Returns:
+        [list]: This is the list with the stats for each linear model
+    """
     
     # check nan existance
     X_data = X_set[X_set_var].dropna(dim='time')
@@ -51,15 +73,16 @@ def MultiLinear_Regression(
                 np.sum(X_set.variance.values))>percentage_PCs
                 )[0][0]
         ) +1 # number of Pcs to use
-        # print('\n {} PCs ({} expl. variance) will be used to train the model!! \n'.format(
-        #    num_pcs,percentage_PCs)
-        # )
+        if verbose:
+            print('\n {} PCs ({} expl. variance) will be used to train the model!! \n'.format(
+                num_pcs,percentage_PCs)
+            )
         # plot the slp reconstruction
         if pcs_scaler:
-            plot_recon_pcs(X_set,pcs_scaler,
+            plot_recon_pcs(X_set,pcs_scaler, # check
                            n_pcs_recon=num_pcs,
                            return_slp=False,
-                           region=region
+                           region=default_region
             )
         # select pcs to train the model
         X = X[:,:num_pcs]
@@ -78,23 +101,25 @@ def MultiLinear_Regression(
 
     # check model results
     title, stats = generate_stats(y_test,prediction)
+    r_score = lm.score(X_test,y_test)
+    stats.append(r_score)
     title += '\n R score: {} -- in TEST data'.format(
-        round(lm.score(X_test,y_test),2)
+        round(r_score,2)
     )
 
     # plot results
     if plot_results:
         # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*4.6,_figsize_height*0.8))
-        gs = gridspec.GridSpec(nrows=1,ncols=4)
+        fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
+        gs = gridspec.GridSpec(nrows=1,ncols=3)
         # time regular plot
-        ax_time = fig.add_subplot(gs[0,0:3])
+        ax_time = fig.add_subplot(gs[:,:2])
         ax_time.plot(t_test,y_test,label='Numerical model data',c='k')
         ax_time.plot(t_test,prediction,label='Linear model predictions',
                      c='red',linestyle='--')
         ax_time.legend(fontsize=_fontsize_legend)
         # validation plot
-        ax_vali = fig.add_subplot(gs[0,3:])
+        ax_vali = fig.add_subplot(gs[:,2:])
         ax_vali.set_xlabel('Observation')
         ax_vali.set_ylabel('Prediction')
         scatterplot(y_test,prediction,ax=ax_vali,c='grey',edgecolor='k')
@@ -105,8 +130,9 @@ def MultiLinear_Regression(
         )
         # show the results
         plt.show()
-    # else:
-    #     print(title)
+    # print results
+    if verbose:
+        print(title)
 
     # validate the model results
     if validator[0]:
@@ -117,54 +143,4 @@ def MultiLinear_Regression(
         )
 
     return stats
-
-
-def validata_w_tgs(X,validator,lm,
-                   plot_results: bool = True):
-
-    # TODO: add docstring
-
-    # check time coherence
-    common_times = np.intersect1d(
-        pd.to_datetime(X.time.values),
-        pd.to_datetime(validator.time.values),
-        return_indices=True
-    )
-    
-    # prepare X and y arrays
-    X = X.isel(time=common_times[1]).values
-    validator = validator.isel(time=common_times[2]).values
-
-    # perform the prediction
-    prediction = lm.predict(X)
-
-    # check model results
-    title, stats = generate_stats(validator,prediction)
-    title += '\n R score: {} -- UHSLC TGs'.format(
-        round(lm.score(X,validator),2)
-    )
-
-    # plot results
-    if plot_results:
-        # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*4.6,_figsize_height*0.8))
-        gs = gridspec.GridSpec(nrows=1,ncols=4)
-        # time regular plot
-        ax_time = fig.add_subplot(gs[0,0:3])
-        ax_time.plot(common_times[0],validator,label='UHSLC tgs validators',c='k')
-        ax_time.plot(common_times[0],prediction,label='Linear model predictions',
-                     c='red',linestyle='--',alpha=0.5)
-        ax_time.legend(fontsize=_fontsize_legend)
-        # validation plot
-        ax_vali = fig.add_subplot(gs[0,3:])
-        ax_vali.set_xlabel('Observation')
-        ax_vali.set_ylabel('Prediction')
-        scatterplot(validator,prediction,ax=ax_vali,c='grey',edgecolor='k')
-        qqplot(validator,prediction,ax=ax_vali,c='red',edgecolor='orange')
-        # add title
-        fig.suptitle(
-            title,fontsize=_fontsize_title,y=1.15
-        )
-        # show the results
-        plt.show()
 
