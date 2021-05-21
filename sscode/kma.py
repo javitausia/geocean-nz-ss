@@ -1,16 +1,133 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# common
+# time
 from datetime import datetime
 
-# pip
+# arrays
 import numpy as np
+from numpy.lib.shape_base import expand_dims
+import pandas as pd
 import xarray as xr
+
+# maths
 from scipy import stats
 from scipy.spatial import distance_matrix
 from sklearn.cluster import KMeans, MiniBatchKMeans
-from sklearn import linear_model
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# custom
+from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs
+
+
+def KMA_simple(slp_data, ss_data, pca_data, 
+               n_clusters=64, plot: bool = True):
+
+    # TODO: add docstring
+
+    # check time coherence
+    common_times_pslp = np.intersect1d(
+        pd.to_datetime(slp_data.time.values).round('H'), 
+        pd.to_datetime(pca_data.time.values).round('H'),
+        return_indices=True
+    )
+    common_times = np.intersect1d(
+        common_times_pslp[0],
+        pd.to_datetime(ss_data.time.values).round('H'),
+        return_indices=True
+    )
+
+    # number of PCs to use
+    num_pcs = int(
+        np.where(np.cumsum(pca_data.variance.values/\
+            np.sum(pca_data.variance.values))>0.9
+        )[0][0]
+    ) +1 # number of Pcs to use
+        
+    # split predictors into train and test
+    X_train, X_test, t_train, t_test = \
+    train_test_split(
+        pca_data.PCs[
+            common_times_pslp[2][common_times[1]], :num_pcs
+        ].values,
+        common_times_pslp[0][common_times[1]], 
+        train_size=0.9, 
+        shuffle=False
+    )
+
+    # calculate the kma
+    kma = KMeans(n_clusters=n_clusters).fit(X_train)
+    # predict
+    prediction = kma.predict(X_test)
+    print('\n The score of the KMA model is: \n'.format(
+        round(kma.score(X_test),2)
+    ))
+
+    # order the clusters (km, x and var_centers)
+    # centers = kma.cluster_centers_
+    # bmus = kma.labels_
+    # kma_order = np.argsort(np.mean(-centers,axis=1))
+    # sorted_bmus = np.zeros((len(bmus),),)*np.nan
+    # for i in range(n_clusters):
+    #     posc = np.where(bmus == kma_order[i])
+    #     sorted_bmus[posc] = i
+
+    # save slp and ss clusters
+    slp_clusters_list = []
+    ss_clusters_list_mean, ss_clusters_list_max = [], []
+    for clus in np.unique(kma.labels_):
+        slp_clusters_list.append(
+            slp_data.sel(time=t_train).isel(
+                time=np.where(kma.labels_==clus)[0]
+            ).mean(dim='time').expand_dims(
+                {'n_clusters':[clus]}
+            )
+        )
+        ss_clusters_list_mean.append(
+            ss_data.sel(time=t_train).isel(
+                time=np.where(kma.labels_==clus)[0]
+            ).mean(dim='time').expand_dims(
+                {'n_clusters':[clus]}
+            )
+        )
+        ss_clusters_list_max.append(
+            ss_data.sel(time=t_train).isel(
+                time=np.where(kma.labels_==clus)[0]
+            ).quantile(0.995,dim='time').expand_dims(
+                {'n_clusters':[clus]}
+            )
+        )
+    slp_clusters = xr.concat(
+        slp_clusters_list,dim='n_clusters'
+    ).sortby('n_clusters')
+    ss_clusters_mean = xr.concat(
+        ss_clusters_list_mean,dim='n_clusters'
+    ).sortby('n_clusters')
+    ss_clusters_max = xr.concat(
+        ss_clusters_list_max,dim='n_clusters'
+    ).sortby('n_clusters')
+
+    # save and plot results
+    KMA_data = xr.Dataset(
+        data_vars={
+            'bmus': (('train_time'), kma.labels_),
+            'bmus_pred': (('test_time'), prediction),
+            'cluster_centers': (('n_clusters','n_components'),
+                kma.cluster_centers_),
+            'slp_clusters': slp_clusters,
+            'ss_clusters_mean': ss_clusters_mean,
+            'ss_clusters_max': ss_clusters_max
+        },
+        coords={
+            'train_time': t_train, 'test_time': t_test
+        }
+    )
+
+    # plot if specified
+    if plot:
+        # plot all the wheather types
+        Plot_DWTs_Mean_Anom(KMA_data)
+        Plot_DWTs_Probs(KMA_data.bmus, n_clusters)
+
+    return KMA_data
 
 
 def persistences(series):
@@ -27,28 +144,30 @@ def persistences(series):
     ix_ch = np.where((s_diff != 0))[0]+1
     ix_ch = np.insert(ix_ch, 0, 0)
 
-    wt_ch = series[ix_ch][:-1] # bmus where WT changes
+    wt_ch = series[ix_ch][:-1]  # bmus where WT changes
     wt_dr = np.diff(ix_ch)
 
     # output dict
     d_pers = {}
     for e in set(series):
-        d_pers[e] = wt_dr[wt_ch==e]
+        d_pers[e] = wt_dr[wt_ch == e]
 
     return d_pers
+
 
 def cluster_probabilities(series, set_values):
     'return series probabilities for each item at set_values'
 
     us, cs = np.unique(series, return_counts=True)
-    d_count = dict(zip(us,cs))
+    d_count = dict(zip(us, cs))
 
     # cluster probabilities
     cprobs = np.zeros((len(set_values)))
     for i, c in enumerate(set_values):
-       cprobs[i] = 1.0*d_count[c]/len(series) if c in d_count.keys() else 0.0
+        cprobs[i] = 1.0*d_count[c]/len(series) if c in d_count.keys() else 0.0
 
     return cprobs
+
 
 def change_probabilities(series, set_values):
     'return series transition count and probabilities'
@@ -59,8 +178,9 @@ def change_probabilities(series, set_values):
         for iy, c2 in enumerate(set_values):
 
             # count cluster-next_cluster ocurrences
-            us, cs = np.unique((series[:-1]==c1) & (series[1:]==c2), return_counts=True)
-            d_count = dict(zip(us,cs))
+            us, cs = np.unique((series[:-1] == c1) &
+                               (series[1:] == c2), return_counts=True)
+            d_count = dict(zip(us, cs))
             count[ix, iy] = d_count[True] if True in d_count.keys() else 0
 
     # probabilities
@@ -68,9 +188,10 @@ def change_probabilities(series, set_values):
     for ix, _ in enumerate(set_values):
 
         # calculate each row probability
-        probs[ix,:] = count[ix,:] / np.sum(count[ix, :])
+        probs[ix, :] = count[ix, :] / np.sum(count[ix, :])
 
     return count, probs
+
 
 def sort_cluster_gen_corr_end(centers, dimdim):
     '''
@@ -94,34 +215,34 @@ def sort_cluster_gen_corr_end(centers, dimdim):
         for j in range(dimx):
 
             # row F-1
-            if not i==0:
-                qx += dd[sc[i-1,j], sc[i,j]]
+            if not i == 0:
+                qx += dd[sc[i-1, j], sc[i, j]]
 
-                if not j==0:
-                    qx += dd[sc[i-1,j-1], sc[i,j]]
+                if not j == 0:
+                    qx += dd[sc[i-1, j-1], sc[i, j]]
 
-                if not j+1==dimx:
-                    qx += dd[sc[i-1,j+1], sc[i,j]]
+                if not j+1 == dimx:
+                    qx += dd[sc[i-1, j+1], sc[i, j]]
 
             # row F
-            if not j==0:
-                qx += dd[sc[i,j-1], sc[i,j]]
+            if not j == 0:
+                qx += dd[sc[i, j-1], sc[i, j]]
 
-            if not j+1==dimx:
-                qx += dd[sc[i,j+1], sc[i,j]]
+            if not j+1 == dimx:
+                qx += dd[sc[i, j+1], sc[i, j]]
 
             # row F+1
-            if not i+1==dimy:
-                qx += dd[sc[i+1,j], sc[i,j]]
+            if not i+1 == dimy:
+                qx += dd[sc[i+1, j], sc[i, j]]
 
-                if not j==0:
-                    qx += dd[sc[i+1,j-1], sc[i,j]]
+                if not j == 0:
+                    qx += dd[sc[i+1, j-1], sc[i, j]]
 
-                if not j+1==dimx:
-                    qx += dd[sc[i+1,j+1], sc[i,j]]
+                if not j+1 == dimx:
+                    qx += dd[sc[i+1, j+1], sc[i, j]]
 
     # test permutations
-    q=np.inf
+    q = np.inf
     go_out = False
     for i in range(dimdim):
         if go_out:
@@ -131,7 +252,7 @@ def sort_cluster_gen_corr_end(centers, dimdim):
 
         for j in range(dimdim):
             for k in range(dimdim):
-                if len(np.unique([i,j,k]))==3:
+                if len(np.unique([i, j, k])) == 3:
 
                     u = sc.flatten('F')
                     u[i] = sc.flatten('F')[j]
@@ -139,46 +260,47 @@ def sort_cluster_gen_corr_end(centers, dimdim):
                     u[k] = sc.flatten('F')[i]
                     u = u.reshape(dimy, dimx, order='F')
 
-                    f=0
+                    f = 0
                     for ix in range(dimy):
                         for jx in range(dimx):
 
                             # row F-1
-                            if not ix==0:
-                                f += dd[u[ix-1,jx], u[ix,jx]]
+                            if not ix == 0:
+                                f += dd[u[ix-1, jx], u[ix, jx]]
 
-                                if not jx==0:
-                                    f += dd[u[ix-1,jx-1], u[ix,jx]]
+                                if not jx == 0:
+                                    f += dd[u[ix-1, jx-1], u[ix, jx]]
 
-                                if not jx+1==dimx:
-                                    f += dd[u[ix-1,jx+1], u[ix,jx]]
+                                if not jx+1 == dimx:
+                                    f += dd[u[ix-1, jx+1], u[ix, jx]]
 
                             # row F
-                            if not jx==0:
-                                f += dd[u[ix,jx-1], u[ix,jx]]
+                            if not jx == 0:
+                                f += dd[u[ix, jx-1], u[ix, jx]]
 
-                            if not jx+1==dimx:
-                                f += dd[u[ix,jx+1], u[ix,jx]]
+                            if not jx+1 == dimx:
+                                f += dd[u[ix, jx+1], u[ix, jx]]
 
                             # row F+1
-                            if not ix+1==dimy:
-                                f += dd[u[ix+1,jx], u[ix,jx]]
+                            if not ix+1 == dimy:
+                                f += dd[u[ix+1, jx], u[ix, jx]]
 
-                                if not jx==0:
-                                    f += dd[u[ix+1,jx-1], u[ix,jx]]
+                                if not jx == 0:
+                                    f += dd[u[ix+1, jx-1], u[ix, jx]]
 
-                                if not jx+1==dimx:
-                                    f += dd[u[ix+1,jx+1], u[ix,jx]]
+                                if not jx+1 == dimx:
+                                    f += dd[u[ix+1, jx+1], u[ix, jx]]
 
-                    if f<=q:
+                    if f <= q:
                         q = f
                         sc = u
 
-                        if q<=qx:
-                            qx=q
-                            go_out=False
+                        if q <= qx:
+                            qx = q
+                            go_out = False
 
     return sc.flatten('F')
+
 
 def kma_simple(xds_PCA, num_clusters, repres=0.95):
     '''
@@ -219,8 +341,8 @@ def kma_simple(xds_PCA, num_clusters, repres=0.95):
     # groups
     d_groups = {}
     for k in range(num_clusters):
-        d_groups['{0}'.format(k)] = np.where(kma.labels_==k)
-    # TODO: STORE GROUPS WITHIN OUTPUT DATASET    
+        d_groups['{0}'.format(k)] = np.where(kma.labels_ == k)
+    # TODO: STORE GROUPS WITHIN OUTPUT DATASET
 
     # centroids
     centroids = np.dot(kma.cluster_centers_, EOFsub)
@@ -248,20 +370,21 @@ def kma_simple(xds_PCA, num_clusters, repres=0.95):
         {
             'bmus': (('n_pcacomp'), sorted_bmus.astype(int)),
             'cenEOFs': (('n_clusters', 'n_features'), sorted_cenEOFs),
-            'centroids': (('n_clusters','n_pcafeat'), sorted_centroids),
-            'Km': (('n_clusters','n_pcafeat'), sorted_km),
+            'centroids': (('n_clusters', 'n_pcafeat'), sorted_centroids),
+            'Km': (('n_clusters', 'n_pcafeat'), sorted_km),
             'group_size': (('n_clusters'), sorted_group_size),
 
             # PCA data
-            'PCs': (('n_pcacomp','n_features'), PCsub),
+            'PCs': (('n_pcacomp', 'n_features'), PCsub),
             'variance': (('n_pcacomp',), variance),
             'time': (('n_pcacomp',), time),
         }
     )
 
+
 def kma_regression_guided(
-    xds_PCA, xds_Yregres, num_clusters,
-    repres=0.95, alpha=0.5, min_group_size=None):
+        xds_PCA, xds_Yregres, num_clusters,
+        repres=0.95, alpha=0.5, min_group_size=None):
     '''
     KMeans Classification for PCA data: regression guided
 
@@ -300,14 +423,14 @@ def kma_regression_guided(
     # normalize but keep PCs weigth
     data_norm = np.ones(data.shape)*np.nan
     for i in range(PCsub.shape[1]):
-        data_norm[:,i] = np.divide(data[:,i]-data_mean[i], data_std[0])
-    for i in range(PCsub.shape[1],data.shape[1]):
-        data_norm[:,i] = np.divide(data[:,i]-data_mean[i], data_std[i])
+        data_norm[:, i] = np.divide(data[:, i]-data_mean[i], data_std[0])
+    for i in range(PCsub.shape[1], data.shape[1]):
+        data_norm[:, i] = np.divide(data[:, i]-data_mean[i], data_std[i])
 
     # apply alpha (PCs - Yregress weight)
     data_a = np.concatenate(
-        ((1-alpha)*data_norm[:,:nterm],
-         alpha*data_norm[:,nterm:]),
+        ((1-alpha)*data_norm[:, :nterm],
+         alpha*data_norm[:, nterm:]),
         axis=1
     )
 
@@ -316,11 +439,11 @@ def kma_regression_guided(
     count_iter = 0
     while keep_iter:
         # n_init: number of times KMeans runs with different centroids seeds
-        #kma = KMeans(
+        # kma = KMeans(
         #    n_clusters = num_clusters,
         #    init='random', n_init=30, max_iter=500,
         #    n_jobs=-1
-        #).fit(data_a)
+        # ).fit(data_a)
 
         # much faster KMeans algorithm
         kma = MiniBatchKMeans(
@@ -334,15 +457,15 @@ def kma_regression_guided(
 
         # sort output
         group_k_s = np.column_stack([group_keys, group_size])
-        group_k_s = group_k_s[group_k_s[:,0].argsort()]  # sort by cluster num
+        group_k_s = group_k_s[group_k_s[:, 0].argsort()]  # sort by cluster num
 
         if not min_group_size:
             keep_iter = False
 
         else:
             # keep iterating?
-            keep_iter1 = np.where(group_k_s[:,1] < min_group_size)[0].any()
-            keep_iter2 = len(group_keys)!= num_clusters
+            keep_iter1 = np.where(group_k_s[:, 1] < min_group_size)[0].any()
+            keep_iter2 = len(group_keys) != num_clusters
             keep_iter = keep_iter1 or keep_iter2
             count_iter += 1
 
@@ -356,46 +479,47 @@ def kma_regression_guided(
     # groups
     d_groups = {}
     for k in range(num_clusters):
-        d_groups['{0}'.format(k)] = np.where(kma.labels_==k)
-    # TODO: STORE GROUPS WITHIN OUTPUT DATASET    
+        d_groups['{0}'.format(k)] = np.where(kma.labels_ == k)
+    # TODO: STORE GROUPS WITHIN OUTPUT DATASET
 
     # centroids
     centroids = np.zeros((num_clusters, data.shape[1]))
     for k in range(num_clusters):
-        centroids[k,:] = np.mean(data[d_groups['{0}'.format(k)],:], axis=1)
+        centroids[k, :] = np.mean(data[d_groups['{0}'.format(k)], :], axis=1)
 
     # sort kmeans
     kma_order = sort_cluster_gen_corr_end(kma.cluster_centers_, num_clusters)
 
     bmus_corrected = np.zeros((len(kma.labels_),),)*np.nan
     for i in range(num_clusters):
-        posc = np.where(kma.labels_==kma_order[i])
+        posc = np.where(kma.labels_ == kma_order[i])
         bmus_corrected[posc] = i
 
     # reorder centroids
-    sorted_cenEOFs = kma.cluster_centers_[kma_order,:]
-    sorted_centroids = centroids[kma_order,:]
+    sorted_cenEOFs = kma.cluster_centers_[kma_order, :]
+    sorted_centroids = centroids[kma_order, :]
 
     return xr.Dataset(
         {
             # KMA data
             'bmus': (('n_components',), kma.labels_),
             'cenEOFs': (('n_clusters', 'n_features'), kma.cluster_centers_),
-            'centroids': (('n_clusters','n_features'), centroids),
-            'group_size': (('n_clusters'), group_k_s[:,1]),
+            'centroids': (('n_clusters', 'n_features'), centroids),
+            'group_size': (('n_clusters'), group_k_s[:, 1]),
 
             # sorted KMA data
             'sorted_order': (('n_clusters'), kma_order),
             'sorted_bmus': (('n_components'), bmus_corrected.astype(int)),
             'sorted_cenEOFs': (('n_clusters', 'n_features'), sorted_cenEOFs),
-            'sorted_centroids': (('n_clusters','n_features'), sorted_centroids),
+            'sorted_centroids': (('n_clusters', 'n_features'), sorted_centroids),
 
         },
-        attrs = {
+        attrs={
             'method': 'regression guided',
             'alpha': alpha,
         }
     )
+
 
 def simple_multivariate_regression_model(xds_PCA, xds_VARS, name_vars):
     '''
@@ -434,7 +558,7 @@ def simple_multivariate_regression_model(xds_PCA, xds_VARS, name_vars):
     PCsub_std = np.std(PCsub, axis=0)
     PCsub_norm = np.divide(PCsub, PCsub_std)
 
-    X = PCsub_norm  # predictor
+    X = PCsub_norm  #  predictor
 
     # PREDICTAND: variables data
     wd = np.array([xds_VARS[vn].values[:] for vn in name_vars]).T
@@ -445,17 +569,17 @@ def simple_multivariate_regression_model(xds_PCA, xds_VARS, name_vars):
 
     # Adjust
     [n, d] = Y.shape
-    X = np.concatenate((np.ones((n,1)), X), axis=1)
+    X = np.concatenate((np.ones((n, 1)), X), axis=1)
 
-    clf = linear_model.LinearRegression(fit_intercept=True)
-    Ymod = np.zeros((n,d))*np.nan
+    clf = LinearRegression(fit_intercept=True)
+    Ymod = np.zeros((n, d))*np.nan
     for i in range(d):
-        clf.fit(X, Y[:,i])
+        clf.fit(X, Y[:, i])
         beta = clf.coef_
         intercept = clf.intercept_
-        Ymod[:,i] = np.ones((n,))*intercept
+        Ymod[:, i] = np.ones((n,))*intercept
         for j in range(len(beta)):
-            Ymod[:,i] = Ymod[:,i] + beta[j]*X[:,j]
+            Ymod[:, i] = Ymod[:, i] + beta[j]*X[:, j]
 
     # de-scale
     Ym = np.multiply(Ymod, wd_std)

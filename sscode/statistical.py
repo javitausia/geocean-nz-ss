@@ -1,14 +1,60 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-
-# pip
+# array
 import numpy as np
+import pandas as pd
+import xarray as xr
+
+# scipy (stats)
 import statsmodels.api as sm
 from statsmodels.distributions.empirical_distribution import ECDF
 from scipy.interpolate import interp1d
 from scipy.stats import norm, genpareto, t
 from scipy.special import ndtri  # norm inv
+# genextreme
+from scipy.stats import genextreme as gev
+
+# progressbar
+import progressbar
+
+# cutom
+from .plotting.validation import plot_gev_stats
+
+
+def gev_matrix(X_set,lon,lat,plot=True):
+    '''
+    Add the description...
+    '''
+
+    # pass xarray.Dataset to numpy
+    X = X_set.values.reshape(X_set.shape[0],-1)
+
+    # save mu, phi, xi
+    mu, phi, xi = [], [], []
+
+    # fit the data
+    for i in progressbar.progressbar(range(X.shape[1])):
+        try:
+            xii, mui, phii = gev.fit(X[:,i][~np.isnan(X[:,i])])
+            mu.append(mui), phi.append(phii), xi.append(xii)
+        except:
+            mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
+
+    gev_data = X_set.to_dataset().assign({
+        'mu': ((lon,lat),np.array(mu).reshape(
+            len(X_set[lat]),len(X_set[lon])
+        ).T),
+        'phi': ((lon,lat),np.array(phi).reshape(
+            len(X_set[lat]),len(X_set[lon])
+        ).T),
+        'xi': ((lon,lat),np.array(xi).reshape(
+            len(X_set[lat]),len(X_set[lon])
+        ).T)
+    })
+
+    # plot results
+    if plot:
+        plot_gev_stats(gev_data)
+
+    return gev_data
 
 
 def ksdensity_cdf(x):
@@ -183,7 +229,7 @@ def copula_simulation(data, kernels, num_sim):
     if any([k not in d_kf.keys() for k in kernels]):
         raise ValueError(
             'wrong kernel: {0}, use: {1}'.format(
-                kernel, ' | '.join(d_kf.keys())
+                kernels, ' | '.join(d_kf.keys())
             )
         )
 

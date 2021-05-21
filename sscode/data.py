@@ -49,8 +49,8 @@ class Loader(object):
 
     """
 
-
     def __init__(self, data_to_load: list = ['cfsr','moana','uhslc'],
+                 time_resample: str = '1D',
                  location: tuple = default_location,
                  plot: bool = True):
         """
@@ -70,14 +70,14 @@ class Loader(object):
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
             if data_to_load[0]=='era5':
-                predictor = load_era5(time='1D',load_winds=(True,location))
+                predictor = load_era5(time=time_resample,load_winds=(True,location))
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
                     self.predictor_slp = predictor[0]
                     self.predictor_wind = predictor[1]
             elif data_to_load[0]=='cfsr':
-                predictor = load_cfsr(time='1D',load_winds=(True,location))
+                predictor = load_cfsr(time=time_resample,load_winds=(True,location))
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
@@ -89,7 +89,7 @@ class Loader(object):
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
             if data_to_load[1]=='dac':
-                self.predictand = load_dac()
+                self.predictand = load_dac_hindcast()
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
 
             if data_to_load[1]=='moana':
@@ -248,12 +248,12 @@ def load_cfsr(data_path: str = data_path,
     print('\n loading the sea-level-pressure fields... \n')
     if time=='1D' or time=='6H':
         # resample to daily
-        if os.path.isfile(data_path+'/cfsr/CFSR_MSLP_daily.nc'):
+        if time=='1D' and os.path.isfile(data_path+'/cfsr/CFSR_MSLP_daily.nc'):
             print('\n loading daily resampled data... \n')
             # loading resampled data
             mslp = xr.open_dataarray(data_path+'/cfsr/CFSR_MSLP_daily.nc')
             if load_winds[0]:
-                wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily.nc')
+                wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily_mask.nc')
                 # plot the data
                 plot_pres_winds([mslp,wind],data_name='CFSR')
             # return data
@@ -262,13 +262,13 @@ def load_cfsr(data_path: str = data_path,
 
         else:
             print('\n resampling data to {}... \n'.format(time))
-            mslp = xr.open_dataset(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')['SLP']\
+            mslp = xr.open_dataarray(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')\
                 .resample(time=time).mean()
         if load_winds[0]:
             print('\n loading the winds... \n')
-            uw = xr.open_dataset(data_path+'/cfsr/CFSR_uwnd_1H_1990_2011.nc')['U_GRD_L103']\
+            uw = xr.open_dataarray(data_path+'/cfsr/CFSR_uwnd_6H_1990_2021.nc')\
                 .resample(time=time).mean()
-            vw = xr.open_dataset(data_path+'/cfsr/CFSR_vwnd_1H_1990_2011.nc')['V_GRD_L103']\
+            vw = xr.open_dataarray(data_path+'/cfsr/CFSR_vwnd_6H_1990_2021.nc')\
                 .resample(time=time).mean()
             wind = calculate_relative_winds(location=load_winds[1],
                                             uw=uw,vw=vw)
@@ -277,7 +277,7 @@ def load_cfsr(data_path: str = data_path,
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
-        mslp = xr.open_dataset(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')['SLP']
+        mslp = xr.open_dataarray(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')
         # try year cropping
         if time:
             mslp = mslp.sel(time=time)
@@ -286,9 +286,9 @@ def load_cfsr(data_path: str = data_path,
             print('\n LOADING ALL THE MSLP DATA (be careful with memory) \n')
         if load_winds[0]:
             print('\n loading the winds... \n')
-            uw = xr.open_dataset(data_path+'/cfsr/CFSR_30mu_1H_1990_2020.nc')['u30']\
+            uw = xr.open_dataarray(data_path+'/cfsr/CFSR_uwnd_6H_1990_2021.nc')\
                 .resample(time=time).mean()
-            vw = xr.open_dataset(data_path+'/cfsr/CFSR_30mv_1H_1990_2020.nc')['v30']\
+            vw = xr.open_dataarray(data_path+'/cfsr/CFSR_vwnd_6H_1990_2021.nc')\
                 .resample(time=time).mean()
             wind = calculate_relative_winds(location=load_winds[1],
                                             uw=uw,vw=vw)
@@ -328,7 +328,7 @@ def join_load_uhslc_tgs(files_path: str =
         )
 
     # join and plot
-    uhslc_tgs = xr.concat(uhslc_tgs_list,dim='name',combine_attrs='drop')
+    uhslc_tgs = xr.concat(uhslc_tgs_list,dim='name') # TODO: combine_attrs='drop'
     if plot: # plot if specified
         fig, ax = plt.subplots(figsize=_figsize)
         hue_plot = uhslc_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
@@ -437,7 +437,7 @@ def load_moana_hindcast(file_path: str =
 
 def load_moana_hindcast_ss(file_path: str = 
     data_path+'/storm_surge_data/moana_hindcast_v2/',
-    plot: bool = False, daily: bool = True):
+    plot: bool = False, daily: bool = False):
 
     """
     Load the moana hindcast (ss) in a single xarray dataset

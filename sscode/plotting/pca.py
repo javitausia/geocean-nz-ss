@@ -15,7 +15,7 @@ pca_EOFs_ttls = ['SLP in t', 'GRADIENT in t', 'SLP in t-1', 'GRADIENT in t-1', '
 
 
 def plot_pcs(pca_data, pcs_scaler = None,
-             n_plot: int = 3,
+             n_plot: int = 3, pca_ttls = None,
              region: tuple = default_region):
     """
     Plot the EOFs/PCs for the n_plot first components
@@ -32,6 +32,9 @@ def plot_pcs(pca_data, pcs_scaler = None,
     yloc1 = mdates.YearLocator(1)
     yfmt = mdates.DateFormatter('%Y')
 
+    # check ttls
+    pca_ttls = pca_ttls if pca_ttls else pca_EOFs_ttls
+
     # calculate number of different EOFs in data
     n_features = len(pca_data.n_features.values)
     n_lons = len(pca_data.n_lon.values)
@@ -46,7 +49,6 @@ def plot_pcs(pca_data, pcs_scaler = None,
     
     # plot all the components / EOFs / PCs
     for i_comp in range(n_plot):
-
         # plot EOFs
         eof_width = _figsize[0] / n_EOFs
         fig, axes = plt.subplots(ncols=n_EOFs,
@@ -62,8 +64,9 @@ def plot_pcs(pca_data, pcs_scaler = None,
                     np.sqrt(variance[i_comp]).reshape(1,-1)
             ).reshape(-1)
         else:
-            slp_eof = pca_data.EOFs.isel(n_components=i_comp).values * \
-                    np.sqrt(variance[i_comp]).reshape(-1)
+            slp_eof = (pca_data.EOFs.isel(n_components=i_comp).values * \
+                np.sqrt(variance[i_comp])
+            ).reshape(-1)
         # different EOFs
         axes = axes if n_EOFs>1 else [axes] # allow individual plotting
         # plot colorbars
@@ -74,11 +77,10 @@ def plot_pcs(pca_data, pcs_scaler = None,
                 pca_data.pcs_lat.values,
                 slp_eof[ix*(n_lons*n_lats):(ix+1)*(n_lons*n_lats)]\
                     .reshape(n_lats,n_lons), 
-                    # TODO: check credibility
                 transform=ccrs.PlateCarree(),
                 cmap='RdBu_r',clim=(-1,1)
             )
-            ax.set_title(pca_EOFs_ttls[ix])
+            ax.set_title(pca_ttls[ix])
             if plot_cbar:
                 pos_ax = ax.get_position()
                 pos_colbar = fig.add_axes([
@@ -88,7 +90,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
                 fig.colorbar(eofp,cax=pos_colbar)
         # plot nz map
         plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
-                     plot_labels=(True,5,5))
+                     plot_labels=(True,10,10))
         # plot variance in title
         fig.suptitle('EOF {}: {:.1%} of explained variance'.format(
             i_comp+1, (variance/np.sum(variance))[i_comp]
@@ -110,10 +112,11 @@ def plot_pcs(pca_data, pcs_scaler = None,
         plt.show()
 
 
-def plot_recon_pcs(pca_data, pcs_scaler,
+def plot_recon_pcs(pca_data, pcs_scaler, 
                    n_pcs_recon: int = 10,
                    region: tuple = default_region,
-                   return_slp: bool = False):
+                   return_slp: bool = False,
+                   pca_ttls = None):
     """
     Plot the recon slp fields for n_components
 
@@ -125,6 +128,9 @@ def plot_recon_pcs(pca_data, pcs_scaler,
         region (tuple, optional): Region to plot the data in.
             - Defaults to default_region
     """
+
+    # check ttls
+    pca_ttls = pca_ttls if pca_ttls else pca_EOFs_ttls
 
     # reconstruct the SLP values
     slp_stan = np.repeat(
@@ -175,7 +181,7 @@ def plot_recon_pcs(pca_data, pcs_scaler,
             transform=ccrs.PlateCarree(),
             cmap='RdBu_r',clim=(-1,1)
         )
-        ax.set_title(pca_EOFs_ttls[ix])
+        ax.set_title(pca_ttls[ix])
         if plot_cbar:
             pos_ax = ax.get_position()
             pos_colbar = fig.add_axes([
@@ -185,10 +191,10 @@ def plot_recon_pcs(pca_data, pcs_scaler,
             fig.colorbar(eofp,cax=pos_colbar)
     # plot nz map
     plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
-                 plot_labels=(True,5,5))
+                 plot_labels=(True,10,10))
     # plot variance in title
     fig.suptitle(
-        'Reconstructed SLP from {} PCs in {}'.format(
+        'Reconstructed SLP with {} PCs in {}'.format(
             n_pcs_recon, str(pca_data.time.values[time_to_plot])[:10]
         ),
         fontsize=_fontsize_title

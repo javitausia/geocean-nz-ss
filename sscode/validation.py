@@ -4,7 +4,6 @@ import pandas as pd
 from geopy.distance import geodesic
 from scipy.stats import pearsonr, spearmanr
 
-
 # plotting
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -94,8 +93,9 @@ def compare_datasets(dataset1, dataset1_coords,
     # validate/plot data1 with data2 (inside the loop)
     for istat in range(len(data1_clos_data2)):
         # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height*2.0))
-        gs = gridspec.GridSpec(nrows=2,ncols=3)
+        fig = plt.figure(figsize=(_figsize_width*5.0,
+            _figsize_height*len(comparison_variables[0])))
+        gs = gridspec.GridSpec(nrows=len(comparison_variables[0]),ncols=3)
         # do the analysis for both variables
         for axi in range(len(comparison_variables[0])): # ss and msea
             # time regular plot
@@ -153,7 +153,7 @@ def compare_datasets(dataset1, dataset1_coords,
                 fig.suptitle(
                     fig_title,
                     fontsize=_fontsize_title,
-                    y=1.1
+                    y=1.01
                 )
             ax_time.set_title('')
             ax_time.legend(loc='upper right',fontsize=_fontsize_legend)
@@ -251,22 +251,21 @@ def calc_closest_data2_in_data1(data1, data2,
     return sites_list, sites_dist
 
 
-def validata_w_tgs(X,validator,model,
+def validata_w_tgs(X,validator,model,tg_name,
                    plot_results: bool = True):
     """
     Validate linear regression with the TGs
 
     Args:
-        X ([type]): [description]
-        validator ([type]): [description]
-        model ([type]): [description]
-        plot_results (bool, optional): [description]. Defaults to True.
+        X (pcs/predictor): This is an xarray with the predictor in the model
+        validator (xarray): This is the validator that will be used
+        model (sklearn.Model): This is the sklearn model used
     """
 
     # check time coherence
     common_times = np.intersect1d(
-        pd.to_datetime(X.time.values),
-        pd.to_datetime(validator.time.values),
+        pd.to_datetime(X.time.values).round('H'),
+        pd.to_datetime(validator.time.values).round('H'),
         return_indices=True
     )
     
@@ -279,8 +278,9 @@ def validata_w_tgs(X,validator,model,
 
     # check model results
     title, stats = generate_stats(validator,prediction)
-    title += '\n R score: {} -- UHSLC TGs'.format(
-        round(model.score(X,validator),2)
+    title += '\n R score: {} -- UHSLC TGs -- at {}'.format(
+        round(model.score(X,validator),2),
+        tg_name # output tg name
     )
 
     # plot results
@@ -290,9 +290,15 @@ def validata_w_tgs(X,validator,model,
         gs = gridspec.GridSpec(nrows=1,ncols=3)
         # time regular plot
         ax_time = fig.add_subplot(gs[:,:2])
-        ax_time.plot(common_times[0],validator,label='UHSLC tgs validator',c='k')
-        ax_time.plot(common_times[0],prediction,label='Linear model predictions',
-                     c='red',linestyle='--',alpha=0.5)
+        ax_time.plot(
+            common_times[0],validator,c='k',
+            label='UHSLC tgs validator'
+        )
+        ax_time.plot(
+            common_times[0],prediction,
+            label='Linear model predictions',
+            c='red',linestyle='--',alpha=0.5
+        )
         ax_time.legend(fontsize=_fontsize_legend)
         # validation plot
         ax_vali = fig.add_subplot(gs[:,2:])

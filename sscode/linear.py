@@ -22,10 +22,9 @@ def MultiLinear_Regression(
     X_set, y_set, pcs_scaler = None,
     validator: tuple = (False,None,None),
     X_set_var: str = 'PCs', y_set_var: str = 'ss',
-    train_size: float = 0.8,
-    percentage_PCs: float = 0.9,
-    plot_results: bool = False,
-    verbose: bool = True):
+    train_size: float = 0.9, percentage_PCs: float = 0.95,
+    plot_results: bool = False, verbose: bool = True,
+    pca_ttls = None):
 
     """
     Multilinear regression analysis to perform over the PCs,
@@ -46,6 +45,7 @@ def MultiLinear_Regression(
         plot_results (bool, optional): Wheter to plot the results or not. 
             Defaults to False.
         verbose (bool, optional): Indicator of prints. Defaults to True.
+        pca_ttls: This is the title for the PCA plots.
 
     Returns:
         [list]: This is the list with the stats for each linear model
@@ -57,8 +57,8 @@ def MultiLinear_Regression(
 
     # check time coherence
     common_times = np.intersect1d(
-        pd.to_datetime(X_data.time.values),
-        pd.to_datetime(y_data.time.values),
+        pd.to_datetime(X_data.time.values).round('H'),
+        pd.to_datetime(y_data.time.values).round('H'),
         return_indices=True
     )
     
@@ -73,19 +73,21 @@ def MultiLinear_Regression(
                 np.sum(X_set.variance.values))>percentage_PCs
                 )[0][0]
         ) +1 # number of Pcs to use
-        if verbose:
-            print('\n {} PCs ({} expl. variance) will be used to train the model!! \n'.format(
-                num_pcs,percentage_PCs)
-            )
+        print('\n {} PCs ({} expl. variance) will be used to train the model!! \n'.format(
+            num_pcs,percentage_PCs)
+        ) if verbose else None
         # plot the slp reconstruction
         if pcs_scaler:
             plot_recon_pcs(X_set,pcs_scaler, # check
                            n_pcs_recon=num_pcs,
                            return_slp=False,
-                           region=default_region
+                           region=default_region,
+                           pca_ttls=pca_ttls
             )
         # select pcs to train the model
         X = X[:,:num_pcs]
+    else:
+        X = X[:,:50] # default number of PCs
         
     # split predictors into train and test
     X_train, X_test, y_train, y_test, t_train, t_test = \
@@ -131,15 +133,15 @@ def MultiLinear_Regression(
         # show the results
         plt.show()
     # print results
-    if verbose:
-        print(title)
+    print(title) if verbose else None
 
     # validate the model results
     if validator[0]:
         validata_w_tgs(
             X_set[X_set_var].dropna(dim='time')[:,:num_pcs],
             validator[1][validator[2]].dropna(dim='time'),
-            lm # pre-trained linear model
+            lm, # pre-trained linear model
+            str(validator[1].name.values)
         )
 
     return stats

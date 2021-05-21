@@ -20,8 +20,9 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                     time_lapse: int = 1, # 1 equals to NO time delay 
                     time_resample: str = '1D',
                     region: tuple = (True,default_region),
-                    pca_plot: bool = True,
-                    verbose: bool = True): # TODO: add verbose options
+                    pca_plot: tuple = (True,False),
+                    verbose: bool = True,
+                    pca_ttls = None):
     """
     Perform PCA decomposition given the pressure, winds...
 
@@ -43,16 +44,18 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
             - Defaults to '1D'.
         region (tuple, optional): Region to crop the slp to. 
             - Defaults to (True,default_region).
-        pca_plot (bool, optional): Weather to plot or not the final results.
+        pca_plot (bool, optional): Wether to plot or not the final results.
             - Defaults to True.
+        verbose (bool, optional): Wether or not to debug the actions.
+            - Defaults to True.
+        pca_ttls: These are the titles for the pca plots if required.
 
     Returns:
         [xarray.Dataset]: PCA decomposition final results
     """
 
     # perform pca analysis
-    if verbose:
-        print('\n lets calculate the PCs... \n')
+    print('\n lets calculate the PCs... \n') if verbose else None
     # crop slp and winds to the region selected
     if region[0]:
         pres = pres.sel({
@@ -60,15 +63,14 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
             pres_vars[2]:slice(region[1][2],region[1][3])
         })
         if winds[0]:
-            if verbose:
-                print('\n adding the wind to the predictor... \n')
+            print('\n adding the wind to the predictor... \n') if verbose else None
             wind = winds[1].sel({
                 wind_vars[1]:slice(region[1][0],region[1][1]),
                 wind_vars[2]:slice(region[1][2],region[1][3])
             }) # TODO: check lat order when cropping
 
     # check if data is resampled and dropna
-    if pres_vars[0]=='wind_proj': # when just winds are loaded
+    if pres_vars[0]=='wind_proj' or pres_vars[0]=='wind_proj_mask': # when just winds are loaded
         pres = pres.resample(time=time_resample).mean().fillna(0.0)
     else:
         pres = pres.resample(time=time_resample).mean().dropna(dim='time',how='all')
@@ -78,20 +80,17 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                             wind_vars[2]:pres[pres_vars[2]]}
                     )\
             .sel(time=pres.time) # interp to pressure coords
-        if verbose:
-            print('\n winds predictor with shape: \n {} \n'.format(wind.shape))
+        print('\n winds predictor with shape: \n {} \n'.format(wind.shape)) if verbose else None
         wind_add = 1 # for the pcs matrix
     else:
         wind_add = 0
 
     # calculate the gradient
     if calculate_gradient:
-        if verbose:
-            print('\n calculating the gradient of the sea-level-pressure fields... \n')
+        print('\n calculating the gradient of the sea-level-pressure fields... \n') if verbose else None
         pres = spatial_gradient(pres,pres_vars[0])
-        if verbose:
-            print('\n pressure/gradient predictor both with shape: \n {} \n'\
-                .format(pres[pres_vars[0]].shape))
+        print('\n pressure/gradient predictor both with shape: \n {} \n'\
+            .format(pres[pres_vars[0]].shape)) if verbose else None
         grad_add = 2
     else:
         grad_add = 1
@@ -115,8 +114,8 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
         if wind_add:
             pcs_matrix[t,y_shape*(tl+grad_add):] = \
                 wind.isel(time=t-tl).values.reshape(-1)
-    if verbose:
-        print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape))
+    print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape)) \
+        if verbose else None
 
     # standarize the features
     pcs_scaler = StandardScaler()
@@ -142,9 +141,10 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
 
     # if plot, plot
     region_plot = region[1] if region[0] else default_region
-    if pca_plot:
-        plot_pcs(PCA_return,pcs_scaler=None,
-                 n_plot=2,region=region_plot)
+    if pca_plot[0]:
+        pca_plot_scale = pcs_scaler if pca_plot[1] else None
+        plot_pcs(PCA_return,pcs_scaler=pca_plot_scale,
+                 n_plot=2,region=region_plot,pca_ttls=pca_ttls)
 
     return PCA_return, pcs_scaler
 
@@ -206,20 +206,22 @@ def RunnningMean_Monthly(xds, var_name, window=5):
     tempdata_runavg = np.empty(xds[var_name].shape)
 
     for lon in xds.longitude.values:
-       for lat in xds.latitude.values:
-          for mn in range(1, 13):
+        for lat in xds.latitude.values:
+            for mn in range(1, 13):
+                
+                # indexes
+                ix_lon = np.where(xds.longitude == lon)[0]
+                ix_lat = np.where(xds.latitude == lat)[0]
+                ix_mnt = np.where(xds['time.month'] == mn)[0]
 
-             # indexes
-             ix_lon = np.where(xds.longitude == lon)
-             ix_lat = np.where(xds.latitude == lat)
-             ix_mnt = np.where(xds['time.month'] == mn)
-
-             # point running average
-             time_mnt = xds.time[ix_mnt]
-             data_pnt = xds[var_name].loc[lon, lat, time_mnt]
-
-             tempdata_runavg[ix_lon[0], ix_lat[0], ix_mnt[0]] = running_mean(
-                 data_pnt.values, window)
+                # point running average
+                time_mnt = xds.time[ix_mnt]
+                data_pnt = xds[var_name].isel(
+                    time=ix_mnt,longitude=ix_lon,latitude=ix_lat
+                )
+                
+                tempdata_runavg[ix_mnt,ix_lat[0],ix_lon[0]] = running_mean(
+                    data_pnt.values, window)
 
     # store running average
     xds['{0}_runavg'.format(var_name)]= (

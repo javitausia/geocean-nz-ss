@@ -1,20 +1,23 @@
 # arrays
 import numpy as np
+import pandas as pd
+import xarray as xr
 
 # plotting
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 # custom
-from .utils import plot_ccrs_nz
+from .utils import plot_ccrs_nz, custom_cmap
 from .config import _figsize, _figsize_width, _figsize_height, \
-    _fontsize_title, _fontsize_legend
+    _fontsize_title, _fontsize_legend, _mbar_diff
 from ..config import default_location, default_region
 
 
 def plot_pres_winds(data, data_name='CFSR',
                     lat_name: str = 'lat',
                     lon_name: str = 'lon',
+                    wind_proj: str = 'wind_proj_mask',
                     u_name: str = 'U_GRD_L103',
                     v_name: str = 'V_GRD_L103'):
     """
@@ -47,9 +50,9 @@ def plot_pres_winds(data, data_name='CFSR',
     quiv_step = 8
     axes[2].quiver(data[1][lon_name].values[::quiv_step],
                    data[1][lat_name].values[::quiv_step],
-                   data[1]['wind_proj'].mean(dim='time').values[::quiv_step,::quiv_step]*\
+                   data[1][wind_proj].mean(dim='time').values[::quiv_step,::quiv_step]*\
                        np.cos(data[1]['direc_proj_math'].values[::quiv_step,::quiv_step])*10,
-                   data[1]['wind_proj'].mean(dim='time').values[::quiv_step,::quiv_step]*\
+                   data[1][wind_proj].mean(dim='time').values[::quiv_step,::quiv_step]*\
                        np.sin(data[1]['direc_proj_math'].values[::quiv_step,::quiv_step])*10,
                    transform=ccrs.PlateCarree())
     axes[2].set_facecolor('lightblue')
@@ -161,29 +164,188 @@ def plot_all_data(geocean_tgs = None,
     # TODO: add time series from forensic.ipynb
 
 
-def plot_winds(wind_data, time_step,
-               quiv_step: int = 8,
+def plot_winds(wind_data, n_times: int = 2,
+               quiv_step: int = 2,
                wind_coords: tuple = ('lon','lat'),
-               wind_vars: tuple = ('U_GRD_L103','V_GRD_L103')):
+               wind_vars: tuple = ('U_GRD_L103','V_GRD_L103','wind_proj_mask')):
 
     # TODO: add docstring, check winds!!
 
-    fig, ax = plt.subplots(
-        figsize=(_figsize_width*1.2,_figsize_height),
-        subplot_kw={
-            'projection': ccrs.PlateCarree(
-                central_longitude=180
-            )
-        }
-    )
+    print('\n plotting the projected winds!! \n')
+    
+    times_to_plot = np.random.randint(0,len(wind_data.time.values),n_times)
+    for time in times_to_plot:
+        fig, axes = plt.subplots(ncols=2,figsize=_figsize,
+            subplot_kw={
+                'projection':ccrs.PlateCarree(
+                    central_longitude=default_location[0]
+                )
+            }
+        )
+        wind_data[wind_vars[2]].isel(time=time).plot(
+            ax=axes[0],cmap='jet',vmin=-1,vmax=1,
+            transform=ccrs.PlateCarree()
+        )
+        axes[1].streamplot(
+            wind_data[wind_coords[0]].values[::quiv_step],
+            wind_data[wind_coords[1]].values[::quiv_step],
+            wind_data.isel(time=time)[wind_vars[0]].values[::quiv_step,::quiv_step],
+            wind_data.isel(time=time)[wind_vars[1]].values[::quiv_step,::quiv_step],
+            transform=ccrs.PlateCarree(),density=12
+        )
+        axes[1].set_title('REAL stream-plot',fontsize=_fontsize_title)
+        # plot map and show
+        plot_ccrs_nz(
+            axes,plot_land=False,plot_labels=(False,None,None)
+        )
+        plt.show()
 
-    wind_data.sel(time=time_step).wind_proj.plot(
-        ax=ax,cmap='jet',vmin=0,vmax=1
+
+def plot_pres_ibar(slp_data, ss_data, n_times: int = 3):
+
+    # TODO: add docstring
+
+    print('\n plotting the inverse barometer!! \n')
+
+    # interp slp to ss
+    slp_data = slp_data.interp(
+        longitude=ss_data.lon,
+        latitude=ss_data.lat
     )
-    ax.plot(
-        wind_data[wind_coords[0]].values[::step],
-        wind_data[wind_coords[1]].values[::step],
-        wind_data.sel(time=time)[wind_vars[0]].values[::step,::step],
-        wind_data.sel(time=time)[wind_vars[1]].values[::step,::step]
+    # check time coherence
+    common_times = np.intersect1d(
+        pd.to_datetime(slp_data.time.values),
+        pd.to_datetime(ss_data.time.values),
+        return_indices=True
     )
+    # analyze same data
+    slp_data = slp_data.isel(time=common_times[1]) / 100.0 # to mbar
+    ss_data = ss_data.isel(time=common_times[2])
+    ss_data.name = 'Storm surge [m]'
+
+    # calculate the inverse barometer
+    inv_bar = -(slp_data-slp_data.mean(dim='time')) / 100.0 # to cm
+    inv_bar.name = 'Inverse barometer [m]'
+
+    # plot ALL results
+
+    # seasonality
+    p = inv_bar.groupby('time.season').quantile(0.99).plot(
+        col='season',subplot_kws={
+            'projection':ccrs.PlateCarree(
+                central_longitude=default_location[0]
+            )
+        },cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
+        vmin=0,vmax=0.4,transform=ccrs.PlateCarree(),figsize=_figsize
+    )
+    for ax in p.axes.flatten():
+        ax.coastlines()
+    p = ss_data.groupby('time.season').quantile(0.99).plot(
+        col='season',subplot_kws={
+            'projection':ccrs.PlateCarree(
+                central_longitude=default_location[0]
+            )
+        },cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
+        vmin=0,vmax=0.4,transform=ccrs.PlateCarree(),figsize=_figsize
+    )
+    for ax in p.axes.flatten():
+        ax.coastlines()
+
+    # ind. time plots
+    times_to_plot = np.random.randint(0,len(slp_data.time.values),n_times)
+    for time in times_to_plot:
+        fig, axes = plt.subplots(ncols=3,figsize=_figsize,
+            subplot_kw={
+                'projection':ccrs.PlateCarree(
+                    central_longitude=default_location[0]
+                )
+            }
+        )
+        # slp_data.isel(time=time).plot(
+        #     ax=axes[0],transform=ccrs.PlateCarree(),
+        #     cmap='RdBu_r',vmin=1013-_mbar_diff,vmax=1013+_mbar_diff
+        # )
+        inv_bar.isel(time=time).plot(
+            ax=axes[0],transform=ccrs.PlateCarree(),cmap='plasma',
+            vmin=-0.2,vmax=0.2
+        )
+        ss_data.isel(time=time).plot(
+            ax=axes[1],transform=ccrs.PlateCarree(),cmap='plasma',
+            vmin=-0.2,vmax=0.2
+        )
+        (inv_bar.isel(time=time)-ss_data.isel(time=time))\
+            .to_dataset(name='elevation_difference')\
+            .apply(np.abs).elevation_difference.plot(
+            ax=axes[2],transform=ccrs.PlateCarree(),cmap='jet',
+            vmin=0,vmax=0.2
+        )
+        plot_ccrs_nz(
+            axes,plot_land=False,plot_labels=(False,None,None)
+        ) # plot nz map, as always
+
+        # show results
+        plt.show()
+
+
+def plot_uhslc_locations(uhslc_data):
+
+    # TODO: add docstring
+
+    fig, ax = plt.subplots(figsize=(9,9),subplot_kw={
+        'projection':ccrs.PlateCarree(central_longitude=180)
+    })
+    xr.plot.scatter(
+        uhslc_data.max(dim='time'),
+        x='longitude',y='latitude',c='red',zorder=110,
+        ax=ax,transform=ccrs.PlateCarree(),
+        s=100,edgecolor='yellow'
+    )
+    for i,tg in enumerate(uhslc_data.name):
+        if i==6:
+            ax.text(
+                tg.longitude.values-3.0,tg.latitude.values-0.2,str(tg.values)[2:],
+                transform=ccrs.PlateCarree(),zorder=100,size=12,
+                bbox=dict(boxstyle="round",
+                    ec=(1., 0.5, 0.5),
+                    fc=(1., 0.8, 0.8),
+                )
+            )
+        elif i==11:
+            ax.text(
+                tg.longitude.values-2.5,tg.latitude.values-0.2,str(tg.values)[2:],
+                transform=ccrs.PlateCarree(),zorder=100,size=12,
+                bbox=dict(boxstyle="round",
+                    ec=(1., 0.5, 0.5),
+                    fc=(1., 0.8, 0.8),
+                )
+            )
+        elif i==2:
+            ax.text(
+                tg.longitude.values-1.0,tg.latitude.values+0.7,str(tg.values)[2:],
+                transform=ccrs.PlateCarree(),zorder=100,size=12,
+                bbox=dict(boxstyle="round",
+                    ec=(1., 0.5, 0.5),
+                    fc=(1., 0.8, 0.8),
+                )
+            )
+        elif i==4:
+            pass
+        elif i==1 or i==7 or i==8:
+            ax.text(
+                tg.longitude.values+0.6,tg.latitude.values-0.5,str(tg.values)[2:],
+                transform=ccrs.PlateCarree(),zorder=100,size=12,
+                bbox=dict(boxstyle="round",
+                    ec=(1., 0.5, 0.5),
+                    fc=(1., 0.8, 0.8),
+                )
+            )
+        else:
+            ax.text(tg.longitude.values+0.6,tg.latitude.values,str(tg.values)[2:],
+                    transform=ccrs.PlateCarree(),zorder=100,size=12,
+                    bbox=dict(boxstyle="round",
+                        ec=(1., 0.5, 0.5),
+                        fc=(1., 0.8, 0.8),
+                    ))
+    plot_ccrs_nz([ax],plot_labels=(True,5,5))
+    ax.set_facecolor('lightblue')
 

@@ -39,8 +39,8 @@ def CCA_Analysis(pres, ss, # pressure and ss datasets
         # TODO: check order in lat/lon coords!!
 
     # check if data is resampled and dropna
-    pres = pres.resample(time=time_resample).mean().dropna(dim='time')
-    ss = ss.resample(time=time_resample).max().dropna(dim='time',how='all')
+    pres = pres.resample(time=time_resample).quantile(0.9).dropna(dim='time')
+    ss = ss.resample(time=time_resample).quantile(0.9).dropna(dim='time',how='all')
 
     # extract PCs from SLP and SS
     pcs_pres, pres_scaler = PCA_DynamicPred(

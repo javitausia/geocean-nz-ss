@@ -1,9 +1,11 @@
 # arrays
 import numpy as np
+import pandas as pd
 import xarray as xr
 
 # maths
 import numbers
+from scipy.stats import genextreme as gev
 
 # plotting
 import matplotlib.pyplot as plt
@@ -12,7 +14,7 @@ import cartopy.crs as ccrs
 # custom
 from ..config import default_location
 from .config import _figsize_width, _figsize_height, _figsize, \
-    _fontsize_title
+    _fontsize_title, _fontsize_label
 from .utils import plot_ccrs_nz
 
 
@@ -157,5 +159,57 @@ def plot_stats(statistics_data, plot_stats, **kwargs):
     fig.suptitle('Model statistics for all the stations!!',
                  fontsize=_fontsize_title,y=1.1)
     # show results
+    plt.show()
+
+
+def plot_gev_stats(gev_data):
+    """
+    Plots the gev-validation data in a map plot
+
+    TODO... 
+    
+    """
+
+    # plot all the different maps
+    fig, axes = plt.subplots(
+        ncols=3,figsize=_figsize,subplot_kw=({
+            'projection': ccrs.PlateCarree(
+                central_longitude=default_location[0]
+            )
+        })
+    )
+    xr.plot.contourf(
+        gev_data.mu,x='lon',y='lat',ax=axes[0],vmin=0,
+        cmap='jet',levels=50,transform=ccrs.PlateCarree()
+    )
+    xr.plot.contourf(
+        gev_data.phi,x='lon',y='lat',ax=axes[1],
+        cmap='hot',levels=50,transform=ccrs.PlateCarree()
+    )
+    xr.plot.contourf(
+        gev_data.xi,x='lon',y='lat',ax=axes[2],
+        cmap='bwr',levels=50,transform=ccrs.PlateCarree()
+    )
+    # plot the nz map and title
+    plot_ccrs_nz(axes,plot_labels=(True,5,5))
+    fig.suptitle('GEV parameters plots!!',
+                 fontsize=_fontsize_title
+    )
+    # estimate the total gev
+    fig, ax = plt.subplots(figsize=(8,4))
+    gev_data_total = gev_data.ss.values.reshape(-1)[
+        ~np.isnan(gev_data.ss.values.reshape(-1))
+    ]
+    shape, loc, scale = gev.fit(gev_data_total)
+    gev_pdf = gev.rvs(shape,loc=loc,scale=scale,size=1000000)
+    gev_data.ss.plot.hist(
+        ax=ax,bins=100,alpha=0.7,density=True,
+        label='Real maximum-ss measures' # TODO: add color
+    )
+    pd.DataFrame(gev_pdf,columns=['Calculated pdf - GEV'])\
+        .plot.kde(ax=ax,lw=3,c='k')
+    ax.legend(fontsize=_fontsize_label,
+              bbox_to_anchor=(1.6, 1)
+    )
     plt.show()
 

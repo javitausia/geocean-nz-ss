@@ -2,6 +2,7 @@
 import numpy as np
 import xarray as xr
 import great_circle_calculator.great_circle_calculator as gcc
+from math import sqrt
 
 # custom
 from .config import default_location
@@ -34,7 +35,7 @@ def calculate_relative_winds(location: tuple = default_location,
     """
 
     # we first join uw and vw (change winds to where they go)
-    wind = xr.merge([-uw,-vw]).dropna(dim='time')
+    wind = xr.merge([-uw,-vw]).dropna(dim='time',how='all')
     # calculate directions of winds (where they go)
     wind_direcs = np.arctan2(wind[uw.name].values,
                              wind[vw.name].values) * 180/np.pi
@@ -48,7 +49,7 @@ def calculate_relative_winds(location: tuple = default_location,
     rel_direcs = np.where(rel_direcs<-180,rel_direcs+360,rel_direcs)
     rel_direcs = np.where(rel_direcs>180,rel_direcs-360,rel_direcs)
     # delete winds in opposite directions
-    rel_direcs = np.where((rel_direcs>90)|(rel_direcs<-90),np.nan,rel_direcs)
+    rel_direcs = np.where((rel_direcs>120)|(rel_direcs<-120),np.nan,rel_direcs)
 
     return wind.assign({
         'wind_proj': (('time',lat_name,lon_name),np.cos(rel_direcs*np.pi/180)),
@@ -151,4 +152,29 @@ def spatial_gradient(xdset, var_name='msl'):
         ('time', 'latitude', 'longitude'), var_grad)
 
     return xdset
+
+
+def GetBestRowsCols(n):
+    'try to square number n, used at gridspec plots'
+
+    sqrt_n = sqrt(n)
+    if sqrt_n.is_integer():
+        n_r = int(sqrt_n)
+        n_c = int(sqrt_n)
+    else:
+        l_div = GetDivisors(n)
+        n_c = l_div[int(len(l_div)/2)]
+        n_r = int(n/n_c)
+
+    return n_r, n_c
+
+
+def GetDivisors(x):
+    l_div = []
+    i = 1
+    while i<x:
+        if x%i == 0:
+            l_div.append(i)
+        i = i + 1
+    return l_div
 

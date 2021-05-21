@@ -9,3 +9,7 @@ _figsize_height = 5
 _fontsize_label = 12
 _fontsize_legend = 14
 _fontsize_title = 18
+
+# pressure difference to plot
+_mbar_diff = 20
+_mbar100_diff = 2000
