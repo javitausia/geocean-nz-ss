@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. CCA ANALYSIS &#8212; Storm Surge NZ - Wednesday Summary</title>
+    <title>3. CCA ANALYSIS &#8212; Storm Surge NZ - Summary - 21/05/2021</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,7 +54,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. LINEAR REGRESSION" href="models_linear.html" />
+    <link rel="next" title="4. KMA ANALYSIS" href="analysis_kma.html" />
     <link rel="prev" title="2. PCA ANALYSIS" href="analysis_pca.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -77,7 +77,7 @@
   <img src="../_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Wednesday Summary</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary - 21/05/2021</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -114,18 +114,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="analysis_kma.html">
+   4. KMA ANALYSIS
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   4. LINEAR REGRESSION
+   5. LINEAR REGRESSION
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   5. KNN REGRESSOR
+   6. KNN REGRESSOR
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="forensic.html">
-   6. STORMS VISUALIZATION
+   7. STORMS VISUALIZATION
   </a>
  </li>
 </ul>
@@ -318,6 +323,7 @@
         <span class="n">latitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
     <span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
     <span class="n">load_moana_hindcast_ss</span><span class="p">(),</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span>
     <span class="n">cca_plot</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </pre></div>
@@ -334,20 +340,20 @@
 
 
  calculated PCs matrix with shape: 
- (11353, 2500) 
+ (372, 2500) 
 
 
  lets calculate the PCs... 
 
 
  calculated PCs matrix with shape: 
- (8066, 8632) 
+ (265, 8632) 
 
 
- we will use 18 PCs from the pressure and 17 from the ss 
+ we will use 20 PCs from the pressure and 95 from the ss 
 
 
- R score: -0.14 -- in TEST data
+ R score: 0.06 -- in TEST data
 
  plotting 3 components with slp and ss EOFs... 
 
@@ -391,7 +397,7 @@
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="analysis_pca.html" title="previous page"><span class="section-number">2. </span>PCA ANALYSIS</a>
-    <a class='right-next' id="next-link" href="models_linear.html" title="next page"><span class="section-number">4. </span>LINEAR REGRESSION</a>
+    <a class='right-next' id="next-link" href="analysis_kma.html" title="next page"><span class="section-number">4. </span>KMA ANALYSIS</a>
 
         </div>
         
