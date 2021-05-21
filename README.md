@@ -8,7 +8,7 @@ below, a summary of the region and data involved in the first part of the analys
 
 ![gif](/media/videos/example.gif)
 
-jupyter book for wednesday [here](https://javitausia.github.io/geocean-nz-ss/)
+jupyter book summary [here](https://javitausia.github.io/geocean-nz-ss/)
 
 ## 1. Description
 
