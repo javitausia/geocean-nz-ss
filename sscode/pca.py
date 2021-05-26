@@ -22,7 +22,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                     region: tuple = (True,default_region),
                     pca_plot: tuple = (True,False),
                     verbose: bool = True,
-                    pca_ttls = None):
+                    pca_ttls = None, pca_borders = None):
     """
     Perform PCA decomposition given the pressure, winds...
 
@@ -144,7 +144,8 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     if pca_plot[0]:
         pca_plot_scale = pcs_scaler if pca_plot[1] else None
         plot_pcs(PCA_return,pcs_scaler=pca_plot_scale,
-                 n_plot=2,region=region_plot,pca_ttls=pca_ttls)
+                 n_plot=2,region=region_plot,
+                 pca_ttls=pca_ttls,pca_borders=pca_borders)
 
     return PCA_return, pcs_scaler
 

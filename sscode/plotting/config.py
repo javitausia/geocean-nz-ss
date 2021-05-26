@@ -1,6 +1,6 @@
 # common fig parameters
 _figaspect = 2
-_figsize = (16,4)
+_figsize = (18,5)
 _figdpi = 128
 _figsize_width = 4
 _figsize_height = 5

@@ -169,7 +169,16 @@ def plot_winds(wind_data, n_times: int = 2,
                wind_coords: tuple = ('lon','lat'),
                wind_vars: tuple = ('U_GRD_L103','V_GRD_L103','wind_proj_mask')):
 
-    # TODO: add docstring, check winds!!
+    """
+    This funtion plots the previously loaded wind data, so we
+    can compare the relation between the real u and v components
+    of the wind and the calculated projected winds
+
+    Args:
+        data (list): This is an xarray.Dataset that is returned
+        in the constructor of the data.py file, where the winds
+        can be loaded/calculated
+    """
 
     print('\n plotting the projected winds!! \n')
     
@@ -203,7 +212,14 @@ def plot_winds(wind_data, n_times: int = 2,
 
 def plot_pres_ibar(slp_data, ss_data, n_times: int = 3):
 
-    # TODO: add docstring
+    """
+    This funtion plots the previously loaded pressure data and the
+    inverse barometer, to see differences in them
+
+    Args:
+        data (list): The real slp and ss data must be provided
+        as xarray datasets
+    """
 
     print('\n plotting the inverse barometer!! \n')
 
@@ -289,7 +305,13 @@ def plot_pres_ibar(slp_data, ss_data, n_times: int = 3):
 
 def plot_uhslc_locations(uhslc_data):
 
-    # TODO: add docstring
+    """
+    This funtion plots the previously loaded uhslc data
+
+    Args:
+        data (list): This is the uhslc data as loaded with the
+        fuction join_load_uhslc_tgs() in data.py
+    """
 
     fig, ax = plt.subplots(figsize=(9,9),subplot_kw={
         'projection':ccrs.PlateCarree(central_longitude=180)

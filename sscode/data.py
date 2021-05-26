@@ -59,7 +59,7 @@ class Loader(object):
         Args:
             data_to_load (list, optional): List with the predictor, predictand 
             and validator: 
-                - Defaults to ['era5','moana','uhslc'].
+                - Defaults to ['cfsr','moana','uhslc'].
             location: location if required
             plot: whether to plot or not the loaded data
         """
@@ -70,14 +70,16 @@ class Loader(object):
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
             if data_to_load[0]=='era5':
-                predictor = load_era5(time=time_resample,load_winds=(True,location))
+                predictor = load_era5(time=time_resample,load_winds=(True,location),
+                                      plt=plot)
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
                     self.predictor_slp = predictor[0]
                     self.predictor_wind = predictor[1]
             elif data_to_load[0]=='cfsr':
-                predictor = load_cfsr(time=time_resample,load_winds=(True,location))
+                predictor = load_cfsr(time=time_resample,load_winds=(True,location),
+                                      plot=plot)
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
@@ -104,7 +106,7 @@ class Loader(object):
         # load the validator
         if data_to_load[2] in loader_dict_options['validator']:
             if data_to_load[2]=='uhslc':
-                self.validator = join_load_uhslc_tgs(plot=True)
+                self.validator = join_load_uhslc_tgs(plot=plot)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='geotgs':
                 self.validator = load_geocean_tgs(plot=plot)
@@ -131,7 +133,8 @@ class Loader(object):
 
 def load_era5(data_path: str = data_path,
               time: str = '1997', # time cropping recommended
-              load_winds: tuple = (True,default_location)):
+              load_winds: tuple = (True,default_location),
+              plot: bool = True):
     """
     This function loas era5 data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
@@ -165,7 +168,7 @@ def load_era5(data_path: str = data_path,
                 # plot the data
                 plot_pres_winds([mslp,wind],data_name='ERA5',
                                 lat_name='latitude',lon_name='longitude',
-                                u_name='u10',v_name='v10')
+                                u_name='u10',v_name='v10') if plot else None
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
@@ -223,7 +226,8 @@ def load_era5(data_path: str = data_path,
 
 def load_cfsr(data_path: str = data_path,
               time: str = '1997', # time cropping recommended
-              load_winds: tuple = (False,default_location)):
+              load_winds: tuple = (False,default_location),
+              plot: bool = True):
     """
     This function loas cfsr data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
@@ -255,7 +259,7 @@ def load_cfsr(data_path: str = data_path,
             if load_winds[0]:
                 wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily_mask.nc')
                 # plot the data
-                plot_pres_winds([mslp,wind],data_name='CFSR')
+                plot_pres_winds([mslp,wind],data_name='CFSR') if plot else None
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
@@ -396,9 +400,9 @@ def load_moana_hindcast(file_path: str =
 
     if plot: # plot if specified
         # calculate 99% quantile
-        threshold = moana.ss.load().max(dim='time').mean()
+        # threshold = moana.ss.load().max(dim='time').mean()
         # values to plot
-        moana_to_plot = moana.ss.load().groupby('time.season').max()-threshold
+        moana_to_plot = moana.ss.load().groupby('time.season').quantile(0.99)
         # plot some stats
         fig, axes = plt.subplots(
             ncols=2,nrows=2,figsize=(_figsize_width*3.6,_figsize_height*2.6),
@@ -408,7 +412,7 @@ def load_moana_hindcast(file_path: str =
                 )
             }
         )
-        fig.suptitle('Moana shore nodes quantiles anomalies',
+        fig.suptitle('Moana shore nodes -- 0.99 quantiles',
                      fontsize=_fontsize_title)
         for seas,ax in zip(moana_to_plot.season.values,axes.flatten()):
             p = ax.scatter(
@@ -416,7 +420,7 @@ def load_moana_hindcast(file_path: str =
                 c=moana_to_plot.sel(season=seas).values,
                 transform=ccrs.PlateCarree(),
                 s=20,zorder=40,cmap='jet',
-                vmin=-0.3,vmax=0.3
+                vmin=0.1,vmax=0.5
             )
             pos_ax = ax.get_position()
             pos_colbar = fig.add_axes([
@@ -428,9 +432,9 @@ def load_moana_hindcast(file_path: str =
         # plot NZ map
         plot_ccrs_nz(axes.flatten(),
                      plot_coastline=(False,None,None),
-                     plot_labels=(True,5,5))
+                     plot_labels=(True,10,10))
         # show results
-    plt.show()
+        plt.show()
 
     return moana
 

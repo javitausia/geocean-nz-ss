@@ -27,9 +27,37 @@ def KNN_Regression(
     train_size = 0.8, # should be float, (0,1)
     max_neighbors: int = 20, k_neighbors = None,
     cv_folds: int = 5, plot_results: bool = False,
-    verbose: bool = False):
+    verbose: bool = False, pca_ttls = None):
 
-    # TODO: add docstring
+    """
+    KNN regression analysis to perform over the PCs,
+    to predict the storm surge in all the requested locations
+
+    Args:
+        X_set (xarray.Predictor): This is the predictor, usually the PCs
+        y_set (xarray.Predictand): This is the predictand, usually the SS
+        pcs_scaler (sklearn.LinReg, optional): This is the pcs scaler to
+            re-standarize the data. Defaults to None.
+        validator (tuple, optional): This is the optional tuple to validate
+            the data if required. Defaults to (False,None,None), but an
+            example is (True,xarray.Validator(ss),'ss')
+        X_set_var (str): This is the predictor var name. Defaults to 'PCs'.
+        y_set_var (str): This is the predictand var name. Defaults to 'ss'.
+        train_size (float, optional): Training set size out of 1. Defaults to 0.8.
+        percentage_PCs (float, optional): Percentage of PCs to predict. Defaults to 0.9.
+        plot_results (bool, optional): Wheter to plot the results or not. 
+            Defaults to False.
+        verbose (bool, optional): Indicator of prints. Defaults to True.
+        pca_ttls: This is the title for the PCA plots.
+        max_neighbors (int, optional): Maximum number of neighbors if grid search CV is
+        wanted to be applied. Defaults to 20.
+        k_neighbors (in): Clearly specify the number of neighbors to use.
+        cv_folds (int, optional): Number of foders to cross-validate
+
+    Returns:
+        [list]: This is the list with the stats for each linear model,
+        but we also return the model and the times used to train
+    """
     
     # check nan existance
     X_data = X_set[X_set_var].dropna(dim='time')
@@ -37,8 +65,8 @@ def KNN_Regression(
 
     # check time coherence
     common_times = np.intersect1d(
-        pd.to_datetime(X_data.time.values),
-        pd.to_datetime(y_data.time.values),
+        pd.to_datetime(X_data.time.values).round('H'),
+        pd.to_datetime(y_data.time.values).round('H'),
         return_indices=True
     )
     
@@ -61,7 +89,8 @@ def KNN_Regression(
             plot_recon_pcs(X_set,pcs_scaler,
                            n_pcs_recon=num_pcs,
                            return_slp=False,
-                           region=default_region
+                           region=default_region,
+                           pca_ttls=pca_ttls
             )
         # select pcs to train the model
         X = X[:,:num_pcs]

@@ -15,13 +15,27 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 # custom
+from .statistical import gev_matrix
 from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs
 
 
 def KMA_simple(slp_data, ss_data, pca_data, 
-               n_clusters=64, plot: bool = True):
+               n_clusters=64, plot: bool = True,
+               calculate_gev_stats: bool = True):
+               
+    """[summary]
 
-    # TODO: add docstring
+    Args:
+        slp_data ([type]): [description]
+        ss_data ([type]): [description]
+        pca_data ([type]): [description]
+        n_clusters (int, optional): [description]. Defaults to 64.
+        plot (bool, optional): [description]. Defaults to True.
+        calculate_gev_stats (bool, optional): [description]. Defaults to True.
+
+    Returns:
+        [type]: [description]
+    """
 
     # check time coherence
     common_times_pslp = np.intersect1d(
@@ -55,46 +69,62 @@ def KMA_simple(slp_data, ss_data, pca_data,
 
     # calculate the kma
     kma = KMeans(n_clusters=n_clusters).fit(X_train)
+
     # predict
     prediction = kma.predict(X_test)
-    print('\n The score of the KMA model is: \n'.format(
-        round(kma.score(X_test),2)
-    ))
 
     # order the clusters (km, x and var_centers)
-    # centers = kma.cluster_centers_
-    # bmus = kma.labels_
-    # kma_order = np.argsort(np.mean(-centers,axis=1))
-    # sorted_bmus = np.zeros((len(bmus),),)*np.nan
-    # for i in range(n_clusters):
-    #     posc = np.where(bmus == kma_order[i])
-    #     sorted_bmus[posc] = i
+    centers = kma.cluster_centers_
+    bmus = kma.labels_
+    kma_order = np.argsort(np.mean(-centers,axis=1))
+    sorted_bmus = np.zeros((len(bmus),),)*np.nan
+    sorted_pred = np.zeros((len(prediction),),)*np.nan
+    for i in range(n_clusters):
+        posc = np.where(bmus==kma_order[i])
+        sorted_bmus[posc] = i
+        posc = np.where(prediction==kma_order[i])
+        sorted_pred[posc] = i
 
-    # save slp and ss clusters
+    # save slp and ss clusters + gev stats
     slp_clusters_list = []
     ss_clusters_list_mean, ss_clusters_list_max = [], []
-    for clus in np.unique(kma.labels_):
+    if calculate_gev_stats:
+        gev_stats_list = [] # save gev stats by cluster
+        print('\n lets calculate the GEV parameters for each cluster... \n')
+    for clus in np.unique(sorted_bmus):
         slp_clusters_list.append(
             slp_data.sel(time=t_train).isel(
-                time=np.where(kma.labels_==clus)[0]
+                time=np.where(sorted_bmus==clus)[0]
             ).mean(dim='time').expand_dims(
                 {'n_clusters':[clus]}
             )
         )
+        ss_cluster = ss_data.sel(time=t_train).isel(
+            time=np.where(sorted_bmus==clus)[0]
+        )
         ss_clusters_list_mean.append(
-            ss_data.sel(time=t_train).isel(
-                time=np.where(kma.labels_==clus)[0]
-            ).mean(dim='time').expand_dims(
+            ss_cluster.mean(dim='time').expand_dims(
                 {'n_clusters':[clus]}
             )
         )
         ss_clusters_list_max.append(
-            ss_data.sel(time=t_train).isel(
-                time=np.where(kma.labels_==clus)[0]
-            ).quantile(0.995,dim='time').expand_dims(
+            ss_cluster.quantile(0.995,dim='time').expand_dims(
                 {'n_clusters':[clus]}
             )
         )
+        if calculate_gev_stats:
+            gev_stats_list.append(
+                gev_matrix(ss_cluster.interp(
+                        lon=np.arange(160,185,0.3),
+                        lat=np.arange(-52,-30,0.3)
+                    ), # .resample(time='1M').max(),
+                    'lon','lat',plot=False # check code PEP8
+                )[['mu','phi','xi']].expand_dims(
+                    {'n_clusters':[clus]}
+                )
+            )
+
+    # concat all cluster lists
     slp_clusters = xr.concat(
         slp_clusters_list,dim='n_clusters'
     ).sortby('n_clusters')
@@ -104,12 +134,17 @@ def KMA_simple(slp_data, ss_data, pca_data,
     ss_clusters_max = xr.concat(
         ss_clusters_list_max,dim='n_clusters'
     ).sortby('n_clusters')
+    if calculate_gev_stats:
+        ss_clusters_gev = xr.concat(
+            gev_stats_list,dim='n_clusters'
+        ).sortby('n_clusters')
 
     # save and plot results
     KMA_data = xr.Dataset(
         data_vars={
-            'bmus': (('train_time'), kma.labels_),
-            'bmus_pred': (('test_time'), prediction),
+            'bmus': (('train_time'), kma.labels_.astype(int)),
+            'sorted_bmus': (('train_time'), sorted_bmus.astype(int)),
+            'bmus_pred': (('test_time'), sorted_pred.astype(int)),
             'cluster_centers': (('n_clusters','n_components'),
                 kma.cluster_centers_),
             'slp_clusters': slp_clusters,
@@ -125,9 +160,12 @@ def KMA_simple(slp_data, ss_data, pca_data,
     if plot:
         # plot all the wheather types
         Plot_DWTs_Mean_Anom(KMA_data)
-        Plot_DWTs_Probs(KMA_data.bmus, n_clusters)
+        Plot_DWTs_Probs(KMA_data.bmus,n_clusters)
 
-    return KMA_data
+    # return calculated data
+    return_data = [KMA_data,ss_clusters_gev] if calculate_gev_stats else [KMA_data]
+
+    return return_data
 
 
 def persistences(series):

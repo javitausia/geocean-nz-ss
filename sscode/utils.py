@@ -19,7 +19,7 @@ def calculate_relative_winds(location: tuple = default_location,
 
     Args:
         location (tuple, optional): Location where the winds will be
-        projected. Defaults to default_location.
+        projected. Defaults to default_location. Ex: (181,-30)
         uw (xarray-DataArray): u10-component of winds in the direction where 
         they come (era5 raw data). Defaults to None.
         vw (xarray-DataArray): v10-component of winds in the direction where 

@@ -34,25 +34,29 @@ def CCA_Analysis(pres, ss, # pressure and ss datasets
         })
         ss = ss.sel({
             ss_vars[1]:slice(region[2][0],region[2][1]),
-            ss_vars[2]:slice(region[2][3],region[2][2])
+            ss_vars[2]:slice(region[2][2],region[2][3])
         })
         # TODO: check order in lat/lon coords!!
 
     # check if data is resampled and dropna
-    pres = pres.resample(time=time_resample).quantile(0.9).dropna(dim='time')
-    ss = ss.resample(time=time_resample).quantile(0.9).dropna(dim='time',how='all')
+    pres = pres.resample(time=time_resample).mean().dropna(dim='time')
+    if False: # check time loss
+        ss = ss.resample(time=time_resample).quantile(0.95).dropna(dim='time',how='all')
+    else:
+        ss = ss.dropna(dim='time',how='all')
 
     # extract PCs from SLP and SS
     pcs_pres, pres_scaler = PCA_DynamicPred(
-        pres,time_resample='1D',
-        region=(False,None),
-        pca_plot=False
+        pres,time_resample=time_resample,
+        time_lapse=1,region=(False,None),
+        pca_plot=(True,False),
+        pca_ttls=['SLP in t','SLP in t-1']
     )
     pcs_ss, ss_scaler = PCA_DynamicPred(
-        ss,pres_vars=ss_vars,
-        time_resample='1D',
-        region=(False,None),
-        pca_plot=False
+        ss,pres_vars=ss_vars,time_resample=time_resample,
+        time_lapse=1,region=(False,None),
+        pca_plot=(True,False),
+        pca_ttls=['SS in t','SS in t-1']
     )
     
     # num of pcs to use

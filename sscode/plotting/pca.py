@@ -12,10 +12,11 @@ from ..config import default_location, default_region_reduced, default_region
 from .utils import plot_ccrs_nz
 
 pca_EOFs_ttls = ['SLP in t', 'GRADIENT in t', 'SLP in t-1', 'GRADIENT in t-1', 'Winds in t']
+pca_EOFs_borders = [2000, 10000, 2000, 10000, 1]
 
 
 def plot_pcs(pca_data, pcs_scaler = None,
-             n_plot: int = 3, pca_ttls = None,
+             n_plot: int = 3, pca_ttls = None, pca_borders = None,
              region: tuple = default_region):
     """
     Plot the EOFs/PCs for the n_plot first components
@@ -43,7 +44,6 @@ def plot_pcs(pca_data, pcs_scaler = None,
     print('\n plotting {} components with {} EOFs + PC... \n'\
         .format(n_plot,n_EOFs))
     print('\n being the EOFs the slp, the gradient, in steps t, t-1 \n')
-
     # variance of the PCs
     variance = pca_data.variance.values
     
@@ -72,19 +72,29 @@ def plot_pcs(pca_data, pcs_scaler = None,
         # plot colorbars
         plot_cbar = True if n_EOFs<=3 else False
         for ix,ax in enumerate(axes): # num_axes = n_EOFs
+            eof_values = slp_eof[ix*(n_lons*n_lats):(ix+1)*(n_lons*n_lats)]\
+                .reshape(n_lats,n_lons)
+            if np.nanmean(eof_values)>80000:
+                eof_values = eof_values-101300
+            if not pca_borders:
+                border = max(
+                    np.abs(np.nanmin(eof_values)),
+                    np.nanmax(eof_values)
+                )
+            else:
+                border = pca_borders[ix]
             eofp = ax.pcolormesh(
                 pca_data.pcs_lon.values,
                 pca_data.pcs_lat.values,
-                slp_eof[ix*(n_lons*n_lats):(ix+1)*(n_lons*n_lats)]\
-                    .reshape(n_lats,n_lons), 
+                eof_values, # check coherence 
                 transform=ccrs.PlateCarree(),
-                cmap='RdBu_r',clim=(-1,1)
+                cmap='RdBu_r',vmin=-border,vmax=border
             )
             ax.set_title(pca_ttls[ix])
             if plot_cbar:
                 pos_ax = ax.get_position()
                 pos_colbar = fig.add_axes([
-                    pos_ax.x0 + pos_ax.width + 0.01, 
+                    pos_ax.x0 + pos_ax.width + 0.02, 
                     pos_ax.y0, 0.02, pos_ax.height
                 ])
                 fig.colorbar(eofp,cax=pos_colbar)
@@ -185,7 +195,7 @@ def plot_recon_pcs(pca_data, pcs_scaler,
         if plot_cbar:
             pos_ax = ax.get_position()
             pos_colbar = fig.add_axes([
-                pos_ax.x0 + pos_ax.width + 0.01, 
+                pos_ax.x0 + pos_ax.width + 0.02, 
                 pos_ax.y0, 0.02, pos_ax.height
             ])
             fig.colorbar(eofp,cax=pos_colbar)

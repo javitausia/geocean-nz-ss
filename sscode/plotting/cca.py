@@ -46,7 +46,7 @@ def plot_ccs(cca_data, # this is all the CCA returned data
 
         # plot EOFs
         fig, axes = plt.subplots(ncols=2,
-            figsize=(_figsize_width*4.0,_figsize_height*1.4),
+            figsize=(_figsize_width*4.4,_figsize_height*1.4),
             subplot_kw={'projection':ccrs.PlateCarree(
                 central_longitude=default_location[0]
             )}
@@ -88,7 +88,7 @@ def plot_ccs(cca_data, # this is all the CCA returned data
         #     i_comp+1, (variance/np.sum(variance))[i_comp]
         # ), fontsize=_fontsize_title)
 
-        fig.suptitle('EOF reconstructions... EDIT!!',
+        fig.suptitle('EOF reconstructions...!!',
                      fontsize=_fontsize_title)
 
         # plot the PCs

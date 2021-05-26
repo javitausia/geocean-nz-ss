@@ -86,6 +86,15 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
         # axis customization
         ax.coastlines(linewidth=2)
         ax.set_title('')
+        ax.text(
+            184.5,-24,str(i), # add better text?
+            transform=ccrs.PlateCarree(),
+            zorder=100,size=12,
+            bbox=dict(boxstyle='round',
+                ec=(1.,0.5,0.5),
+                fc=(1.,0.8,0.8),
+            )
+        )
 
     # add the colorbar
     cbar_ax = fig.add_axes([0.135,0.10,0.75,0.02])
@@ -108,19 +117,28 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     )
     fig.subplots_adjust(hspace=0.02,wspace=0.02)
     for i,ax in enumerate(axes.flatten()):
-        pss = xds_KMA.ss_clusters_max.isel(n_clusters=i).plot(
+        pss = xds_KMA.ss_clusters_mean.isel(n_clusters=i).plot(
             cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
-            vmin=-0.1,vmax=0.5,add_colorbar=False,
+            vmin=-0.2,vmax=0.3,add_colorbar=False,
             ax=ax,transform=ccrs.PlateCarree(),
         )
         # axis customization
         ax.coastlines(linewidth=2)
         ax.set_title('')
+        ax.text(
+            182,-33.3,str(i), # add better text?
+            transform=ccrs.PlateCarree(),
+            zorder=100,size=12,
+            bbox=dict(boxstyle='round',
+                ec=(1.,0.5,0.5),
+                fc=(1.,0.8,0.8),
+            )
+        )
 
     # add the colorbar
     cbar_ax = fig.add_axes([0.135,0.10,0.75,0.02])
     cb = fig.colorbar(pss,cax=cbar_ax,orientation='horizontal')
-    cb.set_label('Storm surge 99.5% [m]',fontsize=_fontsize_label)
+    cb.set_label('Storm surge mean [m]',fontsize=_fontsize_label)
 
     # show results
     plt.show()
