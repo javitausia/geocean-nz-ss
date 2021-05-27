@@ -22,6 +22,13 @@ Data ...
 
 Statistical tools, notebooks, data ...
 
+Some content is explained at {cite}`somcamus,sommdakmeans`!
+
+## Bibliography
+
+```{bibliography} references.bib
+```
+
 ## 4. Installation
 
 ### 4.1 Create an environment in conda
