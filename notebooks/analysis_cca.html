@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. CCA ANALYSIS &#8212; Storm Surge NZ - Summary - 21/05/2021</title>
+    <title>3. CCA ANALYSIS &#8212; Storm Surge NZ - Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -52,6 +52,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4. KMA ANALYSIS" href="analysis_kma.html" />
@@ -77,7 +78,7 @@
   <img src="../_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary - 21/05/2021</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -231,6 +232,20 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculate-the-ccs">
+   3.1. calculate the CCs
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
         </div>
     </div>
 </div>
@@ -260,12 +275,7 @@
 
 <span class="c1"># data viewer</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
-<span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.cca</span> <span class="kn">import</span> <span class="n">CCA_Analysis</span>
-<span class="kn">from</span> <span class="nn">sscode.linear</span> <span class="kn">import</span> <span class="n">MultiLinear_Regression</span>
-<span class="kn">from</span> <span class="nn">sscode.knn</span> <span class="kn">import</span> <span class="n">KNN_Regression</span>
-<span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
-<span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
 
 <span class="c1"># warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -278,7 +288,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">]</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -288,32 +298,19 @@
 
 
  loading daily resampled data... 
-</pre></div>
-</div>
-<img alt="../_images/analysis_cca_2_1.png" src="../_images/analysis_cca_2_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
-</pre></div>
-</div>
-<img alt="../_images/analysis_cca_2_3.png" src="../_images/analysis_cca_2_3.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
-</pre></div>
-</div>
-<img alt="../_images/analysis_cca_2_5.png" src="../_images/analysis_cca_2_5.png" />
-<img alt="../_images/analysis_cca_2_6.png" src="../_images/analysis_cca_2_6.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(173.9, -40.5)
+
+
+ loading the Moana v2 hindcast data... 
+
+
+ loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
 </div>
 </div>
+<div class="section" id="calculate-the-ccs">
+<h2><span class="section-number">3.1. </span>calculate the CCs<a class="headerlink" href="#calculate-the-ccs" title="Permalink to this headline">¶</a></h2>
+<p>plotting and calculating first the corresponfing PCs</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the canonical correlations</span>
@@ -322,7 +319,10 @@
         <span class="n">longitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span><span class="mi">190</span><span class="p">),</span>
         <span class="n">latitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
     <span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-    <span class="n">load_moana_hindcast_ss</span><span class="p">(),</span>
+    <span class="n">load_moana_hindcast_ss</span><span class="p">(</span><span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
+        <span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">161</span><span class="p">,</span><span class="mi">185</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">52</span><span class="p">,</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
     <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span>
     <span class="n">cca_plot</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
@@ -340,20 +340,40 @@
 
 
  calculated PCs matrix with shape: 
- (372, 2500) 
+ (11353, 2500) 
 
 
- lets calculate the PCs... 
+ plotting 2 components with 1 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/analysis_cca_4_1.png" src="../_images/analysis_cca_4_1.png" />
+<img alt="../_images/analysis_cca_4_2.png" src="../_images/analysis_cca_4_2.png" />
+<img alt="../_images/analysis_cca_4_3.png" src="../_images/analysis_cca_4_3.png" />
+<img alt="../_images/analysis_cca_4_4.png" src="../_images/analysis_cca_4_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
 
 
  calculated PCs matrix with shape: 
- (265, 8632) 
+ (8066, 2016) 
 
 
- we will use 20 PCs from the pressure and 95 from the ss 
+ plotting 2 components with 1 EOFs + PC... 
 
 
- R score: 0.06 -- in TEST data
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/analysis_cca_4_6.png" src="../_images/analysis_cca_4_6.png" />
+<img alt="../_images/analysis_cca_4_7.png" src="../_images/analysis_cca_4_7.png" />
+<img alt="../_images/analysis_cca_4_8.png" src="../_images/analysis_cca_4_8.png" />
+<img alt="../_images/analysis_cca_4_9.png" src="../_images/analysis_cca_4_9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> we will use 18 PCs from the pressure and 15 from the ss 
+
+
+ R score: 0.04 -- in TEST data
 
  plotting 3 components with slp and ss EOFs... 
 
@@ -361,12 +381,13 @@
  being the EOFs the reconstructed cannonical loadings 
 </pre></div>
 </div>
-<img alt="../_images/analysis_cca_4_1.png" src="../_images/analysis_cca_4_1.png" />
-<img alt="../_images/analysis_cca_4_2.png" src="../_images/analysis_cca_4_2.png" />
-<img alt="../_images/analysis_cca_4_3.png" src="../_images/analysis_cca_4_3.png" />
-<img alt="../_images/analysis_cca_4_4.png" src="../_images/analysis_cca_4_4.png" />
-<img alt="../_images/analysis_cca_4_5.png" src="../_images/analysis_cca_4_5.png" />
-<img alt="../_images/analysis_cca_4_6.png" src="../_images/analysis_cca_4_6.png" />
+<img alt="../_images/analysis_cca_4_11.png" src="../_images/analysis_cca_4_11.png" />
+<img alt="../_images/analysis_cca_4_12.png" src="../_images/analysis_cca_4_12.png" />
+<img alt="../_images/analysis_cca_4_13.png" src="../_images/analysis_cca_4_13.png" />
+<img alt="../_images/analysis_cca_4_14.png" src="../_images/analysis_cca_4_14.png" />
+<img alt="../_images/analysis_cca_4_15.png" src="../_images/analysis_cca_4_15.png" />
+<img alt="../_images/analysis_cca_4_16.png" src="../_images/analysis_cca_4_16.png" />
+</div>
 </div>
 </div>
 </div>

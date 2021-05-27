@@ -1,0 +1,1580 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LINEAR REGRESSION &#8212; Storm Surge NZ - Summary</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.jpeg" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../README.html">
+   geocean-nz-ss
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Chapters
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   1. DATA VISUALIZATION / VALIDATION
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_pca.html">
+   2. PCA ANALYSIS
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_cca.html">
+   3. CCA ANALYSIS
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_kma.html">
+   4. KMA ANALYSIS
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_linear.html">
+   5. LINEAR REGRESSION
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_knn.html">
+   6. KNN REGRESSOR
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="forensic.html">
+   7. STORMS VISUALIZATION
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/models_linear_test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/models_linear_test.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/models_linear_test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-data">
+   load the data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-calculate-the-pcs">
+   load / calculate the pcs
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="linear-regression">
+<h1>LINEAR REGRESSION<a class="headerlink" href="#linear-regression" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">progressbar</span>
+
+<span class="c1"># arrays</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="c1"># plotting</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="c1"># append sscode to path</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+
+<span class="c1"># data viewer</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span>
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_geocean_tgs</span>
+<span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
+<span class="kn">from</span> <span class="nn">sscode.linear</span> <span class="kn">import</span> <span class="n">MultiLinear_Regression</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_uhslc_locations</span>
+
+<span class="c1"># warnings</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-the-data">
+<h2>load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+
+
+ loading daily resampled data... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_3_1.png" src="../_images/models_linear_test_3_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_3_3.png" src="../_images/models_linear_test_3_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_3_5.png" src="../_images/models_linear_test_3_5.png" />
+<img alt="../_images/models_linear_test_3_6.png" src="../_images/models_linear_test_3_6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># validate the data</span>
+<span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
+    <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">]]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with UHSLC tgs!! 
+
+
+ 
+ TGs to analyze are: 
+ [&#39;a_Wellington&#39; &#39;a_Timaru&#39; &#39;b_JacksonBay&#39; &#39;a_MarsdenPoint&#39; &#39;a_JacksonBay&#39;
+ &#39;a_Lyttelton&#39; &#39;a_Taranaki&#39; &#39;a_Bluff&#39; &#39;a_PortChalmers&#39; &#39;a_Tauranga&#39;
+ &#39;a_Napier&#39; &#39;a_Nelson&#39;] 
+
+
+ which correspond to 
+ [689, 328, 393, 1327, 393, 480, 999, 116, 224, 1124, 949, 708] 
+ in Moana v2 hindcast 
+
+
+ calculated min distances (km) in Moana v2 hindcast to UHSLC tgs: 
+ [10.091858550595918, 5.125532152668501, 6.8976210810727725, 7.807937095794991, 6.8976210810727725, 8.749086655427975, 0.7284939428835768, 2.827544577707935, 8.837335750916106, 4.69880874581877, 1.8441234559361168, 4.255617965386278] 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_4_1.png" src="../_images/models_linear_test_4_1.png" />
+<img alt="../_images/models_linear_test_4_2.png" src="../_images/models_linear_test_4_2.png" />
+<img alt="../_images/models_linear_test_4_3.png" src="../_images/models_linear_test_4_3.png" />
+<img alt="../_images/models_linear_test_4_4.png" src="../_images/models_linear_test_4_4.png" />
+<img alt="../_images/models_linear_test_4_5.png" src="../_images/models_linear_test_4_5.png" />
+<img alt="../_images/models_linear_test_4_6.png" src="../_images/models_linear_test_4_6.png" />
+<img alt="../_images/models_linear_test_4_7.png" src="../_images/models_linear_test_4_7.png" />
+<img alt="../_images/models_linear_test_4_8.png" src="../_images/models_linear_test_4_8.png" />
+<img alt="../_images/models_linear_test_4_9.png" src="../_images/models_linear_test_4_9.png" />
+<img alt="../_images/models_linear_test_4_10.png" src="../_images/models_linear_test_4_10.png" />
+<img alt="../_images/models_linear_test_4_11.png" src="../_images/models_linear_test_4_11.png" />
+<img alt="../_images/models_linear_test_4_12.png" src="../_images/models_linear_test_4_12.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand_reduced</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<title>Show/Hide data repr</title>
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<title>Show/Hide attributes</title>
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+.xr-wrap {
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt, dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><div class='xr-wrap'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-84c9fc63-1542-44e5-8569-dd6a7769dddb' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-84c9fc63-1542-44e5-8569-dd6a7769dddb' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>site</span>: 12</li><li><span class='xr-has-index'>time</span>: 209736</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-feaf15f2-cece-4ccc-b948-a9b1a7148828' class='xr-section-summary-in' type='checkbox'  checked><label for='section-feaf15f2-cece-4ccc-b948-a9b1a7148828' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>689 328 393 1327 ... 1124 949 708</div><input id='attrs-85687908-fb3d-450f-a623-c466cd8db553' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-85687908-fb3d-450f-a623-c466cd8db553' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0137e36b-6aad-4a7b-af7d-ccd7cbc66f77' class='xr-var-data-in' type='checkbox'><label for='data-0137e36b-6aad-4a7b-af7d-ccd7cbc66f77' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([ 689,  328,  393, 1327,  393,  480,  999,  116,  224, 1124,  949,  708])</pre></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>1994-01-17 ... 2017-12-09</div><input id='attrs-878587be-9f48-42fb-9950-d44f77ddb6ec' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-878587be-9f48-42fb-9950-d44f77ddb6ec' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-eeca7832-748b-4998-ad7b-33eab61a9896' class='xr-var-data-in' type='checkbox'><label for='data-eeca7832-748b-4998-ad7b-33eab61a9896' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([&#x27;1994-01-17T00:00:00.000000000&#x27;, &#x27;1994-01-17T01:00:00.000000000&#x27;,
+       &#x27;1994-01-17T02:00:00.000000000&#x27;, ..., &#x27;2017-12-08T22:00:00.000000000&#x27;,
+       &#x27;2017-12-08T23:00:00.000000000&#x27;, &#x27;2017-12-09T00:00:00.000000000&#x27;],
+      dtype=&#x27;datetime64[ns]&#x27;)</pre></li><li class='xr-var-item'><div class='xr-var-name'><span>tg_names</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;a_Wellington&#x27; ... &#x27;a_Nelson&#x27;</div><input id='attrs-28543184-2d89-4c71-abfe-636ca3fc69cc' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-28543184-2d89-4c71-abfe-636ca3fc69cc' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9d58c100-ac2a-4409-b11f-5f9e908c7aaf' class='xr-var-data-in' type='checkbox'><label for='data-9d58c100-ac2a-4409-b11f-5f9e908c7aaf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([&#x27;a_Wellington&#x27;, &#x27;a_Timaru&#x27;, &#x27;b_JacksonBay&#x27;, &#x27;a_MarsdenPoint&#x27;,
+       &#x27;a_JacksonBay&#x27;, &#x27;a_Lyttelton&#x27;, &#x27;a_Taranaki&#x27;, &#x27;a_Bluff&#x27;,
+       &#x27;a_PortChalmers&#x27;, &#x27;a_Tauranga&#x27;, &#x27;a_Napier&#x27;, &#x27;a_Nelson&#x27;],
+      dtype=object)</pre></li></ul></div></li><li class='xr-section-item'><input id='section-16935b38-302f-4b2f-8e25-05b76c3e5d1a' class='xr-section-summary-in' type='checkbox'  checked><label for='section-16935b38-302f-4b2f-8e25-05b76c3e5d1a' class='xr-section-summary' >Data variables: <span>(13)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>elev</span></div><div class='xr-var-dims'>(site, time)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 104868), meta=np.ndarray&gt;</div><input id='attrs-2d373bbd-8faf-4314-9ccf-955c38eef318' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-2d373bbd-8faf-4314-9ccf-955c38eef318' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-46aa1b38-5048-4640-ae1b-8bb3ceb0232b' class='xr-var-data-in' type='checkbox'><label for='data-46aa1b38-5048-4640-ae1b-8bb3ceb0232b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>water_level</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 10.07 MB </td> <td> 419.47 kB </td></tr>
+    <tr><th> Shape </th><td> (12, 209736) </td> <td> (1, 104868) </td></tr>
+    <tr><th> Count </th><td> 2921 Tasks </td><td> 24 Chunks </td></tr>
+    <tr><th> Type </th><td> float32 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="2" x2="120" y2="2" />
+  <line x1="0" y1="4" x2="120" y2="4" />
+  <line x1="0" y1="6" x2="120" y2="6" />
+  <line x1="0" y1="8" x2="120" y2="8" />
+  <line x1="0" y1="10" x2="120" y2="10" />
+  <line x1="0" y1="12" x2="120" y2="12" />
+  <line x1="0" y1="14" x2="120" y2="14" />
+  <line x1="0" y1="16" x2="120" y2="16" />
+  <line x1="0" y1="19" x2="120" y2="19" />
+  <line x1="0" y1="21" x2="120" y2="21" />
+  <line x1="0" y1="23" x2="120" y2="23" />
+  <line x1="0" y1="25" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="25" style="stroke-width:2" />
+  <line x1="60" y1="0" x2="60" y2="25" />
+  <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >209736</text>
+  <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">12</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1,), meta=np.ndarray&gt;</div><input id='attrs-944474e8-fc7d-4f00-9e53-01e43fd29d92' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-944474e8-fc7d-4f00-9e53-01e43fd29d92' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f7436a93-8bd7-40be-952f-935fa55d9175' class='xr-var-data-in' type='checkbox'><label for='data-f7436a93-8bd7-40be-952f-935fa55d9175' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>latitude</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 96 B </td> <td> 8 B </td></tr>
+    <tr><th> Shape </th><td> (12,) </td> <td> (1,) </td></tr>
+    <tr><th> Count </th><td> 1461 Tasks </td><td> 12 Chunks </td></tr>
+    <tr><th> Type </th><td> float64 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="87" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="37" x2="120" y2="37" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="37" style="stroke-width:2" />
+  <line x1="10" y1="0" x2="10" y2="37" />
+  <line x1="20" y1="0" x2="20" y2="37" />
+  <line x1="30" y1="0" x2="30" y2="37" />
+  <line x1="40" y1="0" x2="40" y2="37" />
+  <line x1="50" y1="0" x2="50" y2="37" />
+  <line x1="60" y1="0" x2="60" y2="37" />
+  <line x1="70" y1="0" x2="70" y2="37" />
+  <line x1="80" y1="0" x2="80" y2="37" />
+  <line x1="90" y1="0" x2="90" y2="37" />
+  <line x1="100" y1="0" x2="100" y2="37" />
+  <line x1="110" y1="0" x2="110" y2="37" />
+  <line x1="120" y1="0" x2="120" y2="37" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,37.563587 0.000000,37.563587" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="57.563587" font-size="1.0rem" font-weight="100" text-anchor="middle" >12</text>
+  <text x="140.000000" y="18.781793" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,18.781793)">1</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1,), meta=np.ndarray&gt;</div><input id='attrs-520bfc16-e750-41bd-91bb-9e9b5fd269e7' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-520bfc16-e750-41bd-91bb-9e9b5fd269e7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-13b823b1-89ac-48fc-a8c3-7f645e0f3715' class='xr-var-data-in' type='checkbox'><label for='data-13b823b1-89ac-48fc-a8c3-7f645e0f3715' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>longitude</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 96 B </td> <td> 8 B </td></tr>
+    <tr><th> Shape </th><td> (12,) </td> <td> (1,) </td></tr>
+    <tr><th> Count </th><td> 1461 Tasks </td><td> 12 Chunks </td></tr>
+    <tr><th> Type </th><td> float64 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="87" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="37" x2="120" y2="37" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="37" style="stroke-width:2" />
+  <line x1="10" y1="0" x2="10" y2="37" />
+  <line x1="20" y1="0" x2="20" y2="37" />
+  <line x1="30" y1="0" x2="30" y2="37" />
+  <line x1="40" y1="0" x2="40" y2="37" />
+  <line x1="50" y1="0" x2="50" y2="37" />
+  <line x1="60" y1="0" x2="60" y2="37" />
+  <line x1="70" y1="0" x2="70" y2="37" />
+  <line x1="80" y1="0" x2="80" y2="37" />
+  <line x1="90" y1="0" x2="90" y2="37" />
+  <line x1="100" y1="0" x2="100" y2="37" />
+  <line x1="110" y1="0" x2="110" y2="37" />
+  <line x1="120" y1="0" x2="120" y2="37" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,37.563587 0.000000,37.563587" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="57.563587" font-size="1.0rem" font-weight="100" text-anchor="middle" >12</text>
+  <text x="140.000000" y="18.781793" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,18.781793)">1</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>msea</span></div><div class='xr-var-dims'>(site, time)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 104868), meta=np.ndarray&gt;</div><input id='attrs-6a0c3440-e14c-46db-9929-a56ca6e4dd8b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6a0c3440-e14c-46db-9929-a56ca6e4dd8b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ca0d0d49-022a-45e6-952c-191af92aebbf' class='xr-var-data-in' type='checkbox'><label for='data-ca0d0d49-022a-45e6-952c-191af92aebbf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>monthly_sea_level_variation</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 10.07 MB </td> <td> 419.47 kB </td></tr>
+    <tr><th> Shape </th><td> (12, 209736) </td> <td> (1, 104868) </td></tr>
+    <tr><th> Count </th><td> 2921 Tasks </td><td> 24 Chunks </td></tr>
+    <tr><th> Type </th><td> float32 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="2" x2="120" y2="2" />
+  <line x1="0" y1="4" x2="120" y2="4" />
+  <line x1="0" y1="6" x2="120" y2="6" />
+  <line x1="0" y1="8" x2="120" y2="8" />
+  <line x1="0" y1="10" x2="120" y2="10" />
+  <line x1="0" y1="12" x2="120" y2="12" />
+  <line x1="0" y1="14" x2="120" y2="14" />
+  <line x1="0" y1="16" x2="120" y2="16" />
+  <line x1="0" y1="19" x2="120" y2="19" />
+  <line x1="0" y1="21" x2="120" y2="21" />
+  <line x1="0" y1="23" x2="120" y2="23" />
+  <line x1="0" y1="25" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="25" style="stroke-width:2" />
+  <line x1="60" y1="0" x2="60" y2="25" />
+  <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >209736</text>
+  <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">12</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>res</span></div><div class='xr-var-dims'>(site, time)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 104868), meta=np.ndarray&gt;</div><input id='attrs-1c874239-040e-472e-a6d4-11e2e22a914f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1c874239-040e-472e-a6d4-11e2e22a914f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a1fd1ac4-adf5-49c2-aa74-a842699dc028' class='xr-var-data-in' type='checkbox'><label for='data-a1fd1ac4-adf5-49c2-aa74-a842699dc028' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>residual</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 10.07 MB </td> <td> 419.47 kB </td></tr>
+    <tr><th> Shape </th><td> (12, 209736) </td> <td> (1, 104868) </td></tr>
+    <tr><th> Count </th><td> 2921 Tasks </td><td> 24 Chunks </td></tr>
+    <tr><th> Type </th><td> float32 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="2" x2="120" y2="2" />
+  <line x1="0" y1="4" x2="120" y2="4" />
+  <line x1="0" y1="6" x2="120" y2="6" />
+  <line x1="0" y1="8" x2="120" y2="8" />
+  <line x1="0" y1="10" x2="120" y2="10" />
+  <line x1="0" y1="12" x2="120" y2="12" />
+  <line x1="0" y1="14" x2="120" y2="14" />
+  <line x1="0" y1="16" x2="120" y2="16" />
+  <line x1="0" y1="19" x2="120" y2="19" />
+  <line x1="0" y1="21" x2="120" y2="21" />
+  <line x1="0" y1="23" x2="120" y2="23" />
+  <line x1="0" y1="25" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="25" style="stroke-width:2" />
+  <line x1="60" y1="0" x2="60" y2="25" />
+  <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >209736</text>
+  <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">12</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>ss</span></div><div class='xr-var-dims'>(site, time)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>nan nan nan nan ... nan nan nan nan</div><input id='attrs-12aa3260-3dea-4742-89b0-934a700ed497' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-12aa3260-3dea-4742-89b0-934a700ed497' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-08f7f723-c9ec-4728-b15f-e4615d5d7c5d' class='xr-var-data-in' type='checkbox'><label for='data-08f7f723-c9ec-4728-b15f-e4615d5d7c5d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>storm_surge</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><pre class='xr-var-data'>array([[nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       ...,
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan]], dtype=float32)</pre></li><li class='xr-var-item'><div class='xr-var-name'><span>tide</span></div><div class='xr-var-dims'>(site, time)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 104868), meta=np.ndarray&gt;</div><input id='attrs-144c7cb2-45a2-400e-ab52-de9d821be121' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-144c7cb2-45a2-400e-ab52-de9d821be121' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-722bb7ea-955d-40ee-99d7-68bbe9a20a7b' class='xr-var-data-in' type='checkbox'><label for='data-722bb7ea-955d-40ee-99d7-68bbe9a20a7b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>tide</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 10.07 MB </td> <td> 419.47 kB </td></tr>
+    <tr><th> Shape </th><td> (12, 209736) </td> <td> (1, 104868) </td></tr>
+    <tr><th> Count </th><td> 2921 Tasks </td><td> 24 Chunks </td></tr>
+    <tr><th> Type </th><td> float32 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="2" x2="120" y2="2" />
+  <line x1="0" y1="4" x2="120" y2="4" />
+  <line x1="0" y1="6" x2="120" y2="6" />
+  <line x1="0" y1="8" x2="120" y2="8" />
+  <line x1="0" y1="10" x2="120" y2="10" />
+  <line x1="0" y1="12" x2="120" y2="12" />
+  <line x1="0" y1="14" x2="120" y2="14" />
+  <line x1="0" y1="16" x2="120" y2="16" />
+  <line x1="0" y1="19" x2="120" y2="19" />
+  <line x1="0" y1="21" x2="120" y2="21" />
+  <line x1="0" y1="23" x2="120" y2="23" />
+  <line x1="0" y1="25" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="25" style="stroke-width:2" />
+  <line x1="60" y1="0" x2="60" y2="25" />
+  <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >209736</text>
+  <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">12</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>trend</span></div><div class='xr-var-dims'>(site, time)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 104868), meta=np.ndarray&gt;</div><input id='attrs-41a02901-654f-4cbb-ac8f-7e02cf344422' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-41a02901-654f-4cbb-ac8f-7e02cf344422' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2b732794-4ad7-4390-b350-69423773f051' class='xr-var-data-in' type='checkbox'><label for='data-2b732794-4ad7-4390-b350-69423773f051' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>trend</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><pre class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 10.07 MB </td> <td> 419.47 kB </td></tr>
+    <tr><th> Shape </th><td> (12, 209736) </td> <td> (1, 104868) </td></tr>
+    <tr><th> Count </th><td> 2921 Tasks </td><td> 24 Chunks </td></tr>
+    <tr><th> Type </th><td> float32 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="2" x2="120" y2="2" />
+  <line x1="0" y1="4" x2="120" y2="4" />
+  <line x1="0" y1="6" x2="120" y2="6" />
+  <line x1="0" y1="8" x2="120" y2="8" />
+  <line x1="0" y1="10" x2="120" y2="10" />
+  <line x1="0" y1="12" x2="120" y2="12" />
+  <line x1="0" y1="14" x2="120" y2="14" />
+  <line x1="0" y1="16" x2="120" y2="16" />
+  <line x1="0" y1="19" x2="120" y2="19" />
+  <line x1="0" y1="21" x2="120" y2="21" />
+  <line x1="0" y1="23" x2="120" y2="23" />
+  <line x1="0" y1="25" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="25" style="stroke-width:2" />
+  <line x1="60" y1="0" x2="60" y2="25" />
+  <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >209736</text>
+  <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">12</text>
+</svg>
+</td>
+</tr>
+</table></pre></li><li class='xr-var-item'><div class='xr-var-name'><span>bias</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>9.83e-05 -6.339e-05 ... 0.0002892</div><input id='attrs-cdc217bf-363a-49ce-b20d-9022cfd9cd8c' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-cdc217bf-363a-49ce-b20d-9022cfd9cd8c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d3ccca95-a29a-4b2f-b439-e93530c6b79c' class='xr-var-data-in' type='checkbox'><label for='data-d3ccca95-a29a-4b2f-b439-e93530c6b79c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([ 9.82987476e-05, -6.33909658e-05, -4.18706622e-05,  2.62646965e-04,
+       -6.27627378e-05, -1.93242042e-04, -1.92535488e-04, -2.70706427e-04,
+       -2.97594146e-04,  9.30247261e-05,  3.02087021e-04,  2.89180432e-04])</pre></li><li class='xr-var-item'><div class='xr-var-name'><span>si</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.299 0.2932 0.3447 ... 0.3018 0.38</div><input id='attrs-0420c827-deb2-4192-940a-0e93c7c85ddd' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-0420c827-deb2-4192-940a-0e93c7c85ddd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-52888dfa-c8e1-4eba-8a5e-deb797b05112' class='xr-var-data-in' type='checkbox'><label for='data-52888dfa-c8e1-4eba-8a5e-deb797b05112' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([0.2989673 , 0.29324853, 0.34466332, 0.35949746, 0.34241506,
+       0.28815025, 0.29367313, 0.26163888, 0.25788191, 0.3615666 ,
+       0.30175358, 0.37995064])</pre></li><li class='xr-var-item'><div class='xr-var-name'><span>rmse</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.02485 0.03094 ... 0.0222 0.02726</div><input id='attrs-a045df44-ff7c-45a3-9336-17674a85a83e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a045df44-ff7c-45a3-9336-17674a85a83e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fdb68408-c2ac-443f-825c-0c0c7d307905' class='xr-var-data-in' type='checkbox'><label for='data-fdb68408-c2ac-443f-825c-0c0c7d307905' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([0.02485024, 0.03093637, 0.0347046 , 0.02121043, 0.03359842,
+       0.02711062, 0.02600062, 0.0304496 , 0.0246298 , 0.0219823 ,
+       0.0221971 , 0.02726038])</pre></li><li class='xr-var-item'><div class='xr-var-name'><span>pearson</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.9566 0.9561 ... 0.9541 0.9252</div><input id='attrs-872ac225-1951-4bae-9956-b2cb968305f0' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-872ac225-1951-4bae-9956-b2cb968305f0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c6ee1222-d51a-41b0-9467-0e784960a0e7' class='xr-var-data-in' type='checkbox'><label for='data-c6ee1222-d51a-41b0-9467-0e784960a0e7' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([0.95660917, 0.95612185, 0.94835944, 0.93587369, 0.94287657,
+       0.95991538, 0.95619356, 0.96555368, 0.96900873, 0.93395224,
+       0.95408901, 0.92521875])</pre></li><li class='xr-var-item'><div class='xr-var-name'><span>spearman</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.9534 0.9575 ... 0.9516 0.92</div><input id='attrs-eeed3b1b-1acf-4d99-b8c4-13f61cec3fd0' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-eeed3b1b-1acf-4d99-b8c4-13f61cec3fd0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ce214be3-1631-4729-b652-fbf032aea186' class='xr-var-data-in' type='checkbox'><label for='data-ce214be3-1631-4729-b652-fbf032aea186' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><pre class='xr-var-data'>array([0.95340069, 0.95752445, 0.9498378 , 0.92295489, 0.94173404,
+       0.95852114, 0.95179974, 0.96604628, 0.9703251 , 0.92769031,
+       0.95160588, 0.91998073])</pre></li></ul></div></li><li class='xr-section-item'><input id='section-d74077d0-ef88-4bd2-a57b-8fe4250175ba' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-d74077d0-ef88-4bd2-a57b-8fe4250175ba' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+</div>
+</div>
+<div class="section" id="load-calculate-the-pcs">
+<h2>load / calculate the pcs<a class="headerlink" href="#load-calculate-the-pcs" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;../data/cfsr/cfsr_regional_daily_pcs.nc&#39;</span><span class="p">):</span>
+    <span class="n">pcs_cfsr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="s1">&#39;../data/cfsr/cfsr_regional_daily_pcs.nc&#39;</span>
+    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_pcs</span>
+    <span class="n">plot_pcs</span><span class="p">(</span><span class="n">pcs_cfsr</span><span class="p">,</span><span class="n">n_plot</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_7_1.png" src="../_images/models_linear_test_7_1.png" />
+<img alt="../_images/models_linear_test_7_2.png" src="../_images/models_linear_test_7_2.png" />
+<img alt="../_images/models_linear_test_7_3.png" src="../_images/models_linear_test_7_3.png" />
+<img alt="../_images/models_linear_test_7_4.png" src="../_images/models_linear_test_7_4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># validate model with tgs</span>
+<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand_reduced</span><span class="o">.</span><span class="n">tg_names</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand_reduced</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
+        <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
+            <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span>
+            <span class="n">wind_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
+            <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">1.5</span>
+            <span class="p">)),</span>
+            <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span> <span class="s1">&#39;WINDs in t&#39;</span><span class="p">]</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
+            <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_1.png" src="../_images/models_linear_test_8_1.png" />
+<img alt="../_images/models_linear_test_8_2.png" src="../_images/models_linear_test_8_2.png" />
+<img alt="../_images/models_linear_test_8_3.png" src="../_images/models_linear_test_8_3.png" />
+<img alt="../_images/models_linear_test_8_4.png" src="../_images/models_linear_test_8_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 5 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_6.png" src="../_images/models_linear_test_8_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.71, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.77, 0.76)
+ R score: 0.59 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_8.png" src="../_images/models_linear_test_8_8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_10.png" src="../_images/models_linear_test_8_10.png" />
+<img alt="../_images/models_linear_test_8_11.png" src="../_images/models_linear_test_8_11.png" />
+<img alt="../_images/models_linear_test_8_12.png" src="../_images/models_linear_test_8_12.png" />
+<img alt="../_images/models_linear_test_8_13.png" src="../_images/models_linear_test_8_13.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_15.png" src="../_images/models_linear_test_8_15.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.98, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.65, 0.66)
+ R score: 0.43 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_17.png" src="../_images/models_linear_test_8_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_19.png" src="../_images/models_linear_test_8_19.png" />
+<img alt="../_images/models_linear_test_8_20.png" src="../_images/models_linear_test_8_20.png" />
+<img alt="../_images/models_linear_test_8_21.png" src="../_images/models_linear_test_8_21.png" />
+<img alt="../_images/models_linear_test_8_22.png" src="../_images/models_linear_test_8_22.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_24.png" src="../_images/models_linear_test_8_24.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.68, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.79, 0.78)
+ R score: 0.62 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_26.png" src="../_images/models_linear_test_8_26.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_28.png" src="../_images/models_linear_test_8_28.png" />
+<img alt="../_images/models_linear_test_8_29.png" src="../_images/models_linear_test_8_29.png" />
+<img alt="../_images/models_linear_test_8_30.png" src="../_images/models_linear_test_8_30.png" />
+<img alt="../_images/models_linear_test_8_31.png" src="../_images/models_linear_test_8_31.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_33.png" src="../_images/models_linear_test_8_33.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 1.04, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.60, 0.59)
+ R score: 0.35 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_35.png" src="../_images/models_linear_test_8_35.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_37.png" src="../_images/models_linear_test_8_37.png" />
+<img alt="../_images/models_linear_test_8_38.png" src="../_images/models_linear_test_8_38.png" />
+<img alt="../_images/models_linear_test_8_39.png" src="../_images/models_linear_test_8_39.png" />
+<img alt="../_images/models_linear_test_8_40.png" src="../_images/models_linear_test_8_40.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_42.png" src="../_images/models_linear_test_8_42.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.68, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.79, 0.78)
+ R score: 0.62 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_44.png" src="../_images/models_linear_test_8_44.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_46.png" src="../_images/models_linear_test_8_46.png" />
+<img alt="../_images/models_linear_test_8_47.png" src="../_images/models_linear_test_8_47.png" />
+<img alt="../_images/models_linear_test_8_48.png" src="../_images/models_linear_test_8_48.png" />
+<img alt="../_images/models_linear_test_8_49.png" src="../_images/models_linear_test_8_49.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_51.png" src="../_images/models_linear_test_8_51.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 1.05, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.62, 0.63)
+ R score: 0.39 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_53.png" src="../_images/models_linear_test_8_53.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_55.png" src="../_images/models_linear_test_8_55.png" />
+<img alt="../_images/models_linear_test_8_56.png" src="../_images/models_linear_test_8_56.png" />
+<img alt="../_images/models_linear_test_8_57.png" src="../_images/models_linear_test_8_57.png" />
+<img alt="../_images/models_linear_test_8_58.png" src="../_images/models_linear_test_8_58.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_60.png" src="../_images/models_linear_test_8_60.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.87, RMSE: 0.06
+ and Correlation (Pearson, Spearman): (0.74, 0.73)
+ R score: 0.55 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_62.png" src="../_images/models_linear_test_8_62.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_64.png" src="../_images/models_linear_test_8_64.png" />
+<img alt="../_images/models_linear_test_8_65.png" src="../_images/models_linear_test_8_65.png" />
+<img alt="../_images/models_linear_test_8_66.png" src="../_images/models_linear_test_8_66.png" />
+<img alt="../_images/models_linear_test_8_67.png" src="../_images/models_linear_test_8_67.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_69.png" src="../_images/models_linear_test_8_69.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.74, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.74, 0.74)
+ R score: 0.55 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_71.png" src="../_images/models_linear_test_8_71.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_73.png" src="../_images/models_linear_test_8_73.png" />
+<img alt="../_images/models_linear_test_8_74.png" src="../_images/models_linear_test_8_74.png" />
+<img alt="../_images/models_linear_test_8_75.png" src="../_images/models_linear_test_8_75.png" />
+<img alt="../_images/models_linear_test_8_76.png" src="../_images/models_linear_test_8_76.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_78.png" src="../_images/models_linear_test_8_78.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.81, RMSE: 0.06
+ and Correlation (Pearson, Spearman): (0.72, 0.71)
+ R score: 0.51 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_80.png" src="../_images/models_linear_test_8_80.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_82.png" src="../_images/models_linear_test_8_82.png" />
+<img alt="../_images/models_linear_test_8_83.png" src="../_images/models_linear_test_8_83.png" />
+<img alt="../_images/models_linear_test_8_84.png" src="../_images/models_linear_test_8_84.png" />
+<img alt="../_images/models_linear_test_8_85.png" src="../_images/models_linear_test_8_85.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_87.png" src="../_images/models_linear_test_8_87.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.81, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.70, 0.69)
+ R score: 0.48 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_89.png" src="../_images/models_linear_test_8_89.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_91.png" src="../_images/models_linear_test_8_91.png" />
+<img alt="../_images/models_linear_test_8_92.png" src="../_images/models_linear_test_8_92.png" />
+<img alt="../_images/models_linear_test_8_93.png" src="../_images/models_linear_test_8_93.png" />
+<img alt="../_images/models_linear_test_8_94.png" src="../_images/models_linear_test_8_94.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_96.png" src="../_images/models_linear_test_8_96.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.77, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.75, 0.74)
+ R score: 0.56 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_98.png" src="../_images/models_linear_test_8_98.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 6, 6) 
+
+
+ calculated PCs matrix with shape: 
+ (11353, 72) 
+
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_100.png" src="../_images/models_linear_test_8_100.png" />
+<img alt="../_images/models_linear_test_8_101.png" src="../_images/models_linear_test_8_101.png" />
+<img alt="../_images/models_linear_test_8_102.png" src="../_images/models_linear_test_8_102.png" />
+<img alt="../_images/models_linear_test_8_103.png" src="../_images/models_linear_test_8_103.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 7 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_105.png" src="../_images/models_linear_test_8_105.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.82, RMSE: 0.04
+ and Correlation (Pearson, Spearman): (0.71, 0.70)
+ R score: 0.51 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_linear_test_8_107.png" src="../_images/models_linear_test_8_107.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Javier Tausía Hoyal<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

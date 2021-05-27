@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. LINEAR REGRESSION &#8212; Storm Surge NZ - Summary - 21/05/2021</title>
+    <title>5. LINEAR REGRESSION &#8212; Storm Surge NZ - Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -52,6 +52,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="6. KNN REGRESSOR" href="models_knn.html" />
@@ -77,7 +78,7 @@
   <img src="../_static/logo.jpeg" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary - 21/05/2021</h1>
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -238,27 +239,32 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   5.1. load the data
+   5.1. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-calculate-the-pcs">
-   5.2. load / calculate the pcs
+   5.2. Load / calculate the pcs
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-regional-predictor">
-   5.3. linear regression with regional predictor
+   5.3. Linear regression with regional predictor
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#linear-regression-in-the-uhslc-tidal-gauges-validation">
+   5.4. Linear regression in the UHSLC tidal gauges + validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-ana-s-paper">
-   5.4. linear regression - Ana’s paper
+   5.5. linear regression - Ana’s paper
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-local-predictor">
-   5.5. linear regression with local predictor
+   5.6. linear regression with local predictor
   </a>
  </li>
 </ul>
@@ -308,12 +314,12 @@
 </div>
 </div>
 <div class="section" id="load-the-data">
-<h2><span class="section-number">5.1. </span>load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.1. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">]</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -323,35 +329,19 @@
 
 
  loading daily resampled data... 
-</pre></div>
-</div>
-<img alt="../_images/models_linear_3_1.png" src="../_images/models_linear_3_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
-</pre></div>
-</div>
-<img alt="../_images/models_linear_3_3.png" src="../_images/models_linear_3_3.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
-</pre></div>
-</div>
-<img alt="../_images/models_linear_3_5.png" src="../_images/models_linear_3_5.png" />
-<img alt="../_images/models_linear_3_6.png" src="../_images/models_linear_3_6.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(173.9, -40.5)
+
+
+ loading the Moana v2 hindcast data... 
+
+
+ loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="load-calculate-the-pcs">
-<h2><span class="section-number">5.2. </span>load / calculate the pcs<a class="headerlink" href="#load-calculate-the-pcs" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.2. </span>Load / calculate the pcs<a class="headerlink" href="#load-calculate-the-pcs" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
@@ -359,8 +349,8 @@
     <span class="n">pcs_cfsr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
         <span class="s1">&#39;../data/cfsr/cfsr_regional_daily_pcs.nc&#39;</span>
     <span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_pcs</span>
-    <span class="n">plot_pcs</span><span class="p">(</span><span class="n">pcs_cfsr</span><span class="p">,</span><span class="n">n_plot</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># from sscode.plotting.pca import plot_pcs</span>
+    <span class="c1"># plot_pcs(pcs_cfsr,n_plot=3)</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="c1"># calculate the pcs</span>
     <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
@@ -370,24 +360,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 3 components with 2 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_linear_6_1.png" src="../_images/models_linear_6_1.png" />
-<img alt="../_images/models_linear_6_2.png" src="../_images/models_linear_6_2.png" />
-<img alt="../_images/models_linear_6_3.png" src="../_images/models_linear_6_3.png" />
-<img alt="../_images/models_linear_6_4.png" src="../_images/models_linear_6_4.png" />
-<img alt="../_images/models_linear_6_5.png" src="../_images/models_linear_6_5.png" />
-<img alt="../_images/models_linear_6_6.png" src="../_images/models_linear_6_6.png" />
-</div>
 </div>
 </div>
 <div class="section" id="linear-regression-with-regional-predictor">
-<h2><span class="section-number">5.3. </span>linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
@@ -443,9 +419,12 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_9_0.png" src="../_images/models_linear_9_0.png" />
+<img alt="../_images/models_linear_8_0.png" src="../_images/models_linear_8_0.png" />
 </div>
 </div>
+</div>
+<div class="section" id="linear-regression-in-the-uhslc-tidal-gauges-validation">
+<h2><span class="section-number">5.4. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the uhslc tidal-gauges locations</span>
@@ -601,7 +580,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-ana-s-paper">
-<h2><span class="section-number">5.4. </span>linear regression - Ana’s paper<a class="headerlink" href="#linear-regression-ana-s-paper" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.5. </span>linear regression - Ana’s paper<a class="headerlink" href="#linear-regression-ana-s-paper" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># linear regression in kapiti island</span>
@@ -654,7 +633,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-with-local-predictor">
-<h2><span class="section-number">5.5. </span>linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.6. </span>linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
