@@ -117,7 +117,7 @@ def KMA_simple(slp_data, ss_data, pca_data,
                 gev_matrix(ss_cluster.interp(
                         lon=np.arange(160,185,0.3),
                         lat=np.arange(-52,-30,0.3)
-                    ), # .resample(time='1M').max(),
+                    ), #.resample(time='1M').max(),
                     'lon','lat',plot=False # check code PEP8
                 )[['mu','phi','xi']].expand_dims(
                     {'n_clusters':[clus]}
