@@ -15,3 +15,7 @@ dependencies:
   - pip
   - pip:
     - progressbar2
+    - jupyter-book
+    - cookiecutter
+    - pytest
+    - black
