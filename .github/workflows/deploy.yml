@@ -30,8 +30,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        conda init
         conda env create -f environment.yml -n ssnz
-        conda activate nz
+        conda activate ssnz
     # Build the example book
     - name: Build book
       run: |
