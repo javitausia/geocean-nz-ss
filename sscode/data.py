@@ -28,7 +28,7 @@ warnings.filterwarnings('ignore')
 loader_dict_options = {
     'predictor': ['cfsr','era5'],
     'predictand': ['dac','moana','codec'],
-    'validator': ['uhslc','geotgs']
+    'validator': ['uhslc','privtgs']
 }
 # dataset attrs
 datasets_attrs = {
@@ -36,7 +36,7 @@ datasets_attrs = {
     'moana': ('lon','lat','site','Moana v2 hindcast'),
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
     'uhslc': ('longitude','latitude','name','UHSLC tgs'),
-    'geotgs': ('longitude','latitude','name','GeoOcean tgs')
+    'privtgs': ('longitude','latitude','name','Private tgs')
 }
 
 
@@ -46,6 +46,8 @@ class Loader(object):
     useful if all the data is wanted to be loaded at the same time, and then the
     methods in the class can be easily used, specifying just the list with all
     the datasets in the correct order
+
+    TODO: add models to Loader class
 
     """
 
@@ -70,16 +72,22 @@ class Loader(object):
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
             if data_to_load[0]=='era5':
-                predictor = load_era5(time=time_resample,load_winds=(True,location),
-                                      plt=plot)
+                predictor = load_era5(
+                    time=time_resample,
+                    load_winds=(True,location),
+                    plot=plot
+                )
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
                     self.predictor_slp = predictor[0]
                     self.predictor_wind = predictor[1]
             elif data_to_load[0]=='cfsr':
-                predictor = load_cfsr(time=time_resample,load_winds=(True,location),
-                                      plot=plot)
+                predictor = load_cfsr(
+                    time=time_resample,
+                    load_winds=(True,location),
+                    plot=plot
+                )
                 if len(predictor)==1:
                     self.predictor_slp = predictor
                 else:
@@ -108,8 +116,8 @@ class Loader(object):
             if data_to_load[2]=='uhslc':
                 self.validator = join_load_uhslc_tgs(plot=plot)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
-            elif data_to_load[2]=='geotgs':
-                self.validator = load_geocean_tgs(plot=plot)
+            elif data_to_load[2]=='privtgs':
+                self.validator = load_private_tgs(plot=plot)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             else:
                 print('\n data not available for the validation!! \n')
@@ -138,7 +146,7 @@ def load_era5(data_path: str = data_path,
     """
     This function loas era5 data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
-    work will all the data at the same time. The winds can be easily
+    work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
     location if requested
 
@@ -148,7 +156,7 @@ def load_era5(data_path: str = data_path,
         time (str, optional): Year to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 1D...
             - Defaults to '1997'.
-        load_winds: this indicates wheter the winds are loaded or not, and
+        load_winds: this indicates wether the winds are loaded or not, and
             the location of the projected winds
 
     Returns:
@@ -172,7 +180,6 @@ def load_era5(data_path: str = data_path,
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
-
         else:
             print('\n resampling data to {}... \n'.format(time))
             mslp = xr.open_dataset(data_path+'/era_5/ERA5_MSLP_1H_1979_2021.nc')['msl']\
@@ -231,7 +238,7 @@ def load_cfsr(data_path: str = data_path,
     """
     This function loas cfsr data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
-    work will all the data at the same time. The winds can be easily
+    work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
     location if requested
 
@@ -263,7 +270,6 @@ def load_cfsr(data_path: str = data_path,
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
-
         else:
             print('\n resampling data to {}... \n'.format(time))
             mslp = xr.open_dataarray(data_path+'/cfsr/CFSR_MSLP_1H_1990_2021.nc')\
@@ -332,7 +338,7 @@ def join_load_uhslc_tgs(files_path: str =
         )
 
     # join and plot
-    uhslc_tgs = xr.concat(uhslc_tgs_list,dim='name') # TODO: combine_attrs='drop'
+    uhslc_tgs = xr.concat(uhslc_tgs_list,dim='name') # TODO: add combine_attrs='drop'
     if plot: # plot if specified
         fig, ax = plt.subplots(figsize=_figsize)
         hue_plot = uhslc_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
@@ -355,12 +361,12 @@ def join_load_uhslc_tgs(files_path: str =
     return uhslc_tgs
 
 
-def load_geocean_tgs(file_path: str = 
+def load_private_tgs(file_path: str = 
     data_path+'/storm_surge_data/nz_tidal_gauges/geocean/tgs_geocean_NZ.nc',
     plot: bool = False):
 
     """
-    Load all the geocean tgs in a single xarrray dataset to play with it
+    Load some private tgs in a single xarrray dataset to play with it
 
     Returns:
         [xarray.Dataset]: xarray dataset with all the tgs and variables
@@ -373,7 +379,7 @@ def load_geocean_tgs(file_path: str =
     if plot: # plot if specified
         fig, ax = plt.subplots(figsize=_figsize)
         geocean_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
-        fig.suptitle('GeoOcean tidal gauges',fontsize=_fontsize_title)
+        fig.suptitle('Private tidal gauges',fontsize=_fontsize_title)
         ax.legend(list(geocean_tgs.name.values),loc='lower left',ncol=7)
         geocean_tgs.ss.plot(col='name',col_wrap=3,figsize=(12,7))
         # show results
@@ -405,14 +411,14 @@ def load_moana_hindcast(file_path: str =
         moana_to_plot = moana.ss.load().groupby('time.season').quantile(0.99)
         # plot some stats
         fig, axes = plt.subplots(
-            ncols=2,nrows=2,figsize=(_figsize_width*3.6,_figsize_height*2.6),
+            ncols=2,nrows=2,figsize=(_figsize_width*3.8,_figsize_height*2.6),
             subplot_kw={
                 'projection':ccrs.PlateCarree(
                     central_longitude=180
                 )
             }
         )
-        fig.suptitle('Moana shore nodes -- 0.99 quantiles',
+        fig.suptitle('Moana shore nodes -- 0.99 quantiles and season',
                      fontsize=_fontsize_title)
         for seas,ax in zip(moana_to_plot.season.values,axes.flatten()):
             p = ax.scatter(

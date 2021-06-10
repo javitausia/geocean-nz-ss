@@ -15,37 +15,49 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 # custom
+from .config import data_path
 from .statistical import gev_matrix
 from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs
 
 
 def KMA_simple(slp_data, ss_data, pca_data, 
                n_clusters=64, plot: bool = True,
-               calculate_gev_stats: bool = True):
-               
-    """[summary]
+               calculate_gev_stats: bool = True,
+               plot_gev: bool = (False,None,None)):
+    """
+    This function performs the commonly known weather typing
+    analysis (daily), where given the PCs of the sea-level-pressure
+    fields, this slp and the ss are classified
 
     Args:
-        slp_data ([type]): [description]
-        ss_data ([type]): [description]
-        pca_data ([type]): [description]
-        n_clusters (int, optional): [description]. Defaults to 64.
-        plot (bool, optional): [description]. Defaults to True.
-        calculate_gev_stats (bool, optional): [description]. Defaults to True.
+        slp_data (xarray.Dataset): These are the sea-level-pressure fields
+            data
+        ss_data (xarray.Dataset): This is the storm surge in the region where
+            the daily-wt will be applied
+        pca_data (xarray.Dataset): These are the PCs that were previously calculated
+            with the PCA_DynamicPred
+        n_clusters (int, optional): Number of clusters to get. Defaults to 64.
+        plot (bool, optional): Wheter to plot or not the results. Defaults to True.
+        calculate_gev_stats (bool, optional): Wheter to adjust or not the
+            nodes in each cluster to a gev with pyextremes. Defaults to True.
+        plot_gev (tuple, optional): This is a tuple with the validation data,
+            where this validation here refers to the data thats wants also to
+            be fitted to a GEV. Defaults to (False,None,None). An example of this:
+                - (True,[lons,lats],dataset) (see analysis_kma.ipynb)
 
     Returns:
-        [type]: [description]
+        [xarray.Datasets]: These are the xarray datasets of the analysis
     """
 
     # check time coherence
     common_times_pslp = np.intersect1d(
-        pd.to_datetime(slp_data.time.values).round('H'), 
-        pd.to_datetime(pca_data.time.values).round('H'),
+        pd.to_datetime(slp_data.time.values).round('D'), 
+        pd.to_datetime(pca_data.time.values).round('D'),
         return_indices=True
     )
     common_times = np.intersect1d(
         common_times_pslp[0],
-        pd.to_datetime(ss_data.time.values).round('H'),
+        pd.to_datetime(ss_data.time.values).round('D'),
         return_indices=True
     )
 
@@ -63,7 +75,7 @@ def KMA_simple(slp_data, ss_data, pca_data,
             common_times_pslp[2][common_times[1]], :num_pcs
         ].values,
         common_times_pslp[0][common_times[1]], 
-        train_size=0.9, 
+        train_size=0.95, 
         shuffle=False
     )
 
@@ -108,21 +120,26 @@ def KMA_simple(slp_data, ss_data, pca_data,
             )
         )
         ss_clusters_list_max.append(
-            ss_cluster.quantile(0.995,dim='time').expand_dims(
+            ss_cluster.quantile(0.95,dim='time').expand_dims(
                 {'n_clusters':[clus]}
             )
         )
         if calculate_gev_stats:
             gev_stats_list.append(
-                gev_matrix(ss_cluster.interp(
-                        lon=np.arange(160,185,0.3),
-                        lat=np.arange(-52,-30,0.3)
-                    ), #.resample(time='1M').max(),
-                    'lon','lat',plot=False # check code PEP8
-                )[['mu','phi','xi']].expand_dims(
+                gev_matrix(
+                    (ss_cluster * xr.open_dataarray(
+                        data_path+'/bathymetry/nz_300m_elev_mask.nc'
+                    )).dropna(dim='lon',how='all').dropna(dim='lat',how='all'), 
+                    # .interp(
+                    #     lon=np.arange(160,185,0.7),
+                    #     lat=np.arange(-52,-30,0.7)
+                    # ),
+                    'lon','lat',plot=False,
+                    cluster_number=clus # just to verbose
+                )[['ss','mu','phi','xi']].expand_dims(
                     {'n_clusters':[clus]}
                 )
-            )
+            ) # check this GEV analysis
 
     # concat all cluster lists
     slp_clusters = xr.concat(
@@ -159,7 +176,10 @@ def KMA_simple(slp_data, ss_data, pca_data,
     # plot if specified
     if plot:
         # plot all the wheather types
-        Plot_DWTs_Mean_Anom(KMA_data)
+        ss_clusters_gev = ss_clusters_gev if calculate_gev_stats else None
+        plottting_data = Plot_DWTs_Mean_Anom(
+            KMA_data,cmap=['yellow','lime','green','lightblue','blue','purple','pink','grey','black']
+        )
         Plot_DWTs_Probs(KMA_data.bmus,n_clusters)
 
     # return calculated data

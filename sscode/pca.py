@@ -16,7 +16,7 @@ from .plotting.pca import plot_pcs
 def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                     calculate_gradient: bool = False,
                     winds: tuple = (False,None),
-                    wind_vars: tuple = ('wind_proj','lon','lat'),
+                    wind_vars: tuple = ('wind_proj_mask','lon','lat'),
                     time_lapse: int = 1, # 1 equals to NO time delay 
                     time_resample: str = '1D',
                     region: tuple = (True,default_region),
@@ -28,8 +28,11 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
 
     Args:
         pres (xarray.Dataarray/Dataset): These are the sea-level-pressure fields,
-            that could be loaded  both with load_era5() or load_cfsr()
-            ** this parameter can be used to calculate PCA with different data **
+            that could be loaded  both with load_era5() or load_cfsr(), and
+            obviously with the Loader object!!
+                ** this parameter can be used to calculate PCA 
+                   with different data 
+                **
         pres_vars (tuple, optional): These are the slp xarray coordinates. 
             - Defaults to ('msl','longitude','latitude').
         calculate_gradient (bool, optional): weather to calculate or not the slp gradient.
@@ -44,11 +47,12 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
             - Defaults to '1D'.
         region (tuple, optional): Region to crop the slp to. 
             - Defaults to (True,default_region).
-        pca_plot (bool, optional): Wether to plot or not the final results.
-            - Defaults to True.
+        pca_plot (tuple, bool): Wether to plot or not the final results.
+            - Defaults to (True,False), as the second boolean indicator refers
+            to the de-standarization of the EOFs, which is not totally validated
         verbose (bool, optional): Wether or not to debug the actions.
             - Defaults to True.
-        pca_ttls: These are the titles for the pca plots if required.
+        pca_ttls: These are the titles for the pca plots if wanted.
 
     Returns:
         [xarray.Dataset]: PCA decomposition final results
@@ -88,7 +92,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     # calculate the gradient
     if calculate_gradient:
         print('\n calculating the gradient of the sea-level-pressure fields... \n') if verbose else None
-        pres = spatial_gradient(pres,pres_vars[0])
+        pres = spatial_gradient(pres,pres_vars[0]) # from utils.py
         print('\n pressure/gradient predictor both with shape: \n {} \n'\
             .format(pres[pres_vars[0]].shape)) if verbose else None
         grad_add = 2
@@ -147,7 +151,13 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                  n_plot=2,region=region_plot,
                  pca_ttls=pca_ttls,pca_borders=pca_borders)
 
+    # return the PCA xarray.Dataset and the scaler
     return PCA_return, pcs_scaler
+
+
+# --------------------------------------------------------------------------------- #
+# More PCA analysis / tools can be seen below, but are not used in the project yet **
+# --------------------------------------------------------------------------------- #
 
 
 def running_mean(x, N, mode_str='mean'):

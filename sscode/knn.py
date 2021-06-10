@@ -13,7 +13,8 @@ import matplotlib.gridspec as gridspec
 
 # custom
 from .config import default_region
-from .plotting.config import _figsize, _fontsize_title, _figsize_width, _figsize_height, _fontsize_legend
+from .plotting.config import _figsize, _fontsize_title, _figsize_width, \
+    _figsize_height, _fontsize_legend
 from .plotting.pca import plot_recon_pcs
 from .plotting.validation import qqplot, scatterplot
 from .validation import generate_stats, validata_w_tgs

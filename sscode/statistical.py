@@ -7,10 +7,11 @@ import xarray as xr
 import statsmodels.api as sm
 from statsmodels.distributions.empirical_distribution import ECDF
 from scipy.interpolate import interp1d
-from scipy.stats import norm, genpareto, t
+from scipy.stats import norm, genpareto, t, chi2 # for loglikelihood ratio test
 from scipy.special import ndtri  # norm inv
 # genextreme
-from scipy.stats import genextreme as gev
+from pyextremes import EVA
+from scipy.stats import genextreme, gumbel_r
 
 # progressbar
 import progressbar
@@ -19,10 +20,42 @@ import progressbar
 from .plotting.validation import plot_gev_stats
 
 
-def gev_matrix(X_set,lon,lat,plot=True):
-    '''
-    Add the description...
-    '''
+def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
+               plot: bool = False, verbose: bool = True,
+               quantile_th = None, num_tries: int = 8,
+               lr_test: bool = False, cluster_number: int = -1,
+               gev_title='GEV parameters plot!!'):
+    """
+    This function is very useful when the GEV analysis wants to
+    be done over a spatial region, been this region data saved in 
+    an xarray.Dataset format, which is the main dataformat of the project.
+    The python package used to calculate the statistical models is
+    completly explained at https://github.com/georgebv/pyextremes,
+    and it uses scipy.stats functions in the hood
+
+    Args:
+        X_set (xarray.Dataset): This is the main xarray dataset, where
+            the variable to analyze, which usually is the SS, must be stored,
+            but also the longitudes, latitudes and time
+        lon (xarray.Coord name): This is the name of the coordinate longitude
+        lat (xarray.Coord name): This is the name of the coordinate latitude
+        try_gumbel (bool, optional): Wether to try or not to improve the bad results
+            using the gumbel distribution. Defaults to True.
+        plot (bool, optional): Plot the results if required. Defaults to False.
+        verbose (bool, optional): Plot some debugs. Defaults to True.
+        quantile_th (float, optional): POT value. This is added as the main python package
+            usage implements this by default, but is not used. Defaults to None.
+        num_tries (int, optional): Number of times to refit the data in case the
+            statistical model is not correctly behaving. Defaults to 8.
+        gev_title (str, optional): Defaults to 'GEV parameters plot!!'.
+        cluster_number (int, optional): Defaults to -1.
+
+    Returns:
+        [xarray.Dataset]: The statistical models parameters are
+            returned by lon / lat
+    """
+
+    # TODO: add some debugs
 
     # pass xarray.Dataset to numpy
     X = X_set.values.reshape(X_set.shape[0],-1)
@@ -31,14 +64,116 @@ def gev_matrix(X_set,lon,lat,plot=True):
     mu, phi, xi = [], [], []
 
     # fit the data
-    for i in progressbar.progressbar(range(X.shape[1])):
-        try:
-            xii, mui, phii = gev.fit(X[:,i][~np.isnan(X[:,i])])
-            mu.append(mui), phi.append(phii), xi.append(xii)
-        except:
-            mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
+    improves_counter_gumbel = 0 # check improves
+    improves_counter_random = 0
 
-    gev_data = X_set.to_dataset().assign({
+    for i in progressbar.progressbar(range(X.shape[1])):
+
+        ss_series = pd.Series(
+            data=X[:,i],name='ss',index=X_set.time.values
+        ).dropna() # pass numpy to pandas series for EVA
+
+        if len(ss_series)==0: # input nans if no data is available
+            mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
+            continue # move to next node
+
+        # create the first model to test
+        model = EVA(data=ss_series)
+        if quantile_th: # POT with quantile if specified
+            model.get_extremes(
+                method='POT',threshold=np.nanquantile(X[:,i],quantile_th)
+            )
+        else: # or all daily/dataset default maxima
+            model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+        model.fit_model(
+            distribution=genextreme,model='MLE'
+        )
+        tries_counter = 0
+        p_values_list = []
+
+        # start while loop based on parameter c
+        if np.abs(model.distribution.mle_parameters['c'])<0.6:
+            mu.append(model.distribution.mle_parameters['loc'])
+            phi.append(model.distribution.mle_parameters['scale'])
+            xi.append(-model.distribution.mle_parameters['c'])
+            continue
+
+        # perform different analysis to get the best possible distribution
+        while tries_counter<num_tries:
+
+            # count the times stat-adjustments are tried
+            tries_counter += 1
+
+            if try_gumbel and num_tries<2:
+                # try new model with gumbel distribution
+                new_model = EVA(data=ss_series)
+                new_model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+                new_model.fit_model(
+                    distribution=gumbel_r,model='MLE'
+                )
+            else:
+                # try new model changing the data (not recommended)
+                ss_series_drop = ss_series.where(
+                    ss_series<ss_series.quantile(0.9)
+                ).dropna()
+                index_to_delete = np.random.randint(
+                    0,len(ss_series_drop),int(len(ss_series_drop)/12)
+                )
+                new_model = EVA(
+                    data=ss_series.drop(
+                        ss_series_drop.index[index_to_delete]
+                    )
+                )
+                new_model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+                new_model.fit_model(
+                    distribution=genextreme,model='MLE'
+                )
+
+            # save new statistical model if better   
+            if lr_test:
+                # check if new model improves the null hypothesis
+                l_h = -2 * (
+                    new_model.model.loglikelihood - model.model.loglikelihood
+                ) # calculate the loglikis difference
+                p_value = chi2.sf(l_h,1) # new model has 1 parameter less
+                if p_value>0.8:
+                    model = new_model # save new model as best
+                    p_values_list.append(p_value)
+                    mu.append(new_model.distribution.mle_parameters['loc'])
+                    phi.append(new_model.distribution.mle_parameters['scale'])
+                    try:
+                        xi.append(-new_model.distribution.mle_parameters['c'])
+                    except:
+                        xi.append(0.0) # append the default shape gumbel parameter
+                    improves_counter_gumbel += 1
+                    break
+                elif tries_counter==num_tries:
+                    mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
+                    break
+            else:
+                # check Akaike criterion
+                if new_model.model.AIC<model.model.AIC:
+                    model = new_model # save new model as best
+                    # save calculated parameters
+                    mu.append(new_model.distribution.mle_parameters['loc'])
+                    phi.append(new_model.distribution.mle_parameters['scale'])
+                    try:    
+                        xi.append(-new_model.distribution.mle_parameters['c'])
+                    except:
+                        xi.append(0.0) # append the default shape gumbel parameter
+                    improves_counter_random += 1
+                    break
+                elif tries_counter==num_tries:
+                    mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
+                    break
+
+    # add improvements print
+    print('\n the GEV fit has improved ({},{}) times by (random,gumbel) in cluster {}... \n'.format(
+        improves_counter_random, improves_counter_gumbel, cluster_number
+    )) if verbose else None
+    print('\n the mean of the p-values is {} \n'.format(np.mean(p_values_list)))
+
+    gev_data = X_set.to_dataset(name='ss').assign({
         'mu': ((lon,lat),np.array(mu).reshape(
             len(X_set[lat]),len(X_set[lon])
         ).T),
@@ -52,10 +187,10 @@ def gev_matrix(X_set,lon,lat,plot=True):
 
     # plot results
     if plot:
-        plot_gev_stats(gev_data)
+        plot_gev_stats(gev_data,gev_title=gev_title)
 
     return gev_data
-
+    
 
 def ksdensity_cdf(x):
     '''
@@ -71,6 +206,7 @@ def ksdensity_cdf(x):
     fint = interp1d(kde.support, kde.cdf)
 
     return fint(x)
+
 
 def ksdensity_icdf(x, p):
     '''
@@ -90,6 +226,7 @@ def ksdensity_icdf(x, p):
 
     return fint(p)
 
+
 def generalizedpareto_cdf(x):
     '''
     Generalized Pareto fit
@@ -103,6 +240,7 @@ def generalizedpareto_cdf(x):
     cdf = genpareto.cdf(x, shape, scale=scale)
 
     return cdf
+
 
 def generalizedpareto_icdf(x, p):
     '''
@@ -118,6 +256,7 @@ def generalizedpareto_icdf(x, p):
 
     return icdf
 
+
 def empirical_cdf(x):
     '''
     Returns empirical cumulative probability function at x.
@@ -128,6 +267,7 @@ def empirical_cdf(x):
     cdf = ecdf(x)
 
     return cdf
+
 
 def empirical_icdf(x, p):
     '''
@@ -148,6 +288,7 @@ def empirical_icdf(x, p):
         bounds_error=False
     )
     return fint(p)
+
 
 def copulafit(u, family='gaussian'):
     '''
@@ -186,6 +327,7 @@ def copulafit(u, family='gaussian'):
 
     return rhohat, nuhat
 
+
 def copularnd(family, rhohat, n):
     '''
     Generates and returns random vectors from a copula
@@ -208,6 +350,7 @@ def copularnd(family, rhohat, n):
         raise ValueError("Wrong family parameter. Use 'gaussian' or 't'")
 
     return u
+
 
 def copula_simulation(data, kernels, num_sim):
     '''
@@ -256,6 +399,7 @@ def copula_simulation(data, kernels, num_sim):
         ic += 1
 
     return U_sim
+
 
 def runmean(X, m, modestr):
     '''

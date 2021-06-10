@@ -40,9 +40,6 @@ from sklearn import linear_model
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
-# custom
-from basic_functions import *
-
 
 def cceua(s,sf,bl,bu,icall,maxn,iseed,data=None):
     #  This is the subroutine for generating a new point in a simplex

@@ -3,7 +3,6 @@
 
 import numpy as np
 
-
 def normalize(data, ix_scalar, ix_directional, minis=[], maxis=[]):
     '''
     Normalize data subset.      norm = (val - min) / (max - min)
@@ -18,7 +17,7 @@ def normalize(data, ix_scalar, ix_directional, minis=[], maxis=[]):
     data_norm = np.zeros(data.shape) * np.nan
 
     # calculate maxs and mins 
-    if minis==[] or maxis==[]:
+    if len(minis)==0:
 
         # scalar data
         for ix in ix_scalar:
@@ -46,7 +45,6 @@ def normalize(data, ix_scalar, ix_directional, minis=[], maxis=[]):
     for ix in ix_directional:
         v = data[:,ix]
         data_norm[:,ix] = v * np.pi / 180.0
-
 
     return data_norm, minis, maxis
 
@@ -140,13 +138,17 @@ def maxdiss_simplified_no_threshold(data, num_centers, ix_scalar,
     '''
 
     # normalize scalar and directional data
-    data_norm, minis, maxis = normalize(data, ix_scalar, ix_directional)
+    data_norm, minis, maxis = normalize(
+        data, ix_scalar, ix_directional, [], []
+    )
 
     # mda seed
     seed = np.where(data_norm[:,0] == np.amax(data_norm[:,0]))[0][0]
 
     # initialize centroids subset
     subset = np.array([data_norm[seed]])
+    indexes_subset = []
+    indexes_subset.append(seed)
     train = np.delete(data_norm, seed, axis=0)
 
     # repeat till we have desired num_centers
@@ -169,6 +171,7 @@ def maxdiss_simplified_no_threshold(data, num_centers, ix_scalar,
 
         if not np.isnan(qerr):
             subset = np.append(subset, np.array([train[bmu,:]]), axis=0)
+            indexes_subset.append(bmu)
             train = np.delete(train, bmu, axis=0)
             d_last = np.delete(d_last, bmu, axis=0)
 
@@ -184,5 +187,5 @@ def maxdiss_simplified_no_threshold(data, num_centers, ix_scalar,
     # normalize scalar and directional data
     centroids = denormalize(subset, ix_scalar, ix_directional, minis, maxis)
 
-    return centroids
+    return centroids, indexes_subset
 

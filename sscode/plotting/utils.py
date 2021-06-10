@@ -56,6 +56,28 @@ def plot_ccrs_nz(axes, # all axes to plot the map
             gl.ylocator = mticker.FixedLocator(list(ylabels))  
             gl.xlabels_top = False
             gl.ylabels_right = False
+            
+            
+def get_n_colors(cmap,n_colors):
+    """
+    Summary
+    """
+    
+    # get the cmap from attrs
+    if type(cmap)==str:
+        cmap = cm.get_cmap(cmap)
+    elif type(cmap)==list:
+        cmap = colors.LinearSegmentedColormap.from_list(
+            'new_cmap',cmap
+        )
+    # get the step
+    step = 1.0/n_colors
+    # save colors to use
+    colors_to_use = []
+    for icol in range(n_colors):
+        colors_to_use.append(cmap(step*icol))
+        
+    return cmap, colors_to_use
 
 
 def colors_dwt(num_clusters):

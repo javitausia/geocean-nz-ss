@@ -11,27 +11,29 @@ from .config import default_location
 def calculate_relative_winds(location: tuple = default_location,
                              uw = None, vw = None,
                              lat_name: str = 'lat',
-                             lon_name: str = 'lon'):
+                             lon_name: str = 'lon',
+                             delete_direc: int = 120):
     """
     This function calculates the projected winds in the direction to
-    the given location. Winds with an angle greater than 90º with this
-    direction are not considered.
+    the given location. Winds with an angle greater than delete_direc with 
+    this direction are not considered.
 
     Args:
         location (tuple, optional): Location where the winds will be
-        projected. Defaults to default_location. Ex: (181,-30)
+            projected. Defaults to default_location. Ex: (181,-30)
         uw (xarray-DataArray): u10-component of winds in the direction where 
-        they come (era5 raw data). Defaults to None.
+            they come (era5 raw data). Defaults to None.
         vw (xarray-DataArray): v10-component of winds in the direction where 
-        they come (era5 raw data). Defaults to None.
+            they come (era5 raw data). Defaults to None.
 
     Returns:
         [xarray-Dataset]: an xarray Dataset with all the variables of
-        interest, which are_
+        interest, which are:
             - u10 (winds direction), v10
             - wind_proj: magnitud of the projected winds
             - bearings for all the lat/lon points (using great_circle_calculator)
-            - direc_proj_math: mathematical representation of the bearings
+            - direc_proj_math: mathematical representation of the bearings,
+                this is useful when plotting the data
     """
 
     # we first join uw and vw (change winds to where they go)
@@ -49,7 +51,9 @@ def calculate_relative_winds(location: tuple = default_location,
     rel_direcs = np.where(rel_direcs<-180,rel_direcs+360,rel_direcs)
     rel_direcs = np.where(rel_direcs>180,rel_direcs-360,rel_direcs)
     # delete winds in opposite directions
-    rel_direcs = np.where((rel_direcs>120)|(rel_direcs<-120),np.nan,rel_direcs)
+    rel_direcs = np.where(
+        (rel_direcs>delete_direc)|(rel_direcs<-delete_direc),np.nan,rel_direcs
+    )
 
     return wind.assign({
         'wind_proj': (('time',lat_name,lon_name),np.cos(rel_direcs*np.pi/180)),
@@ -116,7 +120,7 @@ def spatial_gradient(xdset, var_name='msl'):
     returns xdset with new variable "var_name_gradient"
     """
 
-    # TODO:check/ ADD ONE ROW/COL EACH SIDE
+    # TODO:check/ADD ONE ROW/COL EACH SIDE
     try:
         var_grad = np.zeros(xdset[var_name].shape)
     except:
@@ -155,7 +159,8 @@ def spatial_gradient(xdset, var_name='msl'):
 
 
 def GetBestRowsCols(n):
-    'try to square number n, used at gridspec plots'
+    
+    # try to square number n, used at gridspec plots'
 
     sqrt_n = sqrt(n)
     if sqrt_n.is_integer():
@@ -170,6 +175,7 @@ def GetBestRowsCols(n):
 
 
 def GetDivisors(x):
+    
     l_div = []
     i = 1
     while i<x:

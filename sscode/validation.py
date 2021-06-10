@@ -14,8 +14,7 @@ from .plotting.config import _fontsize_title, _fontsize_legend, \
     _figsize, _figsize_width, _figsize_height, _fontsize_label
 
 
-def compare_datasets(dataset1, dataset1_coords,
-                     dataset2, dataset2_coords,
+def compare_datasets(dataset1, dataset1_coords, dataset2, dataset2_coords,
                      comparison_variables: list = [['ss','msea'],['ss','msea']],
                      time_resample = None):
     """
@@ -25,11 +24,13 @@ def compare_datasets(dataset1, dataset1_coords,
         dataset1 (xarray.Dataset): xarray data with lon/lat values, variables...
         dataset1_coords (tuple): this is a tuple with the name of the lon/lat variables,
             the location variable and the dataset name
-            - ecample: ('lon','lat','site','Maoana v2 hindcast) for MAOANA!!
+            - example: ('lon','lat','site','Maoana v2 hindcast') for MOANA!!
         dataset2 / dataset2_coords: same as 1
+        * Data in dataset1 and dataset2 is exactly the loaded data in data.py
         comparison_variables (list of lists): List of tuples with variables to analyze. 
-            Defaults to [['ss','msea'],['ss','msl']] -- moana/geocean
-        time_resample (str, optional): Time resample, recommended. Defaults to None.
+            Defaults to [['ss','msea'],['ss','msea']] -- moana/uhslc
+        time_resample (str, optional): Time resample, recommended if not already
+            performed. Defaults to None.
     """
 
     print('\n Lets compare data in {} with {}!! \n'.format(
@@ -174,7 +175,7 @@ def compare_datasets(dataset1, dataset1_coords,
 def generate_stats(data1, data2, not_nan_idxs=None):
     """
     Generates the title given two datasets
-    - BIAS, SI and RMSE, and correlations!!
+    - BIAS, SI, RMSE and correlations!!
 
     """
 

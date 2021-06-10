@@ -15,7 +15,7 @@ import cartopy.crs as ccrs
 from ..config import default_location
 from .config import _figsize_width, _figsize_height, _figsize, \
     _fontsize_title, _fontsize_label
-from .utils import plot_ccrs_nz
+from .utils import plot_ccrs_nz, get_n_colors
 
 
 def qqplot(x, y, min_value=-0.3, max_value=0.6,
@@ -162,7 +162,7 @@ def plot_stats(statistics_data, plot_stats, **kwargs):
     plt.show()
 
 
-def plot_gev_stats(gev_data):
+def plot_gev_stats(gev_data, gev_title='GEV parameters plot!!'):
     """
     Plots the gev-validation data in a map plot
 
@@ -186,14 +186,17 @@ def plot_gev_stats(gev_data):
         gev_data.phi,x='lon',y='lat',ax=axes[1],
         cmap='hot',levels=50,transform=ccrs.PlateCarree()
     )
+    cmap_xi, cxicols = get_n_colors(
+        ['darkred','red','orange','green','lightblue','blue'],10
+    )
     xr.plot.contourf(
         gev_data.xi,x='lon',y='lat',ax=axes[2],
-        cmap='bwr',levels=50,transform=ccrs.PlateCarree()
+        cmap=cmap_xi,levels=50,transform=ccrs.PlateCarree()
     )
     # plot the nz map and title
     plot_ccrs_nz(axes,plot_labels=(True,5,5))
-    fig.suptitle('GEV parameters plots!!',
-                 fontsize=_fontsize_title
+    fig.suptitle(
+        gev_title,fontsize=_fontsize_title
     )
     # estimate the total gev
     fig, ax = plt.subplots(figsize=(8,4))
@@ -201,7 +204,7 @@ def plot_gev_stats(gev_data):
         ~np.isnan(gev_data.ss.values.reshape(-1))
     ]
     shape, loc, scale = gev.fit(gev_data_total)
-    gev_pdf = gev.rvs(shape,loc=loc,scale=scale,size=1000000)
+    gev_pdf = gev.rvs(shape,loc=loc,scale=scale,size=10000)
     gev_data.ss.plot.hist(
         ax=ax,bins=100,alpha=0.7,density=True,
         label='Real maximum-ss measures' # TODO: add color
@@ -211,5 +214,6 @@ def plot_gev_stats(gev_data):
     ax.legend(fontsize=_fontsize_label,
               bbox_to_anchor=(1.6, 1)
     )
+    ax.set_xlim(-0.2,0.6)
     plt.show()
 
