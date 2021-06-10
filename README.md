@@ -97,7 +97,7 @@ Once you have installed it on your PC, open the Anaconda prompt (in Mac and Linu
 Create a new environment named `ssnz` with all the required packages:
 
 ```
-conda env create -f environment.yml -n ssnz
+conda env create -f environment.yml
 ```
 
 ### Activate conda environment
