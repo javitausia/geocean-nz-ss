@@ -26,8 +26,6 @@ jupyter-book==0.11.1
 jupyter-contrib-nbextensions==0.5.1
 jupyterlab-pygments==0.1.2
 mkl-fft==1.3.0
-mkl-random==1.1.1
-mkl-service==2.3.0
 moviepy==1.0.1
 netcdf4==1.4.2
 olefile==0.46
