@@ -55,7 +55,6 @@ seaborn
 statsmodels
 sympy
 utide
-wavespectra
 wget
 windrose
 ypstruct
