@@ -6,7 +6,7 @@ updated info at: https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoW
 
 below, a summary of the region and data involved in the first part of the analysis can be seen:
 
-![gif](/media/videos/example.gif)
+![gif](/media/videos/READMEexample.gif)
 
 jupyter book summary [here](https://javitausia.github.io/geocean-nz-ss/)
 
@@ -41,42 +41,49 @@ Statistical tools, notebooks, data ...
     ├── LICENSE
     |
     ├── .gitignore
-    ├── .gitattributes     <- These are .git configuration files
+    ├── .gitattributes         <- These are .git configuration files
+    |
     ├── _config.yml
-    ├── _toc.yml           <- These are config files for the jupyter-book
+    ├── _toc.yml               <- These are config files for the jupyter-book
     |
-    ├── references         <- Project bibliography with articles, books...
+    ├── .github
+    |   └── workflows
+    |       └── deploy.yml     <- YAMO file for the Github Actions deployment
     |
-    ├── README.md          <- The top-level README for developers using this project
+    ├── references             <- Project bibliography with articles, books...
+    |
+    ├── README.md              <- The top-level README for developers using this project
     |
     ├── data
-    │   ├── slp            <- Sea-level-pressure fields from ERA5 / CFSR
-    │   ├── ss-hindcast    <- Storm surge hindcast models
-    │   ├── ss-obs         <- Storm surge real observations data
-    │   └── extra          <- Additional data that might be helpful
+    │   ├── slp                <- Sea-level-pressure fields from ERA5 / CFSR
+    │   ├── ss-hindcast        <- Storm surge hindcast models
+    │   ├── ss-obs             <- Storm surge real observations data
+    │   └── extra              <- Additional data that might be helpful
     │
     ├── media          
     |   ├── images
-    |   └── videos         <- Some media files extracted from project workflows        
+    |   └── videos             <- Some media files extracted from project workflows        
     │
-    ├── notebooks          <- Jupyter notebooks. This folder contains all the explanatory
-    |                         jupyter notebooks used in the project
+    ├── notebooks              <- Jupyter notebooks. This folder contains all the explanatory
+    |                             jupyter notebooks used in the project
     │
-    ├── environment.yml    <- The environment file for reproducing the analysis environment, e.g.
-    │                         generated with `conda freeze > environment.yml`
+    ├── environment.yml        <- The environment file for reproducing the analysis environment, e.g.
+    │                             generated with `conda freeze > environment.yml`
+    ├── requirements.txt       <- Another environment file for reproducing the analysis environment, e.g.
+    │                             generated with `pip freeze > requirements.txt`
     │
-    ├── sscode             <- Source code for use in this project
-    │   ├── __init__.py    <- Makes src a Python module
-    |   ├── modules*       <- Python scripts with different modules (*not a subfolder)
-    |   |   └── data
-    |   |   └── pca
-    |   |   └── linear
+    ├── sscode                 <- Source code for use in this project
+    │   ├── __init__.py        <- Makes src a Python module
+    |   ├── modules*           <- Python scripts with different modules (*not a subfolder)
+    |   |   ├──  data
+    |   |   ├── pca
+    |   |   ├── linear
     |   |   └── ...
     │   │
-    │   ├── plotting       <- Plotting scripts related with the mathematical ones
+    │   ├── plotting           <- Plotting scripts related with the mathematical ones
     │   │   └── ...
     │
-    └── report             <- Project description in pdf format MSVC1901_UoCantabria_01_V4 - Final.pdf
+    └── report                 <- Project description in pdf format MSVC1901_UoCantabria_01_V4 - Final.pdf
 
 
 ## Installation
@@ -90,7 +97,7 @@ Once you have installed it on your PC, open the Anaconda prompt (in Mac and Linu
 Create a new environment named `ssnz` with all the required packages:
 
 ```
-conda env create -f environment.yml
+conda env create -f environment.yml -n ssnz
 ```
 
 ### Activate conda environment

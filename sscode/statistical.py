@@ -64,8 +64,7 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
     mu, phi, xi = [], [], []
 
     # fit the data
-    improves_counter_gumbel = 0 # check improves
-    improves_counter_random = 0
+    improves_counter = 0 # check improves
 
     for i in progressbar.progressbar(range(X.shape[1])):
 
@@ -85,6 +84,10 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
             )
         else: # or all daily/dataset default maxima
             model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+            # model.get_extremes(
+            #     method='BM',extremes_type='high',
+            #     block_size='120.2425D',errors='ignore'
+            # ) # TODO: add BM method
         model.fit_model(
             distribution=genextreme,model='MLE'
         )
@@ -145,7 +148,7 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
                         xi.append(-new_model.distribution.mle_parameters['c'])
                     except:
                         xi.append(0.0) # append the default shape gumbel parameter
-                    improves_counter_gumbel += 1
+                    improves_counter += 1
                     break
                 elif tries_counter==num_tries:
                     mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
@@ -161,17 +164,17 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
                         xi.append(-new_model.distribution.mle_parameters['c'])
                     except:
                         xi.append(0.0) # append the default shape gumbel parameter
-                    improves_counter_random += 1
+                    improves_counter += 1
                     break
                 elif tries_counter==num_tries:
                     mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
                     break
 
     # add improvements print
-    print('\n the GEV fit has improved ({},{}) times by (random,gumbel) in cluster {}... \n'.format(
-        improves_counter_random, improves_counter_gumbel, cluster_number
+    print('\n the GEV fit has improved {} times by random/gumbel in cluster {}... \n'.format(
+        improves_counter, cluster_number
     )) if verbose else None
-    print('\n the mean of the p-values is {} \n'.format(np.mean(p_values_list)))
+    # print('\n the mean of the p-values is {} \n'.format(np.mean(p_values_list)))
 
     gev_data = X_set.to_dataset(name='ss').assign({
         'mu': ((lon,lat),np.array(mu).reshape(
