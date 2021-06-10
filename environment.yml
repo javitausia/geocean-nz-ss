@@ -12,6 +12,7 @@ dependencies:
   - xarray
   - matplotlib
   - cartopy
+  - plotly
   - pip
   - pip:
     - progressbar2
@@ -19,3 +20,4 @@ dependencies:
     - cookiecutter
     - pytest
     - black
+    - sphinx-thebe
