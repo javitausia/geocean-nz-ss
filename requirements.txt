@@ -1,7 +1,6 @@
 autopep8
 black
 brotlipy
-cartopy
 cfgrib
 cookiecutter
 cython
@@ -33,6 +32,7 @@ mkl-random
 mkl-service
 moviepy
 netcdf4
+numpy
 olefile
 owslib
 pandas-datareader
