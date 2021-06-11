@@ -1,6 +1,7 @@
 autopep8
 black
 brotlipy
+cartopy
 cfgrib
 cookiecutter
 cython
@@ -26,6 +27,7 @@ julian
 jupyter-book
 jupyter-contrib-nbextensions
 jupyterlab-pygments
+keplergl
 mkl-fft
 mkl-random
 mkl-service

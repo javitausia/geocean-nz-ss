@@ -50,7 +50,7 @@ Statistical tools, notebooks, data ...
     |   └── workflows
     |       └── deploy.yml     <- YAMO file for the Github Actions deployment
     |
-    ├── references             <- Project bibliography with articles, books...
+    ├── references.bib         <- Project bibliography with articles, books...
     |
     ├── README.md              <- The top-level README for developers using this project
     |
@@ -65,12 +65,12 @@ Statistical tools, notebooks, data ...
     |   └── videos             <- Some media files extracted from project workflows        
     │
     ├── notebooks              <- Jupyter notebooks. This folder contains all the explanatory
-    |                             jupyter notebooks used in the project
+    |                             jupyter notebooks used in the project (.ipynb)
     │
     ├── environment.yml        <- The environment file for reproducing the analysis environment, e.g.
     │                             generated with `conda freeze > environment.yml`
     ├── requirements.txt       <- Another environment file for reproducing the analysis environment, e.g.
-    │                             generated with `pip freeze > requirements.txt`
+    │                             generated with `pip-chill --no-version > requirements.txt`
     │
     ├── sscode                 <- Source code for use in this project
     │   ├── __init__.py        <- Makes src a Python module
@@ -79,12 +79,11 @@ Statistical tools, notebooks, data ...
     |   |   ├── pca
     |   |   ├── linear
     |   |   └── ...
-    │   │
-    │   ├── plotting           <- Plotting scripts related with the mathematical ones
-    │   │   └── ...
+    │   └── plotting           <- Plotting scripts related with the mathematical ones
+    │       └── ...
     │
-    └── report                 <- Project description in pdf format MSVC1901_UoCantabria_01_V4 - Final.pdf
-
+    └── report                 <- Project description in pdf format (contracts...): 
+                                  MSVC1901_UoCantabria_01_V4 - Final.pdf
 
 ## Installation
 
