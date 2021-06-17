@@ -69,12 +69,18 @@ def compare_datasets(dataset1, dataset1_coords, dataset2, dataset2_coords,
         print('\n resampled data: \n \n {} \n \n {}'.format(dataset1,dataset2))
 
     # we first extract closest stations (calculate data1 closest to data2)
-    data1_clos_data2, min_dists = calc_closest_data2_in_data1(
+    data1_clos_data2s, min_distss = calc_closest_data2_in_data1(
         (dataset1[dataset1_coords[0]].values,
          dataset1[dataset1_coords[1]].values),
         (dataset2[dataset2_coords[0]].values,
          dataset2[dataset2_coords[1]].values)
     )
+    data1_clos_data2, min_dists = [], []
+    for i_site in range(len(data1_clos_data2s)):
+        min_dist_pos = np.argmin(min_distss[i_site])
+        data1_clos_data2.append(data1_clos_data2s[i_site][min_dist_pos])
+        min_dists.append(min_distss[i_site][min_dist_pos])
+
     # chech resuts
     print('\n \n TGs to analyze are: \n {} \n'.format(
         dataset2[dataset2_coords[2]].values
@@ -215,8 +221,9 @@ def bias(predictions,targets):
     return np.nanmean(targets-predictions)
 
 
-def calc_closest_data2_in_data1(data1, data2, 
-                                min_dist_th: float = 50):
+def calc_closest_data2_in_data1(data1, data2, # data 1 is bigger than data2
+                                min_dist_th: float = 20,
+                                extra_help: tuple = ('lon',1.5)):
     """
     This function calculates the closest stations of data1 to data2
 
@@ -233,21 +240,38 @@ def calc_closest_data2_in_data1(data1, data2,
     # lists to save the results
     sites_list = [] # sites isel location in data1
     sites_dist = [] # sites distance between data1 and data2
+    # check min_dist and helper format
+    if type(min_dist_th)==int:
+        min_dist_th = [min_dist_th]*len(data2[0])
+    if type(extra_help)==tuple:
+        extra_help = [extra_help]*len(data2[0])
     # loop over all the stations
+    i_station = 0
     for d2lon,d2lat in zip(*data2):
-        site = -1
-        min_dist = min_dist_th
+        # site = -1
+        # min_dist = min_dist_th
         site_counter = 0 # re-create counter
+        closest_sites = []
+        closets_dists = []
         d2lon = d2lon if d2lon<=180 else d2lon-360 # for geopy
         for d1lon,d1lat in zip(*data1):
             d1lon = d1lon if d1lon<=180 else d1lon-360 # for geopy
             dist = geodesic((d1lat,d1lon),(d2lat,d2lon)).km
-            if dist<min_dist:
-                site = site_counter
-                min_dist = dist
+            if extra_help[i_station][0]=='lon':
+                cond = True if abs(d1lon-d2lon)<extra_help[i_station][1] else False
+            elif extra_help[i_station][0]=='lat':
+                cond = True if abs(d1lat-d2lat)<extra_help[i_station][1] else False
+            else:
+                cond = False # if no extra help is provided
+            if dist<min_dist_th[i_station] and cond:
+                # site = site_counter
+                # min_dist = dist
+                closest_sites.append(site_counter)
+                closets_dists.append(dist)
             site_counter += 1 # add 1 to counter
         # save results
-        sites_list.append(site), sites_dist.append(min_dist)
+        sites_list.append(closest_sites), sites_dist.append(closets_dists)
+        i_station += 1
 
     return sites_list, sites_dist
 

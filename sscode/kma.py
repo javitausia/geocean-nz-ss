@@ -51,13 +51,13 @@ def KMA_simple(slp_data, ss_data, pca_data,
 
     # check time coherence
     common_times_pslp = np.intersect1d(
-        pd.to_datetime(slp_data.time.values).round('D'), 
-        pd.to_datetime(pca_data.time.values).round('D'),
+        pd.to_datetime(slp_data.time.values).round('H'), # add D??
+        pd.to_datetime(pca_data.time.values).round('H'),
         return_indices=True
     )
     common_times = np.intersect1d(
         common_times_pslp[0],
-        pd.to_datetime(ss_data.time.values).round('D'),
+        pd.to_datetime(ss_data.time.values).round('H'),
         return_indices=True
     )
 

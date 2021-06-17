@@ -11,8 +11,10 @@ from .config import _figsize, _figsize_width, _figsize_height, _fontsize_title
 from ..config import default_location, default_region_reduced, default_region
 from .utils import plot_ccrs_nz
 
-pca_EOFs_ttls = ['SLP in t', 'GRADIENT in t', 'SLP in t-1', 'GRADIENT in t-1', 'Winds in t']
-pca_EOFs_borders = [2000, 10000, 2000, 10000, 1]
+pca_EOFs_ttls = [
+    'SLP in t', 'GRADIENT in t', 'SLP in t-1', 'GRADIENT in t-1',
+    'SLP in t-2', 'GRADIENT in t-2', 'Winds in t']
+pca_EOFs_borders = [2000, 10000, 2000, 10000, 2000, 10000, 1]
 
 
 def plot_pcs(pca_data, pcs_scaler = None,

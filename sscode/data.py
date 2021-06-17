@@ -52,7 +52,7 @@ class Loader(object):
     """
 
     def __init__(self, data_to_load: list = ['cfsr','moana','uhslc'],
-                 time_resample: str = '1D',
+                 time_resample: str = '1D', load_winds: bool = True,
                  location: tuple = default_location,
                  plot: bool = True):
         """
@@ -74,7 +74,7 @@ class Loader(object):
             if data_to_load[0]=='era5':
                 predictor = load_era5(
                     time=time_resample,
-                    load_winds=(True,location),
+                    load_winds=(load_winds,location),
                     plot=plot
                 )
                 if len(predictor)==1:
@@ -85,7 +85,7 @@ class Loader(object):
             elif data_to_load[0]=='cfsr':
                 predictor = load_cfsr(
                     time=time_resample,
-                    load_winds=(True,location),
+                    load_winds=(load_winds,location),
                     plot=plot
                 )
                 if len(predictor)==1:

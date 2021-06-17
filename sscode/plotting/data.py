@@ -66,17 +66,17 @@ def plot_pres_winds(data, data_name='CFSR',
     plt.show()
 
 
-def plot_all_data(geocean_tgs = None, 
+def plot_all_data(private_tgs = None, 
                   uhslc_tgs = None, 
                   codec_hind = None, 
                   moana_hind = None,
                   moana_hind_all = None,
                   pres_cfsr = None):
     """
-    Plot all data available, both in a map and the time series
+    Plot all data available, both in a map and the time series if specified
 
     Args:
-        all the args are the data loaded in the data.py file
+        All the args are the data previously loaded in the sscode/data.py file
     """
 
     # map plot
@@ -116,10 +116,10 @@ def plot_all_data(geocean_tgs = None,
             transform=ccrs.PlateCarree(),s=50,
             label='CoDEC hindcast',c='red',zorder=15
         )
-    if geocean_tgs:
+    if private_tgs:
         ax.scatter(
-            geocean_tgs.longitude.values,
-            geocean_tgs.latitude.values,
+            private_tgs.longitude.values,
+            private_tgs.latitude.values,
             transform=ccrs.PlateCarree(),
             label='More tidal gauges',
             c='darkblue',s=80,alpha=0.8,zorder=16
@@ -164,7 +164,7 @@ def plot_all_data(geocean_tgs = None,
     # TODO: add time series from forensic.ipynb
 
 
-def plot_winds(wind_data, n_times: int = 2,
+def plot_winds(wind_data, n_times: int = 1,
                quiv_step: int = 2,
                wind_coords: tuple = ('lon','lat'),
                wind_vars: tuple = ('U_GRD_L103','V_GRD_L103','wind_proj_mask')):
@@ -210,7 +210,7 @@ def plot_winds(wind_data, n_times: int = 2,
         plt.show()
 
 
-def plot_pres_ibar(slp_data, ss_data, n_times: int = 3):
+def plot_pres_ibar(slp_data, ss_data, n_times: int = 1):
 
     """
     This funtion plots the previously loaded pressure data and the

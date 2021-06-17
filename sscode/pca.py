@@ -20,7 +20,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                     time_lapse: int = 1, # 1 equals to NO time delay 
                     time_resample: str = '1D',
                     region: tuple = (True,default_region),
-                    pca_plot: tuple = (True,False),
+                    pca_plot: tuple = (True,False,2),
                     verbose: bool = True,
                     pca_ttls = None, pca_borders = None):
     """
@@ -48,11 +48,13 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
         region (tuple, optional): Region to crop the slp to. 
             - Defaults to (True,default_region).
         pca_plot (tuple, bool): Wether to plot or not the final results.
-            - Defaults to (True,False), as the second boolean indicator refers
+            - Defaults to (True,False,1), as the second boolean indicator refers
             to the de-standarization of the EOFs, which is not totally validated
+            ** pca_plot[2] == n_plot
         verbose (bool, optional): Wether or not to debug the actions.
             - Defaults to True.
         pca_ttls: These are the titles for the pca plots if wanted.
+        pca_borders: Limits to use in the pca plots.
 
     Returns:
         [xarray.Dataset]: PCA decomposition final results
@@ -148,7 +150,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     if pca_plot[0]:
         pca_plot_scale = pcs_scaler if pca_plot[1] else None
         plot_pcs(PCA_return,pcs_scaler=pca_plot_scale,
-                 n_plot=2,region=region_plot,
+                 n_plot=pca_plot[2],region=region_plot,
                  pca_ttls=pca_ttls,pca_borders=pca_borders)
 
     # return the PCA xarray.Dataset and the scaler
