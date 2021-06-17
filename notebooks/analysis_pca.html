@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. PCA ANALYSIS &#8212; Storm Surge NZ - Summary</title>
+    <title>2. PC analysis &#8212; Storm Surge NZ - Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -57,8 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. CCA ANALYSIS" href="analysis_cca.html" />
-    <link rel="prev" title="1. DATA VISUALIZATION / VALIDATION" href="data_visualization.html" />
+    <link rel="next" title="3. KM analysis" href="analysis_kma.html" />
+    <link rel="prev" title="1. Data visualization and validation" href="data_visualization.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -91,7 +91,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../README.html">
-   geocean-nz-ss
+   geoocean-nz-ss
   </a>
  </li>
 </ul>
@@ -103,37 +103,32 @@
 <ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   1. DATA VISUALIZATION / VALIDATION
+   1. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2. PCA ANALYSIS
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="analysis_cca.html">
-   3. CCA ANALYSIS
+   2. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KMA ANALYSIS
+   3. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. LINEAR REGRESSION
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN REGRESSOR
+   5. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="forensic.html">
-   7. STORMS VISUALIZATION
+  <a class="reference internal" href="models_mda_rbf.html">
+   6. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -240,29 +235,51 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#regional-pcs">
-   2.1. Regional PCs
+  <a class="reference internal nav-link" href="#principal-components-analysis-theory">
+   2.1. Principal components analysis theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#local-regional-pcs-with-gradient">
-   2.2. Local-regional PCs (with gradient)
+  <a class="reference internal nav-link" href="#load-the-data-without-plotting">
+   2.2. Load the data without plotting
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#local-pcs-with-wind-and-gradient">
-   2.3. Local PCs (with wind and gradient)
+  <a class="reference internal nav-link" href="#pca-usage-explanation">
+   2.3. PCA usage explanation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#local-pcs-just-slp-with-time-lapse">
-   2.4. Local PCs (just SLP with time lapse)
+  <a class="reference internal nav-link" href="#pca-examples">
+   2.4. PCA examples:
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#storm-surge-pcs">
-   2.5. Storm-Surge PCs
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#regional-pcs-analysis">
+     2.4.1. Regional PCs analysis
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-regional-pcs-with-gradient">
+     2.4.2. Local-Regional PCs (with gradient)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-pcs-with-wind-and-gradient">
+     2.4.3. Local PCs (with wind and gradient)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-pcs-just-slp-with-time-lapse">
+     2.4.4. Local PCs (just SLP with time lapse)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#storm-surge-pcs">
+     2.4.5. Storm-Surge PCs
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -276,16 +293,24 @@
         
               <div>
                 
-  <div class="section" id="pca-analysis">
-<h1><span class="section-number">2. </span>PCA ANALYSIS<a class="headerlink" href="#pca-analysis" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pc-analysis">
+<h1><span class="section-number">2. </span>PC analysis<a class="headerlink" href="#pc-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="principal-components-analysis-theory">
+<h2><span class="section-number">2.1. </span>Principal components analysis theory<a class="headerlink" href="#principal-components-analysis-theory" title="Permalink to this headline">¶</a></h2>
 <p>In this notebook, the Principal Component Analysis (PCA) is performed. With this dimensionality reduction technique we are able to reduce the dimension of the data, which in the case of a regional predictor for the sea-level-pressure fields, exceeds the thousands of variables… All the python code is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/pca.py</span></code>, where we use the scikit-learn package available <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">here</a>.</p>
 <p>Regarding the maths, an explanation of what PCA is can be found at <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis">wikipedia</a>, but it will be briefly explained here:</p>
 <p>The PCA reduces the dimension of the data by means of a projection in a lower dimensional space that preserves the maximum variance of the sample data. The new vectors are formed by the ones where the projected data have the higher variance. Given the spatiotemporal variable <span class="math notranslate nohighlight">\(X_i (x, t_i)\)</span>, where <span class="math notranslate nohighlight">\(x\)</span> is the spatial data position of dimension <span class="math notranslate nohighlight">\(3n1 + 2n2\)</span> and <span class="math notranslate nohighlight">\(t_i\)</span> is the time, we apply PCA to obtain a new <span class="math notranslate nohighlight">\(d\)</span>-dimensional space. The eigenvectors [empirical orthogonal functions (EOFs)] of the covariance matrix of the data define the vectors of the new space. The idea of PCA is to find the minimum <span class="math notranslate nohighlight">\(d\)</span> linearly EOFs, so that the transformed components of the original data [principal components (PCs)] explain the maximum variance necessary in the problem at hand. The original data can be expressed as a linear combination of EOFs and PCs,</p>
 <div class="math notranslate nohighlight">
 \[
+\boxed{
 X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)\times PC_d(t_i)
+}
 \]</div>
-<p>Once we apply PCA, our data are defined by the principal components <span class="math notranslate nohighlight">\(X_i^{EOF}={PC_1,PC_2,...,PC_d}, i=1,...,P \)</span>.</p>
+<p>Once we apply PCA, our data are defined by the principal components <span class="math notranslate nohighlight">\(X_i^{EOF}={PC_1,PC_2,...,PC_d}, i=1,...,P \)</span>. A better explanation can be also found <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-unsupervised-learning">here</a>!!</p>
+<div class="figure align-default" id="pca">
+<a class="reference internal image-reference" href="../_images/pca-analysis.png"><img alt="../_images/pca-analysis.png" src="../_images/pca-analysis.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">This picture shows how the dimensionality reduction that performs PCA might help when identifying patterns in data (<a class="reference external" href="https://programmerclick.com/images/486/0351bfe3610a3ba89bea599ee9d054ae.png">image reference</a>)</span><a class="headerlink" href="#pca" title="Permalink to this image">¶</a></p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
@@ -294,7 +319,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <span class="c1"># append sscode to path</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
-<span class="c1"># data viewer</span>
+<span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span>
@@ -306,6 +331,10 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="load-the-data-without-plotting">
+<h2><span class="section-number">2.2. </span>Load the data without plotting<a class="headerlink" href="#load-the-data-without-plotting" title="Permalink to this headline">¶</a></h2>
+<p>As always, we first load the data using our <code class="docutils literal notranslate"><span class="pre">Loader</span></code> python class, so then we can easily use all the datasets. Notice that here, we set the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
@@ -330,8 +359,69 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 </div>
-<div class="section" id="regional-pcs">
-<h2><span class="section-number">2.1. </span>Regional PCs<a class="headerlink" href="#regional-pcs" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pca-usage-explanation">
+<h2><span class="section-number">2.3. </span>PCA usage explanation<a class="headerlink" href="#pca-usage-explanation" title="Permalink to this headline">¶</a></h2>
+<p>To use the pre-build PCA functions, the user must get familiar with the datasets and the way everything is programmed.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For this reason, have always in mind that <a class="reference external" href="http://xarray.pydata.org/en/stable/getting-started-guide/why-xarray.html">xarray</a> will be the main python data analysis library used in the project, and then, python functions will usually depend on these <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html">Datasets</a> / <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html">DataArrays</a>, which are very useful when working with multiple dimensions and variables</p>
+</div>
+<p>regarding the PCA usage, have a look at the piece of code below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">PCA_DynamicPred</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="n">pres_vars</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
+                        <span class="n">calculate_gradient</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="n">winds</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
+                        <span class="n">wind_vars</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
+                        <span class="n">time_lapse</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay </span>
+                        <span class="n">time_resample</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span>
+                        <span class="n">region</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region</span><span class="p">),</span>
+                        <span class="n">pca_plot</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+                        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="n">pca_ttls</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pca_borders</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform PCA decomposition given the pressure, winds...</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pres (xarray.Dataarray/Dataset): These are the sea-level-pressure fields,</span>
+<span class="sd">                that could be loaded  both with load_era5() or load_cfsr(), and</span>
+<span class="sd">                obviously with the Loader object!!</span>
+<span class="sd">                    ** this parameter can be used to calculate PCA </span>
+<span class="sd">                       with different data </span>
+<span class="sd">                    **</span>
+<span class="sd">            pres_vars (tuple, optional): These are the slp xarray coordinates. </span>
+<span class="sd">                - Defaults to (&#39;msl&#39;,&#39;longitude&#39;,&#39;latitude&#39;).</span>
+<span class="sd">            calculate_gradient (bool, optional): weather to calculate or not the slp gradient.</span>
+<span class="sd">                - Defaults to False.</span>
+<span class="sd">            winds (tuple, optional): This is the wind data, if available...</span>
+<span class="sd">                - Defaults to (False,None), data must be xarray!!</span>
+<span class="sd">            wind_vars (tuple, optional): These are the wind coordinates. </span>
+<span class="sd">                - Defaults to (&#39;wind_proj&#39;,&#39;longitude&#39;,&#39;latitude&#39;).</span>
+<span class="sd">            time_lapse (int, optional): Time delay for the dynamic predictor. </span>
+<span class="sd">                - Defaults to 2.</span>
+<span class="sd">            time_resample (str, optional): This is the time resample.</span>
+<span class="sd">                - Defaults to &#39;1D&#39;.</span>
+<span class="sd">            region (tuple, optional): Region to crop the slp to. </span>
+<span class="sd">                - Defaults to (True,default_region).</span>
+<span class="sd">            pca_plot (tuple, bool): Wether to plot or not the final results.</span>
+<span class="sd">                - Defaults to (True,False), as the second boolean indicator refers</span>
+<span class="sd">                to the de-standarization of the EOFs, which is not totally validated</span>
+<span class="sd">            verbose (bool, optional): Wether or not to debug the actions.</span>
+<span class="sd">                - Defaults to True.</span>
+<span class="sd">            pca_ttls: These are the titles for the pca plots if wanted.</span>
+<span class="sd">            pca_borders: Limits to use in the pca plots.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [xarray.Dataset]: PCA decomposition final results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>as this is the aspect of all the functions that are used. For this particular case, we must give the function the previouly loaded slp fields, which are stored at <code class="docutils literal notranslate"><span class="pre">load_cfsr_moana_uhslc.predictor_slp</span></code>, and then specify the actions that we want to perform over this raw dataset. Here some examples of the available actions:</p>
+</div>
+<div class="section" id="pca-examples">
+<h2><span class="section-number">2.4. </span>PCA examples:<a class="headerlink" href="#pca-examples" title="Permalink to this headline">¶</a></h2>
+<p>Below, different PCA analysis with different inputs are shown:</p>
+<div class="section" id="regional-pcs-analysis">
+<h3><span class="section-number">2.4.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the regional pcs</span>
@@ -341,45 +431,47 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
         <span class="s1">&#39;../data/cfsr/cfsr_regional_daily_pcs.nc&#39;</span>
     <span class="p">)</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_pcs</span>
-    <span class="n">plot_pcs</span><span class="p">(</span><span class="n">pcs_cfsr</span><span class="p">,</span><span class="n">n_plot</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">plot_pcs</span><span class="p">(</span><span class="n">pcs_cfsr</span><span class="p">,</span><span class="n">n_plot</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># here is how this loaded regional pcs were calculated</span>
+    <span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
+        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span> <span class="c1"># look the simplicity of the function</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 5 components with 2 EOFs + PC... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 3 components with 2 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_5_1.png" src="../_images/analysis_pca_5_1.png" />
-<img alt="../_images/analysis_pca_5_2.png" src="../_images/analysis_pca_5_2.png" />
-<img alt="../_images/analysis_pca_5_3.png" src="../_images/analysis_pca_5_3.png" />
-<img alt="../_images/analysis_pca_5_4.png" src="../_images/analysis_pca_5_4.png" />
-<img alt="../_images/analysis_pca_5_5.png" src="../_images/analysis_pca_5_5.png" />
-<img alt="../_images/analysis_pca_5_6.png" src="../_images/analysis_pca_5_6.png" />
-<img alt="../_images/analysis_pca_5_7.png" src="../_images/analysis_pca_5_7.png" />
-<img alt="../_images/analysis_pca_5_8.png" src="../_images/analysis_pca_5_8.png" />
-<img alt="../_images/analysis_pca_5_9.png" src="../_images/analysis_pca_5_9.png" />
-<img alt="../_images/analysis_pca_5_10.png" src="../_images/analysis_pca_5_10.png" />
+<img alt="../_images/analysis_pca_7_1.png" src="../_images/analysis_pca_7_1.png" />
+<img alt="../_images/analysis_pca_7_2.png" src="../_images/analysis_pca_7_2.png" />
+<img alt="../_images/analysis_pca_7_3.png" src="../_images/analysis_pca_7_3.png" />
+<img alt="../_images/analysis_pca_7_4.png" src="../_images/analysis_pca_7_4.png" />
+<img alt="../_images/analysis_pca_7_5.png" src="../_images/analysis_pca_7_5.png" />
+<img alt="../_images/analysis_pca_7_6.png" src="../_images/analysis_pca_7_6.png" />
 </div>
 </div>
 </div>
 <div class="section" id="local-regional-pcs-with-gradient">
-<h2><span class="section-number">2.2. </span>Local-regional PCs (with gradient)<a class="headerlink" href="#local-regional-pcs-with-gradient" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">2.4.2. </span>Local-Regional PCs (with gradient)<a class="headerlink" href="#local-regional-pcs-with-gradient" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate some local pcs</span>
 <span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
-    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 = NO time lapse</span>
     <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">6.1</span><span class="p">,</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">6.1</span><span class="p">,</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">6.1</span><span class="p">,</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">6.1</span>
     <span class="p">)),</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># (plot,scale)</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># (plot,scale,n_plot)</span>
 <span class="p">)</span>
 <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_recon_pcs</span>
@@ -406,28 +498,30 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  (11353, 1250) 
 
 
- plotting 2 components with 2 EOFs + PC... 
+ plotting 3 components with 2 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_7_1.png" src="../_images/analysis_pca_7_1.png" />
-<img alt="../_images/analysis_pca_7_2.png" src="../_images/analysis_pca_7_2.png" />
-<img alt="../_images/analysis_pca_7_3.png" src="../_images/analysis_pca_7_3.png" />
-<img alt="../_images/analysis_pca_7_4.png" src="../_images/analysis_pca_7_4.png" />
+<img alt="../_images/analysis_pca_9_1.png" src="../_images/analysis_pca_9_1.png" />
+<img alt="../_images/analysis_pca_9_2.png" src="../_images/analysis_pca_9_2.png" />
+<img alt="../_images/analysis_pca_9_3.png" src="../_images/analysis_pca_9_3.png" />
+<img alt="../_images/analysis_pca_9_4.png" src="../_images/analysis_pca_9_4.png" />
+<img alt="../_images/analysis_pca_9_5.png" src="../_images/analysis_pca_9_5.png" />
+<img alt="../_images/analysis_pca_9_6.png" src="../_images/analysis_pca_9_6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting reconstruction of 2 EOFs... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1... 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_7_6.png" src="../_images/analysis_pca_7_6.png" />
+<img alt="../_images/analysis_pca_9_8.png" src="../_images/analysis_pca_9_8.png" />
 </div>
 </div>
 </div>
 <div class="section" id="local-pcs-with-wind-and-gradient">
-<h2><span class="section-number">2.3. </span>Local PCs (with wind and gradient)<a class="headerlink" href="#local-pcs-with-wind-and-gradient" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">2.4.3. </span>Local PCs (with wind and gradient)<a class="headerlink" href="#local-pcs-with-wind-and-gradient" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># more pcs in new location</span>
@@ -441,7 +535,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
     <span class="p">)),</span>
     <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span>
     <span class="n">wind_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
     <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
@@ -475,10 +569,10 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_9_1.png" src="../_images/analysis_pca_9_1.png" />
-<img alt="../_images/analysis_pca_9_2.png" src="../_images/analysis_pca_9_2.png" />
-<img alt="../_images/analysis_pca_9_3.png" src="../_images/analysis_pca_9_3.png" />
-<img alt="../_images/analysis_pca_9_4.png" src="../_images/analysis_pca_9_4.png" />
+<img alt="../_images/analysis_pca_11_1.png" src="../_images/analysis_pca_11_1.png" />
+<img alt="../_images/analysis_pca_11_2.png" src="../_images/analysis_pca_11_2.png" />
+<img alt="../_images/analysis_pca_11_3.png" src="../_images/analysis_pca_11_3.png" />
+<img alt="../_images/analysis_pca_11_4.png" src="../_images/analysis_pca_11_4.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;xarray.Dataset&gt;
  Dimensions:   (n_components: 363, n_features: 363, n_lat: 11, n_lon: 11, time: 11353)
  Coordinates:
@@ -497,20 +591,20 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="local-pcs-just-slp-with-time-lapse">
-<h2><span class="section-number">2.4. </span>Local PCs (just SLP with time lapse)<a class="headerlink" href="#local-pcs-just-slp-with-time-lapse" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">2.4.4. </span>Local PCs (just SLP with time lapse)<a class="headerlink" href="#local-pcs-just-slp-with-time-lapse" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># more pcs with time lapse</span>
 <span class="n">new_location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">168</span><span class="p">,</span><span class="o">-</span><span class="mi">44</span><span class="p">)</span>
 <span class="n">PCA_DynamicPred</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
-    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
         <span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
         <span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span>
     <span class="p">)),</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
-    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-2&#39;</span><span class="p">]</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-3&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-4&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -520,28 +614,30 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 
 
  calculated PCs matrix with shape: 
- (11351, 363) 
+ (11349, 605) 
 
 
- plotting 2 components with 3 EOFs + PC... 
+ plotting 3 components with 5 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_11_1.png" src="../_images/analysis_pca_11_1.png" />
-<img alt="../_images/analysis_pca_11_2.png" src="../_images/analysis_pca_11_2.png" />
-<img alt="../_images/analysis_pca_11_3.png" src="../_images/analysis_pca_11_3.png" />
-<img alt="../_images/analysis_pca_11_4.png" src="../_images/analysis_pca_11_4.png" />
+<img alt="../_images/analysis_pca_13_1.png" src="../_images/analysis_pca_13_1.png" />
+<img alt="../_images/analysis_pca_13_2.png" src="../_images/analysis_pca_13_2.png" />
+<img alt="../_images/analysis_pca_13_3.png" src="../_images/analysis_pca_13_3.png" />
+<img alt="../_images/analysis_pca_13_4.png" src="../_images/analysis_pca_13_4.png" />
+<img alt="../_images/analysis_pca_13_5.png" src="../_images/analysis_pca_13_5.png" />
+<img alt="../_images/analysis_pca_13_6.png" src="../_images/analysis_pca_13_6.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;xarray.Dataset&gt;
- Dimensions:   (n_components: 363, n_features: 363, n_lat: 11, n_lon: 11, time: 11351)
+ Dimensions:   (n_components: 605, n_features: 605, n_lat: 11, n_lon: 11, time: 11349)
  Coordinates:
-   * time      (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-28
+   * time      (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-26
  Dimensions without coordinates: n_components, n_features, n_lat, n_lon
  Data variables:
-     PCs       (time, n_components) float64 -13.78 7.049 ... -1.227e-05
-     EOFs      (n_components, n_features) float64 -0.04578 -0.04671 ... -0.02585
-     variance  (n_components) float64 277.5 58.57 12.06 ... 2.702e-11 2.656e-11
+     PCs       (time, n_components) float64 -15.87 -0.9563 ... -6.611e-06
+     EOFs      (n_components, n_features) float64 -0.03065 -0.03139 ... -0.009912
+     variance  (n_components) float64 374.0 134.9 47.98 ... 2.325e-11 2.303e-11
      pcs_lon   (n_lon) float32 165.5 166.0 166.5 167.0 ... 169.5 170.0 170.5
      pcs_lat   (n_lat) float32 -41.5 -42.0 -42.5 -43.0 ... -45.5 -46.0 -46.5,
  StandardScaler())
@@ -551,7 +647,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="storm-surge-pcs">
-<h2><span class="section-number">2.5. </span>Storm-Surge PCs<a class="headerlink" href="#storm-surge-pcs" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">2.4.5. </span>Storm-Surge PCs<a class="headerlink" href="#storm-surge-pcs" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the pcs of the storm surge</span>
@@ -567,7 +663,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
         <span class="n">pres_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
         <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span> 
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
         <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SS in t&#39;</span><span class="p">,</span> <span class="s1">&#39;SS in t-1&#39;</span><span class="p">]</span>
     <span class="p">)</span>
 </pre></div>
@@ -584,16 +680,19 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  (8065, 4032) 
 
 
- plotting 2 components with 2 EOFs + PC... 
+ plotting 3 components with 2 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_13_1.png" src="../_images/analysis_pca_13_1.png" />
-<img alt="../_images/analysis_pca_13_2.png" src="../_images/analysis_pca_13_2.png" />
-<img alt="../_images/analysis_pca_13_3.png" src="../_images/analysis_pca_13_3.png" />
-<img alt="../_images/analysis_pca_13_4.png" src="../_images/analysis_pca_13_4.png" />
+<img alt="../_images/analysis_pca_15_1.png" src="../_images/analysis_pca_15_1.png" />
+<img alt="../_images/analysis_pca_15_2.png" src="../_images/analysis_pca_15_2.png" />
+<img alt="../_images/analysis_pca_15_3.png" src="../_images/analysis_pca_15_3.png" />
+<img alt="../_images/analysis_pca_15_4.png" src="../_images/analysis_pca_15_4.png" />
+<img alt="../_images/analysis_pca_15_5.png" src="../_images/analysis_pca_15_5.png" />
+<img alt="../_images/analysis_pca_15_6.png" src="../_images/analysis_pca_15_6.png" />
+</div>
 </div>
 </div>
 </div>
@@ -624,8 +723,8 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page"><span class="section-number">1. </span>DATA VISUALIZATION / VALIDATION</a>
-    <a class='right-next' id="next-link" href="analysis_cca.html" title="next page"><span class="section-number">3. </span>CCA ANALYSIS</a>
+    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page"><span class="section-number">1. </span>Data visualization and validation</a>
+    <a class='right-next' id="next-link" href="analysis_kma.html" title="next page"><span class="section-number">3. </span>KM analysis</a>
 
         </div>
         

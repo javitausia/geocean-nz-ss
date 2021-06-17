@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. KNN REGRESSOR &#8212; Storm Surge NZ - Summary</title>
+    <title>5. KNN regressor models &#8212; Storm Surge NZ - Summary</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -52,11 +52,13 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7. STORMS VISUALIZATION" href="forensic.html" />
-    <link rel="prev" title="5. LINEAR REGRESSION" href="models_linear.html" />
+    <link rel="next" title="6. MDA - RBF model" href="models_mda_rbf.html" />
+    <link rel="prev" title="4. MultiLinear regression models" href="models_linear.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -89,7 +91,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../README.html">
-   geocean-nz-ss
+   geoocean-nz-ss
   </a>
  </li>
 </ul>
@@ -101,37 +103,32 @@
 <ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   1. DATA VISUALIZATION / VALIDATION
+   1. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   2. PCA ANALYSIS
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="analysis_cca.html">
-   3. CCA ANALYSIS
+   2. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KMA ANALYSIS
+   3. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. LINEAR REGRESSION
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   6. KNN REGRESSOR
+   5. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="forensic.html">
-   7. STORMS VISUALIZATION
+  <a class="reference internal" href="models_mda_rbf.html">
+   6. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -238,38 +235,40 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-the-data">
-   6.1. Load the data
+  <a class="reference internal nav-link" href="#k-nearest-neighbors-theory">
+   5.1. K-nearest-neighbors theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-calculate-the-pcs">
-   6.2. Load / calculate the pcs
+  <a class="reference internal nav-link" href="#load-the-data-main-pcs">
+   5.2. Load the data (main + PCs)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#knn-regression-with-regional-predictor">
-   6.3. KNN regression with regional predictor
+   5.3. KNN regression with regional predictor
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#knn-regression-in-the-uhslc-tidal-gauges-validation">
-   6.4. KNN regression in the UHSLC tidal gauges + validation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#check-knn-reconstructions">
-   6.5. Check KNN reconstructions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#knn-regression-ana-s-paper">
-   6.6. knn regression - Ana’s paper
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#knn-regression-in-the-uhslc-tidal-gauges-validation">
+     5.3.1. KNN regression in the UHSLC tidal gauges + validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#check-knn-reconstructions">
+     5.3.2. Check KNN reconstructions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#knn-regression-ana-s-paper">
+     5.3.3. knn regression - Ana’s paper
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#knn-regression-with-local-predictor">
-   6.7. knn regression with local predictor
+   5.4. KNN regression with local predictor
   </a>
  </li>
 </ul>
@@ -284,8 +283,19 @@
         
               <div>
                 
-  <div class="section" id="knn-regressor">
-<h1><span class="section-number">6. </span>KNN REGRESSOR<a class="headerlink" href="#knn-regressor" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="knn-regressor-models">
+<h1><span class="section-number">5. </span>KNN regressor models<a class="headerlink" href="#knn-regressor-models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="k-nearest-neighbors-theory">
+<h2><span class="section-number">5.1. </span>K-nearest-neighbors theory<a class="headerlink" href="#k-nearest-neighbors-theory" title="Permalink to this headline">¶</a></h2>
+<p>The k-nearest neighbors algorithm, commonly known as <span class="math notranslate nohighlight">\(k-NN\)</span>, is a non-parametric approach where the response of a data point is determined by the nature of its k-neighbors from the training set. It can be used in both classification and regression settings.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Remark: the higher the parameter k, the higher the bias, and the lower the parameter k, the higher the variance.</p>
+</div>
+<div class="figure align-default" id="k-nn">
+<a class="reference internal image-reference" href="../_images/k-nearest-neighbors.png"><img alt="../_images/k-nearest-neighbors.png" src="../_images/k-nearest-neighbors.png" style="width: 550px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">This picture shows the bias-variance trad-off with the knn regressor (<a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/illustrations/k-nearest-neighbors.png?02f80a524bb11e2b7a70b58c9ed3b0f4">image reference</a>)</span><a class="headerlink" href="#k-nn" title="Permalink to this image">¶</a></p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
@@ -304,9 +314,9 @@
 <span class="c1"># append sscode to path</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
-<span class="c1"># data viewer</span>
+<span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span>
-<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_geocean_tgs</span>
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_private_tgs</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.knn</span> <span class="kn">import</span> <span class="n">KNN_Regression</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_uhslc_locations</span>
@@ -318,8 +328,10 @@
 </div>
 </div>
 </div>
-<div class="section" id="load-the-data">
-<h2><span class="section-number">6.1. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="load-the-data-main-pcs">
+<h2><span class="section-number">5.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
+<p>loading data to use…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
@@ -344,9 +356,6 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="load-calculate-the-pcs">
-<h2><span class="section-number">6.2. </span>Load / calculate the pcs<a class="headerlink" href="#load-calculate-the-pcs" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
@@ -360,7 +369,8 @@
     <span class="c1"># calculate the pcs</span>
     <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -368,7 +378,12 @@
 </div>
 </div>
 <div class="section" id="knn-regression-with-regional-predictor">
-<h2><span class="section-number">6.3. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<p>In the following cell, a knn regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_knn_regional_daily.nc</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As it can be seen in the results plot, the different shores in New Zealand show very different results</p>
+</div>
 <p>This is a snippet of the model outlook:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
     <span class="c1"># perform the knn regression</span>
@@ -453,9 +468,9 @@
 <img alt="../_images/models_knn_9_0.png" src="../_images/models_knn_9_0.png" />
 </div>
 </div>
-</div>
 <div class="section" id="knn-regression-in-the-uhslc-tidal-gauges-validation">
-<h2><span class="section-number">6.4. </span>KNN regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#knn-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">5.3.1. </span>KNN regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#knn-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
+<p>This part explanation is similar to the one available at <strong>MultiLinear regression models (linear_models.ipynb)</strong>!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the uhslc tidal-gauges locations</span>
@@ -648,7 +663,12 @@
 </div>
 </div>
 <div class="section" id="check-knn-reconstructions">
-<h2><span class="section-number">6.5. </span>Check KNN reconstructions<a class="headerlink" href="#check-knn-reconstructions" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">5.3.2. </span>Check KNN reconstructions<a class="headerlink" href="#check-knn-reconstructions" title="Permalink to this headline">¶</a></h3>
+<p>Now, we visualize how the knn algorithm works in the prediction task…</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>TODO: add explanations!!</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import custom plotting variables</span>
@@ -657,10 +677,10 @@
 <span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
 
 <span class="c1"># find similarities between real and kneighbors</span>
-<span class="n">n_times</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># number of validations/plots</span>
+<span class="n">n_times</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of validations/plots</span>
 <span class="n">k_neighbors</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of neighbors to search</span>
 <span class="c1"># plotting fig and axes</span>
-<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">train_times</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">train_times</span><span class="p">),</span><span class="n">n_times</span><span class="p">)]:</span>
+<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">train_times</span><span class="p">),</span><span class="n">n_times</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
         <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="n">_figsize</span><span class="p">,</span>
         <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
@@ -669,16 +689,16 @@
             <span class="p">)</span>
         <span class="p">}</span>
     <span class="p">)</span>
-    <span class="n">real</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+    <span class="n">real</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
     <span class="n">real</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">101300</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">101300</span><span class="o">+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
         <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
     <span class="p">)</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-        <span class="n">time</span><span class="o">=</span><span class="n">train_times</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span>
-            <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">PCs</span><span class="p">[:</span><span class="mi">71</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+        <span class="n">time</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span>
+            <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">PCs</span><span class="p">[:</span><span class="mi">71</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
             <span class="n">k_neighbors</span>
-        <span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
     <span class="n">predicted</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">101300</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">101300</span><span class="o">+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
@@ -698,18 +718,16 @@
 <div class="cell_output docutils container">
 <img alt="../_images/models_knn_14_0.png" src="../_images/models_knn_14_0.png" />
 <img alt="../_images/models_knn_14_1.png" src="../_images/models_knn_14_1.png" />
-<img alt="../_images/models_knn_14_2.png" src="../_images/models_knn_14_2.png" />
-<img alt="../_images/models_knn_14_3.png" src="../_images/models_knn_14_3.png" />
-<img alt="../_images/models_knn_14_4.png" src="../_images/models_knn_14_4.png" />
 </div>
 </div>
 </div>
 <div class="section" id="knn-regression-ana-s-paper">
-<h2><span class="section-number">6.6. </span>knn regression - Ana’s paper<a class="headerlink" href="#knn-regression-ana-s-paper" title="Permalink to this headline">¶</a></h2>
+<h3><span class="section-number">5.3.3. </span>knn regression - Ana’s paper<a class="headerlink" href="#knn-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
+<p>In the two following cells, we try to replicate the same analysis that we made with the linear regression, but this time with the knn regressor…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># knn regression in kapiti island</span>
-<span class="n">ss_kapiti</span> <span class="o">=</span> <span class="n">load_geocean_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Kapiti_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ss_kapiti</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Kapiti_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">stats_stat</span><span class="p">,</span> <span class="n">kapiti_model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
     <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_kapiti</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span>
@@ -730,7 +748,7 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-[Parallel(n_jobs=1)]: Done 125 out of 125 | elapsed:   15.8s finished
+[Parallel(n_jobs=1)]: Done 125 out of 125 | elapsed:   16.6s finished
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> best model fitted with 21 neighbors!! 
@@ -747,7 +765,7 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># knn regression in green island</span>
-<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_geocean_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">stats_stat</span><span class="p">,</span> <span class="n">green_model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
     <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_green</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span>
@@ -768,7 +786,7 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-[Parallel(n_jobs=1)]: Done 125 out of 125 | elapsed:    2.2s finished
+[Parallel(n_jobs=1)]: Done 125 out of 125 | elapsed:    3.3s finished
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> best model fitted with 17 neighbors!! 
@@ -785,18 +803,18 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># knn regression in green island</span>
-<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_geocean_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">stats_stat</span><span class="p">,</span> <span class="n">green_model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
     <span class="n">PCA_DynamicPred</span><span class="p">(</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
         <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
-            <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span><span class="p">,</span>
-            <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
-            <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
-            <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span>
+            <span class="n">ss_green</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mf">2.6</span><span class="p">,</span>
+            <span class="n">ss_green</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
+            <span class="n">ss_green</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
+            <span class="n">ss_green</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mf">2.6</span>
         <span class="p">)),</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)[</span><span class="mi">0</span><span class="p">],</span> 
     <span class="n">ss_green</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span>
@@ -815,11 +833,11 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
 
 
  pressure/gradient predictor both with shape: 
- (11354, 10, 10) 
+ (11354, 11, 10) 
 
 
  calculated PCs matrix with shape: 
- (11353, 200) 
+ (11353, 220) 
 
 
  plotting 2 components with 2 EOFs + PC... 
@@ -839,16 +857,22 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
 </pre></div>
 </div>
 <img alt="../_images/models_knn_18_6.png" src="../_images/models_knn_18_6.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.91, RMSE: 0.09
- and Correlation (Pearson, Spearman): (0.61, 0.65)
- R score: 0.35 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.62, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.79, 0.79)
+ R score: 0.61 -- in TEST data
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="knn-regression-with-local-predictor">
-<h2><span class="section-number">6.7. </span>knn regression with local predictor<a class="headerlink" href="#knn-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.4. </span>KNN regression with local predictor<a class="headerlink" href="#knn-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<p>In the following cell, a knn regression is performed over all the domain of the Moana v2 hindcast nearshore, having the local pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_knn_local_daily.nc</span></code>. Notice that, with the regional predictor, which involves an area of 4 <span class="math notranslate nohighlight">\(\cdot\)</span> 4 degrees, we are able to cover just a smaller area, but centered at the location of the virtual moana node.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As it can be seen in the results plot, the different shores in New Zealand show very different results, as it could be seen with the regional predictor</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
@@ -946,8 +970,8 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="models_linear.html" title="previous page"><span class="section-number">5. </span>LINEAR REGRESSION</a>
-    <a class='right-next' id="next-link" href="forensic.html" title="next page"><span class="section-number">7. </span>STORMS VISUALIZATION</a>
+    <a class='left-prev' id="prev-link" href="models_linear.html" title="previous page"><span class="section-number">4. </span>MultiLinear regression models</a>
+    <a class='right-next' id="next-link" href="models_mda_rbf.html" title="next page"><span class="section-number">6. </span>MDA - RBF model</a>
 
         </div>
         

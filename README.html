@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>geocean-nz-ss &#8212; Storm Surge NZ - Summary</title>
+    <title>geoocean-nz-ss &#8212; Storm Surge NZ - Summary</title>
     
   <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -55,7 +55,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. DATA VISUALIZATION / VALIDATION" href="notebooks/data_visualization.html" />
+    <link rel="next" title="1. Data visualization and validation" href="notebooks/data_visualization.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -88,7 +88,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1 current active">
   <a class="reference internal" href="#">
-   geocean-nz-ss
+   geoocean-nz-ss
   </a>
  </li>
 </ul>
@@ -100,37 +100,32 @@
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/data_visualization.html">
-   1. DATA VISUALIZATION / VALIDATION
+   1. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/analysis_pca.html">
-   2. PCA ANALYSIS
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="notebooks/analysis_cca.html">
-   3. CCA ANALYSIS
+   2. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/analysis_kma.html">
-   4. KMA ANALYSIS
+   3. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_linear.html">
-   5. LINEAR REGRESSION
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_knn.html">
-   6. KNN REGRESSOR
+   5. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="notebooks/forensic.html">
-   7. STORMS VISUALIZATION
+  <a class="reference internal" href="notebooks/models_mda_rbf.html">
+   6. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -221,32 +216,37 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#description">
-   1. Description
+   Description
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#data-download">
-   2. Data download
+  <a class="reference internal nav-link" href="#data-explanation">
+   Data explanation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#main-contents">
-   3. Main contents
+   Main contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#project-organization">
+   Project organization
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#installation">
-   4. Installation
+   Installation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#create-an-environment-in-conda">
-     4.1 Create an environment in conda
+     Create an environment in conda
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#activate-conda-environment">
-     4.2 Activate conda environment
+     Activate conda environment
     </a>
    </li>
   </ul>
@@ -273,29 +273,96 @@
         
               <div>
                 
-  <div class="section" id="geocean-nz-ss">
-<h1>geocean-nz-ss<a class="headerlink" href="#geocean-nz-ss" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="geoocean-nz-ss">
+<h1>geoocean-nz-ss<a class="headerlink" href="#geoocean-nz-ss" title="Permalink to this headline">¶</a></h1>
 <p>This repository will contain all the updated information in the shared project between GeoOcean-MetService</p>
 <p>updated info at: <a class="reference external" href="https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing">https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing</a></p>
 <p>below, a summary of the region and data involved in the first part of the analysis can be seen:</p>
-<p><img alt="gif" src="_images/example.gif" /></p>
+<p><img alt="gif" src="_images/READMEexample.gif" /></p>
 <p>jupyter book summary <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/">here</a></p>
+<p>related repos:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/metocean/storm_surge">https://github.com/metocean/storm_surge</a></p></li>
+<li><p><a class="reference external" href="https://github.com/metocean/storm_surge_data">https://github.com/metocean/storm_surge_data</a></p></li>
+<li><p><a class="reference external" href="https://gitlab.com/geoocean/teslakit">https://gitlab.com/geoocean/teslakit</a> (some tools were created here)</p></li>
+</ul>
 <div class="section" id="description">
-<h2>1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The storm surge …</p>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Storm surge is the rise of water level generated by wind and atmospheric pressure changes associated with tropical or
+extra-tropical storms, over and above the astronomical tide (AT). Storm surge is one of the most critical components of
+coastal flooding and its magnitude has a large spatial variability. Flooding associated with storm surges is one of the
+most common natural hazards for coastal areas worldwide (Cagigal et al., 2019) …</p>
+<p>In this project, which is a collaboration project between the University of Cantabria (Spain) and Metservice (New Zealand),
+we will develop different machine learning tools that might help in the forecast of a storm-surge model …</p>
 </div>
-<div class="section" id="data-download">
-<h2>2. Data download<a class="headerlink" href="#data-download" title="Permalink to this headline">¶</a></h2>
-<p>Data …</p>
+<div class="section" id="data-explanation">
+<h2>Data explanation<a class="headerlink" href="#data-explanation" title="Permalink to this headline">¶</a></h2>
+<p>Different datasets will be used in the project, but all of them belongs to one of these categories:</p>
+<ul class="simple">
+<li><p>Sea-level-pressure fields, which can be the ERA5 or the CFSR reanalysis</p></li>
+<li><p>Storm surge hindcast data, which can be Moana, DAC, CoDEC…</p></li>
+<li><p>Storm surge real observations, where different datasets / organizations are involved!!</p></li>
+</ul>
 </div>
 <div class="section" id="main-contents">
-<h2>3. Main contents<a class="headerlink" href="#main-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Main contents<a class="headerlink" href="#main-contents" title="Permalink to this headline">¶</a></h2>
 <p>Statistical tools, notebooks, data …</p>
 </div>
+<div class="section" id="project-organization">
+<h2>Project organization<a class="headerlink" href="#project-organization" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>├── LICENSE
+|
+├── .gitignore
+├── .gitattributes         &lt;- These are .git configuration files
+|
+├── _config.yml
+├── _toc.yml               &lt;- These are config files for the jupyter-book
+|
+├── .github
+|   └── workflows
+|       └── deploy.yml     &lt;- YAMO file for the Github Actions deployment
+|
+├── references.bib         &lt;- Project bibliography with articles, books...
+|
+├── README.md              &lt;- The top-level README for developers using this project
+|
+├── data
+│   ├── slp                &lt;- Sea-level-pressure fields from ERA5 / CFSR
+│   ├── ss-hindcast        &lt;- Storm surge hindcast models
+│   ├── ss-obs             &lt;- Storm surge real observations data
+│   └── extra              &lt;- Additional data that might be helpful
+│
+├── media          
+|   ├── images
+|   └── videos             &lt;- Some media files extracted from project workflows        
+│
+├── notebooks              &lt;- Jupyter notebooks. This folder contains all the explanatory
+|                             jupyter notebooks used in the project (.ipynb)
+│
+├── environment.yml        &lt;- The environment file for reproducing the analysis environment, e.g.
+│                             generated with `conda freeze &gt; environment.yml`
+├── requirements.txt       &lt;- Another environment file for reproducing the analysis environment, e.g.
+│                             generated with `pip-chill --no-version &gt; requirements.txt`
+│
+├── sscode                 &lt;- Source code for use in this project
+│   ├── __init__.py        &lt;- Makes src a Python module
+|   ├── modules*           &lt;- Python scripts with different modules (*not a subfolder)
+|   |   ├──  data
+|   |   ├── pca
+|   |   ├── linear
+|   |   └── ...
+│   └── plotting           &lt;- Plotting scripts related with the mathematical ones
+│       └── ...
+│
+└── report                 &lt;- Project description in pdf format (contracts...): 
+                              MSVC1901_UoCantabria_01_V4 - Final.pdf
+</pre></div>
+</div>
+</div>
 <div class="section" id="installation">
-<h2>4. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="create-an-environment-in-conda">
-<h3>4.1 Create an environment in conda<a class="headerlink" href="#create-an-environment-in-conda" title="Permalink to this headline">¶</a></h3>
+<h3>Create an environment in conda<a class="headerlink" href="#create-an-environment-in-conda" title="Permalink to this headline">¶</a></h3>
 <p>To run the toolbox you first need to install the required Python packages in an environment. To do this we will see <strong>Anaconda</strong>, which can be downloaded freely <a class="reference external" href="https://www.anaconda.com/download/">here</a>.</p>
 <p>Once you have installed it on your PC, open the Anaconda prompt (in Mac and Linux, open a terminal window) and use the <code class="docutils literal notranslate"><span class="pre">cd</span></code> command to go to the folder where you have cloned this repository.</p>
 <p>Create a new environment named <code class="docutils literal notranslate"><span class="pre">ssnz</span></code> with all the required packages:</p>
@@ -304,7 +371,7 @@
 </div>
 </div>
 <div class="section" id="activate-conda-environment">
-<h3>4.2 Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
+<h3>Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
 <p>All the required packages have been now installed in an environment called <code class="docutils literal notranslate"><span class="pre">ssnz</span></code>. Now, activate this new environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">ssnz</span>
 </pre></div>
@@ -350,7 +417,7 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='right-next' id="next-link" href="notebooks/data_visualization.html" title="next page"><span class="section-number">1. </span>DATA VISUALIZATION / VALIDATION</a>
+    <a class='right-next' id="next-link" href="notebooks/data_visualization.html" title="next page"><span class="section-number">1. </span>Data visualization and validation</a>
 
         </div>
         

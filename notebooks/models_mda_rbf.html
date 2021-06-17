@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="5. KNN regressor models" href="models_knn.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.jpeg" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../README.html">
+   geoocean-nz-ss
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Chapters
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   1. Data visualization and validation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_pca.html">
+   2. PC analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_kma.html">
+   3. KM analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_linear.html">
+   4. MultiLinear regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_knn.html">
+   5. KNN regressor models
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   6. MDA - RBF model
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/models_mda_rbf.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/models_mda_rbf.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/models_mda_rbf.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#maximum-dissimilarity-algorithm-mda">
+   6.1. Maximum Dissimilarity Algorithm (MDA)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reconstruction-of-the-coastal-wave-climate-with-rbf">
+   6.2. Reconstruction of the coastal wave climate with RBF
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-data-and-linear-model-stats">
+   6.3. Load data and linear model stats
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="mda-rbf-model">
+<h1><span class="section-number">6. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook, we will perform a analysis using one of our most used methods, which involves MDA + RBF algorithms. The process will be the next:</p>
+<ul class="simple">
+<li><p>First, the areas where the study is wanted to be performed are selected.</p></li>
+<li><p>Next, we calculate the PCs of these areas, given the hourly / daily storm surge of the locations in that area.</p></li>
+<li><p>After calculating the Stormsurge-PCs and the SLP (local) principal components, we then choose N cases from the total dataset, using the MDA algorithm.</p></li>
+<li><p>Finally, we use RBF to interpolate the final storm-surge surface in all the areas / locations!!</p></li>
+</ul>
+<div class="section" id="maximum-dissimilarity-algorithm-mda">
+<h2><span class="section-number">6.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
+<p>In this way, the first important step to carry out this method is the selection of the maximum dissimilar cases, so the posterior reconstruction of all the cases can be performed correctly:</p>
+<div class="figure align-default" id="mdacroquis">
+<a class="reference internal image-reference" href="../_images/mdacroquis.png"><img alt="../_images/mdacroquis.png" src="../_images/mdacroquis.png" style="height: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
+</div>
+<p>This sketch shows the workflow followed in the selection step. The data is firstly normalized for the correct performance of the algorithm, then the euclidean distance is used for the calculation of the distance between the different vectors in the dataset. Finally, the selected data is de-normalized so it can be used and plotted together with the original information.</p>
+<p>As it can be seen, the variables used are:</p>
+<div class="math notranslate nohighlight">
+\[
+\boxed{
+\textrm{Variables: } \:\: PC1, \:\: PC2 \:\: ... \:\: PCn; \:\: SS1 \:\: ... \:\: SSn
+}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(PCn\)</span> refers to the principal components of the sea-level-pressure fields and the <span class="math notranslate nohighlight">\(SSn\)</span> variables belongs to the principal components of the <span class="math notranslate nohighlight">\(n\)</span> locations of the selected area.</p>
+</div>
+<div class="section" id="reconstruction-of-the-coastal-wave-climate-with-rbf">
+<h2><span class="section-number">6.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
+<p>Once we have the selected cases, we now have a lot of different situations with
+different characteristics all along the coast so the reconstruction of the storm surge climate can be done.</p>
+<p>The reconstruction of the storm surge in shallow waters is carried out by
+an interpolation from the selected case series that have been selected. The interpolation technique used is based on radial basis
+functions (RBF), very suitable for data with high dimensionality and not evenly
+distributed. There is a series of values of the real function
+<span class="math notranslate nohighlight">\(f(x_i) \:\:\: i = 1, ..., N\)</span> in the points <span class="math notranslate nohighlight">\(x_1 , ..., x_N\)</span>. The RBF
+interpolation technique considers that the RBF function approximation consists of a linear combination of symmetrical radial functions centered on the given points. The objective function has the following expression:</p>
+<div class="math notranslate nohighlight">
+\[
+\boxed{
+RBF(x) = p(x) + \sum_{i=1}^{N}a_i\Phi\left ( \left \| x-x_i \right \| \right )
+}
+\]</div>
+<p>interpolating the given values as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\boxed{
+RBF(x_i) = f_i \:\:\: i = 1 ,..., N
+}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(RBF\)</span> is the interpolation function, <span class="math notranslate nohighlight">\(p(x)\)</span> is the linear polynomial in all the
+variables involved in the problem, <span class="math notranslate nohighlight">\(a_i\)</span> are the RBF adjustment coefficients, <span class="math notranslate nohighlight">\(\Phi\)</span> is the
+basic radial function, <span class="math notranslate nohighlight">\(||\cdot||\)</span> is the Euclidean norm and <span class="math notranslate nohighlight">\(x_i\)</span> are the centres of
+the RBF interpolation.</p>
+<div class="figure align-default" id="rbf-color">
+<a class="reference internal image-reference" href="../_images/rbf-color.png"><img alt="../_images/rbf-color.png" src="../_images/rbf-color.png" style="width: 500px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 6.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
+</div>
+<p>The polynomial <span class="math notranslate nohighlight">\(p(x)\)</span> in the expression of the RBF interpolation function is defined as a
+monomial base <span class="math notranslate nohighlight">\({p_0, p_1 ,..., p_d}\)</span>. The first is a monomial, consisting of a number of grade one monomials equal to the dimensionality of the data, where <span class="math notranslate nohighlight">\(b = {b_0 , b_1 ,..., b_d}\)</span> are the coefficients of these monomials.</p>
+<p>The radially based functions can have different expressions. Some of these
+radial functions contain a shape parameter that plays a very important role
+in the precision of the technique. In the methodology of propagation of the maritime climate, it has been considered the Gaussian radial function that depend on a shape parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># common</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># pip</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="c1"># plotting</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="c1"># append sscode to path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+
+<span class="c1"># custom</span>
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
+<span class="kn">from</span> <span class="nn">sscode.mda_rbf</span> <span class="kn">import</span> <span class="n">MDA_RBF_Model</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="load-data-and-linear-model-stats">
+<h2><span class="section-number">6.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
+<p>We first load the data, and plot some multilinear regression statistics to compare…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+    <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span>
+<span class="p">)</span>
+<span class="c1"># load the moana v2 hindcast (more ss and mask)</span>
+<span class="n">ss_grid</span> <span class="o">=</span> <span class="p">(</span><span class="n">load_moana_hindcast_ss</span><span class="p">(</span><span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> \
+    <span class="n">xr</span><span class="o">.</span><span class="n">open_dataarray</span><span class="p">(</span><span class="s1">&#39;../data/bathymetry/nz_300m_elev_mask.nc&#39;</span><span class="p">))</span>\
+    <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="n">ss_moanav2_site</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;ss&#39;</span><span class="p">:</span> <span class="p">((</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;site&#39;</span><span class="p">),</span> <span class="n">ss_grid</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="p">))),</span>
+        <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">((</span><span class="s1">&#39;site&#39;</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span>
+            <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="p">))),</span>
+        <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">((</span><span class="s1">&#39;site&#39;</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="p">)))</span>
+    <span class="p">},</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;site&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="p">)),</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">ss_grid</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">values</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># plot results</span>
+<span class="n">lm_stats</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">if</span> <span class="n">lm_stats</span><span class="p">:</span>
+    <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="s1">&#39;../data/statistics/stats_lm_local_daily.nc&#39;</span>
+    <span class="p">)</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+
+
+ loading daily resampled data... 
+
+
+ loading the Moana v2 hindcast data... 
+
+
+ loading and plotting the UHSLC tidal guages... 
+
+
+ loading the Moana v2 hindcast data (ss)... 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_3_1.png" src="../_images/models_mda_rbf_3_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct the MDA + RBF object</span>
+<span class="n">mda_rbf_model</span> <span class="o">=</span> <span class="n">MDA_RBF_Model</span><span class="p">(</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Initializing the MDA + RBF constructor... 
+
+
+ with longitudes = [168.1, 171.4, 167.5, 171.1, 173.5, 173.3, 175.1, 177.9, 172.6] 
+ 
+ and 
+ 
+ latitudes = [-44.2, -41.9, -47.2, -45.4, -42.5, -40.7, -40.2, -40.1, -34.3] !! 
+
+
+ Lets calculate the storm surge pcs... 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_1.png" src="../_images/models_mda_rbf_4_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets calculate the slp pcs... 
+
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 9, 9) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 324) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_3.png" src="../_images/models_mda_rbf_4_3.png" />
+<img alt="../_images/models_mda_rbf_4_4.png" src="../_images/models_mda_rbf_4_4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the MDA + RBF adjustments</span>
+<span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MDA + RBF with 0.9999 per of pcs and 1500 samples!! 
+
+ which means 33 PCs... 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_1.png" src="../_images/models_mda_rbf_5_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ix_scalar: 0,  optimization: 352.39 | interpolation: 1.32 | sigma: 1.3195
+ix_scalar: 1,  optimization: 165.91 | interpolation: 1.63 | sigma: 1.6264
+ix_scalar: 2,  optimization: 279.45 | interpolation: 1.27 | sigma: 1.2713
+ix_scalar: 3,  optimization: 313.78 | interpolation: 1.42 | sigma: 1.4224
+ix_scalar: 4,  optimization: 136.98 | interpolation: 1.34 | sigma: 1.3402
+ix_scalar: 5,  optimization: 156.48 | interpolation: 1.18 | sigma: 1.1832
+ix_scalar: 6,  optimization: 333.97 | interpolation: 1.43 | sigma: 1.4304
+ix_scalar: 7,  optimization: 236.44 | interpolation: 1.26 | sigma: 1.2582
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_3.png" src="../_images/models_mda_rbf_5_3.png" />
+<img alt="../_images/models_mda_rbf_5_4.png" src="../_images/models_mda_rbf_5_4.png" />
+<img alt="../_images/models_mda_rbf_5_5.png" src="../_images/models_mda_rbf_5_5.png" />
+<img alt="../_images/models_mda_rbf_5_6.png" src="../_images/models_mda_rbf_5_6.png" />
+<img alt="../_images/models_mda_rbf_5_7.png" src="../_images/models_mda_rbf_5_7.png" />
+<img alt="../_images/models_mda_rbf_5_8.png" src="../_images/models_mda_rbf_5_8.png" />
+<img alt="../_images/models_mda_rbf_5_9.png" src="../_images/models_mda_rbf_5_9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MDA + RBF with 0.9999 per of pcs and 1500 samples!! 
+
+ which means 29 PCs... 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_11.png" src="../_images/models_mda_rbf_5_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ix_scalar: 0,  optimization: 133.65 | interpolation: 1.21 | sigma: 1.2135
+ix_scalar: 1,  optimization: 177.27 | interpolation: 1.17 | sigma: 1.1669
+ix_scalar: 2,  optimization: 140.64 | interpolation: 1.21 | sigma: 1.2081
+ix_scalar: 3,  optimization: 121.72 | interpolation: 1.19 | sigma: 1.1865
+ix_scalar: 4,  optimization: 243.34 | interpolation: 1.35 | sigma: 1.3514
+ix_scalar: 5,  optimization: 185.85 | interpolation: 1.22 | sigma: 1.2244
+ix_scalar: 6,  optimization: 108.29 | interpolation: 1.18 | sigma: 1.1778
+ix_scalar: 7,  optimization: 132.05 | interpolation: 1.19 | sigma: 1.1899
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_13.png" src="../_images/models_mda_rbf_5_13.png" />
+<img alt="../_images/models_mda_rbf_5_14.png" src="../_images/models_mda_rbf_5_14.png" />
+<img alt="../_images/models_mda_rbf_5_15.png" src="../_images/models_mda_rbf_5_15.png" />
+<img alt="../_images/models_mda_rbf_5_16.png" src="../_images/models_mda_rbf_5_16.png" />
+<img alt="../_images/models_mda_rbf_5_17.png" src="../_images/models_mda_rbf_5_17.png" />
+<img alt="../_images/models_mda_rbf_5_18.png" src="../_images/models_mda_rbf_5_18.png" />
+<img alt="../_images/models_mda_rbf_5_19.png" src="../_images/models_mda_rbf_5_19.png" />
+<img alt="../_images/models_mda_rbf_5_20.png" src="../_images/models_mda_rbf_5_20.png" />
+<img alt="../_images/models_mda_rbf_5_21.png" src="../_images/models_mda_rbf_5_21.png" />
+<img alt="../_images/models_mda_rbf_5_22.png" src="../_images/models_mda_rbf_5_22.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MDA + RBF with 0.9999 per of pcs and 1500 samples!! 
+
+ which means 34 PCs... 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_24.png" src="../_images/models_mda_rbf_5_24.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ix_scalar: 0,  optimization: 203.83 | interpolation: 1.32 | sigma: 1.3200
+ix_scalar: 1,  optimization: 131.19 | interpolation: 1.31 | sigma: 1.3122
+ix_scalar: 2,  optimization: 140.31 | interpolation: 1.29 | sigma: 1.2891
+ix_scalar: 3,  optimization: 214.67 | interpolation: 1.24 | sigma: 1.2386
+ix_scalar: 4,  optimization: 120.75 | interpolation: 1.32 | sigma: 1.3178
+ix_scalar: 5,  optimization: 184.14 | interpolation: 2.46 | sigma: 2.4593
+ix_scalar: 6,  optimization: 159.54 | interpolation: 2.72 | sigma: 2.7184
+ix_scalar: 7,  optimization: 144.95 | interpolation: 1.34 | sigma: 1.3439
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_26.png" src="../_images/models_mda_rbf_5_26.png" />
+<img alt="../_images/models_mda_rbf_5_27.png" src="../_images/models_mda_rbf_5_27.png" />
+<img alt="../_images/models_mda_rbf_5_28.png" src="../_images/models_mda_rbf_5_28.png" />
+<img alt="../_images/models_mda_rbf_5_29.png" src="../_images/models_mda_rbf_5_29.png" />
+<img alt="../_images/models_mda_rbf_5_30.png" src="../_images/models_mda_rbf_5_30.png" />
+<img alt="../_images/models_mda_rbf_5_31.png" src="../_images/models_mda_rbf_5_31.png" />
+<img alt="../_images/models_mda_rbf_5_32.png" src="../_images/models_mda_rbf_5_32.png" />
+<img alt="../_images/models_mda_rbf_5_33.png" src="../_images/models_mda_rbf_5_33.png" />
+<img alt="../_images/models_mda_rbf_5_34.png" src="../_images/models_mda_rbf_5_34.png" />
+<img alt="../_images/models_mda_rbf_5_35.png" src="../_images/models_mda_rbf_5_35.png" />
+<img alt="../_images/models_mda_rbf_5_36.png" src="../_images/models_mda_rbf_5_36.png" />
+<img alt="../_images/models_mda_rbf_5_37.png" src="../_images/models_mda_rbf_5_37.png" />
+<img alt="../_images/models_mda_rbf_5_38.png" src="../_images/models_mda_rbf_5_38.png" />
+<img alt="../_images/models_mda_rbf_5_39.png" src="../_images/models_mda_rbf_5_39.png" />
+<img alt="../_images/models_mda_rbf_5_40.png" src="../_images/models_mda_rbf_5_40.png" />
+<img alt="../_images/models_mda_rbf_5_41.png" src="../_images/models_mda_rbf_5_41.png" />
+<img alt="../_images/models_mda_rbf_5_42.png" src="../_images/models_mda_rbf_5_42.png" />
+<img alt="../_images/models_mda_rbf_5_43.png" src="../_images/models_mda_rbf_5_43.png" />
+<img alt="../_images/models_mda_rbf_5_44.png" src="../_images/models_mda_rbf_5_44.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="models_knn.html" title="previous page"><span class="section-number">5. </span>KNN regressor models</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Javier Tausía Hoyal<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
