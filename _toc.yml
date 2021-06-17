@@ -8,8 +8,7 @@
   chapters:
   - file: notebooks/data_visualization
   - file: notebooks/analysis_pca
-  - file: notebooks/analysis_cca
   - file: notebooks/analysis_kma
   - file: notebooks/models_linear
   - file: notebooks/models_knn
-  - file: notebooks/forensic
+  - file: notebooks/models_mda_rbf

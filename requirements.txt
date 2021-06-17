@@ -18,15 +18,12 @@ geopy
 geoviews
 great-circle-calculator
 hdf5storage
-holoviz
 html5lib
-ipyleaflet
 joypy
 julian
 jupyter-book
 jupyter-contrib-nbextensions
 jupyterlab-pygments
-keplergl
 mkl-fft
 mkl-random
 mkl-service

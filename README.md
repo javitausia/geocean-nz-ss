@@ -1,4 +1,4 @@
-# geocean-nz-ss
+# geoocean-nz-ss
 
 This repository will contain all the updated information in the shared project between GeoOcean-MetService
 
@@ -13,7 +13,7 @@ jupyter book summary [here](https://javitausia.github.io/geocean-nz-ss/)
 related repos:
 * https://github.com/metocean/storm_surge
 * https://github.com/metocean/storm_surge_data
-* https://gitlab.com/geoocean/teslakit (some tools were creayed here)
+* https://gitlab.com/geoocean/teslakit (some tools were created here)
 
 ## Description
 
@@ -114,4 +114,3 @@ Data used in the project and a detailed explanation of the acquisition can be re
 ## Authors:
 
 * Javier Tausía Hoyal
-
