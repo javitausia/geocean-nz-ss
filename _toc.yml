@@ -1,14 +1,12 @@
-# Table of content
-# Learn more at https://jupyterbook.org/customize/toc.html
-
-- file: README
-  numbered: True
-
-- part: Chapters
-  chapters:
-  - file: notebooks/data_visualization
-  - file: notebooks/analysis_pca
-  - file: notebooks/analysis_kma
-  - file: notebooks/models_linear
-  - file: notebooks/models_knn
-  - file: notebooks/models_mda_rbf
+format: jb-book
+root: README
+options:
+  caption: Chapters
+  numbered: true
+chapters:
+- file: notebooks/data_visualization
+- file: notebooks/analysis_pca
+- file: notebooks/analysis_kma
+- file: notebooks/models_linear
+- file: notebooks/models_knn
+- file: notebooks/models_mda_rbf
