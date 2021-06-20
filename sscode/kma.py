@@ -136,7 +136,7 @@ def KMA_simple(slp_data, ss_data, pca_data,
                     # ),
                     'lon','lat',plot=False,
                     cluster_number=clus # just to verbose
-                )[['ss','mu','phi','xi']].expand_dims(
+                )[['mu','phi','xi']].expand_dims(
                     {'n_clusters':[clus]}
                 )
             ) # check this GEV analysis
@@ -178,7 +178,8 @@ def KMA_simple(slp_data, ss_data, pca_data,
         # plot all the wheather types
         ss_clusters_gev = ss_clusters_gev if calculate_gev_stats else None
         plottting_data = Plot_DWTs_Mean_Anom(
-            KMA_data,cmap=['yellow','lime','green','lightblue','blue','purple','pink','grey','black']
+            KMA_data,cmap=['yellow','lime','green','lightblue','blue','purple','pink','grey','black'],
+            plot_gev=plot_gev
         )
         Plot_DWTs_Probs(KMA_data.bmus,n_clusters)
 

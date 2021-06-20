@@ -123,7 +123,7 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     fig, axes = plt.subplots(
         ncols=n_cols,nrows=n_rows,
         figsize=(n_cols*(_figsize_width/1.6),
-                 n_rows*(_figsize_height/1.6)),
+                 n_rows*(_figsize_height/1.9)),
         subplot_kw={
             'projection': ccrs.PlateCarree(
                 central_longitude=default_location[0]
@@ -174,9 +174,9 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
             for lon_site,lat_site in zip(plot_gev[1][0],plot_gev[1][1]):
                 try:
                     gev_data_clus_site = plot_gev[2].sel(
-                        time=xds_KMA.sorted_bmus.sel(
-                            n_clusters=clus
-                        ).dropna(dim='train_time',how='all').train_time.values
+                        time=xds_KMA.train_time.where(
+                            xds_KMA.sorted_bmus==clus,drop=True
+                        ).values
                     ).isel(
                         site=site_counter
                     ).dropna(dim='time')
