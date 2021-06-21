@@ -161,7 +161,7 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     # plot gev stats
     if plot_gev[0]:
         # TODO: plot the different lons/lats to analyze
-        clusters_to_plot = np.random.randint(0,n_clusters,2)
+        clusters_to_plot = np.random.randint(0,n_clusters,5)
         tgs_names = join_load_uhslc_tgs().name.values
         moana_models = []
         for clus in clusters_to_plot:
