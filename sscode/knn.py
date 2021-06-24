@@ -26,7 +26,7 @@ def KNN_Regression(
     X_set_var: str = 'PCs', y_set_var: str = 'ss',
     percentage_PCs: float = 0.9,
     train_size = 0.8, # should be float, (0,1)
-    max_neighbors: int = 20, k_neighbors = None,
+    max_neighbors: int = 30, k_neighbors = None,
     cv_folds: int = 5, plot_results: bool = False,
     verbose: bool = False, pca_ttls = None):
 

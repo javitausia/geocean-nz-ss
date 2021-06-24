@@ -183,6 +183,7 @@ class MDA_RBF_Model(object):
 
 
     def generate_slp_data(self, lon_d, lat_d,
+                          calculate_gradient: bool = True,
                           time_lapse: int = 2, # time back-mind, 2=t,t-1
                           time_resample: str = '1D'): # TODO: add pcs parameters
         """
@@ -201,8 +202,8 @@ class MDA_RBF_Model(object):
         return [
             PCA_DynamicPred(
                 self.raw_slp_data, # TODO: add wind options
-                calculate_gradient=True, time_lapse=time_lapse,
-                time_resample=time_resample,
+                calculate_gradient=calculate_gradient, 
+                time_lapse=time_lapse,time_resample=time_resample,
                 region=(True,(
                     self.lons[ipc]-lon_d,self.lons[ipc]+lon_d,
                     self.lats[ipc]+lat_d,self.lats[ipc]-lat_d
@@ -211,8 +212,8 @@ class MDA_RBF_Model(object):
             )[0] if ipc <1 else \
             PCA_DynamicPred(
                 self.raw_slp_data, # TODO: add wind options
-                calculate_gradient=True, time_lapse=time_lapse,
-                time_resample=time_resample,
+                calculate_gradient=calculate_gradient, 
+                time_lapse=time_lapse,time_resample=time_resample,
                 region=(True,(
                     self.lons[ipc]-lon_d,self.lons[ipc]+lon_d,
                     self.lats[ipc]+lat_d,self.lats[ipc]-lat_d

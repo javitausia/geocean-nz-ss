@@ -28,14 +28,17 @@ warnings.filterwarnings('ignore')
 loader_dict_options = {
     'predictor': ['cfsr','era5'],
     'predictand': ['dac','moana','codec'],
-    'validator': ['uhslc','privtgs']
+    'validator': ['uhslc','privtgs','linz']
 }
 # dataset attrs
 datasets_attrs = {
+    'era5': ('longitude','latitude',None,'ERA 5 reanalysis'),
+    'cfsr': ('lon','lat',None,'CFSR reanalysis'),
     'dac': ('longitude','latitude',None,'DAC global reanalysis'),
     'moana': ('lon','lat','site','Moana v2 hindcast'),
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
     'uhslc': ('longitude','latitude','name','UHSLC tgs'),
+    'linz': ('longitude','latitude','name','LINZ tgs'),
     'privtgs': ('longitude','latitude','name','Private tgs')
 }
 
@@ -47,7 +50,7 @@ class Loader(object):
     methods in the class can be easily used, specifying just the list with all
     the datasets in the correct order
 
-    TODO: add models to Loader class
+    TODO: add Experiment to Loader class??
 
     """
 
@@ -62,8 +65,11 @@ class Loader(object):
             data_to_load (list, optional): List with the predictor, predictand 
             and validator: 
                 - Defaults to ['cfsr','moana','uhslc'].
-            location: location if required
-            plot: whether to plot or not the loaded data
+            time_resample (str): Time step to resample the data to, this might
+                also by a year / years to crop the data to
+            load_winds (bool): Load or not the wind data
+            location: Location if required (to project the winds)
+            plot: Whether to plot or not the loaded data
         """
 
         # save location
@@ -77,32 +83,28 @@ class Loader(object):
                     load_winds=(load_winds,location),
                     plot=plot
                 )
-                if len(predictor)==1:
-                    self.predictor_slp = predictor
-                else:
-                    self.predictor_slp = predictor[0]
-                    self.predictor_wind = predictor[1]
             elif data_to_load[0]=='cfsr':
                 predictor = load_cfsr(
                     time=time_resample,
                     load_winds=(load_winds,location),
                     plot=plot
                 )
-                if len(predictor)==1:
-                    self.predictor_slp = predictor
-                else:
-                    self.predictor_slp = predictor[0]
-                    self.predictor_wind = predictor[1]
             else:
                 print('\n data not available for the predictor!! \n')
+            if len(predictor)==1:
+                self.predictor_slp = predictor[0]
+            else:
+                self.predictor_slp = predictor[0]
+                self.predictor_wind = predictor[1]
+        else:
+            print('\n data not available for the predictor!! \n')
 
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
             if data_to_load[1]=='dac':
                 self.predictand = load_dac_hindcast()
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
-
-            if data_to_load[1]=='moana':
+            elif data_to_load[1]=='moana':
                 self.predictand = load_moana_hindcast(plot=plot)
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
             elif data_to_load[1]=='codec':
@@ -110,6 +112,8 @@ class Loader(object):
                 self.predictand_attrs = datasets_attrs[data_to_load[1]]
             else:
                 print('\n data not available for the predictand!! \n')
+        else:
+            print('\n data not available for the predictand!! \n')
 
         # load the validator
         if data_to_load[2] in loader_dict_options['validator']:
@@ -119,8 +123,13 @@ class Loader(object):
             elif data_to_load[2]=='privtgs':
                 self.validator = load_private_tgs(plot=plot)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
+            elif data_to_load[2]=='linz':
+                self.validator = join_load_linz_tgs(plot=plot)
+                self.validator_attrs = datasets_attrs[data_to_load[2]]
             else:
                 print('\n data not available for the validation!! \n')
+        else:
+            print('\n data not available for the validation!! \n')
                 
                 
     def validate_datasets(self, # this is prepared for UHSLC-Moana
@@ -131,7 +140,7 @@ class Loader(object):
 
         """
 
-        self.predictand_reduced, self.ss_stats = compare_datasets(
+        self.predictand_reduced, self.validator_reduced, self.ss_stats = compare_datasets(
             self.predictand,self.predictand_attrs,
             self.validator,self.validator_attrs,
             comparison_variables=comparison_variables,
@@ -156,11 +165,12 @@ def load_era5(data_path: str = data_path,
         time (str, optional): Year to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 1D...
             - Defaults to '1997'.
-        load_winds: this indicates wether the winds are loaded or not, and
-            the location of the projected winds
+        load_winds (tuple): this indicates wether the winds are loaded or not, and
+            the location of the projected winds.
+        plot (bool): Whether to plot or not the results.
 
     Returns:
-        [list]: This is a list with the data loaded
+        [list]: This is a list with the data loaded.
     """
 
     # load/calculate... xarray datasets
@@ -174,9 +184,12 @@ def load_era5(data_path: str = data_path,
             if load_winds[0]:
                 wind = xr.open_dataset(data_path+'/era_5/ERA5_WINDs_daily.nc')
                 # plot the data
-                plot_pres_winds([mslp,wind],data_name='ERA5',
-                                lat_name='latitude',lon_name='longitude',
-                                u_name='u10',v_name='v10') if plot else None
+                plot_pres_winds(
+                    [mslp,wind],data_name=datasets_attrs['era5'][3],
+                    lat_name=datasets_attrs['era5'][1],
+                    lon_name=datasets_attrs['era5'][0],
+                    u_name='u10',v_name='v10',wind_proj='wind_proj_mask'
+                ) if plot else None
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
@@ -190,22 +203,26 @@ def load_era5(data_path: str = data_path,
                 .resample(time=time).mean()
             vw = xr.open_dataset(data_path+'/era_5/ERA5_10mv_1H_1979_2021.nc')['v10']\
                 .resample(time=time).mean()
-            wind = calculate_relative_winds(location=load_winds[1],
-                                            uw=uw,vw=vw,
-                                            lat_name='latitude',
-                                            lon_name='longitude')
+            wind = calculate_relative_winds(
+                location=load_winds[1],uw=uw,vw=vw,
+                lat_name=datasets_attrs['era5'][1],
+                lon_name=datasets_attrs['era5'][0]
+            )
             # plot the data
-            plot_pres_winds([mslp,wind],data_name='ERA5',
-                            lat_name='latitude',lon_name='longitude',
-                            u_name='u10',v_name='v10')
+            plot_pres_winds(
+                [mslp,wind],data_name=datasets_attrs['era5'][3],
+                lat_name=datasets_attrs['era5'][1],
+                lon_name=datasets_attrs['era5'][0],
+                u_name='u10',v_name='v10'
+            ) if plot else None
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
         mslp = xr.open_dataset(data_path+'/era_5/ERA5_MSLP_1H_1979_2021.nc')['msl']
         # try year cropping
         if time:
-            mslp = mslp.sel(time=time)
-            print(' cropping the data to {} \n'.format(int(time)))
+            mslp = mslp.sel(time=time) # year cropping
+            print(' cropped data to {} \n'.format(int(time)))
         else:
             print('\n LOADING ALL THE MSLP DATA (be careful with memory) \n')
         if load_winds[0]:
@@ -214,14 +231,18 @@ def load_era5(data_path: str = data_path,
                 .sel(time=time)
             vw = xr.open_dataset(data_path+'/era_5/ERA5_10mv_1H_1979_2021.nc')['v10']\
                 .sel(time=time)
-            wind = calculate_relative_winds(location=load_winds[1],
-                                            uw=uw,vw=vw,
-                                            lat_name='latitude',
-                                            lon_name='longitude')
+            wind = calculate_relative_winds(
+                location=load_winds[1],uw=uw,vw=vw,
+                lat_name=datasets_attrs['era5'][1],
+                lon_name=datasets_attrs['era5'][0]
+            )
             # plot the data
-            plot_pres_winds([mslp,wind],data_name='ERA5',
-                            lat_name='latitude',lon_name='longitude',
-                            u_name='u10',v_name='v10')
+            plot_pres_winds(
+                [mslp,wind],data_name=datasets_attrs['era5'][3],
+                lat_name=datasets_attrs['era5'][1],
+                lon_name=datasets_attrs['era5'][0],
+                u_name='u10',v_name='v10'
+            ) if plot else None
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
 
@@ -248,11 +269,12 @@ def load_cfsr(data_path: str = data_path,
         time (str, optional): Year to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 1D...
             - Defaults to '1997'.
-        load_winds: this indicates wheter the winds are loaded or not, and
-            the location of the projected winds
+        load_winds (tuple): this indicates wether the winds are loaded or not, and
+            the location of the projected winds.
+        plot (bool): Whether to plot or not the results.
 
     Returns:
-        [list]: This is a list with the data loaded
+        [list]: This is a list with the data loaded.
     """
 
     # load/calculate... xarray datasets
@@ -266,7 +288,13 @@ def load_cfsr(data_path: str = data_path,
             if load_winds[0]:
                 wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily_mask.nc')
                 # plot the data
-                plot_pres_winds([mslp,wind],data_name='CFSR') if plot else None
+                plot_pres_winds(
+                    [mslp,wind],data_name=datasets_attrs['cfsr'][3],
+                    lat_name=datasets_attrs['cfsr'][1],
+                    lon_name=datasets_attrs['cfsr'][0],
+                    u_name='U_GRD_L103',v_name='V_GRD_L103',
+                    wind_proj='wind_proj_mask'
+                ) if plot else None
             # return data
             return_data = [mslp] if not load_winds[0] else [mslp,wind]
             return return_data
@@ -283,7 +311,12 @@ def load_cfsr(data_path: str = data_path,
             wind = calculate_relative_winds(location=load_winds[1],
                                             uw=uw,vw=vw)
             # plot the data
-            plot_pres_winds([mslp,wind],data_name='CFSR')
+            plot_pres_winds(
+                [mslp,wind],data_name=datasets_attrs['cfsr'][3],
+                lat_name=datasets_attrs['cfsr'][1],
+                lon_name=datasets_attrs['cfsr'][0],
+                u_name='U_GRD_L103',v_name='V_GRD_L103'
+            )
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
@@ -297,13 +330,21 @@ def load_cfsr(data_path: str = data_path,
         if load_winds[0]:
             print('\n loading the winds... \n')
             uw = xr.open_dataarray(data_path+'/cfsr/CFSR_uwnd_6H_1990_2021.nc')\
-                .resample(time=time).mean()
+                .sel(time=time)
             vw = xr.open_dataarray(data_path+'/cfsr/CFSR_vwnd_6H_1990_2021.nc')\
-                .resample(time=time).mean()
-            wind = calculate_relative_winds(location=load_winds[1],
-                                            uw=uw,vw=vw)
+                .sel(time=time)
+            wind = calculate_relative_winds(
+                location=load_winds[1],uw=uw,vw=vw,
+                lat_name=datasets_attrs['cfsr'][1],
+                lon_name=datasets_attrs['cfsr'][0]
+            )
             # plot the data
-            plot_pres_winds([mslp,wind],data_name='CFSR')
+            plot_pres_winds(
+                [mslp,wind],data_name=datasets_attrs['cfsr'][3],
+                lat_name=datasets_attrs['cfsr'][1],
+                lon_name=datasets_attrs['cfsr'][0],
+                u_name='U_GRD_L103',v_name='V_GRD_L103'
+            )
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
 
@@ -334,7 +375,7 @@ def join_load_uhslc_tgs(files_path: str =
                 {'name':(('name'),[file[100:-13]]),
                 'latitude':(('name'),[uhslc_tg.latitude]),
                 'longitude':(('name'),[uhslc_tg.longitude])}
-            ) 
+            )
         )
 
     # join and plot
@@ -344,8 +385,10 @@ def join_load_uhslc_tgs(files_path: str =
         hue_plot = uhslc_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
         fig.suptitle('UHSLC tidal gauges',fontsize=_fontsize_title)
         ax.legend(list(uhslc_tgs.name.values),loc='lower left',ncol=6)
-        fig, axes = plt.subplots(ncols=2,nrows=6,figsize=(_figsize_width*4,6),
-                                sharex=True,sharey=True)
+        fig, axes = plt.subplots(
+            ncols=2,nrows=6,figsize=(_figsize_width*4,6),
+            sharex=True,sharey=True
+        )
         for axi in range(len(uhslc_tgs.name.values)):
             uhslc_tgs.isel(name=axi).ss.plot(
                 ax=axes.flatten()[axi],c=hue_plot[axi].get_color(),alpha=0.6,
@@ -359,6 +402,56 @@ def join_load_uhslc_tgs(files_path: str =
         plt.show()
 
     return uhslc_tgs
+
+
+def join_load_linz_tgs(files_path: str = 
+    data_path+'/storm_surge_data/nz_tidal_gauges/linz/processed/*.nc',
+    plot: bool = False):
+
+    """
+    Join all the uhslc tgs in a single xarrray dataset to play with it
+
+    Returns:
+        [xarray.Dataset]: xarray dataset with all the tgs and variables
+    """
+
+    # join files assigning a name to each
+    print('\n loading and plotting the LINZ tidal guages... \n')
+    linz_tgs_list = []
+    for file in glob.glob(files_path):
+        linz_tg = xr.open_dataset(file)
+        linz_tgs_list.append(
+            linz_tg.expand_dims(dim='name').assign_coords(
+                {'name':(('name'),[file[95:-13]]),
+                'latitude':(('name'),[linz_tg.latitude]),
+                'longitude':(('name'),[linz_tg.longitude])}
+            )
+        )
+
+    # join and plot
+    linz_tgs = xr.concat(linz_tgs_list,dim='name') # TODO: add combine_attrs='drop'
+    if plot: # plot if specified
+        fig, ax = plt.subplots(figsize=_figsize)
+        hue_plot = linz_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
+        fig.suptitle('LINZ tidal gauges',fontsize=_fontsize_title)
+        ax.legend(list(linz_tgs.name.values),loc='lower left',ncol=10)
+        fig, axes = plt.subplots(
+            ncols=2,nrows=10,figsize=(_figsize_width*4,10),
+            sharex=True,sharey=True
+        )
+        for axi in range(len(linz_tgs.name.values)):
+            linz_tgs.isel(name=axi).ss.plot(
+                ax=axes.flatten()[axi],c=hue_plot[axi].get_color(),alpha=0.6,
+                label=linz_tgs.name.values[axi].upper()
+            )
+            axes.flatten()[axi].legend(loc='lower left')
+            axes.flatten()[axi].set_title('')
+            axes.flatten()[axi].set_xlabel('')
+            axes.flatten()[axi].set_ylabel('')
+        # show results
+        plt.show()
+
+    return linz_tgs
 
 
 def load_private_tgs(file_path: str = 

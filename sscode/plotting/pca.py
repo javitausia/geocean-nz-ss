@@ -36,7 +36,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
     yfmt = mdates.DateFormatter('%Y')
 
     # check ttls
-    pca_ttls = pca_ttls if pca_ttls else pca_EOFs_ttls
+    # pca_ttls = pca_ttls if pca_ttls else pca_EOFs_ttls
 
     # calculate number of different EOFs in data
     n_features = len(pca_data.n_features.values)
@@ -92,7 +92,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
                 transform=ccrs.PlateCarree(),
                 cmap='RdBu_r',vmin=-border,vmax=border
             )
-            ax.set_title(pca_ttls[ix])
+            ax.set_title(pca_ttls[ix]) if pca_ttls else None
             if plot_cbar:
                 pos_ax = ax.get_position()
                 pos_colbar = fig.add_axes([

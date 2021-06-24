@@ -14,7 +14,8 @@ from .plotting.config import _fontsize_title, _fontsize_legend, \
     _figsize, _figsize_width, _figsize_height, _fontsize_label
 
 
-def compare_datasets(dataset1, dataset1_coords, dataset2, dataset2_coords,
+def compare_datasets(dataset1, dataset1_coords, 
+                     dataset2, dataset2_coords, # these 4 are loaded in Loader
                      comparison_variables: list = [['ss','msea'],['ss','msea']],
                      time_resample = None):
     """
@@ -76,14 +77,21 @@ def compare_datasets(dataset1, dataset1_coords, dataset2, dataset2_coords,
          dataset2[dataset2_coords[1]].values)
     )
     data1_clos_data2, min_dists = [], []
+    data2_with_vali = []
     for i_site in range(len(data1_clos_data2s)):
-        min_dist_pos = np.argmin(min_distss[i_site])
-        data1_clos_data2.append(data1_clos_data2s[i_site][min_dist_pos])
-        min_dists.append(min_distss[i_site][min_dist_pos])
+        try:
+            min_dist_pos = np.argmin(min_distss[i_site])
+            data1_clos_data2.append(data1_clos_data2s[i_site][min_dist_pos])
+            min_dists.append(min_distss[i_site][min_dist_pos])
+            data2_with_vali.append(i_site)
+        except:
+            continue
 
     # chech resuts
     print('\n \n TGs to analyze are: \n {} \n'.format(
-        dataset2[dataset2_coords[2]].values
+        dataset2[dataset2_coords[2]].values[
+            data2_with_vali # maybe some tgs have not closest nodes
+        ]
     ))
     print('\n which correspond to \n {} \n in {} \n'.format(
         data1_clos_data2,dataset1_coords[3]   
@@ -94,6 +102,9 @@ def compare_datasets(dataset1, dataset1_coords, dataset2, dataset2_coords,
     # reduce stations to closest (in data1)
     dataset1 = dataset1.isel(
         {dataset1_coords[2]:data1_clos_data2}
+    )
+    dataset2 = dataset2.isel(
+        {dataset2_coords[2]:data2_with_vali}
     )
     # list to save ss stats
     ss_stats = []
@@ -175,7 +186,7 @@ def compare_datasets(dataset1, dataset1_coords, dataset2, dataset2_coords,
                  'si':((dataset1_coords[2]),np.array(ss_stats)[:,1]),
                  'rmse':((dataset1_coords[2]),np.array(ss_stats)[:,2]),
                  'pearson':((dataset1_coords[2]),np.array(ss_stats)[:,3]),
-                 'spearman':((dataset1_coords[2]),np.array(ss_stats)[:,4])}), ss_stats
+                 'spearman':((dataset1_coords[2]),np.array(ss_stats)[:,4])}), dataset2, ss_stats
 
 
 def generate_stats(data1, data2, not_nan_idxs=None):

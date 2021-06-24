@@ -56,7 +56,10 @@ def calculate_relative_winds(location: tuple = default_location,
     )
 
     return wind.assign({
-        'wind_proj': (('time',lat_name,lon_name),np.cos(rel_direcs*np.pi/180)),
+        'wind_proj': (('time',lat_name,lon_name),np.cos(rel_direcs*np.pi/180) * \
+            np.sqrt(
+                wind[uw.name].values**2 + wind[vw.name].values**2 # add magnitude
+            )),
         'bearings': ((lat_name,lon_name),bearings),
         'direc_proj_math': ((lat_name,lon_name),trans_geosdeg2mathdeg(bearings)*np.pi/180)
     }) # final dataset
@@ -108,6 +111,46 @@ def trans_geosdeg2mathdeg(geosdir):
     geosdir = np.where(geosdir>270,(360-geosdir)+90,geosdir)
     
     return geosdir
+
+
+def degC2degN(degC):
+    """
+    Converts a wind direction on a unit circle (degrees cartesian) to 
+    a direction in nautical convention (degrees north).
+    
+    Angle in a unit circle: 
+    The angle between the horizontal east (E) and the head (pointing outwards), counter-clockwise
+    
+                ^ N (90)
+                |
+    W (180) <~~   ~~> E (0)
+                |
+                v S (270)
+    
+    Angle in nautical convention: 
+    The angle between the vertical up (N) and the tail (pointing inwards), clockwise
+    
+                | N (0)
+                v
+    W (270) ~~>   <~~ E (90)
+                ^
+                | S (180)
+    """
+
+    degN = np.mod(-degC + 270, 360)
+    
+    return degN
+ 
+
+def degN2degC(degN):
+    """
+    Converts a wind direction in nautical convention (degrees north) to a  
+    a direction on a unit circle (degrees cartesian).
+    """
+
+    degC = np.mod(-degN + 270, 360)
+    
+    return degC
 
 
 def spatial_gradient(xdset, var_name='msl'):

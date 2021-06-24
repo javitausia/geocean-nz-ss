@@ -47,6 +47,8 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
             usage implements this by default, but is not used. Defaults to None.
         num_tries (int, optional): Number of times to refit the data in case the
             statistical model is not correctly behaving. Defaults to 8.
+        lr_test (bool, optional): Whether to use or not the lokelihood ratio test
+            to evaluate model performances
         gev_title (str, optional): Defaults to 'GEV parameters plot!!'.
         cluster_number (int, optional): Defaults to -1.
 
@@ -72,7 +74,7 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
             data=X[:,i],name='ss',index=X_set.time.values
         ).dropna() # pass numpy to pandas series for EVA
 
-        if len(ss_series)==0: # input nans if no data is available
+        if len(ss_series)==0: # input NaNs if no data is available
             mu.append(np.nan), phi.append(np.nan), xi.append(np.nan)
             continue # move to next node
 
@@ -83,11 +85,11 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
                 method='POT',threshold=np.nanquantile(X[:,i],quantile_th)
             )
         else: # or all daily/dataset default maxima
-            model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
-            # model.get_extremes(
-            #     method='BM',extremes_type='high',
-            #     block_size='120.2425D',errors='ignore'
-            # ) # TODO: add BM method
+            # model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+            model.get_extremes(
+                method='BM',extremes_type='high',
+                block_size='1D',errors='ignore'
+            ) # TODO: add BM method
         model.fit_model(
             distribution=genextreme,model='MLE'
         )
@@ -110,24 +112,36 @@ def gev_matrix(X_set, lon, lat, try_gumbel: bool = True,
             if try_gumbel and num_tries<2:
                 # try new model with gumbel distribution
                 new_model = EVA(data=ss_series)
-                new_model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+                # new_model.get_extremes(
+                #     method='POT',threshold=np.nanmin(X[:,i])-0.1
+                # )
+                new_model.get_extremes(
+                    method='BM',extremes_type='high',
+                    block_size='1D',errors='ignore'
+                )
                 new_model.fit_model(
                     distribution=gumbel_r,model='MLE'
                 )
             else:
                 # try new model changing the data (not recommended)
                 ss_series_drop = ss_series.where(
-                    ss_series<ss_series.quantile(0.9)
+                    ss_series<ss_series.quantile(0.8)
                 ).dropna()
                 index_to_delete = np.random.randint(
-                    0,len(ss_series_drop),int(len(ss_series_drop)/12)
+                    0,len(ss_series_drop),int(len(ss_series_drop)/10)
                 )
                 new_model = EVA(
                     data=ss_series.drop(
                         ss_series_drop.index[index_to_delete]
                     )
                 )
-                new_model.get_extremes(method='POT',threshold=np.nanmin(X[:,i])-0.1)
+                # new_model.get_extremes(
+                #     method='POT',threshold=np.nanmin(X[:,i])-0.1
+                # )
+                new_model.get_extremes(
+                    method='BM',extremes_type='high',
+                    block_size='1D',errors='ignore'
+                )
                 new_model.fit_model(
                     distribution=genextreme,model='MLE'
                 )

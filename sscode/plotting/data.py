@@ -17,7 +17,7 @@ from ..config import default_location, default_region
 def plot_pres_winds(data, data_name='CFSR',
                     lat_name: str = 'lat',
                     lon_name: str = 'lon',
-                    wind_proj: str = 'wind_proj_mask',
+                    wind_proj: str = 'wind_proj',
                     u_name: str = 'U_GRD_L103',
                     v_name: str = 'V_GRD_L103'):
     """
