@@ -13,3 +13,9 @@ _fontsize_title = 18
 # pressure difference to plot
 _mbar_diff = 20
 _mbar100_diff = 2000
+
+# DWTs colors list
+dwts_colors = [
+    'white','cyan','cornflowerblue','darkseagreen','olivedrab','gold','darkorange',
+    'orangered','red','deeppink','violet','darkorchid','purple','midnightblue'
+]

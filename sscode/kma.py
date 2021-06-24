@@ -17,7 +17,8 @@ from sklearn.linear_model import LinearRegression
 # custom
 from .config import data_path
 from .statistical import gev_matrix
-from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs
+from .plotting.config import dwts_colors
+from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs, Chrono_dwts_hist
 
 
 def KMA_simple(slp_data, ss_data, pca_data, 
@@ -46,18 +47,18 @@ def KMA_simple(slp_data, ss_data, pca_data,
                 - (True,[lons,lats],dataset) (see analysis_kma.ipynb)
 
     Returns:
-        [xarray.Datasets]: These are the xarray datasets of the analysis
+        [xarray.Datasets]: These are the xarray dataset/s of the analysis
     """
 
     # check time coherence
     common_times_pslp = np.intersect1d(
-        pd.to_datetime(slp_data.time.values).round('H'), # add D??
-        pd.to_datetime(pca_data.time.values).round('H'),
+        pd.to_datetime(slp_data.time.values).round('D'), # add D??
+        pd.to_datetime(pca_data.time.values).round('D'),
         return_indices=True
     )
     common_times = np.intersect1d(
         common_times_pslp[0],
-        pd.to_datetime(ss_data.time.values).round('H'),
+        pd.to_datetime(ss_data.time.values).round('D'),
         return_indices=True
     )
 
@@ -75,7 +76,7 @@ def KMA_simple(slp_data, ss_data, pca_data,
             common_times_pslp[2][common_times[1]], :num_pcs
         ].values,
         common_times_pslp[0][common_times[1]], 
-        train_size=0.95, 
+        train_size=0.9, 
         shuffle=False
     )
 
@@ -136,7 +137,7 @@ def KMA_simple(slp_data, ss_data, pca_data,
                     # ),
                     'lon','lat',plot=False,
                     cluster_number=clus # just to verbose
-                )[['mu','phi','xi']].expand_dims(
+                )[['mu','phi','xi']].expand_dims( # ss could be added as var
                     {'n_clusters':[clus]}
                 )
             ) # check this GEV analysis
@@ -178,10 +179,17 @@ def KMA_simple(slp_data, ss_data, pca_data,
         # plot all the wheather types
         ss_clusters_gev = ss_clusters_gev if calculate_gev_stats else None
         plottting_data = Plot_DWTs_Mean_Anom(
-            KMA_data,cmap=['yellow','lime','green','lightblue','blue','purple','pink','grey','black'],
-            plot_gev=plot_gev
+            KMA_data,cmap=dwts_colors,plot_gev=plot_gev
+            # plot_gev=(True,(lons[::3],lats[::3]),
+            #     load_cfsr_moana_uhslc.predictand.sel(site=sites[::3]).load()\
+            #     .resample(time='1D').max()
+            # )
+            # lons,lats,sites,dists = extract_time_series(
+            #     load_cfsr_moana_uhslc.predictand
+            # )
         )
-        Plot_DWTs_Probs(KMA_data.bmus,n_clusters)
+        Plot_DWTs_Probs(KMA_data.sorted_bmus,n_clusters)
+        Chrono_dwts_hist(KMA_data)
 
     # return calculated data
     return_data = [KMA_data,ss_clusters_gev] if calculate_gev_stats else [KMA_data]

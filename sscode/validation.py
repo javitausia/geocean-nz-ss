@@ -285,6 +285,32 @@ def calc_closest_data2_in_data1(data1, data2, # data 1 is bigger than data2
         i_station += 1
 
     return sites_list, sites_dist
+    
+
+# function to extract the series to perform GEV analysis
+def extract_time_series(moana_data,uhslc_data,lltype='list'):
+    if lltype=='list':
+        tot_lons = moana_data.lon.values
+        tot_lats = moana_data.lat.values
+    else:
+        tot_lons = np.repeat(
+            moana_data.lon.values.reshape(-1,1),
+            len(moana_data.lat.values),
+            axis=1
+        ).T.reshape(-1)
+        tot_lats = np.repeat(moana_data.lat.values,len(moana_data.lon.values))
+    sites, dists = calc_closest_data2_in_data1(
+        (tot_lons,tot_lats),
+        (uhslc_data.longitude.values,
+         uhslc_data.validator.latitude.values
+        ),
+        min_dist_th=15
+    )
+    sites = [site[np.argmin(dist)] for site,dist in zip(
+        sites,dists
+    )]
+    
+    return tot_lons[sites],tot_lats[sites],sites,dists
 
 
 def validata_w_tgs(X,validator,model,tg_name,

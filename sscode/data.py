@@ -28,7 +28,7 @@ warnings.filterwarnings('ignore')
 loader_dict_options = {
     'predictor': ['cfsr','era5'],
     'predictand': ['dac','moana','codec'],
-    'validator': ['uhslc','privtgs','linz']
+    'validator': ['uhslc','privtgs','linz','other']
 }
 # dataset attrs
 datasets_attrs = {
@@ -39,6 +39,7 @@ datasets_attrs = {
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
     'uhslc': ('longitude','latitude','name','UHSLC tgs'),
     'linz': ('longitude','latitude','name','LINZ tgs'),
+    'other': ('longitude','latitude','name','OTHER tgs'),
     'privtgs': ('longitude','latitude','name','Private tgs')
 }
 
@@ -125,6 +126,9 @@ class Loader(object):
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='linz':
                 self.validator = join_load_linz_tgs(plot=plot)
+                self.validator_attrs = datasets_attrs[data_to_load[2]]
+            elif data_to_load[2]=='other':
+                self.validator = join_load_other_tgs(plot=plot)
                 self.validator_attrs = datasets_attrs[data_to_load[2]]
             else:
                 print('\n data not available for the validation!! \n')
@@ -409,7 +413,7 @@ def join_load_linz_tgs(files_path: str =
     plot: bool = False):
 
     """
-    Join all the uhslc tgs in a single xarrray dataset to play with it
+    Join all the linz tgs in a single xarrray dataset to play with it
 
     Returns:
         [xarray.Dataset]: xarray dataset with all the tgs and variables
@@ -452,6 +456,56 @@ def join_load_linz_tgs(files_path: str =
         plt.show()
 
     return linz_tgs
+
+
+def join_load_other_tgs(files_path: str = 
+    data_path+'/storm_surge_data/nz_tidal_gauges/other/processed/*.nc',
+    plot: bool = False):
+
+    """
+    Join all the other tgs in a single xarrray dataset to play with it
+
+    Returns:
+        [xarray.Dataset]: xarray dataset with all the tgs and variables
+    """
+
+    # join files assigning a name to each
+    print('\n loading and plotting the OTHER tidal guages... \n')
+    other_tgs_list = []
+    for file in glob.glob(files_path):
+        other_tg = xr.open_dataset(file)
+        other_tgs_list.append(
+            other_tg.expand_dims(dim='name').assign_coords(
+                {'name':(('name'),[file[96:-13]]),
+                'latitude':(('name'),[other_tg.latitude]),
+                'longitude':(('name'),[other_tg.longitude])}
+            )
+        )
+
+    # join and plot
+    other_tgs = xr.concat(other_tgs_list,dim='name') # TODO: add combine_attrs='drop'
+    if plot: # plot if specified
+        fig, ax = plt.subplots(figsize=_figsize)
+        hue_plot = other_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
+        fig.suptitle('OTHER tidal gauges',fontsize=_fontsize_title)
+        ax.legend(list(other_tgs.name.values),loc='lower left',ncol=4)
+        fig, axes = plt.subplots(
+            ncols=2,nrows=4,figsize=(_figsize_width*4,4.4),
+            sharex=True,sharey=True
+        )
+        for axi in range(len(other_tgs.name.values)):
+            other_tgs.isel(name=axi).ss.plot(
+                ax=axes.flatten()[axi],c=hue_plot[axi].get_color(),alpha=0.6,
+                label=other_tgs.name.values[axi].upper()
+            )
+            axes.flatten()[axi].legend(loc='lower left')
+            axes.flatten()[axi].set_title('')
+            axes.flatten()[axi].set_xlabel('')
+            axes.flatten()[axi].set_ylabel('')
+        # show results
+        plt.show()
+
+    return other_tgs
 
 
 def load_private_tgs(file_path: str = 

@@ -15,22 +15,25 @@ from cftime._cftime import DatetimeGregorian
 # plotting
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.dates as mdates
+from matplotlib.colorbar import ColorbarBase
+from matplotlib import colors
 import cartopy.crs as ccrs
 
 # custom
 from ..data import join_load_uhslc_tgs
 from .config import _figsize_width, _figsize_height, _fontsize_title, \
-    _fontsize_label, _mbar_diff, _fontsize_legend
-from ..config import default_location
+    _fontsize_label, _mbar_diff, _fontsize_legend, dwts_colors, _figsize
+from ..config import default_location, default_region, default_region_reduced
 from ..utils import GetBestRowsCols
-from .utils import colors_dwt, custom_cmap, get_n_colors
+from .utils import colors_dwt, custom_cmap, get_n_colors, plot_ccrs_nz
 # from ..kma import cluster_probabilities
 
 
 def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom', 
                         scale_: bool = True,
                         press_diff = _mbar_diff,
-                        cmap = 'jet', gev_data = None,
+                        cmap = dwts_colors, gev_data = None,
                         plot_gev: tuple = (False,None,None)):
     '''
     Plot Daily Weather Types (bmus mean)
@@ -49,8 +52,7 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
 
     # get cluster colors
     cmap, cs_dwt = get_n_colors(
-        cmap, # ['lime','yellow','green','blue','purple','pink','grey','black']
-        # list of colors can be eddited
+        cmap, # dwts_colors in .config
         n_clusters
     )
 
@@ -253,7 +255,7 @@ def Plot_DWTs_Probs(bmus, n_clusters, show_cbar=True):
     n_rows, n_cols = GetBestRowsCols(n_clusters)
 
     # figure
-    fig = plt.figure(figsize=(18,14))
+    fig = plt.figure(figsize=(18,12))
 
     # layout
     gs = gridspec.GridSpec(4, 7, wspace=0.10, hspace=0.25)
@@ -328,6 +330,164 @@ def Plot_DWTs_Probs(bmus, n_clusters, show_cbar=True):
 
     # show probability results
     plt.show()
+
+
+def Chrono_dwts_hist(xds_kma, # n_clusters, 
+                     mode: str = 'dwts',
+                     ttl: str = 'DWTs chronology by day/year and for each cluster'):
+    """
+    Plot DWTs and daily storms occurrence
+    mode: dwts/probs
+
+    """
+
+    year = pd.DatetimeIndex(xds_kma.train_time.values).year
+    var = variables_dwt_super_plot(xds_kma)
+    dim = var.shape[1]
+    x_val = np.arange(1, dim+1)
+    y_val = np.unique(year)
+    xax, yax = np.meshgrid(x_val, y_val)
+
+    # figure
+    fig = plt.figure(figsize=(20,10))
+
+    # layout
+    gs = gridspec.GridSpec(1, 60, wspace=.75, hspace=0)
+
+    # plot DWTs
+    ax = plt.subplot(gs[0, :])
+
+    if mode == 'dwts':
+        # add DWTs colorbar
+        num_clusters = xds_kma.n_clusters.size
+        ccmap, np_colors_int = get_n_colors(
+            dwts_colors, # list of colors can be eddited
+            num_clusters
+        )
+        ax.pcolormesh(xax, yax, var, cmap=ccmap, shading='auto')    # cell center
+        # ax.set_yticks([])
+
+        # colorbar
+        cax = fig.add_axes([0.92, 0.125, 0.025, 0.755])
+        cbar = ColorbarBase(
+            cax, cmap=ccmap,
+            norm = colors.Normalize(vmin=0, vmax=num_clusters),
+            ticks = np.arange(num_clusters) + 0.5,
+        )
+        cbar.ax.tick_params(labelsize=8)
+        cbar.set_ticklabels(range(1, num_clusters + 1))  # starts from 1
+        
+    elif mode == 'probs':
+        ccmap = 'cool'
+        pc = ax.pcolor(xax, yax, var, cmap=ccmap, vmin=0, vmax=np.nanmax(var)+.005)
+
+        # colorbar
+        cax = fig.add_axes([0.92, 0.125, 0.025, 0.755])
+        if ttl: cbar = fig.colorbar(pc, cax=cax, label=ttl)
+        else:   cbar = fig.colorbar(pc, cax=cax, label='Num tcs / Num days DWT')
+
+    # customize  axis
+    months = mdates.MonthLocator()
+    years = mdates.YearLocator()
+    monthsFmt = mdates.DateFormatter('%b')
+    ax.set_xlim(x_val[0], x_val[-1]+1)
+    if dim==366:
+        ax.xaxis.set_major_locator(months)
+        ax.xaxis.set_major_formatter(monthsFmt)
+    # elif dim==12:
+    #     ax.xaxis.set_ticks(x_val)
+    ax.yaxis.set_major_locator(years)
+    ax.yaxis.set_tick_params(which='major',pad=25)
+    # ax_dwt.set_ylabel(labelpad = 20)
+
+    # add fig title
+    fig.suptitle(ttl,fontsize=_fontsize_title,fontweight='bold')
+
+    # show and return figure
+    plt.show()
+
+
+def plot_cluster_wgev(kma_data, gev_data, clusters):
+
+    # TODO: add docstring
+
+    for cluster in clusters:
+        # create the figure
+        fig, axes = plt.subplots(
+            ncols=5,figsize=_figsize,subplot_kw={
+                'projection':ccrs.PlateCarree(
+                    central_longitude=180
+                )
+            }
+        )
+        ((kma_data.slp_clusters.isel(n_clusters=cluster) - \
+            kma_data.slp_clusters.mean(dim='n_clusters')) / 100.0).plot(
+                cmap='RdBu_r',vmin=-30,vmax=30,
+                ax=axes[0],transform=ccrs.PlateCarree(),
+                add_colorbar=False
+            )
+        kma_data.ss_clusters_mean.isel(n_clusters=cluster).plot(
+            cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
+            vmin=-0.2,vmax=0.3,add_colorbar=False,
+            ax=axes[1],transform=ccrs.PlateCarree(),
+        )
+        gev_data.mu.isel(n_clusters=cluster).plot(
+            cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
+            x='lon',y='lat',transform=ccrs.PlateCarree(),
+            vmin=-0.2,vmax=0.3,add_colorbar=False,ax=axes[2]
+        )
+        gev_data.phi.isel(n_clusters=cluster).plot(
+            cmap=custom_cmap(15,'viridis',0.15,0.9,'plasma',0,0.85),
+            x='lon',y='lat',transform=ccrs.PlateCarree(),
+            vmin=0.0,vmax=0.1,add_colorbar=False,ax=axes[3]
+        )
+        gev_data.xi.isel(n_clusters=cluster).plot(
+            cmap=custom_cmap(15,'jet',0.15,0.9,'hot',0,0.85),
+            x='lon',y='lat',transform=ccrs.PlateCarree(),
+            vmin=-0.4,vmax=0.0,add_colorbar=False,ax=axes[4]
+        )
+        plot_ccrs_nz(
+            [axes[0]],plot_region=(True,default_region),
+            plot_labels=(False,None,None)
+        )
+        plot_ccrs_nz(
+            axes[1:],plot_region=(True,default_region_reduced),
+            plot_labels=(False,None,None)
+        )
+        for ax in axes:
+            ax.set_title('')
+        plt.show() # show results
+
+
+def variables_dwt_super_plot(xds_kma):
+    
+    '''Obtain the days and tcs days for each year according to the DWT 
+    to plot in the historical chronology plot'''
+    
+    # reshape [years,days]
+    year = pd.DatetimeIndex(xds_kma.train_time.values).year
+    dateline = pd.DatetimeIndex(xds_kma.train_time.values.astype('datetime64[D]'))
+    mask_bmus_YD = np.zeros((np.unique(year).shape[0], 366))*np.nan
+    # mask_tcs_YD = np.zeros((np.unique(year).shape[0], 366), dtype=bool)
+    # mask_ids_YD = np.zeros((np.unique(year).shape[0], 366), dtype=list)*np.nan
+    # probs_sum_YD = np.zeros((np.unique(year).shape[0], 366))
+    # probs_max_YD = np.zeros((np.unique(year).shape[0], 366))
+    # probs_mean_YD = np.zeros((np.unique(year).shape[0], 366))
+    pos = 0
+    for i, iyear in enumerate(np.unique(dateline.year)):
+        for j in range(366+1):
+            if dateline.year[pos] == iyear:
+                mask_bmus_YD[i,j] = xds_kma.sorted_bmus.values[pos]
+                # mask_tcs_YD[i,j] = xds_kma.mask_tcs.values[pos]
+                # mask_ids_YD[i,j] = xds_kma.id_tcs.values[pos]
+                # probs_sum_YD[i,j] = np.nansum(xds_timeline.probs_tcs[pos,:,:])
+                # probs_max_YD[i,j] = np.nanmax(xds_timeline.probs_tcs[pos,:,:])
+                # probs_mean_YD[i,j] = np.nanmean(xds_timeline.probs_tcs[pos,:,:])
+                # break final loop
+                if pos < dateline.size-1:     pos += 1
+                elif pos == dateline.size-1:  break
+                    
+    return mask_bmus_YD #, mask_tcs_YD
 
 
 def cluster_probabilities(series, set_values):

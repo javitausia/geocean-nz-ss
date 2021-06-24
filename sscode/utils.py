@@ -135,6 +135,8 @@ def degC2degN(degC):
     W (270) ~~>   <~~ E (90)
                 ^
                 | S (180)
+
+    author: Sara Ortega 
     """
 
     degN = np.mod(-degC + 270, 360)
@@ -145,7 +147,9 @@ def degC2degN(degC):
 def degN2degC(degN):
     """
     Converts a wind direction in nautical convention (degrees north) to a  
-    a direction on a unit circle (degrees cartesian).
+    a direction on a unit circle (degrees cartesian)
+
+    author: Sara Ortega
     """
 
     degC = np.mod(-degN + 270, 360)
