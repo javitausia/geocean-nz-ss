@@ -1,3 +1,0 @@
-** here goes the ERA5 pressure ... **
-
-still trying to compress files...
