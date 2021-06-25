@@ -11,15 +11,16 @@ below, a summary of the region and data involved in the first part of the analys
 jupyter book summary [here](https://javitausia.github.io/geocean-nz-ss/)
 
 related repos:
-* https://github.com/metocean/storm_surge
-* https://github.com/metocean/storm_surge_data
+* https://github.com/metocean/storm_surge (additonal python codes)
+* https://github.com/metocean/storm_surge_data (all storm surge data is hosted here)
 * https://gitlab.com/geoocean/teslakit (some tools were created here)
 
-## TODO (or doing) :
+## TODO (or doing) :exclamation: :exclamation:
 
 * Preparing the FINAL experiments to evaluate results
 * Add EXTRA and better plots to KM analysis notebook
 * Reorganize MDA+RBF notebook with different options for the non-linear model
+* Add scatter density plots in validations!!
 
 ## Description
 
@@ -90,6 +91,12 @@ Statistical tools, notebooks, data ...
     │
     └── report                 <- Project description in pdf format (contracts...): 
                                   MSVC1901_UoCantabria_01_V4 - Final.pdf
+
+## New Zealand bathymetry
+
+This HTML file was created using the [GEBCO](https://www.gebco.net/data_and_products/gridded_bathymetry_data/) bathymetry data, find [here](/data/bathymetry/) its terms of use, and [kepler.gl](https://docs.kepler.gl/docs/keplergl-jupyter)!!
+
+<iframe src="data/bathymetry/nz_bathy.html" width="1000" height="800"></iframe>
 
 ## Installation
 
