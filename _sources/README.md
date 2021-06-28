@@ -15,7 +15,8 @@ related repos:
 * https://github.com/metocean/storm_surge_data (all storm surge data is hosted here)
 * https://gitlab.com/geoocean/teslakit (some tools were created here)
 
-## TODO (or doing) :exclamation: :exclamation:
+## TODO (or doing) |
+                   V
 
 * Preparing the FINAL experiments to evaluate results
 * Add EXTRA and better plots to KM analysis notebook
@@ -94,9 +95,13 @@ Statistical tools, notebooks, data ...
 
 ## New Zealand bathymetry
 
-This HTML file was created using the [GEBCO](https://www.gebco.net/data_and_products/gridded_bathymetry_data/) bathymetry data, find [here](/data/bathymetry/) its terms of use, and [kepler.gl](https://docs.kepler.gl/docs/keplergl-jupyter)!!
+We also downloaded the public [GEBCO](https://www.gebco.net/data_and_products/gridded_bathymetry_data/) New Zealand bathymetry data with 450 meters resolution (in longitude and latitude), in case depth data is required... example: apply depth filters to Moana v2 hindcast data, etc 
 
-<iframe src="data/bathymetry/nz_bathy.html" width="1000" height="800"></iframe>
+An HTML file available [here](/data/bathymetry/) was created using this bathymetry data (find [here](/data/bathymetry/) GEBCO terms of use), and [kepler.gl](https://docs.kepler.gl/docs/keplergl-jupyter)!! Below an image of how the HTML should look like:
+
+![bathy](/media/images/nz_bathy.png)
+
+<!-- <iframe src="data/bathymetry/nz_bathy.html" width="1000" height="800"></iframe> -->
 
 ## Installation
 
