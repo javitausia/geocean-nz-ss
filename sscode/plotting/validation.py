@@ -6,6 +6,7 @@ import xarray as xr
 # maths
 import numbers
 from scipy.stats import genextreme as gev
+from scipy.stats import gaussian_kde
 
 # plotting
 import matplotlib.pyplot as plt
@@ -14,7 +15,8 @@ import cartopy.crs as ccrs
 # custom
 from ..config import default_location
 from .config import _figsize_width, _figsize_height, _figsize, \
-    _fontsize_title, _fontsize_label
+    _fontsize_title, _fontsize_label, \
+    scatter_cmap, qqplot_points_col, qqplot_edges_col
 from .utils import plot_ccrs_nz, get_n_colors
 
 
@@ -94,7 +96,8 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
             ax.axhline(point, **rug_y_params)
 
     # Draw the q-q plot
-    ax.scatter(x_quantiles, y_quantiles, **kwargs)
+    ax.scatter(x_quantiles, y_quantiles, c=qqplot_points_col, 
+               edgecolors=qqplot_edges_col,**kwargs)
     ax.plot([min_value,max_value],[min_value,max_value],
             c='royalblue',lw=3,zorder=10)
     ax.set_xlim(min_value,max_value)
@@ -116,8 +119,12 @@ def scatterplot(x, y, ax=None,
     if ax is None:
         ax = plt.gca()
 
-    # plot the scatter
-    ax.scatter(x,y,**kwargs)
+    # calculate the point density
+    xy = np.vstack([x,y])
+    z = gaussian_kde(xy)(xy)
+
+    # plot the density scatter
+    ax.scatter(x,y,c=z,cmap=scatter_cmap,**kwargs)
     ax.plot([min_value,max_value],[min_value,max_value],
             c='royalblue',lw=3,zorder=10)
     ax.set_xlim(min_value,max_value)

@@ -14,6 +14,15 @@ _fontsize_title = 18
 _mbar_diff = 20
 _mbar100_diff = 2000
 
+# scatter and qqplot colors
+scatter_cmap = 'plasma'
+qqplot_points_col = 'red'
+qqplot_edges_col = 'orange'
+
+# time plots colors
+real_obs_col = 'k'
+pred_val_col = 'red'
+
 # DWTs colors list
 dwts_colors = [
     'white','cyan','cornflowerblue','darkseagreen','olivedrab','gold','darkorange',

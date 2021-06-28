@@ -24,7 +24,7 @@ from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs, Chrono_dwts_hist
 def KMA_simple(slp_data, ss_data, pca_data, 
                n_clusters=64, plot: bool = True,
                calculate_gev_stats: bool = True,
-               plot_gev: bool = (False,None,None)):
+               plot_gev_uhslc: bool = (False,None,None)):
     """
     This function performs the commonly known weather typing
     analysis (daily), where given the PCs of the sea-level-pressure
@@ -179,8 +179,8 @@ def KMA_simple(slp_data, ss_data, pca_data,
         # plot all the wheather types
         ss_clusters_gev = ss_clusters_gev if calculate_gev_stats else None
         plottting_data = Plot_DWTs_Mean_Anom(
-            KMA_data,cmap=dwts_colors,plot_gev=plot_gev
-            # plot_gev=(True,(lons[::3],lats[::3]),
+            KMA_data,cmap=dwts_colors,plot_gev_uhslc=plot_gev_uhslc
+            # plot_gev_uhslc=(True,(lons[::3],lats[::3]),
             #     load_cfsr_moana_uhslc.predictand.sel(site=sites[::3]).load()\
             #     .resample(time='1D').max()
             # )

@@ -14,7 +14,7 @@ import matplotlib.gridspec as gridspec
 # custom
 from .config import default_region
 from .plotting.config import _figsize, _fontsize_title, _figsize_width, \
-    _figsize_height, _fontsize_legend
+    _figsize_height, _fontsize_legend, real_obs_col, pred_val_col
 from .plotting.pca import plot_recon_pcs
 from .plotting.validation import qqplot, scatterplot
 from .validation import generate_stats, validata_w_tgs
@@ -161,16 +161,21 @@ def KNN_Regression(
         gs = gridspec.GridSpec(nrows=1,ncols=3)
         # time regular plot
         ax_time = fig.add_subplot(gs[:,:2])
-        ax_time.plot(t_test,y_test,label='Numerical model data (Moana v2)',c='k')
-        ax_time.plot(t_test,prediction,label='Linear model predictions',
-                     c='red',linestyle='--')
+        ax_time.plot(
+            t_test,y_test,label='Numerical model data (Moana v2)',
+            c=real_obs_col
+        )
+        ax_time.plot(
+            t_test,prediction,label='Linear model predictions',
+            c=pred_val_col,linestyle='--'
+        )
         ax_time.legend(fontsize=_fontsize_legend)
         # validation plot
         ax_vali = fig.add_subplot(gs[:,2:])
         ax_vali.set_xlabel('Observation')
         ax_vali.set_ylabel('Prediction')
-        scatterplot(y_test,prediction,ax=ax_vali,c='grey',edgecolor='k')
-        qqplot(y_test,prediction,ax=ax_vali,c='red',edgecolor='orange')
+        scatterplot(y_test,prediction,ax=ax_vali)
+        qqplot(y_test,prediction,ax=ax_vali)
         # add title
         fig.suptitle(
             title,fontsize=_fontsize_title,y=1.15

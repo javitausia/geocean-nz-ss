@@ -12,7 +12,7 @@ def calculate_relative_winds(location: tuple = default_location,
                              uw = None, vw = None,
                              lat_name: str = 'lat',
                              lon_name: str = 'lon',
-                             delete_direc: int = 120):
+                             delete_direc: int = 180):
     """
     This function calculates the projected winds in the direction to
     the given location. Winds with an angle greater than delete_direc with 

@@ -290,7 +290,7 @@ def load_cfsr(data_path: str = data_path,
             # loading resampled data
             mslp = xr.open_dataarray(data_path+'/cfsr/CFSR_MSLP_daily.nc')
             if load_winds[0]:
-                wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily_mask.nc')
+                wind = xr.open_dataset(data_path+'/cfsr/CFSR_WINDs_daily.nc')
                 # plot the data
                 plot_pres_winds(
                     [mslp,wind],data_name=datasets_attrs['cfsr'][3],

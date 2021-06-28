@@ -11,7 +11,8 @@ import matplotlib.gridspec as gridspec
 # custom
 from .plotting.validation import qqplot, scatterplot
 from .plotting.config import _fontsize_title, _fontsize_legend, \
-    _figsize, _figsize_width, _figsize_height, _fontsize_label
+    _figsize, _figsize_width, _figsize_height, _fontsize_label, \
+        real_obs_col, pred_val_col
 
 
 def compare_datasets(dataset1, dataset1_coords, 
@@ -119,10 +120,10 @@ def compare_datasets(dataset1, dataset1_coords,
             # time regular plot
             ax_time = fig.add_subplot(gs[axi,0:2])
             dataset1[comparison_variables[0][axi]].isel({dataset1_coords[2]:istat}).plot(
-                c='k',alpha=0.7,label=dataset1_coords[3],ax=ax_time
+                c=real_obs_col,alpha=0.7,label=dataset1_coords[3],ax=ax_time
             )
             dataset2[comparison_variables[1][axi]].isel({dataset2_coords[2]:istat}).plot(
-                c='red',alpha=0.7,linestyle='--',label=dataset2_coords[3],ax=ax_time
+                c=pred_val_col,alpha=0.7,linestyle='--',label=dataset2_coords[3],ax=ax_time
             )
             # calculate similar times for the scatter plot
             times_to_scatter = np.intersect1d(
@@ -139,8 +140,9 @@ def compare_datasets(dataset1, dataset1_coords,
                     'time':times_to_scatter[1]})[comparison_variables[0][axi]].values,
                 dataset2.isel({dataset2_coords[2]:istat,
                     'time':times_to_scatter[2]})[comparison_variables[1][axi]].values,
-                ax=ax_vali,c='k',alpha=0.7,edgecolor='grey',
-                s=5,label='Scatter plot -- {}'.format(comparison_variables[0][axi].upper())
+                ax=ax_vali,alpha=0.7,s=5,label='Scatter plot -- {}'.format(
+                    comparison_variables[0][axi].upper()
+                )
             )
             # qqplot for the data
             qqplot(
@@ -148,8 +150,9 @@ def compare_datasets(dataset1, dataset1_coords,
                     .dropna(dim='time').values, 
                 dataset2[comparison_variables[1][axi]].isel({dataset2_coords[2]:istat})\
                     .dropna(dim='time').values, 
-                ax=ax_vali,c='red',alpha=0.6,edgecolor='orange',rug=False,
-                label='Q-Q plot -- {}'.format(comparison_variables[0][axi].upper())
+                ax=ax_vali,alpha=0.6,rug=False,label='Q-Q plot -- {}'.format(
+                    comparison_variables[0][axi].upper()
+                )
             )
             # fig and axes decorators
             fig_title = dataset2[dataset2_coords[2]].values[istat].upper() + '\n'
@@ -353,21 +356,21 @@ def validata_w_tgs(X,validator,model,tg_name,
         # time regular plot
         ax_time = fig.add_subplot(gs[:,:2])
         ax_time.plot(
-            common_times[0],validator,c='k',
+            common_times[0],validator,c=real_obs_col,
             label='UHSLC tgs validator'
         )
         ax_time.plot(
             common_times[0],prediction,
             label='Linear model predictions',
-            c='red',linestyle='--',alpha=0.5
+            c=pred_val_col,linestyle='--',alpha=0.5
         )
         ax_time.legend(fontsize=_fontsize_legend)
         # validation plot
         ax_vali = fig.add_subplot(gs[:,2:])
         ax_vali.set_xlabel('Observation')
         ax_vali.set_ylabel('Prediction')
-        scatterplot(validator,prediction,ax=ax_vali,c='grey',edgecolor='k')
-        qqplot(validator,prediction,ax=ax_vali,c='red',edgecolor='orange')
+        scatterplot(validator,prediction,ax=ax_vali)
+        qqplot(validator,prediction,ax=ax_vali)
         # add title
         fig.suptitle(
             title,fontsize=_fontsize_title,y=1.15

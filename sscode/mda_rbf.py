@@ -13,12 +13,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 # custom
+from .config import default_region
 from .pca import PCA_DynamicPred
 from .mda import maxdiss_simplified_no_threshold
 from .rbf import rbf_reconstruction, rbf_validation
 from .validation import generate_stats, calc_closest_data2_in_data1
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
-    _fontsize_legend, _fontsize_title
+    _fontsize_legend, _fontsize_title, real_obs_col, pred_val_col
 from .plotting.utils import plot_ccrs_nz, get_n_colors
 from .plotting.mda import Plot_MDA_Data
 from .plotting.validation import scatterplot, qqplot
@@ -30,31 +31,37 @@ class MDA_RBF_Model(object):
     reconstructing / interpolating the storm surge in different locations
     around New Zealand, but giving the pcs of both the sea-level-pressure
     fields and the pcs of this storm surge. This analysis will be performed
-    over different locations / shores, that are indicated by the lon/lat of
+    over different locations / shores, that are indicated by the lon / lat of
     one point in the "middle" of this shore
 
     """
 
     def __init__(self, ss_data, # this could be the loaded moana with Loader class
         slp_data, # this will be used to calculate the local predictors
-        ss_data_attrs: tuple = ('lon','lat','site','ss'),
+        dict_to_pca, # this is the parameters dictionary to calculate pca from the slp
+        ss_data_attrs: tuple = ('lon','lat','site','ss'), # ss attrs
         lons: list = [168.1, 171.4, 167.5, 171.1, 173.5, 173.3, 175.1, 177.9, 172.6], 
         lats: list = [-44.2, -41.9, -47.2, -45.4, -42.5, -40.7, -40.2, -40.1, -34.3],
-        min_dist_th: list = [100, 100, 120, 90, 90, 80, 80, 120, 400],
+        min_dist_th: list = [130, 130, 140, 110, 110, 90, 90, 130, 400],
         extra_help: list = [ # this helps to stay in the wanted shore of NZ
-            ('lon',1.0),('lon',1.0),('lat',1.5),('lon',1.0),('lon',1.0),
-            ('lat',0.5),('lat',0.5),('lon',1.5),('lon',3.5)
-        ], time_resample: str = '1D'):
+            ('lon',1.5),('lon',1.5),('lat',1.5),('lon',1.5),('lon',1.5),
+            ('lat',0.7),('lat',0.7),('lon',1.5),('lon',3.5)
+        ], time_resample: str = '1D', # this is important, try 6H
+        verbose: bool = True, plot: bool = True):
 
         """
-        As always, we have the initializator/constructor fucntion, where the 
+        As always, we have the initializator/constructor function, where the 
         instance of the class is created, giving some initial parameters
 
         Args:
-            ss_data (xarray.Dataset): This is the previously loaded moana datasets
-                - TODO: add square-spatial Moana v2
+            ss_data (xarray.Dataset): This is the previously loaded moana datasets.
+                This might be just the shore moana dataset or the one including
+                the continental platform until 300m of depth, which is now saved
+                in data/storm_surge_data/moana_hindcast_v2/moana_ss_300m_daily.nc
             slp_data (xarray.Dataset): This is the slp data, also loaded with the
                 usually used, Loader class in data.py
+            dict_to_pca (dict): This is the parameters dictionary with all the
+                requested information to calculate the slp principal components                
             ss_data_attrs (tuple): This is a tuple with the main info regarding
                 the ss data, for posterior calculations
             lons (list): Longitudes of the "middle" location of the shores
@@ -67,32 +74,44 @@ class MDA_RBF_Model(object):
             time_resample (str, optional): As usually, time resample step
         """
 
-        # we save the lons / lats to locate the areas
-        print('\n Initializing the MDA + RBF constructor... \n')
-        print('\n with longitudes = {} \n \n and \n \n latitudes = {} !! \n'.format(
-            lons, lats # before saving the lons/lats in the object
-        ))
-        self.lons, self.lats = lons, lats # save lon/lat as class attrs
+        # we first save the verbose attr to print or not logs
+        self.verbose = verbose
+        self.plot = plot
         if len(lons)==len(lats):
             self.num_locs = len(lons) # TODO: add RaiseError
+
+        # we save the lons / lats to locate the areas
+        print('\n Initializing the MDA + RBF constructor... \n') \
+            if self.verbose else None
+        print('\n with longitudes = {} \n \n and \n \n latitudes = {} !! \
+            \n\n making a total of {} locations / shores !!'.format(
+            lons, lats, self.num_locs # output lon/lat values
+        )) if self.verbose else None
+        self.lons, self.lats = lons, lats # save lon/lat as class attrs
+        print('\n data will be resampled to {} \n\n and the PC analysis \
+            will be calculated using the parameters \n\n {} \n'.format(
+                time_resample,dict_to_pca
+            )
+        )
+        self.time_resample = time_resample # save time resample
+        self.dict_to_pca = dict_to_pca # save pca attrs
+        # save data and data_attrs in the class attributes
         self.raw_ss_data = ss_data # this could be the moana dataset
         self.ss_attrs = ss_data_attrs # moana/other, vars and coords
         self.raw_slp_data = slp_data # this could be the CFSR slp/winds
-        print('\n Lets calculate the storm surge pcs... \n')
+        print('\n lets calculate the storm surge pcs... \n') \
+            if self.verbose else None
         ss_tuple_data = self.generate_ss_data(
-            min_dist_th, extra_help, time_resample=time_resample
+            min_dist_th, extra_help
         ) # generate the lists with the ss pcs...
         # save all the returned lists
         self.ss_pcs_data, self.ss_real_data, self.ss_scalers = ss_tuple_data
-        print('\n Lets calculate the slp pcs... \n')
-        self.slp_pcs_data = self.generate_slp_data(
-            2.2, 2.2, # lon and lat deltas
-            time_resample=time_resample
-        ) # extra parameters will be added
+        print('\n lets calculate the slp pcs... \n') \
+            if self.verbose else None
+        self.slp_pcs_data = self.generate_slp_data() # this uses self.dict_to_pca
 
 
-    def generate_ss_data(self, min_dist_th, extra_help,
-                         time_resample: str = '1D'):
+    def generate_ss_data(self, min_dist_th, extra_help):
         """
         This class function generates the ss pcs analysis, so the mda+rbf
         interpolation can be performed over all the different indicated
@@ -104,7 +123,10 @@ class MDA_RBF_Model(object):
             extra_help (list): This is extra information, regarding the "dimension"
                 in which the shore is projected, so fake nodes are not introduced
                 in the pcs analysis
-            time_resample (str, optional): As usually, time resample step
+        
+        Returns:
+            (lists): The function returns the list with the data for all the
+            shores involved in the calculation
         """
 
         # calculate closets points and select ss maximums
@@ -116,8 +138,8 @@ class MDA_RBF_Model(object):
         )
         # save as list with all the data for the pcs
         raw_ss_locs = [self.raw_ss_data.sel(
-                {self.ss_attrs[2]: sites[i]}
-            ).ss.load().resample(time=time_resample).max() \
+                {self.ss_attrs[2]:sites[i]}
+            ).ss.load().resample(time=self.time_resample).max() \
             .dropna(dim='time',how='all') for i in range(self.num_locs)
         ] # num_locs==len(sites) if working
 
@@ -126,7 +148,7 @@ class MDA_RBF_Model(object):
         for loc in range(self.num_locs):
             # standarize the features
             ss_scaler = StandardScaler()
-            ss_stan = ss_scaler.fit_transform(raw_ss_locs[loc].values.T)
+            ss_stan = ss_scaler.fit_transform(raw_ss_locs[loc].values.T) # TODO: check .T!!
             ss_stan[np.isnan(ss_stan)] = 0.0 # check additional nans
             ss_scalers_locs.append(ss_scaler)
             # calculate de PCAs
@@ -151,79 +173,119 @@ class MDA_RBF_Model(object):
             # plt.plot(raw_ss_locs[loc].time.values,PCs[:,0])
             # plt.plot(raw_ss_locs[loc].time.values,PCs[:,1])
         
-        # plot selected points to check coherence
-        fig, axes = plt.subplots(
-            ncols=self.num_locs,
-            figsize=(_figsize_width*self.num_locs*1.4,_figsize_height*1.2),
-            subplot_kw={
-                'projection':ccrs.PlateCarree(central_longitude=180)
-            }
-        )
-        cmap, loc_colors = get_n_colors('jet',self.num_locs)
-        for axi,ax in enumerate(axes.flatten()):
-            ax.scatter( # total selected points for each shore
-                x=self.raw_ss_data.sel(
-                    {self.ss_attrs[2]: ss_pcs_locs[axi][self.ss_attrs[2]].values}
-                )[self.ss_attrs[0]].values,
-                y=self.raw_ss_data.sel(
-                    {self.ss_attrs[2]: ss_pcs_locs[axi][self.ss_attrs[2]].values}
-                )[self.ss_attrs[1]].values,
-                transform=ccrs.PlateCarree(),s=30,zorder=111,
-                c=np.array(loc_colors[axi],ndmin=2)
+        if self.plot:
+            print('\n All the SS pcs have been calculated, lets plot what we got!! \n')
+            # plot selected points to check coherence
+            fig, axes = plt.subplots(
+                ncols=2,figsize=_figsize,
+                subplot_kw={
+                    'projection':ccrs.PlateCarree(central_longitude=180)
+                }
             )
-            ax.scatter( # "middle" point as a star
-                x=self.lons[axi],y=self.lats[axi],s=100,zorder=112,
-                marker='*',c='k',transform=ccrs.PlateCarree(),edgecolors='yellow'
-            )
-        plot_ccrs_nz(axes.flatten(),plot_labels=(False,None,None))
-
-        plt.show() # debug results as calculated
+            cmap, loc_colors = get_n_colors('jet',self.num_locs)
+            for axi,ax in enumerate(axes):
+                if axi==0:
+                    xr.plot.scatter(
+                        self.raw_ss_data.max(dim='time'),
+                        x=self.ss_attrs[0],y=self.ss_attrs[1],
+                        hue=self.ss_attrs[3],ax=ax,
+                        transform=ccrs.PlateCarree()
+                    ) # plot the maximum ss in data
+                    ax.set_title(
+                        'Maximum SS for each station',
+                        fontsize=_fontsize_title
+                    )
+                else:
+                    for ishore in range(self.num_locs):
+                        ax.scatter( # total selected points for each shore
+                            x=self.raw_ss_data.sel(
+                                {self.ss_attrs[2]:ss_pcs_locs[ishore][self.ss_attrs[2]].values}
+                            )[self.ss_attrs[0]].values,
+                            y=self.raw_ss_data.sel(
+                                {self.ss_attrs[2]:ss_pcs_locs[ishore][self.ss_attrs[2]].values}
+                            )[self.ss_attrs[1]].values,
+                            transform=ccrs.PlateCarree(),s=10,zorder=111,
+                            c=np.array(loc_colors[ishore],ndmin=2)
+                        )
+                        ax.scatter( # "middle" point as a star
+                            x=self.lons[ishore],y=self.lats[ishore],s=100,zorder=112,
+                            marker='*',c='k',transform=ccrs.PlateCarree(),edgecolors='yellow'
+                        )
+                        if ishore==0:
+                            ax.set_title(
+                                'Input locations and closest stations',
+                                fontsize=_fontsize_title
+                            )
+                ax.set_facecolor('lightblue')
+            plot_ccrs_nz(axes,plot_labels=(False,None,None))
+            plt.show() # debug results as calculated
+        else:
+            print('\n All the SS pcs have been calculated!! \n')
 
         return ss_pcs_locs, raw_ss_locs, ss_scalers_locs
 
 
-    def generate_slp_data(self, lon_d, lat_d,
-                          calculate_gradient: bool = True,
-                          time_lapse: int = 2, # time back-mind, 2=t,t-1
-                          time_resample: str = '1D'): # TODO: add pcs parameters
+    def generate_slp_data(self, pres_vars: tuple = ('SLP','longitude','latitude'),
+        calculate_gradient: bool = False, winds: tuple = (False,None),
+        wind_vars: tuple = ('wind_proj_mask','lon','lat'),
+        time_lapse: int = 1, # 1 equals to NO time delay 
+        time_resample: str = '1D', region: tuple = (True,default_region),
+        pca_plot: tuple = (True,False,2), verbose: bool = True,
+        pca_ttls = None, pca_borders = None):
+
         """
         This class function generates the slp pcs analysis, so the mda+rbf
         interpolation can be performed over all the different indicated
         shores, ex: west, south...
 
         Args:
-            lon_d (float): Delta in the longitudes to calculate the local sea-
-                level-pressure pcs
-            lat_d (sloat): Delta in the latitudes to calculate the local sea-
-                level-pressure pcs
-            time_resample (str, optional): As usually, time resample step
+            The fucntion includes all the arguments used in PCA_DynamicPred,
+            but the way this function will be used is calling the self.dict_to_pca
+            attribute loaded in the __init__.py
+
+        Returns:
+            (list): This is a python list with all the pcs
         """
 
-        return [
-            PCA_DynamicPred(
-                self.raw_slp_data, # TODO: add wind options
-                calculate_gradient=calculate_gradient, 
-                time_lapse=time_lapse,time_resample=time_resample,
-                region=(True,(
-                    self.lons[ipc]-lon_d,self.lons[ipc]+lon_d,
-                    self.lats[ipc]+lat_d,self.lats[ipc]-lat_d
-                )),
-                pca_plot=(True,False,1) # (plot,scale)
-            )[0] if ipc <1 else \
-            PCA_DynamicPred(
-                self.raw_slp_data, # TODO: add wind options
-                calculate_gradient=calculate_gradient, 
-                time_lapse=time_lapse,time_resample=time_resample,
-                region=(True,(
-                    self.lons[ipc]-lon_d,self.lons[ipc]+lon_d,
-                    self.lats[ipc]+lat_d,self.lats[ipc]-lat_d
-                )), verbose=False,
-                pca_plot=(False,False,2) # (plot,scale)
-            )[0] for ipc in range(self.num_locs)
-        ]
+        # all the attrs are saved in self.dict_to_pca
+
+        # lets save all the pcs (for each shore) in a list
+        pcs_for_each_shore = []
+
+        for ipc in range(self.num_locs):
+            # save the dict in a local copy
+            dict_to_pca = self.dict_to_pca.copy()
+
+            if self.dict_to_pca['region'][0]=='local':
+                region_coords = dict_to_pca.pop('region')[1]
+                local_region = (True,(
+                    self.lons[ipc]-region_coords[0], # new lon / lat region
+                    self.lons[ipc]+region_coords[0],
+                    self.lats[ipc]+region_coords[1],
+                    self.lats[ipc]-region_coords[1],
+                ))
+                # lets first calculate the pcs
+                pca_data, pca_scaler = PCA_DynamicPred(
+                    self.raw_slp_data, # this is always the same
+                    region=local_region, # pass the calculated local region
+                    **dict_to_pca # extra arguments without the winds
+                )
+            else:
+                # lets first calculate the pcs
+                pca_data, pca_scaler = PCA_DynamicPred(
+                    self.slp_data, # this is always the same
+                    **dict_to_pca # extra arguments without the winds
+                )
+            # append calculated pcs to list
+            pcs_for_each_shore.append(pca_data)
+
+        return pcs_for_each_shore
 
 
-    def calc_MDA_RBF(self, sel_locs=None):
+    def calc_MDA_RBF(self, selected_shores=None,
+                     percentage_pcs_ini=[0.9999],
+                     num_samples_ini=[1500], ss_pcs=2,
+                     try_all=False, append_extremes=None):
 
         """
         This is the calculation function, where given the wanted
@@ -231,46 +293,92 @@ class MDA_RBF_Model(object):
         plotting different results and statistics
 
         Args:
-            sel_sites (list): List with ilocs for the shores
+            selected_shores (list): List with ilocs for the shores
         """
 
-        for sel_loc in sel_locs:
+        print('\n Lets interpolate the SS using all the calculated \
+            pcs (slp + ss) and the MDA+RBF technique!! \
+            This interpolation will be performed in all the locations!! \n'
+        )
+
+        for sel_loc in selected_shores:
             # perform the RBF interpolation, using MDA too
             rbf_prediction, real_ss_rbf = MDA_RBF_algorithm(
                 self.slp_pcs_data[sel_loc], 
-                self.ss_pcs_data[sel_loc], ss_pcs=8, 
+                self.ss_pcs_data[sel_loc], ss_pcs=ss_pcs, 
                 ss_scaler=self.ss_scalers[sel_loc],
-                try_all=True, append_extremes=None,
-                percentage_pcs_ini=[0.9999],
-                num_samples_ini=[1500]
+                try_all=try_all, append_extremes=append_extremes,
+                percentage_pcs_ini=percentage_pcs_ini,
+                num_samples_ini=num_samples_ini,
+                plot=self.plot, verbose=self.verbose
             )
+            print('\n Lets plot the SS reconstructions for location {}!! \n'.format(
+                sel_loc # this is the shore            
+            ))
             # reconstruct and plot
+            locations_stats = []*len(selected_shores)
             for isite, site in enumerate(
-                self.ss_real_data[sel_loc].site.values[::18]
+                self.ss_real_data[sel_loc].site.values[::22]
             ):
+                # try for available nodes or continue
+                try:
+                    title, stats = generate_stats(
+                        self.ss_real_data[sel_loc].sel(site=site).values,
+                        real_ss_rbf[0][:,isite]
+                    )
+                    locations_stats.append(stats)
+                except:
+                    title, stats = generate_stats(
+                        self.ss_real_data[sel_loc].sel(site=site).values,
+                        real_ss_rbf[0][:,isite],
+                        not_nan_idxs=np.where(
+                            (~np.isnan(self.ss_real_data[sel_loc].sel(site=site).values) &
+                            (~np.isnan(real_ss_rbf[0][:,isite])))
+                        )[0]
+                    )
+                    locations_stats.append(stats)
+                    continue
+
+                # figure spec-grid
+                fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
+                gs = gridspec.GridSpec(nrows=1,ncols=3)
+                # time regular plot
+                ax_time = fig.add_subplot(gs[:,:2])
                 self.ss_real_data[sel_loc].sel(site=site).plot(
-                    figsize=_figsize,c='k',label='Real SS measures'
+                    ax=ax_time,c=real_obs_col,label='Real SS measures'
                 )
-                plt.plot(
+                ax_time.plot(
                     self.ss_real_data[sel_loc].sel(site=site).time.values,
-                    real_ss_rbf[0][:,isite],c='seagreen',linestyle='--',
+                    real_ss_rbf[0][:,isite],c='grey',linestyle='--',alpha=0.8,
                     label='Reconstructed SS -- MDA + RBF'
                 )
-                plt.xlim(
+                ax_time.set_xlim(
                     self.ss_real_data[sel_loc].sel(site=site).time.values[0],
                     self.ss_real_data[sel_loc].sel(site=site).time.values[-1]
                 ) # delete white spaces
-                title, stats = generate_stats(
-                    self.ss_real_data[sel_loc].sel(site=site).values,
-                    real_ss_rbf[0][:,isite]
+                ax_time.legend(ncol=2,fontsize=_fontsize_legend)
+                # validation plot
+                ax_vali = fig.add_subplot(gs[:,2:])
+                ax_vali.set_xlabel('Observation')
+                ax_vali.set_ylabel('Prediction')
+                scatterplot(
+                    self.ss_real_data[sel_loc].sel(site=site),
+                    real_ss_rbf[0][:,isite],ax=ax_vali
                 )
-                plt.title(
+                qqplot(
+                    self.ss_real_data[sel_loc].sel(site=site),
+                    real_ss_rbf[0][:,isite],ax=ax_vali
+                )
+                # add title
+                fig.suptitle(
                     title+' -- SITE: {}'.format(site),fontsize=_fontsize_title,y=1.1
                 )
-                plt.legend(ncol=2,fontsize=_fontsize_legend)
-            plt.show() # show final results
+                # show the results
+                plt.show()
 
         # TODO: add xarray to return results and better plots
+
+        return real_ss_rbf, locations_stats
 
 
 def MDA_RBF_algorithm(
@@ -282,22 +390,38 @@ def MDA_RBF_algorithm(
     validate_rbf_kfold: bool = False,
     plot: bool = True, verbose: bool = True):
 
-    """[summary]
+    """
+    This out-of-class function performs the MDA+RBF interpolation given the
+    pcs of the sea-level-pressure fields and some variable to interpolate, that
+    might be the storm surge, but can also be the pcs of this spatial ss
 
     Args:
-        pcs_data ([type]): [description]
-        ss_data ([type]): [description]
-        ss_pcs (int, optional): [description]. Defaults to 1.
-        ss_scaler ([type], optional): [description]. Defaults to None.
-        num_samples_ini (list, optional): [description]. Defaults to [100,500].
-        try_all (bool, optional): [description]. Defaults to False.
-        append_extremes (int, optional): [description]. Defaults to 10.
-        validate_rbf_kfold (bool, optional): [description]. Defaults to False.
-        plot (bool, optional): [description]. Defaults to True.
-        verbose (bool, optional): [description]. Defaults to True.
+        pcs_data (xarray.Dataset): These are the pcs of the slp fields, that can
+            be previously calculate using generate_slp_data
+        ss_data (xarray.Dataset): This is the variable/s to interpolate, and might 
+            be the storm surge or the pcs of the ss, in case the shore related
+            analysis is done over NZ
+        ss_pcs (int, optional): This is the number of pcs that is wanted to be
+            used when the ss-pcs are calculated. Defaults to 1, which means
+            no pcs are calculated.
+        ss_scaler (sklearn.Scaler, optional): This is the scikit-learn scaler
+            that will be used to recalculate the real ss. Defaults to None.
+        percentage_pcs_ini (list, optional): List with all the percentages that
+            will be used to crop the slp pcs. Defaults to [0.6,0.9].
+        num_samples_ini (list, optional): List with all the integer numbers that
+            represent the number of points the MDA algorithm will search for, and
+            then the RBF interpolation will use. Defaults to [100,500].
+        try_all (bool, optional): Whether to try or not all the possible combinations
+            of the 2 previous defined parameters. Defaults to False.
+        append_extremes (int, optional): Wheter to add or not the ss/pcs extreme values
+            to the subset to interpolate, not extrapolate. Defaults to 10.
+        validate_rbf_kfold (bool, optional): Wheter to call the rbf_validation function
+            once the process is done. Defaults to False.
+        plot (bool, optional): Whether to plot or not the results. Defaults to True.
+        verbose (bool, optional): Wheter to plot or not logs. Defaults to True.
 
     Returns:
-        [type]: [description]
+        [xarray.Datasets]: xarray datasets with the data reconstructed
     """
 
     outs, real_sss = [], []
@@ -316,15 +440,19 @@ def MDA_RBF_algorithm(
     # perform the mda + rbf analysis over all the possibilities
     for per_pcs,n_samp in zip(percentage_pcs,num_samples):
 
+        print('\n ------------------------------------------------------------- \n') \
+            if verbose else None
         print('\n MDA + RBF with {} per of pcs and {} samples!! \n'.format(
             per_pcs, n_samp
         ))
-
         # number of pcs to use
         num_pcs = len(np.where(
             ((np.cumsum(pcs_data.variance)/np.sum(pcs_data.variance)) < per_pcs).values==True
         )[0])
-        print(' which means {} PCs... \n'.format(num_pcs))
+        print(' which means {} PCs... \n'.format(num_pcs)) if verbose else None
+        print('\n ------------------------------------------------------------- \n') \
+            if verbose else None
+
         predictor_dataset = pcs_data.PCs.isel(
             n_components=slice(0,num_pcs)
         ).dropna(dim='time',how='all') # mantain just num_pcs
@@ -372,12 +500,13 @@ def MDA_RBF_algorithm(
             # get extremes location
             max_times_indexes = np.argsort(
                 -target_dataset.values
-            )[:append_extremes]
+            )[:append_extremes] if ss_pcs==1 else \
+                np.argsort(-target_dataset.values[:,0])[:append_extremes]
             for max_indx in max_times_indexes:
                 subset_indexes.append(max_indx) if max_indx not in subset_indexes else None
-            print('We finally have {} points to interpolate with RBF'.format(
+            print('We finally have {} points to interpolate with RBF!! \n\n'.format(
                 len(subset_indexes)
-            )) # TODO: add for ss-PCs!!!
+            )) if verbose else None # appended extreme values to subset
 
         # get subsets with calculated indexes (pcs + ss)
         predictor_subset = predictor_dataset.sel(
@@ -435,19 +564,19 @@ def MDA_RBF_algorithm(
 
         # plot output results
         if plot:
-            for i_ss in range(2):
+            for i_ss in range(1):
                 # figure spec-grid
                 fig = plt.figure(figsize=(_figsize_width*4.5,_figsize_height))
                 gs = gridspec.GridSpec(nrows=1,ncols=3)
                 # time regular plot
                 ax_time = fig.add_subplot(gs[:,:2])
                 target_dataset.isel(time=idxs_not_in_subset,n_components=i_ss).plot(
-                    ax=ax_time,alpha=0.8,c='k',label='Real SS observations'
+                    ax=ax_time,alpha=0.8,c=real_obs_col,label='Real SS observations'
                 )
                 ax_time.plot(
                     common_times[idxs_not_in_subset],
                     out[idxs_not_in_subset,i_ss],
-                    alpha=0.8,c='red',linestyle='--',
+                    alpha=0.7,c='orange',linestyle='--',
                     label='RBF predictions'
                 )
                 ax_time.legend(ncol=2,fontsize=_fontsize_legend)
@@ -461,13 +590,11 @@ def MDA_RBF_algorithm(
                 ax_vali.set_ylabel('Prediction')
                 scatterplot(
                     target_dataset.values.reshape(-1,ss_pcs)[idxs_not_in_subset,i_ss],
-                    out[idxs_not_in_subset,i_ss],
-                    ax=ax_vali,c='grey',edgecolor='k'
+                    out[idxs_not_in_subset,i_ss],ax=ax_vali
                 )
                 qqplot(
                     target_dataset.values.reshape(-1,ss_pcs)[idxs_not_in_subset,i_ss],
-                    out[idxs_not_in_subset,i_ss],
-                    ax=ax_vali,c='red',edgecolor='orange'
+                    out[idxs_not_in_subset,i_ss],ax=ax_vali
                 )
                 # add title
                 title, ttl_stats = generate_stats(
@@ -475,9 +602,8 @@ def MDA_RBF_algorithm(
                     out[idxs_not_in_subset,i_ss],
                 )
                 fig.suptitle(
-                    title,fontsize=_fontsize_title,y=1.15
+                    'PC1 interpolation',fontsize=_fontsize_title,y=1.1
                 )
-
         # show the results
         plt.show()
 
@@ -497,6 +623,7 @@ def MDA_RBF_algorithm(
             # get the real SLP values
             real_ss = ss_scaler.inverse_transform(ss_stan)
             real_sss.append(real_ss)
+
 
     return outs, real_sss
 

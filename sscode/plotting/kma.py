@@ -34,7 +34,7 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
                         scale_: bool = True,
                         press_diff = _mbar_diff,
                         cmap = dwts_colors, gev_data = None,
-                        plot_gev: tuple = (False,None,None)):
+                        plot_gev_uhslc: tuple = (False,None,None)):
     '''
     Plot Daily Weather Types (bmus mean)
     kind - mean/anom
@@ -125,7 +125,7 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     fig, axes = plt.subplots(
         ncols=n_cols,nrows=n_rows,
         figsize=(n_cols*(_figsize_width/1.6),
-                 n_rows*(_figsize_height/1.9)),
+                 n_rows*(_figsize_height/2.0)),
         subplot_kw={
             'projection': ccrs.PlateCarree(
                 central_longitude=default_location[0]
@@ -161,21 +161,21 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     cb.set_label('Storm surge mean [m]',fontsize=_fontsize_label)
 
     # plot gev stats
-    if plot_gev[0]:
+    if plot_gev_uhslc[0]:
         # TODO: plot the different lons/lats to analyze
         clusters_to_plot = np.random.randint(0,n_clusters,5)
         tgs_names = join_load_uhslc_tgs().name.values
         moana_models = []
         for clus in clusters_to_plot:
             fig_hists, axes_hists = plt.subplots(
-                ncols=len(plot_gev[1][0]),
-                figsize=(_figsize_width*len(plot_gev[1][0])*1.2,_figsize_height/1.6)
+                ncols=len(plot_gev_uhslc[1][0]),
+                figsize=(_figsize_width*len(plot_gev_uhslc[1][0])*1.2,_figsize_height/1.6)
             )
             # plot histogram stats for every site specified
             site_counter=0
-            for lon_site,lat_site in zip(plot_gev[1][0],plot_gev[1][1]):
+            for lon_site,lat_site in zip(plot_gev_uhslc[1][0],plot_gev_uhslc[1][1]):
                 try:
-                    gev_data_clus_site = plot_gev[2].sel(
+                    gev_data_clus_site = plot_gev_uhslc[2].sel(
                         time=xds_KMA.train_time.where(
                             xds_KMA.sorted_bmus==clus,drop=True
                         ).values
@@ -239,7 +239,7 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     # show results
     plt.show()
 
-    return_data = [cmap,moana_models] if plot_gev[0] else [cmap]
+    return_data = [cmap,moana_models] if plot_gev_uhslc[0] else [cmap]
 
     return return_data
 
@@ -414,38 +414,40 @@ def plot_cluster_wgev(kma_data, gev_data, clusters):
     for cluster in clusters:
         # create the figure
         fig, axes = plt.subplots(
-            ncols=5,figsize=_figsize,subplot_kw={
+            ncols=5,figsize=(20,4),subplot_kw={
                 'projection':ccrs.PlateCarree(
                     central_longitude=180
                 )
             }
         )
-        ((kma_data.slp_clusters.isel(n_clusters=cluster) - \
+        ((kma_data.slp_clusters.sel(n_clusters=cluster) - \
             kma_data.slp_clusters.mean(dim='n_clusters')) / 100.0).plot(
                 cmap='RdBu_r',vmin=-30,vmax=30,
                 ax=axes[0],transform=ccrs.PlateCarree(),
                 add_colorbar=False
             )
-        kma_data.ss_clusters_mean.isel(n_clusters=cluster).plot(
+        kma_data.ss_clusters_mean.sel(n_clusters=cluster).plot(
             cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
             vmin=-0.2,vmax=0.3,add_colorbar=False,
             ax=axes[1],transform=ccrs.PlateCarree(),
         )
-        gev_data.mu.isel(n_clusters=cluster).plot(
+        gev_data.mu.sel(n_clusters=cluster).plot(
             cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
             x='lon',y='lat',transform=ccrs.PlateCarree(),
-            vmin=-0.2,vmax=0.3,add_colorbar=False,ax=axes[2]
+            vmin=-0.2,vmax=0.3,add_colorbar=True,ax=axes[2]
         )
-        gev_data.phi.isel(n_clusters=cluster).plot(
-            cmap=custom_cmap(15,'viridis',0.15,0.9,'plasma',0,0.85),
+        gev_data.phi.sel(n_clusters=cluster).plot(
+            cmap='viridis', # custom_cmap(15,'viridis',0.15,0.9,'plasma',0,0.85),
             x='lon',y='lat',transform=ccrs.PlateCarree(),
-            vmin=0.0,vmax=0.1,add_colorbar=False,ax=axes[3]
+            vmin=0.0,vmax=0.1,add_colorbar=True,ax=axes[3]
         )
-        gev_data.xi.isel(n_clusters=cluster).plot(
-            cmap=custom_cmap(15,'jet',0.15,0.9,'hot',0,0.85),
+        gev_data.xi.sel(n_clusters=cluster).plot(
+            cmap='hot', # custom_cmap(15,'jet',0.15,0.9,'hot',0,0.85),
             x='lon',y='lat',transform=ccrs.PlateCarree(),
-            vmin=-0.4,vmax=0.0,add_colorbar=False,ax=axes[4]
+            vmin=-0.4,vmax=0.0,add_colorbar=True,ax=axes[4]
         )
+        fig.suptitle('Analysis at CLUSTER={}'.format(cluster),
+                     fontsize=_fontsize_title)
         plot_ccrs_nz(
             [axes[0]],plot_region=(True,default_region),
             plot_labels=(False,None,None)
