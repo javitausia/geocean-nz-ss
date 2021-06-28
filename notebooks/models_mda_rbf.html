@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
+    <title>7. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="5. KNN regressor models" href="models_knn.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="experiments.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -103,28 +103,33 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="more_validations.html">
+   2. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   2. PC analysis
+   3. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   3. KM analysis
+   4. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   4. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   5. KNN regressor models
+   6. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   6. MDA - RBF model
+   7. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -233,17 +238,17 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#maximum-dissimilarity-algorithm-mda">
-   6.1. Maximum Dissimilarity Algorithm (MDA)
+   7.1. Maximum Dissimilarity Algorithm (MDA)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruction-of-the-coastal-wave-climate-with-rbf">
-   6.2. Reconstruction of the coastal wave climate with RBF
+   7.2. Reconstruction of the coastal wave climate with RBF
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-data-and-linear-model-stats">
-   6.3. Load data and linear model stats
+   7.3. Load data and linear model stats
   </a>
  </li>
 </ul>
@@ -258,7 +263,7 @@
               <div>
                 
   <div class="section" id="mda-rbf-model">
-<h1><span class="section-number">6. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">7. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will perform a analysis using one of our most used methods, which involves MDA + RBF algorithms. The process will be the next:</p>
 <ul class="simple">
 <li><p>First, the areas where the study is wanted to be performed are selected.</p></li>
@@ -267,11 +272,11 @@
 <li><p>Finally, we use RBF to interpolate the final storm-surge surface in all the areas / locations!!</p></li>
 </ul>
 <div class="section" id="maximum-dissimilarity-algorithm-mda">
-<h2><span class="section-number">6.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
 <p>In this way, the first important step to carry out this method is the selection of the maximum dissimilar cases, so the posterior reconstruction of all the cases can be performed correctly:</p>
 <div class="figure align-default" id="mdacroquis">
 <a class="reference internal image-reference" href="../_images/mdacroquis.png"><img alt="../_images/mdacroquis.png" src="../_images/mdacroquis.png" style="height: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 7.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
 </div>
 <p>This sketch shows the workflow followed in the selection step. The data is firstly normalized for the correct performance of the algorithm, then the euclidean distance is used for the calculation of the distance between the different vectors in the dataset. Finally, the selected data is de-normalized so it can be used and plotted together with the original information.</p>
 <p>As it can be seen, the variables used are:</p>
@@ -284,7 +289,7 @@
 <p>where <span class="math notranslate nohighlight">\(PCn\)</span> refers to the principal components of the sea-level-pressure fields and the <span class="math notranslate nohighlight">\(SSn\)</span> variables belongs to the principal components of the <span class="math notranslate nohighlight">\(n\)</span> locations of the selected area.</p>
 </div>
 <div class="section" id="reconstruction-of-the-coastal-wave-climate-with-rbf">
-<h2><span class="section-number">6.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
 <p>Once we have the selected cases, we now have a lot of different situations with
 different characteristics all along the coast so the reconstruction of the storm surge climate can be done.</p>
 <p>The reconstruction of the storm surge in shallow waters is carried out by
@@ -312,7 +317,7 @@ basic radial function, <span class="math notranslate nohighlight">\(||\cdot||\)<
 the RBF interpolation.</p>
 <div class="figure align-default" id="rbf-color">
 <a class="reference internal image-reference" href="../_images/rbf-color.png"><img alt="../_images/rbf-color.png" src="../_images/rbf-color.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 6.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 7.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
 </div>
 <p>The polynomial <span class="math notranslate nohighlight">\(p(x)\)</span> in the expression of the RBF interpolation function is defined as a
 monomial base <span class="math notranslate nohighlight">\({p_0, p_1 ,..., p_d}\)</span>. The first is a monomial, consisting of a number of grade one monomials equal to the dimensionality of the data, where <span class="math notranslate nohighlight">\(b = {b_0 , b_1 ,..., b_d}\)</span> are the coefficients of these monomials.</p>
@@ -347,7 +352,7 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 </div>
 <div class="section" id="load-data-and-linear-model-stats">
-<h2><span class="section-number">6.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
 <p>We first load the data, and plot some multilinear regression statistics to compare…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -372,8 +377,7 @@ in the precision of the technique. In the methodology of propagation of the mari
         <span class="s1">&#39;site&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">ss_grid</span><span class="o">.</span><span class="n">lat</span><span class="p">)),</span>
         <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">ss_grid</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">values</span>
     <span class="p">}</span>
-<span class="p">)</span>
-
+<span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
 <span class="c1"># plot results</span>
 <span class="n">lm_stats</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">if</span> <span class="n">lm_stats</span><span class="p">:</span>
@@ -405,9 +409,26 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct the MDA + RBF object</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dict to pca</span>
+<span class="n">pca_attrs_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;pres_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span>
+    <span class="s1">&#39;wind_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.1</span><span class="p">,</span><span class="mf">2.1</span><span class="p">)),</span>
+    <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;pca_ttls&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">],</span> 
+    <span class="s1">&#39;pca_borders&#39;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="p">}</span>
+
+<span class="c1"># construct the MDA + RBF object</span>
 <span class="n">mda_rbf_model</span> <span class="o">=</span> <span class="n">MDA_RBF_Model</span><span class="p">(</span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># load_cfsr_moana_uhslc.predictand, </span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
+    <span class="n">pca_attrs_default</span><span class="p">,</span> <span class="c1"># all params to calculate the pcs</span>
+    <span class="c1"># lons=[173.3, 175.1], lats=[-40.7, -40.2],</span>
+    <span class="c1"># min_dist_th=60,extra_help=(&#39;lat&#39;,1)</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -420,31 +441,40 @@ in the precision of the technique. In the methodology of propagation of the mari
  
  and 
  
- latitudes = [-44.2, -41.9, -47.2, -45.4, -42.5, -40.7, -40.2, -40.1, -34.3] !! 
+ latitudes = [-44.2, -41.9, -47.2, -45.4, -42.5, -40.7, -40.2, -40.1, -34.3] !!             
+
+ making a total of 9 locations / shores !!
+
+ data will be resampled to 1D 
+
+ and the PC analysis             will be calculated using the parameters 
+
+ {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: False, &#39;winds&#39;: (True, &lt;xarray.Dataset&gt;
+Dimensions:          (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float32 -20.1388 -20.451 ... -69.4709 -69.7831
+  * lon              (lon) float32 140.0 140.3125 140.625 ... 189.6875 190.0
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 ...
+    V_GRD_L103       (time, lat, lon) float32 ...
+    wind_proj        (time, lat, lon) float64 ...
+    bearings         (lat, lon) float64 ...
+    direc_proj_math  (lat, lon) float64 ...
+    wind_proj_mask   (time, lat, lon) float64 ...), &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;), &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.1, 2.1)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: False, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;SLP in t-1&#39;, &#39;Winds in t&#39;], &#39;pca_borders&#39;: None} 
 
 
- Lets calculate the storm surge pcs... 
+ lets calculate the storm surge pcs... 
+
+
+ All the SS pcs have been calculated, lets plot what we got!! 
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_4_1.png" src="../_images/models_mda_rbf_4_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets calculate the slp pcs... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the slp pcs... 
 
 
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 9, 9) 
-
-
- calculated PCs matrix with shape: 
- (11352, 324) 
-
-
- plotting 1 components with 4 EOFs + PC... 
+ plotting 1 components with 3 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
@@ -452,79 +482,169 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 <img alt="../_images/models_mda_rbf_4_3.png" src="../_images/models_mda_rbf_4_3.png" />
 <img alt="../_images/models_mda_rbf_4_4.png" src="../_images/models_mda_rbf_4_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_6.png" src="../_images/models_mda_rbf_4_6.png" />
+<img alt="../_images/models_mda_rbf_4_7.png" src="../_images/models_mda_rbf_4_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_9.png" src="../_images/models_mda_rbf_4_9.png" />
+<img alt="../_images/models_mda_rbf_4_10.png" src="../_images/models_mda_rbf_4_10.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_12.png" src="../_images/models_mda_rbf_4_12.png" />
+<img alt="../_images/models_mda_rbf_4_13.png" src="../_images/models_mda_rbf_4_13.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_15.png" src="../_images/models_mda_rbf_4_15.png" />
+<img alt="../_images/models_mda_rbf_4_16.png" src="../_images/models_mda_rbf_4_16.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_18.png" src="../_images/models_mda_rbf_4_18.png" />
+<img alt="../_images/models_mda_rbf_4_19.png" src="../_images/models_mda_rbf_4_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_21.png" src="../_images/models_mda_rbf_4_21.png" />
+<img alt="../_images/models_mda_rbf_4_22.png" src="../_images/models_mda_rbf_4_22.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_24.png" src="../_images/models_mda_rbf_4_24.png" />
+<img alt="../_images/models_mda_rbf_4_25.png" src="../_images/models_mda_rbf_4_25.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_4_27.png" src="../_images/models_mda_rbf_4_27.png" />
+<img alt="../_images/models_mda_rbf_4_28.png" src="../_images/models_mda_rbf_4_28.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the MDA + RBF adjustments</span>
-<span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+<span class="n">reconstructed_ss_by_rbf</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
+    <span class="n">selected_shores</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="c1"># indexes in python counter</span>
+    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.999</span><span class="p">],</span>
+    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">],</span>
+    <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MDA + RBF with 0.9999 per of pcs and 1500 samples!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets interpolate the SS using all the calculated             pcs (slp + ss) and the MDA+RBF technique!!             This interpolation will be performed in all the locations!! 
 
- which means 33 PCs... 
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 16 PCs... 
+
+
+ ------------------------------------------------------------- 
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_5_1.png" src="../_images/models_mda_rbf_5_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ix_scalar: 0,  optimization: 352.39 | interpolation: 1.32 | sigma: 1.3195
-ix_scalar: 1,  optimization: 165.91 | interpolation: 1.63 | sigma: 1.6264
-ix_scalar: 2,  optimization: 279.45 | interpolation: 1.27 | sigma: 1.2713
-ix_scalar: 3,  optimization: 313.78 | interpolation: 1.42 | sigma: 1.4224
-ix_scalar: 4,  optimization: 136.98 | interpolation: 1.34 | sigma: 1.3402
-ix_scalar: 5,  optimization: 156.48 | interpolation: 1.18 | sigma: 1.1832
-ix_scalar: 6,  optimization: 333.97 | interpolation: 1.43 | sigma: 1.4304
-ix_scalar: 7,  optimization: 236.44 | interpolation: 1.26 | sigma: 1.2582
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 595 points to interpolate with RBF
+ix_scalar: 0,  optimization: 28.94 | interpolation: 0.67 | sigma: 0.6723
+ix_scalar: 1,  optimization: 24.47 | interpolation: 0.78 | sigma: 0.7765
+ix_scalar: 2,  optimization: 26.27 | interpolation: 0.85 | sigma: 0.8476
+ix_scalar: 3,  optimization: 31.47 | interpolation: 0.74 | sigma: 0.7355
+ix_scalar: 4,  optimization: 48.77 | interpolation: 0.66 | sigma: 0.6554
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_5_3.png" src="../_images/models_mda_rbf_5_3.png" />
 <img alt="../_images/models_mda_rbf_5_4.png" src="../_images/models_mda_rbf_5_4.png" />
-<img alt="../_images/models_mda_rbf_5_5.png" src="../_images/models_mda_rbf_5_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 0!! 
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_6.png" src="../_images/models_mda_rbf_5_6.png" />
 <img alt="../_images/models_mda_rbf_5_7.png" src="../_images/models_mda_rbf_5_7.png" />
 <img alt="../_images/models_mda_rbf_5_8.png" src="../_images/models_mda_rbf_5_8.png" />
 <img alt="../_images/models_mda_rbf_5_9.png" src="../_images/models_mda_rbf_5_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MDA + RBF with 0.9999 per of pcs and 1500 samples!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
 
- which means 29 PCs... 
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 18 PCs... 
+
+
+ ------------------------------------------------------------- 
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_5_11.png" src="../_images/models_mda_rbf_5_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ix_scalar: 0,  optimization: 133.65 | interpolation: 1.21 | sigma: 1.2135
-ix_scalar: 1,  optimization: 177.27 | interpolation: 1.17 | sigma: 1.1669
-ix_scalar: 2,  optimization: 140.64 | interpolation: 1.21 | sigma: 1.2081
-ix_scalar: 3,  optimization: 121.72 | interpolation: 1.19 | sigma: 1.1865
-ix_scalar: 4,  optimization: 243.34 | interpolation: 1.35 | sigma: 1.3514
-ix_scalar: 5,  optimization: 185.85 | interpolation: 1.22 | sigma: 1.2244
-ix_scalar: 6,  optimization: 108.29 | interpolation: 1.18 | sigma: 1.1778
-ix_scalar: 7,  optimization: 132.05 | interpolation: 1.19 | sigma: 1.1899
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 592 points to interpolate with RBF
+ix_scalar: 0,  optimization: 37.43 | interpolation: 0.78 | sigma: 0.7804
+ix_scalar: 1,  optimization: 17.25 | interpolation: 0.67 | sigma: 0.6736
+ix_scalar: 2,  optimization: 16.34 | interpolation: 0.69 | sigma: 0.6915
+ix_scalar: 3,  optimization: 27.81 | interpolation: 0.69 | sigma: 0.6925
+ix_scalar: 4,  optimization: 54.18 | interpolation: 0.69 | sigma: 0.6888
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_5_13.png" src="../_images/models_mda_rbf_5_13.png" />
 <img alt="../_images/models_mda_rbf_5_14.png" src="../_images/models_mda_rbf_5_14.png" />
-<img alt="../_images/models_mda_rbf_5_15.png" src="../_images/models_mda_rbf_5_15.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 1!! 
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_16.png" src="../_images/models_mda_rbf_5_16.png" />
 <img alt="../_images/models_mda_rbf_5_17.png" src="../_images/models_mda_rbf_5_17.png" />
 <img alt="../_images/models_mda_rbf_5_18.png" src="../_images/models_mda_rbf_5_18.png" />
 <img alt="../_images/models_mda_rbf_5_19.png" src="../_images/models_mda_rbf_5_19.png" />
-<img alt="../_images/models_mda_rbf_5_20.png" src="../_images/models_mda_rbf_5_20.png" />
-<img alt="../_images/models_mda_rbf_5_21.png" src="../_images/models_mda_rbf_5_21.png" />
-<img alt="../_images/models_mda_rbf_5_22.png" src="../_images/models_mda_rbf_5_22.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MDA + RBF with 0.9999 per of pcs and 1500 samples!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
 
- which means 34 PCs... 
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 13 PCs... 
+
+
+ ------------------------------------------------------------- 
 </pre></div>
 </div>
+<img alt="../_images/models_mda_rbf_5_21.png" src="../_images/models_mda_rbf_5_21.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 592 points to interpolate with RBF
+ix_scalar: 0,  optimization: 23.22 | interpolation: 0.61 | sigma: 0.6116
+ix_scalar: 1,  optimization: 21.29 | interpolation: 1.02 | sigma: 1.0200
+ix_scalar: 2,  optimization: 28.70 | interpolation: 0.67 | sigma: 0.6695
+ix_scalar: 3,  optimization: 33.23 | interpolation: 0.90 | sigma: 0.8976
+ix_scalar: 4,  optimization: 110.31 | interpolation: 0.84 | sigma: 0.8429
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_23.png" src="../_images/models_mda_rbf_5_23.png" />
 <img alt="../_images/models_mda_rbf_5_24.png" src="../_images/models_mda_rbf_5_24.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ix_scalar: 0,  optimization: 203.83 | interpolation: 1.32 | sigma: 1.3200
-ix_scalar: 1,  optimization: 131.19 | interpolation: 1.31 | sigma: 1.3122
-ix_scalar: 2,  optimization: 140.31 | interpolation: 1.29 | sigma: 1.2891
-ix_scalar: 3,  optimization: 214.67 | interpolation: 1.24 | sigma: 1.2386
-ix_scalar: 4,  optimization: 120.75 | interpolation: 1.32 | sigma: 1.3178
-ix_scalar: 5,  optimization: 184.14 | interpolation: 2.46 | sigma: 2.4593
-ix_scalar: 6,  optimization: 159.54 | interpolation: 2.72 | sigma: 2.7184
-ix_scalar: 7,  optimization: 144.95 | interpolation: 1.34 | sigma: 1.3439
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 2!! 
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_5_26.png" src="../_images/models_mda_rbf_5_26.png" />
@@ -533,19 +653,187 @@ ix_scalar: 7,  optimization: 144.95 | interpolation: 1.34 | sigma: 1.3439
 <img alt="../_images/models_mda_rbf_5_29.png" src="../_images/models_mda_rbf_5_29.png" />
 <img alt="../_images/models_mda_rbf_5_30.png" src="../_images/models_mda_rbf_5_30.png" />
 <img alt="../_images/models_mda_rbf_5_31.png" src="../_images/models_mda_rbf_5_31.png" />
-<img alt="../_images/models_mda_rbf_5_32.png" src="../_images/models_mda_rbf_5_32.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 15 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_33.png" src="../_images/models_mda_rbf_5_33.png" />
-<img alt="../_images/models_mda_rbf_5_34.png" src="../_images/models_mda_rbf_5_34.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 596 points to interpolate with RBF
+ix_scalar: 0,  optimization: 35.22 | interpolation: 0.91 | sigma: 0.9054
+ix_scalar: 1,  optimization: 28.87 | interpolation: 1.18 | sigma: 1.1836
+ix_scalar: 2,  optimization: 31.76 | interpolation: 0.75 | sigma: 0.7491
+ix_scalar: 3,  optimization: 25.50 | interpolation: 0.83 | sigma: 0.8252
+ix_scalar: 4,  optimization: 33.40 | interpolation: 1.21 | sigma: 1.2099
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_35.png" src="../_images/models_mda_rbf_5_35.png" />
 <img alt="../_images/models_mda_rbf_5_36.png" src="../_images/models_mda_rbf_5_36.png" />
-<img alt="../_images/models_mda_rbf_5_37.png" src="../_images/models_mda_rbf_5_37.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 3!! 
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_38.png" src="../_images/models_mda_rbf_5_38.png" />
 <img alt="../_images/models_mda_rbf_5_39.png" src="../_images/models_mda_rbf_5_39.png" />
 <img alt="../_images/models_mda_rbf_5_40.png" src="../_images/models_mda_rbf_5_40.png" />
-<img alt="../_images/models_mda_rbf_5_41.png" src="../_images/models_mda_rbf_5_41.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 19 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_42.png" src="../_images/models_mda_rbf_5_42.png" />
-<img alt="../_images/models_mda_rbf_5_43.png" src="../_images/models_mda_rbf_5_43.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 590 points to interpolate with RBF
+ix_scalar: 0,  optimization: 27.29 | interpolation: 1.11 | sigma: 1.1131
+ix_scalar: 1,  optimization: 40.05 | interpolation: 1.25 | sigma: 1.2491
+ix_scalar: 2,  optimization: 25.62 | interpolation: 0.77 | sigma: 0.7670
+ix_scalar: 3,  optimization: 54.61 | interpolation: 0.83 | sigma: 0.8309
+ix_scalar: 4,  optimization: 20.35 | interpolation: 0.63 | sigma: 0.6349
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_5_44.png" src="../_images/models_mda_rbf_5_44.png" />
+<img alt="../_images/models_mda_rbf_5_45.png" src="../_images/models_mda_rbf_5_45.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 4!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_47.png" src="../_images/models_mda_rbf_5_47.png" />
+<img alt="../_images/models_mda_rbf_5_48.png" src="../_images/models_mda_rbf_5_48.png" />
+<img alt="../_images/models_mda_rbf_5_49.png" src="../_images/models_mda_rbf_5_49.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 22 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_51.png" src="../_images/models_mda_rbf_5_51.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 595 points to interpolate with RBF
+ix_scalar: 0,  optimization: 18.47 | interpolation: 0.68 | sigma: 0.6767
+ix_scalar: 1,  optimization: 15.68 | interpolation: 0.68 | sigma: 0.6778
+ix_scalar: 2,  optimization: 21.03 | interpolation: 0.68 | sigma: 0.6809
+ix_scalar: 3,  optimization: 59.14 | interpolation: 0.96 | sigma: 0.9633
+ix_scalar: 4,  optimization: 19.21 | interpolation: 0.68 | sigma: 0.6795
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_53.png" src="../_images/models_mda_rbf_5_53.png" />
+<img alt="../_images/models_mda_rbf_5_54.png" src="../_images/models_mda_rbf_5_54.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 5!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_56.png" src="../_images/models_mda_rbf_5_56.png" />
+<img alt="../_images/models_mda_rbf_5_57.png" src="../_images/models_mda_rbf_5_57.png" />
+<img alt="../_images/models_mda_rbf_5_58.png" src="../_images/models_mda_rbf_5_58.png" />
+<img alt="../_images/models_mda_rbf_5_59.png" src="../_images/models_mda_rbf_5_59.png" />
+<img alt="../_images/models_mda_rbf_5_60.png" src="../_images/models_mda_rbf_5_60.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 20 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_62.png" src="../_images/models_mda_rbf_5_62.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 590 points to interpolate with RBF
+ix_scalar: 0,  optimization: 18.02 | interpolation: 0.64 | sigma: 0.6435
+ix_scalar: 1,  optimization: 22.25 | interpolation: 0.65 | sigma: 0.6465
+ix_scalar: 2,  optimization: 25.11 | interpolation: 0.66 | sigma: 0.6584
+ix_scalar: 3,  optimization: 17.25 | interpolation: 0.65 | sigma: 0.6519
+ix_scalar: 4,  optimization: 24.59 | interpolation: 0.62 | sigma: 0.6211
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_64.png" src="../_images/models_mda_rbf_5_64.png" />
+<img alt="../_images/models_mda_rbf_5_65.png" src="../_images/models_mda_rbf_5_65.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 6!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_67.png" src="../_images/models_mda_rbf_5_67.png" />
+<img alt="../_images/models_mda_rbf_5_68.png" src="../_images/models_mda_rbf_5_68.png" />
+<img alt="../_images/models_mda_rbf_5_69.png" src="../_images/models_mda_rbf_5_69.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 17 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_71.png" src="../_images/models_mda_rbf_5_71.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 595 points to interpolate with RBF
+ix_scalar: 0,  optimization: 21.35 | interpolation: 0.57 | sigma: 0.5743
+ix_scalar: 1,  optimization: 16.35 | interpolation: 0.66 | sigma: 0.6573
+ix_scalar: 2,  optimization: 19.02 | interpolation: 0.81 | sigma: 0.8147
+ix_scalar: 3,  optimization: 31.69 | interpolation: 0.67 | sigma: 0.6719
+ix_scalar: 4,  optimization: 19.79 | interpolation: 0.77 | sigma: 0.7667
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_73.png" src="../_images/models_mda_rbf_5_73.png" />
+<img alt="../_images/models_mda_rbf_5_74.png" src="../_images/models_mda_rbf_5_74.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 7!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_76.png" src="../_images/models_mda_rbf_5_76.png" />
+<img alt="../_images/models_mda_rbf_5_77.png" src="../_images/models_mda_rbf_5_77.png" />
+<img alt="../_images/models_mda_rbf_5_78.png" src="../_images/models_mda_rbf_5_78.png" />
+<img alt="../_images/models_mda_rbf_5_79.png" src="../_images/models_mda_rbf_5_79.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.999 per of pcs and 500 samples!! 
+
+ which means 16 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_81.png" src="../_images/models_mda_rbf_5_81.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 593 points to interpolate with RBF
+ix_scalar: 0,  optimization: 72.63 | interpolation: 1.31 | sigma: 1.3081
+ix_scalar: 1,  optimization: 21.85 | interpolation: 0.59 | sigma: 0.5871
+ix_scalar: 2,  optimization: 19.69 | interpolation: 0.64 | sigma: 0.6359
+ix_scalar: 3,  optimization: 18.36 | interpolation: 0.59 | sigma: 0.5869
+ix_scalar: 4,  optimization: 27.10 | interpolation: 0.66 | sigma: 0.6574
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_83.png" src="../_images/models_mda_rbf_5_83.png" />
+<img alt="../_images/models_mda_rbf_5_84.png" src="../_images/models_mda_rbf_5_84.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 8!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_5_86.png" src="../_images/models_mda_rbf_5_86.png" />
+<img alt="../_images/models_mda_rbf_5_87.png" src="../_images/models_mda_rbf_5_87.png" />
+<img alt="../_images/models_mda_rbf_5_88.png" src="../_images/models_mda_rbf_5_88.png" />
+<img alt="../_images/models_mda_rbf_5_89.png" src="../_images/models_mda_rbf_5_89.png" />
+<img alt="../_images/models_mda_rbf_5_90.png" src="../_images/models_mda_rbf_5_90.png" />
+<img alt="../_images/models_mda_rbf_5_91.png" src="../_images/models_mda_rbf_5_91.png" />
+<img alt="../_images/models_mda_rbf_5_92.png" src="../_images/models_mda_rbf_5_92.png" />
+<img alt="../_images/models_mda_rbf_5_93.png" src="../_images/models_mda_rbf_5_93.png" />
+<img alt="../_images/models_mda_rbf_5_94.png" src="../_images/models_mda_rbf_5_94.png" />
+<img alt="../_images/models_mda_rbf_5_95.png" src="../_images/models_mda_rbf_5_95.png" />
+<img alt="../_images/models_mda_rbf_5_96.png" src="../_images/models_mda_rbf_5_96.png" />
+<img alt="../_images/models_mda_rbf_5_97.png" src="../_images/models_mda_rbf_5_97.png" />
+<img alt="../_images/models_mda_rbf_5_98.png" src="../_images/models_mda_rbf_5_98.png" />
 </div>
 </div>
 </div>
@@ -576,7 +864,7 @@ ix_scalar: 7,  optimization: 144.95 | interpolation: 1.34 | sigma: 1.3439
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="models_knn.html" title="previous page"><span class="section-number">5. </span>KNN regressor models</a>
+    <a class='left-prev' id="prev-link" href="experiments.html" title="previous page">&lt;no title&gt;</a>
 
         </div>
         

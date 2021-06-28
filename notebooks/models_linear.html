@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
+    <title>5. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5. KNN regressor models" href="models_knn.html" />
-    <link rel="prev" title="3. KM analysis" href="analysis_kma.html" />
+    <link rel="next" title="6. KNN regressor models" href="models_knn.html" />
+    <link rel="prev" title="4. KM analysis" href="analysis_kma.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -104,28 +104,33 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="more_validations.html">
+   2. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   2. PC analysis
+   3. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   3. KM analysis
+   4. KM analysis
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   4. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   5. KNN regressor models
+   6. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   6. MDA - RBF model
+   7. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -234,39 +239,39 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-theory">
-   4.1. Linear regression theory
+   5.1. Linear regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-main-pcs">
-   4.2. Load the data (main + PCs)
+   5.2. Load the data (main + PCs)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-regional-predictor">
-   4.3. Linear regression with regional predictor
+   5.3. Linear regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#validation-statistics-explanation">
-     4.3.1. Validation statistics explanation
+     5.3.1. Validation statistics explanation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#linear-regression-in-the-uhslc-tidal-gauges-validation">
-     4.3.2. Linear regression in the UHSLC tidal gauges + validation
+     5.3.2. Linear regression in the UHSLC tidal gauges + validation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#linear-regression-ana-s-paper">
-     4.3.3. Linear regression - Ana’s paper
+     5.3.3. Linear regression - Ana’s paper
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-local-predictor">
-   4.4. Linear regression with local predictor
+   5.4. Linear regression with local predictor
   </a>
  </li>
 </ul>
@@ -281,9 +286,9 @@
               <div>
                 
   <div class="section" id="multilinear-regression-models">
-<h1><span class="section-number">4. </span>MultiLinear regression models<a class="headerlink" href="#multilinear-regression-models" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">5. </span>MultiLinear regression models<a class="headerlink" href="#multilinear-regression-models" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="linear-regression-theory">
-<h2><span class="section-number">4.1. </span>Linear regression theory<a class="headerlink" href="#linear-regression-theory" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.1. </span>Linear regression theory<a class="headerlink" href="#linear-regression-theory" title="Permalink to this headline">¶</a></h2>
 <p>We assume here that <span class="math notranslate nohighlight">\( y | X ; \theta\sim\mathcal{N}(\mu,\sigma ^2)\)</span>!!</p>
 <ul class="simple">
 <li><p><strong>Normal equations</strong> - By noting <span class="math notranslate nohighlight">\(X\)</span> the design matrix, the value of <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes the cost function is a closed-form solution such that:</p></li>
@@ -363,7 +368,7 @@
 </div>
 </div>
 <div class="section" id="load-the-data-main-pcs">
-<h2><span class="section-number">4.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <p>Moreover, we will load the previously calculated regional PCs, as it takes some time to calculate them. Have in mind that principal component analysis involves “difficult” matrices multiplications / inversions, and with the regional slp fields + the gradient, we have thousands of variables!!</p>
 <div class="cell docutils container">
@@ -412,7 +417,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-with-regional-predictor">
-<h2><span class="section-number">4.3. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
 <p>In the following cell, a multilinear regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_lm_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -431,7 +436,8 @@
         <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
             <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
-            <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span> <span class="c1"># pre-loaded pcs</span>
         <span class="n">stats_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
     <span class="c1"># save the statistics</span>
@@ -453,18 +459,14 @@
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># local copy</span>
-    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
         <span class="n">stats_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span>
-    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="validation-statistics-explanation">
-<h3><span class="section-number">4.3.1. </span>Validation statistics explanation<a class="headerlink" href="#validation-statistics-explanation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.3.1. </span>Validation statistics explanation<a class="headerlink" href="#validation-statistics-explanation" title="Permalink to this headline">¶</a></h3>
 <p>When measuring the goodness of a fit, we can calculate very different statistical measures, such as the bias, the rmse or the pearson and spearman correlation coefficients. In this part, we will briefly describe how all of them work, and how they must be interpreted:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bias_(statistics)">Bias</a>: This is the difference in the means of the predicted and real observations, and should be interpreted as how much the majority of the poinis differ from the real points, in terms of the mean.</p></li>
@@ -523,6 +525,9 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
 <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+    <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span>
+    <span class="p">)</span>
     <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -537,7 +542,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-in-the-uhslc-tidal-gauges-validation">
-<h3><span class="section-number">4.3.2. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.3.2. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
 <p>Here, we really use for the first time our “validators”, which are the main truth in the project. In coastal engineering, we usually use the buoys (if we are working with waves) and the tidal gauges (water elevation) as the real observations, and once they are processed, which is the case of these nodes shown here, they might be used as the data to validate with.</p>
 <p>Below, apart from plotting the location of the different tidal gauges that we will be working with, we show how the linear regression with the regional predictor behaves in the nearest locations to the tidal gauges, and how this pre-trained linear regression model performs in that tidal gauge too.</p>
 <p>To understand how good or bad the linear model might behave when predicting the storm surge of the tidal guages, we find the answer in the validations we performed in the first notebook, called <strong>Data visualization and validation (data_visualization.ipynb)</strong>, where the comparison of all the tidal gauges and the nearest moana nodes is shown.</p>
@@ -700,11 +705,11 @@
 </div>
 </div>
 <div class="section" id="linear-regression-ana-s-paper">
-<h3><span class="section-number">4.3.3. </span>Linear regression - Ana’s paper<a class="headerlink" href="#linear-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.3.3. </span>Linear regression - Ana’s paper<a class="headerlink" href="#linear-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
 <p>In the following two cells, we do the regional-linear regression again, but this time we tarin the model with the tidal guages directly, just to see how our predictors are behaving when compared to results in previous works, as the one available at Rueda et al. 2018:</p>
 <div class="figure align-default" id="anaetal">
 <a class="reference internal image-reference" href="../_images/anaetal.png"><img alt="../_images/anaetal.png" src="../_images/anaetal.png" style="width: 700px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">Result from Rueda et al. and some more private tidal guages locations. Full paper available (<a class="reference external" href="https://www.researchgate.net/publication/328587769_Marine_climate_variability_based_on_weather_patterns_for_a_complicated_island_setting_The_New_Zealand_case">here</a>)</span><a class="headerlink" href="#anaetal" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Result from Rueda et al. and some more private tidal guages locations. Full paper available (<a class="reference external" href="https://www.researchgate.net/publication/328587769_Marine_climate_variability_based_on_weather_patterns_for_a_complicated_island_setting_The_New_Zealand_case">here</a>)</span><a class="headerlink" href="#anaetal" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -759,7 +764,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-with-local-predictor">
-<h2><span class="section-number">4.4. </span>Linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.4. </span>Linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
 <p>In the following cell, a multilinear regression is performed over all the domain of the Moana v2 hindcast nearshore, having the local pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_lm_local_daily.nc</span></code>. Notice that, with the regional predictor, which involves an area of 4 <span class="math notranslate nohighlight">\(\cdot\)</span> 4 degrees, we are able to cover just a smaller area, but centered at the location of the virtual moana node.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -863,8 +868,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="analysis_kma.html" title="previous page"><span class="section-number">3. </span>KM analysis</a>
-    <a class='right-next' id="next-link" href="models_knn.html" title="next page"><span class="section-number">5. </span>KNN regressor models</a>
+    <a class='left-prev' id="prev-link" href="analysis_kma.html" title="previous page"><span class="section-number">4. </span>KM analysis</a>
+    <a class='right-next' id="next-link" href="models_knn.html" title="next page"><span class="section-number">6. </span>KNN regressor models</a>
 
         </div>
         

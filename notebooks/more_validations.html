@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2. LINZ and OTHER data analysis &#8212; Storm Surge NZ - Summary</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. PC analysis" href="analysis_pca.html" />
+    <link rel="prev" title="1. Data visualization and validation" href="data_visualization.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.jpeg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../README.html">
+   geoocean-nz-ss
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Chapters
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   1. Data visualization and validation
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_pca.html">
+   3. PC analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_kma.html">
+   4. KM analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_linear.html">
+   5. MultiLinear regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_knn.html">
+   6. KNN regressor models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_mda_rbf.html">
+   7. MDA - RBF model
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/more_validations.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/more_validations.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/more_validations.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="linz-and-other-data-analysis">
+<h1><span class="section-number">2. </span>LINZ and OTHER data analysis<a class="headerlink" href="#linz-and-other-data-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basic</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="c1"># plotting</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="c1"># bluemath toolkit library</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader_linz</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loader_linz</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
+    <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+
+
+ loading daily resampled data... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_2_1.png" src="../_images/more_validations_2_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_2_3.png" src="../_images/more_validations_2_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the LINZ tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_2_5.png" src="../_images/more_validations_2_5.png" />
+<img alt="../_images/more_validations_2_6.png" src="../_images/more_validations_2_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with LINZ tgs!! 
+
+
+ 
+ TGs to analyze are: 
+ [&#39;GBIT&#39; &#39;CHIT&#39; &#39;TAUT&#39; &#39;CPIT&#39; &#39;CHST&#39; &#39;SUMT&#39; &#39;NCPT&#39; &#39;AUCT&#39; &#39;KAIT&#39; &#39;PUYT&#39;
+ &#39;MNKT&#39; &#39;GIST&#39; &#39;WLGT&#39; &#39;NAPT&#39; &#39;OTAT&#39; &#39;LOTT&#39;] 
+
+
+ which correspond to 
+ [1296, 378, 1124, 780, 613, 488, 1442, 1217, 578, 200, 1177, 1025, 689, 949, 224, 1146] 
+ in Moana v2 hindcast 
+
+
+ calculated min distances (km) in Moana v2 hindcast to LINZ tgs: 
+ [5.319717747423619, 2.318472050133609, 4.698606345256596, 4.106133965791829, 3.1307877704095715, 17.988003692172256, 1.2755996354300694, 5.878134710490101, 2.1041482521719543, 4.015667223503161, 3.168586231604361, 5.3741308824231755, 10.09186164411121, 1.8956937268750171, 9.621120849018142, 4.625968007830678] 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_2_8.png" src="../_images/more_validations_2_8.png" />
+<img alt="../_images/more_validations_2_9.png" src="../_images/more_validations_2_9.png" />
+<img alt="../_images/more_validations_2_10.png" src="../_images/more_validations_2_10.png" />
+<img alt="../_images/more_validations_2_11.png" src="../_images/more_validations_2_11.png" />
+<img alt="../_images/more_validations_2_12.png" src="../_images/more_validations_2_12.png" />
+<img alt="../_images/more_validations_2_13.png" src="../_images/more_validations_2_13.png" />
+<img alt="../_images/more_validations_2_14.png" src="../_images/more_validations_2_14.png" />
+<img alt="../_images/more_validations_2_15.png" src="../_images/more_validations_2_15.png" />
+<img alt="../_images/more_validations_2_16.png" src="../_images/more_validations_2_16.png" />
+<img alt="../_images/more_validations_2_17.png" src="../_images/more_validations_2_17.png" />
+<img alt="../_images/more_validations_2_18.png" src="../_images/more_validations_2_18.png" />
+<img alt="../_images/more_validations_2_19.png" src="../_images/more_validations_2_19.png" />
+<img alt="../_images/more_validations_2_20.png" src="../_images/more_validations_2_20.png" />
+<img alt="../_images/more_validations_2_21.png" src="../_images/more_validations_2_21.png" />
+<img alt="../_images/more_validations_2_22.png" src="../_images/more_validations_2_22.png" />
+<img alt="../_images/more_validations_2_23.png" src="../_images/more_validations_2_23.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader_other</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loader_other</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
+    <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+
+
+ loading daily resampled data... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_3_1.png" src="../_images/more_validations_3_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_3_3.png" src="../_images/more_validations_3_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the OTHER tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_3_5.png" src="../_images/more_validations_3_5.png" />
+<img alt="../_images/more_validations_3_6.png" src="../_images/more_validations_3_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with OTHER tgs!! 
+
+
+ 
+ TGs to analyze are: 
+ [&#39;Thames&#39; &#39;PoutoPoint&#39; &#39;QueensWharf&#39; &#39;LittleKaiteriteri&#39; &#39;Kawhia&#39;
+ &#39;Whitianga&#39; &#39;Tarakohe&#39; &#39;PortTaranaki&#39;] 
+
+
+ which correspond to 
+ [1174, 1260, 1217, 744, 1064, 1214, 803, 999] 
+ in Moana v2 hindcast 
+
+
+ calculated min distances (km) in Moana v2 hindcast to OTHER tgs: 
+ [3.7511034902355385, 5.482027490429699, 7.339363979702297, 3.6193477047540705, 6.561342239106438, 11.820307701397114, 5.095093595142064, 1.28643175849521] 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_3_8.png" src="../_images/more_validations_3_8.png" />
+<img alt="../_images/more_validations_3_9.png" src="../_images/more_validations_3_9.png" />
+<img alt="../_images/more_validations_3_10.png" src="../_images/more_validations_3_10.png" />
+<img alt="../_images/more_validations_3_11.png" src="../_images/more_validations_3_11.png" />
+<img alt="../_images/more_validations_3_12.png" src="../_images/more_validations_3_12.png" />
+<img alt="../_images/more_validations_3_13.png" src="../_images/more_validations_3_13.png" />
+<img alt="../_images/more_validations_3_14.png" src="../_images/more_validations_3_14.png" />
+<img alt="../_images/more_validations_3_15.png" src="../_images/more_validations_3_15.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;projection&#39;</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="k">for</span> <span class="n">iload</span><span class="p">,</span><span class="n">loader</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">loader_linz</span><span class="p">,</span><span class="n">loader_other</span><span class="p">]):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">iload</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+        <span class="n">c</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">iload</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span><span class="n">zorder</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span>
+    <span class="p">)</span>
+<span class="n">plot_ccrs_nz</span><span class="p">([</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="n">plot_region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="mi">150</span><span class="p">,</span><span class="mi">190</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="o">-</span><span class="mi">80</span><span class="p">)),</span><span class="n">plot_labels</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">))</span>
+<span class="n">plot_ccrs_nz</span><span class="p">([</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span><span class="n">plot_region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="mi">170</span><span class="p">,</span><span class="mi">178</span><span class="p">,</span><span class="o">-</span><span class="mi">34</span><span class="p">,</span><span class="o">-</span><span class="mi">44</span><span class="p">)),</span><span class="n">plot_labels</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;lightblue&#39;</span><span class="p">),</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;lightblue&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;LINZ&#39;</span><span class="p">),</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;OTHER&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Text(0.5, 1.0, &#39;LINZ&#39;), Text(0.5, 1.0, &#39;OTHER&#39;))
+</pre></div>
+</div>
+<img alt="../_images/more_validations_4_1.png" src="../_images/more_validations_4_1.png" />
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page"><span class="section-number">1. </span>Data visualization and validation</a>
+    <a class='right-next' id="next-link" href="analysis_pca.html" title="next page"><span class="section-number">3. </span>PC analysis</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Javier Tausía Hoyal<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

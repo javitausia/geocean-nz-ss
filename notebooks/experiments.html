@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>&lt;no title&gt; &#8212; Storm Surge NZ - Summary</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. MDA - RBF model" href="models_mda_rbf.html" />
+    <link rel="prev" title="6. KNN regressor models" href="models_knn.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.jpeg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../README.html">
+   geoocean-nz-ss
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Chapters
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   1. Data visualization and validation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="more_validations.html">
+   2. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_pca.html">
+   3. PC analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="analysis_kma.html">
+   4. KM analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_linear.html">
+   5. MultiLinear regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_knn.html">
+   6. KNN regressor models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_mda_rbf.html">
+   7. MDA - RBF model
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/experiments.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/experiments.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/experiments.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">progressbar</span>
+
+<span class="c1"># arrays</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="c1"># plotting</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="c1"># append sscode to path</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+
+<span class="c1"># custom</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_location</span><span class="p">,</span> \
+    <span class="n">default_region</span><span class="p">,</span> <span class="n">default_region_reduced</span>
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">from</span> <span class="nn">sscode.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
+
+<span class="c1"># warnings</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+
+
+ loading daily resampled data... 
+
+
+ loading the Moana v2 hindcast data... 
+
+
+ loading and plotting the UHSLC tidal guages... 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dictionary examples</span>
+<span class="c1"># ---------------------</span>
+<span class="n">pca_attrs_exp_1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span> 
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.8</span><span class="p">,</span><span class="mf">1.8</span><span class="p">))]</span>
+<span class="p">}</span>
+<span class="n">linear_attrs_exp_1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;train_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.9</span><span class="p">],</span> <span class="s1">&#39;percentage_PCs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.95</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the experiment</span>
+<span class="n">exp_1</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># all the sites are passed to exp at first</span>
+    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="p">[</span><span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">999</span><span class="p">],</span> 
+    <span class="c1"># [689,328,393,1327,393,480,999,116,224,1124,949,708],</span>
+    <span class="n">model</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="n">pca_attrs</span><span class="o">=</span><span class="n">pca_attrs_exp_1</span><span class="p">,</span><span class="n">model_attrs</span><span class="o">=</span><span class="n">linear_attrs_exp_1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> The model has been correctly initialized with || model = linear ||             
+
+ pca_params = {&#39;calculate_gradient&#39;: [True], &#39;winds&#39;: [False], &#39;time_lapse&#39;: [2, 3], &#39;time_resample&#39;: [&#39;1D&#39;], &#39;region&#39;: [(&#39;local&#39;, (1.8, 1.8))]} 
+
+ model_params = {&#39;train_size&#39;: [0.7, 0.9], &#39;percentage_PCs&#39;: [0.95]}             
+
+ which makes a total of 4 iterations as there are (1, 1, 2, 1, 1, 2, 1) values for each parameter             
+
+ the experiment will be performed in sites = [689, 328, 999]             
+
+ RUN CELL BELOW if this information is correct!!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exp_1_parameters</span><span class="p">,</span> <span class="n">exp_1_mean_parameters</span> <span class="o">=</span> <span class="n">exp_1</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># plot logs when computing the models</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ---------------------------------------------------------                         
+
+ Experiment 1 in site 689 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 8) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 224) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_1.png" src="../_images/experiments_5_1.png" />
+<img alt="../_images/experiments_5_2.png" src="../_images/experiments_5_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 5 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_4.png" src="../_images/experiments_5_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.67, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.82, 0.81)
+ R score: 0.66 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 2 in site 689 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.9, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 1, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 8) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 224) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_6.png" src="../_images/experiments_5_6.png" />
+<img alt="../_images/experiments_5_7.png" src="../_images/experiments_5_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 5 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_9.png" src="../_images/experiments_5_9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.65, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.80, 0.79)
+ R score: 0.64 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 3 in site 689 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 1, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 8) 
+
+
+ calculated PCs matrix with shape: 
+ (11351, 336) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_11.png" src="../_images/experiments_5_11.png" />
+<img alt="../_images/experiments_5_12.png" src="../_images/experiments_5_12.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 7 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_14.png" src="../_images/experiments_5_14.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.59, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.84, 0.83)
+ R score: 0.71 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 4 in site 689 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.9, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 1, 0, 0, 1, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 8) 
+
+
+ calculated PCs matrix with shape: 
+ (11351, 336) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_16.png" src="../_images/experiments_5_16.png" />
+<img alt="../_images/experiments_5_17.png" src="../_images/experiments_5_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 7 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_19.png" src="../_images/experiments_5_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.58, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.84, 0.82)
+ R score: 0.7 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 1 in site 328 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 196) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_21.png" src="../_images/experiments_5_21.png" />
+<img alt="../_images/experiments_5_22.png" src="../_images/experiments_5_22.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 5 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_24.png" src="../_images/experiments_5_24.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 1.01, RMSE: 0.08
+ and Correlation (Pearson, Spearman): (0.66, 0.66)
+ R score: 0.43 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 2 in site 328 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.9, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 1, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 196) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_26.png" src="../_images/experiments_5_26.png" />
+<img alt="../_images/experiments_5_27.png" src="../_images/experiments_5_27.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 5 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_29.png" src="../_images/experiments_5_29.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 1.01, RMSE: 0.08
+ and Correlation (Pearson, Spearman): (0.63, 0.63)
+ R score: 0.39 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 3 in site 328 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 1, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11351, 294) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_31.png" src="../_images/experiments_5_31.png" />
+<img alt="../_images/experiments_5_32.png" src="../_images/experiments_5_32.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 8 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_34.png" src="../_images/experiments_5_34.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.83, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.74, 0.72)
+ R score: 0.54 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 4 in site 328 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.9, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 1, 0, 0, 1, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11351, 294) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_36.png" src="../_images/experiments_5_36.png" />
+<img alt="../_images/experiments_5_37.png" src="../_images/experiments_5_37.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 8 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_39.png" src="../_images/experiments_5_39.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.82, RMSE: 0.07
+ and Correlation (Pearson, Spearman): (0.72, 0.70)
+ R score: 0.51 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 1 in site 999 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 196) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_41.png" src="../_images/experiments_5_41.png" />
+<img alt="../_images/experiments_5_42.png" src="../_images/experiments_5_42.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_44.png" src="../_images/experiments_5_44.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.72, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.81, 0.80)
+ R score: 0.65 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 2 in site 999 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.9, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 1, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11352, 196) 
+
+
+ plotting 1 components with 4 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_46.png" src="../_images/experiments_5_46.png" />
+<img alt="../_images/experiments_5_47.png" src="../_images/experiments_5_47.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 4 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_49.png" src="../_images/experiments_5_49.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.75, RMSE: 0.06
+ and Correlation (Pearson, Spearman): (0.79, 0.77)
+ R score: 0.62 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 3 in site 999 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 1, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11351, 294) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_51.png" src="../_images/experiments_5_51.png" />
+<img alt="../_images/experiments_5_52.png" src="../_images/experiments_5_52.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 6 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_54.png" src="../_images/experiments_5_54.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.62, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.85, 0.84)
+ R score: 0.72 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 4 in site 999 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.8, 1.8))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.9, &#39;percentage_PCs&#39;: 0.95}                         
+
+ and iteration with indexes = (0, 0, 1, 0, 0, 1, 0)                         
+
+ ---------------------------------------------------------
+
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 7, 7) 
+
+
+ calculated PCs matrix with shape: 
+ (11351, 294) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_56.png" src="../_images/experiments_5_56.png" />
+<img alt="../_images/experiments_5_57.png" src="../_images/experiments_5_57.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 6 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_59.png" src="../_images/experiments_5_59.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.65, RMSE: 0.05
+ and Correlation (Pearson, Spearman): (0.83, 0.82)
+ R score: 0.69 -- in TEST data
+
+ -------------------------------------------------------------------             
+
+ All the models and in all the sites have been correctly calculated!!             
+
+ with a final mean stats (in the sites) with the following shape...             
+
+ BIAS, SI, RMSE, Pearson ans Spearman coorelations and the R2 score 
+
+ [[[[[[[[0.00159728 0.79803596 0.06077256 0.76008596 0.75422784
+        0.58099816]]
+
+      [[0.00295372 0.80401743 0.06068263 0.73882667 0.72965984
+        0.54899955]]]]]
+
+
+
+
+   [[[[[0.00110277 0.6804566  0.05497392 0.80990406 0.79889518
+        0.65725126]]
+
+      [[0.0021946  0.68368777 0.05478681 0.79478282 0.77861924
+        0.63261086]]]]]]]]             
+
+ -------------------------------------------------------------------
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exp_1_mean_parameters</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[[[[[[[0.00159728, 0.79803596, 0.06077256, 0.76008596,
+              0.75422784, 0.58099816]],
+
+            [[0.00295372, 0.80401743, 0.06068263, 0.73882667,
+              0.72965984, 0.54899955]]]]],
+
+
+
+
+         [[[[[0.00110277, 0.6804566 , 0.05497392, 0.80990406,
+              0.79889518, 0.65725126]],
+
+            [[0.0021946 , 0.68368777, 0.05478681, 0.79478282,
+              0.77861924, 0.63261086]]]]]]]])
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="models_knn.html" title="previous page"><span class="section-number">6. </span>KNN regressor models</a>
+    <a class='right-next' id="next-link" href="models_mda_rbf.html" title="next page"><span class="section-number">7. </span>MDA - RBF model</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Javier Tausía Hoyal<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
