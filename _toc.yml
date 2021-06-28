@@ -5,8 +5,10 @@ options:
   numbered: true
 chapters:
 - file: notebooks/data_visualization
+- file: notebooks/more_validations
 - file: notebooks/analysis_pca
 - file: notebooks/analysis_kma
 - file: notebooks/models_linear
 - file: notebooks/models_knn
+- file: notebooks/experiments
 - file: notebooks/models_mda_rbf
