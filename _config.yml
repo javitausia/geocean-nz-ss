@@ -18,8 +18,9 @@ latex:
 
 # Add a bibtex file so that we can create citations
 # bibtex_bibfiles:
-#   - references.bib
+#   - references.bib # TODO: not working!!
 
+# Add sphinx functionality for plotly interactive figures
 sphinx:
   config:
     html_js_files:
