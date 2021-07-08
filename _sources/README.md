@@ -15,8 +15,7 @@ related repos:
 * https://github.com/metocean/storm_surge_data (all storm surge data is hosted here)
 * https://gitlab.com/geoocean/teslakit (some tools were created here)
 
-## TODO (or doing) |
-                   V
+## TODO (or doing)
 
 * Preparing the FINAL experiments to evaluate results
 * Add EXTRA and better plots to KM analysis notebook
@@ -83,7 +82,7 @@ Statistical tools, notebooks, data ...
     ├── sscode                 <- Source code for use in this project
     │   ├── __init__.py        <- Makes src a Python module
     |   ├── modules*           <- Python scripts with different modules (*not a subfolder)
-    |   |   ├──  data
+    |   |   ├── data
     |   |   ├── pca
     |   |   ├── linear
     |   |   └── ...
