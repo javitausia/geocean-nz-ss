@@ -74,6 +74,7 @@ def MultiLinear_Regression(
                 np.sum(X_set.variance.values))>percentage_PCs
                 )[0][0]
         ) +1 # number of Pcs to use
+        num_pcs = num_pcs if num_pcs>2 else 3
         print('\n {} PCs ({} expl. variance) will be used to train the model!! \n'.format(
             num_pcs,percentage_PCs)
         ) if verbose else None

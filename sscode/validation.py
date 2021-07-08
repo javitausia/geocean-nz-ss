@@ -234,6 +234,11 @@ def rmse(predictions,targets):
 def bias(predictions,targets):
     return np.nanmean(targets-predictions)
 
+def pocid(predictions,targets):
+    return np.where(
+        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])<0,1,0
+    )
+
 
 def calc_closest_data2_in_data1(data1, data2, # data 1 is bigger than data2
                                 min_dist_th: float = 20,

@@ -19,7 +19,8 @@ pca_EOFs_borders = [2000, 10000, 2000, 10000, 2000, 10000, 1]
 
 def plot_pcs(pca_data, pcs_scaler = None,
              n_plot: int = 3, pca_ttls = None, pca_borders = None,
-             region: tuple = default_region):
+             region: tuple = default_region, 
+             verbose: bool = True):
     """
     Plot the EOFs/PCs for the n_plot first components
 
@@ -44,8 +45,9 @@ def plot_pcs(pca_data, pcs_scaler = None,
     n_lats = len(pca_data.n_lat.values)
     n_EOFs = int(n_features/(n_lons*n_lats))
     print('\n plotting {} components with {} EOFs + PC... \n'\
-        .format(n_plot,n_EOFs))
-    print('\n being the EOFs the slp, the gradient, in steps t, t-1 \n')
+        .format(n_plot,n_EOFs)) if verbose else None
+    print('\n being the EOFs the slp, the gradient, in steps t, t-1 \n') \
+        if verbose else None
     # variance of the PCs
     variance = pca_data.variance.values
     

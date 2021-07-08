@@ -120,14 +120,22 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
         if wind_add:
             pcs_matrix[t,y_shape*(tl+grad_add):] = \
                 wind.isel(time=t-tl).values.reshape(-1)
-    print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_matrix.shape)) \
-        if verbose else None
 
     # standarize the features
     pcs_scaler = StandardScaler()
     pcs_stan = pcs_scaler.fit_transform(pcs_matrix)
     pcs_stan[np.isnan(pcs_stan)] = 0.0 # check additional nans
     # calculate de PCAs
+    # if pcs_stan.shape[1]>18000:
+    #     pcs_stan = pcs_stan[:,::12]
+    # elif pcs_stan.shape[1]>10000:
+    #     pcs_stan = pcs_stan[:,::8] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::8]
+    # elif pcs_stan.shape[1]>6000:
+    #     pcs_stan = pcs_stan[:,::6] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::6]
+    # elif pcs_stan.shape[1]>2000:
+    #     pcs_stan = pcs_stan[:,::4] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::4]
+    print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_stan.shape)) \
+        if verbose else None
     pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
     PCs = pca_fit.fit_transform(pcs_stan)
 
@@ -151,7 +159,8 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
         pca_plot_scale = pcs_scaler if pca_plot[1] else None
         plot_pcs(PCA_return,pcs_scaler=pca_plot_scale,
                  n_plot=pca_plot[2],region=region_plot,
-                 pca_ttls=pca_ttls,pca_borders=pca_borders)
+                 pca_ttls=pca_ttls,pca_borders=pca_borders,
+                 verbose=verbose)
 
     # return the PCA xarray.Dataset and the scaler
     return PCA_return, pcs_scaler

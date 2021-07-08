@@ -105,7 +105,9 @@ class Experiment(object):
         ) # print experiment inputs
 
 
-    def execute_cross_model_calculations(self, verbose: bool = True):
+    def execute_cross_model_calculations(self, verbose: bool = False, 
+                                         plot: bool = False,
+                                         save_ind_sites: bool = False):
         """
         This function performs all the cross-models with the input
         parameters given in the class initializator
@@ -170,7 +172,7 @@ class Experiment(object):
                             dict(zip(self.pca_attrs.keys(),parameters[:5])),
                             dict(zip(self.model_attrs.keys(),parameters[5:])),
                             i_parameters # this are the parameters indexes
-                        )
+                        ), end='\r'
                     ) if verbose else None
 
                     # perform the experiment
@@ -191,7 +193,7 @@ class Experiment(object):
                             winds=(parameters[1],self.wind_data),
                             wind_vars=('wind_proj_mask','lon','lat'),
                             region=local_region, # pass the calculated local region
-                            pca_plot=(True,False,1),verbose=True,
+                            pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
                         )
                     elif parameters[4][1]==default_region and parameters[0]==True \
@@ -206,7 +208,7 @@ class Experiment(object):
                             self.slp_data,pres_vars=('SLP','longitude','latitude'),
                             winds=(parameters[1],self.wind_data),
                             wind_vars=('wind_proj_mask','lon','lat'),
-                            pca_plot=(True,False,1),verbose=True,
+                            pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
                         )
 
@@ -218,7 +220,7 @@ class Experiment(object):
                     stats = MultiLinear_Regression(
                         pca_data,ss_site,pcs_scaler=None, # add to plot slp recon
                         X_set_var='PCs',y_set_var='ss',
-                        plot_results=True,verbose=True,pca_ttls=None,
+                        plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
                     )
 
@@ -230,6 +232,24 @@ class Experiment(object):
 
                     # sum 1 to counter
                     model_counter += 1
+
+                # save the model statistics in site
+                xr.Dataset(
+                    {'bias': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
+                        model_params_for_site[:,:,:,:,:,:,:,0]),
+                    'si': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
+                        model_params_for_site[:,:,:,:,:,:,:,1]),
+                    'rmse': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
+                        model_params_for_site[:,:,:,:,:,:,:,2]),
+                    'pearson': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
+                        model_params_for_site[:,:,:,:,:,:,:,3]),
+                    'spearman': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
+                        model_params_for_site[:,:,:,:,:,:,:,4]),
+                    'r2': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
+                        model_params_for_site[:,:,:,:,:,:,:,5])}
+                ).to_netcdf(
+                    data_path+'/statistics/experiments/experiment_linear_site_{}.nc'.format(site)
+                ) if save_ind_sites else None # we also save the model in case something happens
             
             elif self.model=='knn':
                 # loop over all the combinations for the knn model
@@ -267,7 +287,7 @@ class Experiment(object):
                             dict(zip(self.pca_attrs.keys(),parameters[:5])),
                             dict(zip(self.model_attrs.keys(),parameters[5:])),
                             i_parameters # this are the parameters indexes
-                        )
+                        ), end='\r'
                     ) if verbose else None
 
                     # perform the experiment
@@ -288,7 +308,7 @@ class Experiment(object):
                             winds=(parameters[1],self.wind_data),
                             wind_vars=('wind_proj_mask','lon','lat'),
                             region=local_region, # pass the calculated local region
-                            pca_plot=(False,False,1),verbose=False,
+                            pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
                         )
                     elif parameters[4][1]==default_region and parameters[0]==True \
@@ -303,7 +323,7 @@ class Experiment(object):
                             self.slp_data,pres_vars=('SLP','longitude','latitude'),
                             winds=(parameters[1],self.wind_data),
                             wind_vars=('wind_proj_mask','lon','lat'),
-                            pca_plot=(False,False,1),verbose=True,
+                            pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
                         )
 
@@ -315,7 +335,7 @@ class Experiment(object):
                     stats, model, t_train = KNN_Regression(
                         pca_data,ss_site,pcs_scaler=None, # add to plot slp recon
                         X_set_var='PCs',y_set_var='ss',
-                        plot_results=False,verbose=True,pca_ttls=None,
+                        plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
                     )
 
@@ -328,7 +348,24 @@ class Experiment(object):
                     # sum 1 to counter
                     model_counter += 1
 
-            # save the model statistics in site
+                # save the model statistics in site
+                xr.Dataset(
+                    {'bias': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
+                        model_params_for_site[:,:,:,:,:,:,:,:,0]),
+                    'si': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
+                        model_params_for_site[:,:,:,:,:,:,:,:,1]),
+                    'rmse': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
+                        model_params_for_site[:,:,:,:,:,:,:,:,2]),
+                    'pearson': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
+                        model_params_for_site[:,:,:,:,:,:,:,:,3]),
+                    'spearman': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
+                        model_params_for_site[:,:,:,:,:,:,:,:,4]),
+                    'r2': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
+                        model_params_for_site[:,:,:,:,:,:,:,:,5])}
+                ).to_netcdf(
+                    data_path+'/statistics/experiments/experiment_knn_site_{}.nc'.format(site)
+                ) if save_ind_sites else None # we also save the model in case something happens
+
             model_params_for_sites.append(model_params_for_site)
 
         # save model mean results
