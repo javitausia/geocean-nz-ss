@@ -6,6 +6,7 @@ options:
 chapters:
 - file: notebooks/data_visualization
 - file: notebooks/more_validations
+- file: notebooks/repo_workflow_theory
 - file: notebooks/analysis_pca
 - file: notebooks/analysis_kma
 - file: notebooks/models_linear
