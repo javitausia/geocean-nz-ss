@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
+    <title>9. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="7. Experiments" href="experiments.html" />
+    <link rel="prev" title="8. Experiments" href="experiments.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -108,33 +108,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="repo_workflow_theory.html">
+   3. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   3. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KM analysis
+   5. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regressor models
+   7. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   7. Experiments
+   8. Experiments
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   8. MDA - RBF model
+   9. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -243,17 +248,17 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#maximum-dissimilarity-algorithm-mda">
-   8.1. Maximum Dissimilarity Algorithm (MDA)
+   9.1. Maximum Dissimilarity Algorithm (MDA)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruction-of-the-coastal-wave-climate-with-rbf">
-   8.2. Reconstruction of the coastal wave climate with RBF
+   9.2. Reconstruction of the coastal wave climate with RBF
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-data-and-linear-model-stats">
-   8.3. Load data and linear model stats
+   9.3. Load data and linear model stats
   </a>
  </li>
 </ul>
@@ -268,7 +273,7 @@
               <div>
                 
   <div class="section" id="mda-rbf-model">
-<h1><span class="section-number">8. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">9. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will perform a analysis using one of our most used methods, which involves MDA + RBF algorithms. The process will be the next:</p>
 <ul class="simple">
 <li><p>First, the areas where the study is wanted to be performed are selected.</p></li>
@@ -277,11 +282,11 @@
 <li><p>Finally, we use RBF to interpolate the final storm-surge surface in all the areas / locations!!</p></li>
 </ul>
 <div class="section" id="maximum-dissimilarity-algorithm-mda">
-<h2><span class="section-number">8.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
 <p>In this way, the first important step to carry out this method is the selection of the maximum dissimilar cases, so the posterior reconstruction of all the cases can be performed correctly:</p>
 <div class="figure align-default" id="mdacroquis">
 <a class="reference internal image-reference" href="../_images/mdacroquis.png"><img alt="../_images/mdacroquis.png" src="../_images/mdacroquis.png" style="height: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 9.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
 </div>
 <p>This sketch shows the workflow followed in the selection step. The data is firstly normalized for the correct performance of the algorithm, then the euclidean distance is used for the calculation of the distance between the different vectors in the dataset. Finally, the selected data is de-normalized so it can be used and plotted together with the original information.</p>
 <p>As it can be seen, the variables used are:</p>
@@ -294,7 +299,7 @@
 <p>where <span class="math notranslate nohighlight">\(PCn\)</span> refers to the principal components of the sea-level-pressure fields and the <span class="math notranslate nohighlight">\(SSn\)</span> variables belongs to the principal components of the <span class="math notranslate nohighlight">\(n\)</span> locations of the selected area.</p>
 </div>
 <div class="section" id="reconstruction-of-the-coastal-wave-climate-with-rbf">
-<h2><span class="section-number">8.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
 <p>Once we have the selected cases, we now have a lot of different situations with
 different characteristics all along the coast so the reconstruction of the storm surge climate can be done.</p>
 <p>The reconstruction of the storm surge in shallow waters is carried out by
@@ -322,7 +327,7 @@ basic radial function, <span class="math notranslate nohighlight">\(||\cdot||\)<
 the RBF interpolation.</p>
 <div class="figure align-default" id="rbf-color">
 <a class="reference internal image-reference" href="../_images/rbf-color.png"><img alt="../_images/rbf-color.png" src="../_images/rbf-color.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 9.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
 </div>
 <p>The polynomial <span class="math notranslate nohighlight">\(p(x)\)</span> in the expression of the RBF interpolation function is defined as a
 monomial base <span class="math notranslate nohighlight">\({p_0, p_1 ,..., p_d}\)</span>. The first is a monomial, consisting of a number of grade one monomials equal to the dimensionality of the data, where <span class="math notranslate nohighlight">\(b = {b_0 , b_1 ,..., b_d}\)</span> are the coefficients of these monomials.</p>
@@ -357,7 +362,7 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 </div>
 <div class="section" id="load-data-and-linear-model-stats">
-<h2><span class="section-number">8.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
 <p>We first load the data, and plot some multilinear regression statistics to compare…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -573,7 +578,7 @@ ix_scalar: 0,  optimization: 16.19 | interpolation: 0.60 | sigma: 0.6006
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="experiments.html" title="previous page"><span class="section-number">7. </span>Experiments</a>
+    <a class='left-prev' id="prev-link" href="experiments.html" title="previous page"><span class="section-number">8. </span>Experiments</a>
 
         </div>
         

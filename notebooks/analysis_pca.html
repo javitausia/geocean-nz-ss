@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. PC analysis &#8212; Storm Surge NZ - Summary</title>
+    <title>4. PC analysis &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. KM analysis" href="analysis_kma.html" />
-    <link rel="prev" title="2. LINZ and OTHER data analysis" href="more_validations.html" />
+    <link rel="next" title="5. KM analysis" href="analysis_kma.html" />
+    <link rel="prev" title="3. Repository workflow + THEORY" href="repo_workflow_theory.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -108,34 +108,39 @@
    2. LINZ and OTHER data analysis
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="repo_workflow_theory.html">
+   3. Repository workflow + THEORY
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   3. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KM analysis
+   5. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regressor models
+   7. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   7. Experiments
+   8. Experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+   9. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -244,47 +249,47 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#principal-components-analysis-theory">
-   3.1. Principal components analysis theory
+   4.1. Principal components analysis theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-without-plotting">
-   3.2. Load the data without plotting
+   4.2. Load the data without plotting
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca-usage-explanation">
-   3.3. PCA usage explanation
+   4.3. PCA usage explanation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca-examples">
-   3.4. PCA examples:
+   4.4. PCA examples:
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#regional-pcs-analysis">
-     3.4.1. Regional PCs analysis
+     4.4.1. Regional PCs analysis
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#local-regional-pcs-with-gradient">
-     3.4.2. Local-Regional PCs (with gradient)
+     4.4.2. Local-Regional PCs (with gradient)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#local-pcs-with-wind-and-gradient">
-     3.4.3. Local PCs (with wind and gradient)
+     4.4.3. Local PCs (with wind and gradient)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#local-pcs-just-slp-with-time-lapse">
-     3.4.4. Local PCs (just SLP with time lapse)
+     4.4.4. Local PCs (just SLP with time lapse)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#storm-surge-pcs">
-     3.4.5. Storm-Surge PCs
+     4.4.5. Storm-Surge PCs
     </a>
    </li>
   </ul>
@@ -301,9 +306,9 @@
               <div>
                 
   <div class="section" id="pc-analysis">
-<h1><span class="section-number">3. </span>PC analysis<a class="headerlink" href="#pc-analysis" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4. </span>PC analysis<a class="headerlink" href="#pc-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="principal-components-analysis-theory">
-<h2><span class="section-number">3.1. </span>Principal components analysis theory<a class="headerlink" href="#principal-components-analysis-theory" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1. </span>Principal components analysis theory<a class="headerlink" href="#principal-components-analysis-theory" title="Permalink to this headline">¶</a></h2>
 <p>In this notebook, the Principal Component Analysis (PCA) is performed. With this dimensionality reduction technique we are able to reduce the dimension of the data, which in the case of a regional predictor for the sea-level-pressure fields, exceeds the thousands of variables… All the python code is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/pca.py</span></code>, where we use the scikit-learn package available <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">here</a>.</p>
 <p>Regarding the maths, an explanation of what PCA is can be found at <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis">wikipedia</a>, but it will be briefly explained here:</p>
 <p>The PCA reduces the dimension of the data by means of a projection in a lower dimensional space that preserves the maximum variance of the sample data. The new vectors are formed by the ones where the projected data have the higher variance. Given the spatiotemporal variable <span class="math notranslate nohighlight">\(X_i (x, t_i)\)</span>, where <span class="math notranslate nohighlight">\(x\)</span> is the spatial data position of dimension <span class="math notranslate nohighlight">\(3n1 + 2n2\)</span> and <span class="math notranslate nohighlight">\(t_i\)</span> is the time, we apply PCA to obtain a new <span class="math notranslate nohighlight">\(d\)</span>-dimensional space. The eigenvectors [empirical orthogonal functions (EOFs)] of the covariance matrix of the data define the vectors of the new space. The idea of PCA is to find the minimum <span class="math notranslate nohighlight">\(d\)</span> linearly EOFs, so that the transformed components of the original data [principal components (PCs)] explain the maximum variance necessary in the problem at hand. The original data can be expressed as a linear combination of EOFs and PCs,</p>
@@ -316,7 +321,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <p>Once we apply PCA, our data are defined by the principal components <span class="math notranslate nohighlight">\(X_i^{EOF}={PC_1,PC_2,...,PC_d}, i=1,...,P \)</span>. A better explanation can be also found <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-unsupervised-learning">here</a>!!</p>
 <div class="figure align-default" id="pca">
 <a class="reference internal image-reference" href="../_images/pca-analysis.png"><img alt="../_images/pca-analysis.png" src="../_images/pca-analysis.png" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">This picture shows how the dimensionality reduction that performs PCA might help when identifying patterns in data (<a class="reference external" href="https://programmerclick.com/images/486/0351bfe3610a3ba89bea599ee9d054ae.png">image reference</a>)</span><a class="headerlink" href="#pca" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">This picture shows how the dimensionality reduction that performs PCA might help when identifying patterns in data (<a class="reference external" href="https://programmerclick.com/images/486/0351bfe3610a3ba89bea599ee9d054ae.png">image reference</a>)</span><a class="headerlink" href="#pca" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -340,7 +345,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="load-the-data-without-plotting">
-<h2><span class="section-number">3.2. </span>Load the data without plotting<a class="headerlink" href="#load-the-data-without-plotting" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2. </span>Load the data without plotting<a class="headerlink" href="#load-the-data-without-plotting" title="Permalink to this headline">¶</a></h2>
 <p>As always, we first load the data using our <code class="docutils literal notranslate"><span class="pre">Loader</span></code> python class, so then we can easily use all the datasets. Notice that here, we set the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -368,7 +373,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="pca-usage-explanation">
-<h2><span class="section-number">3.3. </span>PCA usage explanation<a class="headerlink" href="#pca-usage-explanation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3. </span>PCA usage explanation<a class="headerlink" href="#pca-usage-explanation" title="Permalink to this headline">¶</a></h2>
 <p>To use the pre-build PCA functions, the user must get familiar with the datasets and the way everything is programmed.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -425,10 +430,10 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <p>as this is the aspect of all the functions that are used. For this particular case, we must give the function the previouly loaded slp fields, which are stored at <code class="docutils literal notranslate"><span class="pre">load_cfsr_moana_uhslc.predictor_slp</span></code>, and then specify the actions that we want to perform over this raw dataset. Here some examples of the available actions:</p>
 </div>
 <div class="section" id="pca-examples">
-<h2><span class="section-number">3.4. </span>PCA examples:<a class="headerlink" href="#pca-examples" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4. </span>PCA examples:<a class="headerlink" href="#pca-examples" title="Permalink to this headline">¶</a></h2>
 <p>Below, different PCA analysis with different inputs are shown:</p>
 <div class="section" id="regional-pcs-analysis">
-<h3><span class="section-number">3.4.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the regional pcs</span>
@@ -465,7 +470,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="local-regional-pcs-with-gradient">
-<h3><span class="section-number">3.4.2. </span>Local-Regional PCs (with gradient)<a class="headerlink" href="#local-regional-pcs-with-gradient" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.2. </span>Local-Regional PCs (with gradient)<a class="headerlink" href="#local-regional-pcs-with-gradient" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate some local pcs</span>
@@ -528,7 +533,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="local-pcs-with-wind-and-gradient">
-<h3><span class="section-number">3.4.3. </span>Local PCs (with wind and gradient)<a class="headerlink" href="#local-pcs-with-wind-and-gradient" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.3. </span>Local PCs (with wind and gradient)<a class="headerlink" href="#local-pcs-with-wind-and-gradient" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># more pcs in new location</span>
@@ -598,7 +603,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="local-pcs-just-slp-with-time-lapse">
-<h3><span class="section-number">3.4.4. </span>Local PCs (just SLP with time lapse)<a class="headerlink" href="#local-pcs-just-slp-with-time-lapse" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.4. </span>Local PCs (just SLP with time lapse)<a class="headerlink" href="#local-pcs-just-slp-with-time-lapse" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># more pcs with time lapse</span>
@@ -654,7 +659,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="storm-surge-pcs">
-<h3><span class="section-number">3.4.5. </span>Storm-Surge PCs<a class="headerlink" href="#storm-surge-pcs" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.5. </span>Storm-Surge PCs<a class="headerlink" href="#storm-surge-pcs" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the pcs of the storm surge</span>
@@ -730,8 +735,8 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="more_validations.html" title="previous page"><span class="section-number">2. </span>LINZ and OTHER data analysis</a>
-    <a class='right-next' id="next-link" href="analysis_kma.html" title="next page"><span class="section-number">4. </span>KM analysis</a>
+    <a class='left-prev' id="prev-link" href="repo_workflow_theory.html" title="previous page"><span class="section-number">3. </span>Repository workflow + THEORY</a>
+    <a class='right-next' id="next-link" href="analysis_kma.html" title="next page"><span class="section-number">5. </span>KM analysis</a>
 
         </div>
         

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
+    <title>6. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. KNN regressor models" href="models_knn.html" />
-    <link rel="prev" title="4. KM analysis" href="analysis_kma.html" />
+    <link rel="next" title="7. KNN regressor models" href="models_knn.html" />
+    <link rel="prev" title="5. KM analysis" href="analysis_kma.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -109,33 +109,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="repo_workflow_theory.html">
+   3. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   3. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KM analysis
+   5. KM analysis
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regressor models
+   7. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   7. Experiments
+   8. Experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+   9. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -244,39 +249,34 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-theory">
-   5.1. Linear regression theory
+   6.1. Linear regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-main-pcs">
-   5.2. Load the data (main + PCs)
+   6.2. Load the data (main + PCs)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-regional-predictor">
-   5.3. Linear regression with regional predictor
+   6.3. Linear regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#validation-statistics-explanation">
-     5.3.1. Validation statistics explanation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#linear-regression-in-the-uhslc-tidal-gauges-validation">
-     5.3.2. Linear regression in the UHSLC tidal gauges + validation
+     6.3.1. Linear regression in the UHSLC tidal gauges + validation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#linear-regression-ana-s-paper">
-     5.3.3. Linear regression - Ana’s paper
+     6.3.2. Linear regression - Ana’s paper
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-local-predictor">
-   5.4. Linear regression with local predictor
+   6.4. Linear regression with local predictor
   </a>
  </li>
 </ul>
@@ -291,9 +291,9 @@
               <div>
                 
   <div class="section" id="multilinear-regression-models">
-<h1><span class="section-number">5. </span>MultiLinear regression models<a class="headerlink" href="#multilinear-regression-models" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">6. </span>MultiLinear regression models<a class="headerlink" href="#multilinear-regression-models" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="linear-regression-theory">
-<h2><span class="section-number">5.1. </span>Linear regression theory<a class="headerlink" href="#linear-regression-theory" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1. </span>Linear regression theory<a class="headerlink" href="#linear-regression-theory" title="Permalink to this headline">¶</a></h2>
 <p>We assume here that <span class="math notranslate nohighlight">\( y | X ; \theta\sim\mathcal{N}(\mu,\sigma ^2)\)</span>!!</p>
 <ul class="simple">
 <li><p><strong>Normal equations</strong> - By noting <span class="math notranslate nohighlight">\(X\)</span> the design matrix, the value of <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes the cost function is a closed-form solution such that:</p></li>
@@ -367,13 +367,35 @@
 <span class="c1"># warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="c1"># this is to allow plots to be centered</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;style&gt;</span>
+<span class="s2">.output_png {</span>
+<span class="s2">    display: table-cell;</span>
+<span class="s2">    text-align: center;</span>
+<span class="s2">    vertical-align: middle;</span>
+<span class="s2">}</span>
+<span class="s2">&lt;/style&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+.output_png {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+</style>
+</div></div>
 </div>
 </div>
 <div class="section" id="load-the-data-main-pcs">
-<h2><span class="section-number">5.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <p>Moreover, we will load the previously calculated regional PCs, as it takes some time to calculate them. Have in mind that principal component analysis involves “difficult” matrices multiplications / inversions, and with the regional slp fields + the gradient, we have thousands of variables!!</p>
 <div class="cell docutils container">
@@ -422,7 +444,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-with-regional-predictor">
-<h2><span class="section-number">5.3. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.3. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
 <p>In the following cell, a multilinear regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_lm_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -465,89 +487,35 @@
     <span class="p">)</span>
     <span class="c1"># local copy</span>
     <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">stats_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span><span class="p">)</span>
+        <span class="n">stats_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_lm_regional_daily.nc&#39;</span>
+        <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="validation-statistics-explanation">
-<h3><span class="section-number">5.3.1. </span>Validation statistics explanation<a class="headerlink" href="#validation-statistics-explanation" title="Permalink to this headline">¶</a></h3>
-<p>When measuring the goodness of a fit, we can calculate very different statistical measures, such as the bias, the rmse or the pearson and spearman correlation coefficients. In this part, we will briefly describe how all of them work, and how they must be interpreted:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bias_(statistics)">Bias</a>: This is the difference in the means of the predicted and real observations, and should be interpreted as how much the majority of the poinis differ from the real points, in terms of the mean.</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[
-\boxed{
-\textrm{BIAS:  } = \frac{\sum_{i=1}^Ny_{i \textrm{ (real) }}}{N} - \frac{\sum_{i=1}^Ny_{i \textrm{ (pred) }}}{N}
-}
-\]</div>
-<ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">RMSE</a>: The root-mean-square deviation (RMSD) or root-mean-square error (RMSE) is a frequently used measure of the differences between values (sample or population values) predicted by a model or an estimator and the values observed. The RMSE represents the square root of the second sample moment of the differences between predicted values and observed values or the quadratic mean of these differences. These deviations are called residuals when the calculations are performed over the data sample that was used for estimation and are called errors (or prediction errors) when computed out-of-sample. The RMSD serves to aggregate the magnitudes of the errors in predictions for various data points into a single measure of predictive power. RMSD is a measure of accuracy, to compare forecasting errors of different models for a particular dataset and not between datasets, as it is scale-dependent.</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[
-\boxed{
-\textrm{RMSE:  } = \sqrt{\frac{\sum_{i=1}^N \left(y_{i \textrm{ (real) }}-y_{i \textrm{ (pred) }}\right)^2}{N}}
-}
-\]</div>
-<ul class="simple">
-<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1463500313001418">SI</a>: When using the BIAS and the RMSE, we are not paying attention to some important features in our fit, and they are both dependent on the magnitude of the measures. Here, we introduce the scatter index (SI), which tries to measure the dispersion of the points from the bisection (0,0) to (x,x).</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[
-\boxed{
-\textrm{SI:  } = \sqrt{
-\frac{\sum_{i=1}^N \left[
-\left(P_i-\bar{P}\right) - \left(O_i-\bar{O}\right)\right]^2}{\sum_{i=1}^N O_i^2}
-}}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\bar{P}\)</span> and <span class="math notranslate nohighlight">\(\bar{O}\)</span> are the predicted and observed means!!</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">Spearman</a> correlation coefficients: In statistics, the Pearson correlation coefficient is a measure of linear correlation between two sets of data. It is the covariance of two variables, divided by the product of their standard deviations; thus it is essentially a normalised measurement of the covariance, such that the result always has a value between −1 and 1. As with covariance itself, the measure can only reflect a linear correlation of variables, and ignores many other types of relationship or correlation. As a simple example, one would expect the age and height of a sample of teenagers from a high school to have a Pearson correlation coefficient significantly greater than 0, but less than 1 (as 1 would represent an unrealistically perfect correlation).The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson’s correlation assesses linear relationships, Spearman’s correlation assesses <a class="reference external" href="https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/regression/supporting-topics/basics/linear-nonlinear-and-monotonic-relationships/">monotonic</a> relationships (whether linear or not). If there are no repeated data values, a perfect Spearman correlation of +1 or −1 occurs when each of the variables is a perfect monotone function of the other. Equations below:</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boxed{ \textrm{Pearson's  } \rightarrow
-\rho _{X,Y} = \frac {\operatorname {cov} (X,Y)}{\sigma _{X}\sigma _{Y}}} \simeq
-\boxed{ r_{xy}={\frac {\sum _{i=1}^{N}(x_{i}-{\bar {x}})(y_{i}-{\bar {y}})}{{\sqrt {\sum _{i=1}^{N}(x_{i}-{\bar {x}})^{2}}}{\sqrt {\sum _{i=1}^{N}(y_{i}-{\bar {y}})^{2}}}}}}
-\\\\
-\boxed{ \textrm{Spearman's  } \rightarrow
-\rho _{rg_X,rg_Y} = \frac {\operatorname {cov} (rg_X,rg_Y)}{\sigma _{rg_X}\sigma _{rg_Y}}}
-\end{split}\]</div>
-<p>as the Spearman correlation refers here to the <a class="reference external" href="https://en.wikipedia.org/wiki/Ranking">rank variables</a>.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">R score</a>: The coefficient of determination, denoted R2 or r2 and pronounced “R squared”, is the proportion of the variance in the dependent variable that is predictable from the independent variable(s). It is a statistic used in the context of statistical models whose main purpose is either the prediction of future outcomes or the testing of hypotheses, on the basis of other related information. It provides a measure of how well observed outcomes are replicated by the model, based on the proportion of total variation of outcomes explained by the model. It is internaly used in the main pachake we are constantly using, so please have a look at the python documentation for further information <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html">here</a>!!</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[
-\boxed{R^2=1-\frac{SS_{res}}{SS_{tot}}}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(SS_{tot}\)</span> and <span class="math notranslate nohighlight">\(SS_{res}\)</span> refer to the total sum of squares (proportional to the variance of the data):
-<span class="math notranslate nohighlight">\(SS_{tot}=\sum _{i}(y_{i}-{\bar {y}})^{2}\)</span> and the sum of squares of residuals, also called the residual sum of squares: <span class="math notranslate nohighlight">\(SS_{res}=\sum _{i}(y_{i}-f_{i})^{2}=\sum _{i}e_{i}^2\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
 <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
     <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_regional_daily.nc&#39;</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_lm_regional_daily.nc&#39;</span>
     <span class="p">)</span>
     <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_9_0.png" src="../_images/models_linear_9_0.png" />
+<img alt="../_images/models_linear_8_0.png" src="../_images/models_linear_8_0.png" />
 </div>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Images generated by code, as the one above, can be easily open in a new window, as they have all been generated with good quality for this particular purpose!!</p>
 </div>
-</div>
 <div class="section" id="linear-regression-in-the-uhslc-tidal-gauges-validation">
-<h3><span class="section-number">5.3.2. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">6.3.1. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
 <p>Here, we really use for the first time our “validators”, which are the main truth in the project. In coastal engineering, we usually use the buoys (if we are working with waves) and the tidal gauges (water elevation) as the real observations, and once they are processed, which is the case of these nodes shown here, they might be used as the data to validate with.</p>
 <p>Below, apart from plotting the location of the different tidal gauges that we will be working with, we show how the linear regression with the regional predictor behaves in the nearest locations to the tidal gauges, and how this pre-trained linear regression model performs in that tidal gauge too.</p>
 <p>To understand how good or bad the linear model might behave when predicting the storm surge of the tidal guages, we find the answer in the validations we performed in the first notebook, called <strong>Data visualization and validation (data_visualization.ipynb)</strong>, where the comparison of all the tidal gauges and the nearest moana nodes is shown.</p>
@@ -563,7 +531,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_12_0.png" src="../_images/models_linear_12_0.png" />
+<img alt="../_images/models_linear_11_0.png" src="../_images/models_linear_11_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -589,132 +557,132 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_1.png" src="../_images/models_linear_13_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.58, RMSE: 0.05
- and Correlation (Pearson, Spearman): (0.83, 0.83)
+<img alt="../_images/models_linear_12_1.png" src="../_images/models_linear_12_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.58, RMSE: 0.05
+ and Correlations (Pearson, Spearman): (0.83, 0.83)
  R score: 0.69 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_3.png" src="../_images/models_linear_13_3.png" />
+<img alt="../_images/models_linear_12_3.png" src="../_images/models_linear_12_3.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_5.png" src="../_images/models_linear_13_5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.81, RMSE: 0.07
- and Correlation (Pearson, Spearman): (0.72, 0.71)
+<img alt="../_images/models_linear_12_5.png" src="../_images/models_linear_12_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.81, RMSE: 0.07
+ and Correlations (Pearson, Spearman): (0.72, 0.71)
  R score: 0.52 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_7.png" src="../_images/models_linear_13_7.png" />
+<img alt="../_images/models_linear_12_7.png" src="../_images/models_linear_12_7.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_9.png" src="../_images/models_linear_13_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.57, RMSE: 0.05
- and Correlation (Pearson, Spearman): (0.84, 0.83)
+<img alt="../_images/models_linear_12_9.png" src="../_images/models_linear_12_9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.57, RMSE: 0.05
+ and Correlations (Pearson, Spearman): (0.84, 0.83)
  R score: 0.7 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_11.png" src="../_images/models_linear_13_11.png" />
+<img alt="../_images/models_linear_12_11.png" src="../_images/models_linear_12_11.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_13.png" src="../_images/models_linear_13_13.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.83, RMSE: 0.04
- and Correlation (Pearson, Spearman): (0.71, 0.64)
+<img alt="../_images/models_linear_12_13.png" src="../_images/models_linear_12_13.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.83, RMSE: 0.04
+ and Correlations (Pearson, Spearman): (0.71, 0.64)
  R score: 0.49 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_15.png" src="../_images/models_linear_13_15.png" />
+<img alt="../_images/models_linear_12_15.png" src="../_images/models_linear_12_15.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_17.png" src="../_images/models_linear_13_17.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.57, RMSE: 0.05
- and Correlation (Pearson, Spearman): (0.84, 0.83)
+<img alt="../_images/models_linear_12_17.png" src="../_images/models_linear_12_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.57, RMSE: 0.05
+ and Correlations (Pearson, Spearman): (0.84, 0.83)
  R score: 0.7 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_19.png" src="../_images/models_linear_13_19.png" />
+<img alt="../_images/models_linear_12_19.png" src="../_images/models_linear_12_19.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_21.png" src="../_images/models_linear_13_21.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.84, RMSE: 0.07
- and Correlation (Pearson, Spearman): (0.72, 0.69)
+<img alt="../_images/models_linear_12_21.png" src="../_images/models_linear_12_21.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.84, RMSE: 0.07
+ and Correlations (Pearson, Spearman): (0.72, 0.69)
  R score: 0.51 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_23.png" src="../_images/models_linear_13_23.png" />
+<img alt="../_images/models_linear_12_23.png" src="../_images/models_linear_12_23.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_25.png" src="../_images/models_linear_13_25.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.69, RMSE: 0.05
- and Correlation (Pearson, Spearman): (0.82, 0.80)
+<img alt="../_images/models_linear_12_25.png" src="../_images/models_linear_12_25.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.69, RMSE: 0.05
+ and Correlations (Pearson, Spearman): (0.82, 0.80)
  R score: 0.67 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_27.png" src="../_images/models_linear_13_27.png" />
+<img alt="../_images/models_linear_12_27.png" src="../_images/models_linear_12_27.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_29.png" src="../_images/models_linear_13_29.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.58, RMSE: 0.06
- and Correlation (Pearson, Spearman): (0.82, 0.82)
+<img alt="../_images/models_linear_12_29.png" src="../_images/models_linear_12_29.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.58, RMSE: 0.06
+ and Correlations (Pearson, Spearman): (0.82, 0.82)
  R score: 0.67 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_31.png" src="../_images/models_linear_13_31.png" />
+<img alt="../_images/models_linear_12_31.png" src="../_images/models_linear_12_31.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_33.png" src="../_images/models_linear_13_33.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.69, RMSE: 0.06
- and Correlation (Pearson, Spearman): (0.77, 0.76)
+<img alt="../_images/models_linear_12_33.png" src="../_images/models_linear_12_33.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.69, RMSE: 0.06
+ and Correlations (Pearson, Spearman): (0.77, 0.76)
  R score: 0.59 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_35.png" src="../_images/models_linear_13_35.png" />
+<img alt="../_images/models_linear_12_35.png" src="../_images/models_linear_12_35.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_37.png" src="../_images/models_linear_13_37.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.00, SI: 0.73, RMSE: 0.04
- and Correlation (Pearson, Spearman): (0.75, 0.74)
+<img alt="../_images/models_linear_12_37.png" src="../_images/models_linear_12_37.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.73, RMSE: 0.04
+ and Correlations (Pearson, Spearman): (0.75, 0.74)
  R score: 0.56 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_39.png" src="../_images/models_linear_13_39.png" />
+<img alt="../_images/models_linear_12_39.png" src="../_images/models_linear_12_39.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_41.png" src="../_images/models_linear_13_41.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.67, RMSE: 0.04
- and Correlation (Pearson, Spearman): (0.79, 0.79)
+<img alt="../_images/models_linear_12_41.png" src="../_images/models_linear_12_41.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.67, RMSE: 0.04
+ and Correlations (Pearson, Spearman): (0.79, 0.79)
  R score: 0.63 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_43.png" src="../_images/models_linear_13_43.png" />
+<img alt="../_images/models_linear_12_43.png" src="../_images/models_linear_12_43.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_45.png" src="../_images/models_linear_13_45.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.00, SI: 0.77, RMSE: 0.04
- and Correlation (Pearson, Spearman): (0.74, 0.72)
+<img alt="../_images/models_linear_12_45.png" src="../_images/models_linear_12_45.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.77, RMSE: 0.04
+ and Correlations (Pearson, Spearman): (0.74, 0.72)
  R score: 0.54 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_47.png" src="../_images/models_linear_13_47.png" />
+<img alt="../_images/models_linear_12_47.png" src="../_images/models_linear_12_47.png" />
 </div>
 </div>
 </div>
 <div class="section" id="linear-regression-ana-s-paper">
-<h3><span class="section-number">5.3.3. </span>Linear regression - Ana’s paper<a class="headerlink" href="#linear-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">6.3.2. </span>Linear regression - Ana’s paper<a class="headerlink" href="#linear-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
 <p>In the following two cells, we do the regional-linear regression again, but this time we tarin the model with the tidal guages directly, just to see how our predictors are behaving when compared to results in previous works, as the one available at Rueda et al. 2018:</p>
 <div class="figure align-default" id="anaetal">
 <a class="reference internal image-reference" href="../_images/anaetal.png"><img alt="../_images/anaetal.png" src="../_images/anaetal.png" style="width: 700px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Result from Rueda et al. and some more private tidal guages locations. Full paper available (<a class="reference external" href="https://www.researchgate.net/publication/328587769_Marine_climate_variability_based_on_weather_patterns_for_a_complicated_island_setting_The_New_Zealand_case">here</a>)</span><a class="headerlink" href="#anaetal" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">Result from Rueda et al. and some more private tidal guages locations. Full paper available (<a class="reference external" href="https://www.researchgate.net/publication/328587769_Marine_climate_variability_based_on_weather_patterns_for_a_complicated_island_setting_The_New_Zealand_case">here</a>)</span><a class="headerlink" href="#anaetal" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -733,9 +701,9 @@
  139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_1.png" src="../_images/models_linear_15_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: 0.01, SI: 0.58, RMSE: 0.06
- and Correlation (Pearson, Spearman): (0.85, 0.83)
+<img alt="../_images/models_linear_14_1.png" src="../_images/models_linear_14_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.58, RMSE: 0.06
+ and Correlations (Pearson, Spearman): (0.85, 0.83)
  R score: 0.72 -- in TEST data
 </pre></div>
 </div>
@@ -758,9 +726,9 @@
  139 PCs (0.95 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_16_1.png" src="../_images/models_linear_16_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is -- BIAS: -0.01, SI: 0.58, RMSE: 0.06
- and Correlation (Pearson, Spearman): (0.88, 0.88)
+<img alt="../_images/models_linear_15_1.png" src="../_images/models_linear_15_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.58, RMSE: 0.06
+ and Correlations (Pearson, Spearman): (0.88, 0.88)
  R score: 0.76 -- in TEST data
 </pre></div>
 </div>
@@ -769,7 +737,7 @@
 </div>
 </div>
 <div class="section" id="linear-regression-with-local-predictor">
-<h2><span class="section-number">5.4. </span>Linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.4. </span>Linear regression with local predictor<a class="headerlink" href="#linear-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
 <p>In the following cell, a multilinear regression is performed over all the domain of the Moana v2 hindcast nearshore, having the local pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_lm_local_daily.nc</span></code>. Notice that, with the regional predictor, which involves an area of 4 <span class="math notranslate nohighlight">\(\cdot\)</span> 4 degrees, we are able to cover just a smaller area, but centered at the location of the virtual moana node.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -822,11 +790,13 @@
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># local copy</span>
-    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">stats_local</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_local_daily.nc&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">stats_local</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_lm_local_daily.nc&#39;</span>
+        <span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/stats_lm_local_daily.nc&#39;</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_lm_local_daily.nc&#39;</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -842,7 +812,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_19_0.png" src="../_images/models_linear_19_0.png" />
+<img alt="../_images/models_linear_18_0.png" src="../_images/models_linear_18_0.png" />
 </div>
 </div>
 </div>
@@ -873,8 +843,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="analysis_kma.html" title="previous page"><span class="section-number">4. </span>KM analysis</a>
-    <a class='right-next' id="next-link" href="models_knn.html" title="next page"><span class="section-number">6. </span>KNN regressor models</a>
+    <a class='left-prev' id="prev-link" href="analysis_kma.html" title="previous page"><span class="section-number">5. </span>KM analysis</a>
+    <a class='right-next' id="next-link" href="models_knn.html" title="next page"><span class="section-number">7. </span>KNN regressor models</a>
 
         </div>
         

@@ -109,33 +109,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="repo_workflow_theory.html">
+   3. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   3. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KM analysis
+   5. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regressor models
+   7. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   7. Experiments
+   8. Experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+   9. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -304,6 +309,9 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
+<span class="c1"># plotly</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+
 <span class="c1"># append sscode to path</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
@@ -324,7 +332,7 @@
 <p>After a lot of preprocessing and data analysis work, the datasets that are going to be primary used for convenience reasons are:</p>
 <ul class="simple">
 <li><p>The Moana v2 hindcast as the storm surge hindcast predictand</p></li>
-<li><p>The CFSR sea-level-pressure fields and u10 and v10 wind components as the predictors (notice here that we also calculated the projected winds to a determined location in the islands)</p></li>
+<li><p>The CFSR sea-level-pressure fields and u10 and v10 wind components as the predictors (notice here that we also calculated the projected winds to a determined location in the islands, go to the end of this notebook to see results)</p></li>
 <li><p>Some <a class="reference external" href="https://uhslc.soest.hawaii.edu/">UHSLC</a> tidal gauges as the “validators”, although more tidal gauges from different resources / organizations migt be also helpful</p></li>
 </ul>
 <p>data format is available in the figure below:</p>
@@ -369,15 +377,15 @@
 </div>
 <div class="section" id="load-and-validate-the-data">
 <h2><span class="section-number">1.2. </span>Load and validate the data<a class="headerlink" href="#load-and-validate-the-data" title="Permalink to this headline">¶</a></h2>
-<p>Below we use the <strong>class Loader</strong> to simuntaneously load the three datasets that will be commonly used in all the notebooks. Notice that here, we say <code class="docutils literal notranslate"><span class="pre">plot=True</span></code>, but this parameter can be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to save time and space in our running notebooks. This class uses different loading funtions, and is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/data.py</span></code>, where the <code class="docutils literal notranslate"><span class="pre">data_to_load</span></code> parameter accepts the following inputs:</p>
+<p>Below we use the <strong>class Loader</strong> to simultaneously load the three datasets that will be commonly used in all the notebooks. Notice that here, we say <code class="docutils literal notranslate"><span class="pre">plot=True</span></code>, but this parameter can be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to save time and space in our running notebooks. This class uses different loading funtions, and is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/data.py</span></code>, where the <code class="docutils literal notranslate"><span class="pre">data_to_load</span></code> parameter accepts the following inputs:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">loader_dict_options</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;predictor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;era5&#39;</span><span class="p">],</span>
         <span class="s1">&#39;predictand&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;codec&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;validator&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;uhslc&#39;</span><span class="p">,</span><span class="s1">&#39;privtgs&#39;</span><span class="p">]</span>
+        <span class="s1">&#39;validator&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;uhslc&#39;</span><span class="p">,</span><span class="s1">&#39;privtgs&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">]</span>
     <span class="p">}</span>
 </pre></div>
 </div>
-<p>Once the data is loaded, we validate the Moana v2 hindcast data with the University of Hawaii tidal guages, for the specified variables, in this case, the storm surge, the monthly mean-sea-level anomalies and the tide, obtaining very good results!!</p>
+<p>Once the data is loaded, we validate the Moana v2 hindcast data (“moana”) with the University of Hawaii tidal guages (“uhslc”), for the specified variables, in this case, the storm surge, the monthly mean-sea-level anomalies and the tide, obtaining very good results!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
@@ -445,12 +453,7 @@
 <h3><span class="section-number">1.2.1. </span>Moana-UHSLC – validation statistics<a class="headerlink" href="#moana-uhslc-validation-statistics" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
-
-<span class="c1"># table</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plotly table</span>
 <span class="n">moana_uhslc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">ss_stats</span><span class="p">),</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;spearman&#39;</span><span class="p">],</span>
@@ -493,20 +496,20 @@
 </div><div class="output text_html"><div>
 
 
-            <div id="f49e266c-bea4-48c7-a00c-d5bd8ac54b1f" class="plotly-graph-div" style="height:525px; width:100%;"></div>
+            <div id="830da34f-595b-4483-b18f-785832c4ab23" class="plotly-graph-div" style="height:525px; width:100%;"></div>
             <script type="text/javascript">
                 require(["plotly"], function(Plotly) {
                     window.PLOTLYENV=window.PLOTLYENV || {};
 
-                if (document.getElementById("f49e266c-bea4-48c7-a00c-d5bd8ac54b1f")) {
+                if (document.getElementById("830da34f-595b-4483-b18f-785832c4ab23")) {
                     Plotly.newPlot(
-                        'f49e266c-bea4-48c7-a00c-d5bd8ac54b1f',
+                        '830da34f-595b-4483-b18f-785832c4ab23',
                         [{"cells": {"align": "center", "fill": {"color": "lavender"}, "font": {"color": "black", "size": 12}, "values": [["a_Wellington", "a_Timaru", "b_JacksonBay", "a_MarsdenPoint", "a_JacksonBay", "a_Lyttelton", "a_Taranaki", "a_Bluff", "a_PortChalmers", "a_Tauranga", "a_Napier", "a_Nelson"], [0.0001, -6e-05, -4e-05, 0.00026, -6e-05, -0.00019, -0.00019, -0.00027, -0.0003, 9e-05, 0.0003, 0.00029], [0.29897, 0.29325, 0.34466, 0.3595, 0.34242, 0.28815, 0.29367, 0.26164, 0.25788, 0.36157, 0.30175, 0.37995], [0.02485, 0.03094, 0.0347, 0.02121, 0.0336, 0.02711, 0.026, 0.03045, 0.02463, 0.02198, 0.0222, 0.02726], [0.95661, 0.95612, 0.94836, 0.93587, 0.94288, 0.95992, 0.95619, 0.96555, 0.96901, 0.93395, 0.95409, 0.92522], [0.9534, 0.95752, 0.94984, 0.92295, 0.94173, 0.95852, 0.9518, 0.96605, 0.97033, 0.92769, 0.95161, 0.91998]]}, "header": {"align": "center", "fill": {"color": "lightblue"}, "font": {"color": "black", "size": 18}, "values": ["UHSLC tgs", "bias", "si", "rmse", "pearson", "spearman"]}, "type": "table"}],
                         {"template": {"data": {"bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmapgl"}], "histogram": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "parcoords"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "colorscale": {"diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}, "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "#E5ECF6", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "ternary": {"aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "zerolinecolor": "white", "zerolinewidth": 2}, "yaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "zerolinecolor": "white", "zerolinewidth": 2}}}, "title": {"text": "Comparison between UHSLC and Moana"}},
                         {"responsive": true}
                     ).then(function(){
 
-var gd = document.getElementById('f49e266c-bea4-48c7-a00c-d5bd8ac54b1f');
+var gd = document.getElementById('830da34f-595b-4483-b18f-785832c4ab23');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -568,8 +571,8 @@ f(x)=\left\{\begin{matrix}
 <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">]:</span> <span class="c1"># select the months!!</span>
     <span class="n">gev_data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gev_matrix</span><span class="p">(</span>
         <span class="n">load_moana_hindcast_ss</span><span class="p">(</span><span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
-            <span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span><span class="mi">190</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
-            <span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">52</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span><span class="mi">190</span><span class="p">,</span><span class="mf">2.5</span><span class="p">),</span>
+            <span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">52</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
             <span class="n">time</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
                 <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
@@ -592,16 +595,16 @@ f(x)=\left\{\begin{matrix}
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  5% (33 of 660) |#                      | Elapsed Time: 0:00:00 ETA:   0:00:02
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>N/A% (0 of 108) |                        | Elapsed Time: 0:00:00 ETA:  --:--:--
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (660 of 660) |######################| Elapsed Time: 0:01:28 Time:  0:01:28
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (108 of 108) |######################| Elapsed Time: 0:04:35 Time:  0:04:35
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> the GEV fit has improved 74 times by random/gumbel in cluster -1... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> the GEV fit has improved 13 times by random/gumbel in cluster -1... 
 </pre></div>
 </div>
 <img alt="../_images/data_visualization_10_5.png" src="../_images/data_visualization_10_5.png" />
@@ -609,16 +612,16 @@ f(x)=\left\{\begin{matrix}
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>N/A% (0 of 660) |                        | Elapsed Time: 0:00:00 ETA:  --:--:--
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>N/A% (0 of 108) |                        | Elapsed Time: 0:00:00 ETA:  --:--:--
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (660 of 660) |######################| Elapsed Time: 0:01:27 Time:  0:01:27
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (108 of 108) |######################| Elapsed Time: 0:06:11 Time:  0:06:11
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> the GEV fit has improved 44 times by random/gumbel in cluster -1... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> the GEV fit has improved 5 times by random/gumbel in cluster -1... 
 </pre></div>
 </div>
 <img alt="../_images/data_visualization_10_12.png" src="../_images/data_visualization_10_12.png" />

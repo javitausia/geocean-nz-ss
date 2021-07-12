@@ -52,7 +52,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. PC analysis" href="analysis_pca.html" />
+    <link rel="next" title="3. Repository workflow + THEORY" href="repo_workflow_theory.html" />
     <link rel="prev" title="1. Data visualization and validation" href="data_visualization.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -107,33 +107,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="repo_workflow_theory.html">
+   3. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   3. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_kma.html">
-   4. KM analysis
+   5. KM analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regressor models
+   7. KNN regressor models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   7. Experiments
+   8. Experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+   9. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -245,6 +250,12 @@
                 
   <div class="section" id="linz-and-other-data-analysis">
 <h1><span class="section-number">2. </span>LINZ and OTHER data analysis<a class="headerlink" href="#linz-and-other-data-analysis" title="Permalink to this headline">¶</a></h1>
+<p>Here we will see the behaviour of the “extra” tidal gauges real observations measurements. Below we can see an image where the tgs locations are plotted:</p>
+<div class="figure align-default" id="linz-other-locs">
+<a class="reference internal image-reference" href="../_images/linz-other-locations.png"><img alt="../_images/linz-other-locations.png" src="../_images/linz-other-locations.png" style="width: 500px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">These are the locations of both the LINZ and the OTHER tidal gauges</span><a class="headerlink" href="#linz-other-locs" title="Permalink to this image">¶</a></p>
+</div>
+<p>all the LINZ and OTHER datasets are hosted in the <a class="reference external" href="https://github.com/metocean/storm_surge_data">storm_surge_data</a> GitHub repository!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basic</span>
@@ -269,7 +280,8 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader_linz</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
+<span class="n">loader_linz</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">loader_linz</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
     <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
 <span class="p">)</span>
@@ -331,7 +343,8 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader_other</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
+<span class="n">loader_other</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">loader_other</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
     <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
 <span class="p">)</span>
@@ -385,7 +398,8 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot tg new locations</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
     <span class="s1">&#39;projection&#39;</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
 <span class="p">})</span>
 <span class="k">for</span> <span class="n">iload</span><span class="p">,</span><span class="n">loader</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">loader_linz</span><span class="p">,</span><span class="n">loader_other</span><span class="p">]):</span>
@@ -413,53 +427,6 @@
 </pre></div>
 </div>
 <img alt="../_images/more_validations_4_1.png" src="../_images/more_validations_4_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiment_1.nc&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lonlats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s1">&#39;../data/storm_surge_data/moana_hindcast_v2/moana_coast.zarr/&#39;</span><span class="p">)</span>\
-    <span class="p">[[</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.0050393 ,  0.00243844,  0.00169923,  0.00093091,  0.0007429 ,
-        0.00110531,  0.00070299,  0.00021638, -0.00017688,  0.00027536])
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(10, 2, 1, 3, 3, 2, 1, 1)
-</pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -490,7 +457,7 @@
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page"><span class="section-number">1. </span>Data visualization and validation</a>
-    <a class='right-next' id="next-link" href="analysis_pca.html" title="next page"><span class="section-number">3. </span>PC analysis</a>
+    <a class='right-next' id="next-link" href="repo_workflow_theory.html" title="next page"><span class="section-number">3. </span>Repository workflow + THEORY</a>
 
         </div>
         
