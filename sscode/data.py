@@ -520,19 +520,19 @@ def load_private_tgs(file_path: str =
     """
 
     # load and plot all the geocean tgs
-    print('\n loading and plotting the GeoOcean tidal guages... \n')
-    geocean_tgs = xr.open_dataset(file_path)
+    print('\n loading and plotting the private tidal guages... \n')
+    private_tgs = xr.open_dataset(file_path)
 
     if plot: # plot if specified
         fig, ax = plt.subplots(figsize=_figsize)
-        geocean_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
+        private_tgs.ss.plot(hue='name',alpha=0.6,ax=ax) # plot the ss
         fig.suptitle('Private tidal gauges',fontsize=_fontsize_title)
-        ax.legend(list(geocean_tgs.name.values),loc='lower left',ncol=7)
-        geocean_tgs.ss.plot(col='name',col_wrap=3,figsize=(12,7))
+        ax.legend(list(private_tgs.name.values),loc='lower left',ncol=7)
+        private_tgs.ss.plot(col='name',col_wrap=3,figsize=(12,7))
         # show results
         plt.show()
 
-    return geocean_tgs
+    return private_tgs
 
 
 def load_moana_hindcast(file_path: str = 

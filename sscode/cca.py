@@ -22,7 +22,7 @@ def CCA_Analysis(pres, ss, # pressure and ss datasets
                  percentage_PCs: float = 0.96,
                  cca_plot: bool = True):
 
-    # TODO: add docstring and study theroy...
+    # TODO: add docstring and study theory...
 
     # perform cca analysis
     print('\n lets calculate the CCs... \n')

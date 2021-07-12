@@ -105,7 +105,7 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
     ax.axis('square')
     
 
-def scatterplot(x, y, ax=None, 
+def scatterplot(x, y, ax=None, density=True,
                 min_value=-0.3, max_value=0.6,
                 **kwargs):
     """
@@ -119,12 +119,23 @@ def scatterplot(x, y, ax=None,
     if ax is None:
         ax = plt.gca()
 
-    # calculate the point density
-    xy = np.vstack([x,y])
-    z = gaussian_kde(xy)(xy)
+    # not nan indexes
+    not_nan_idxs = np.where(
+        ~np.isnan(x) & ~np.isnan(y)
+    )[0]
 
-    # plot the density scatter
-    ax.scatter(x,y,c=z,cmap=scatter_cmap,**kwargs)
+    if density:
+        # calculate the point density
+        xy = np.vstack([x[not_nan_idxs],y[not_nan_idxs]])
+        z = gaussian_kde(xy)(xy)
+        # plot the density scatter
+        ax.scatter(
+            x[not_nan_idxs],y[not_nan_idxs],
+            c=z,cmap=scatter_cmap,**kwargs
+        )
+    else:
+        ax.scatter(x,y,**kwargs)
+        
     ax.plot([min_value,max_value],[min_value,max_value],
             c='royalblue',lw=3,zorder=10)
     ax.set_xlim(min_value,max_value)

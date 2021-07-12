@@ -142,7 +142,7 @@ def compare_datasets(dataset1, dataset1_coords,
                     'time':times_to_scatter[2]})[comparison_variables[1][axi]].values,
                 ax=ax_vali,alpha=0.7,s=5,label='Scatter plot -- {}'.format(
                     comparison_variables[0][axi].upper()
-                )
+                ), density=False, c='grey'
             )
             # qqplot for the data
             qqplot(
@@ -206,17 +206,23 @@ def generate_stats(data1, data2, not_nan_idxs=None):
         rmsed = rmse(data1[not_nan_idxs],data2[not_nan_idxs])
         pearsond = pearsonr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
         spearmand = spearmanr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
+        pocidd = pocid(data1[not_nan_idxs],data2[not_nan_idxs])
     except:
         biasd = bias(data1,data2)
         sid = si(data1,data2)
         rmsed = rmse(data1,data2)
         pearsond = pearsonr(data1,data2)[0]
         spearmand = spearmanr(data1,data2)[0]
+        pocidd = pocid(data1,data2)
+
+    # get index from 0 to 1
+    # grade = 
+
     # customize title
-    return_title = 'Data comparison is -- BIAS: {:.2f}, SI: {:.2f}, RMSE: {:.2f}'.format(
+    return_title = 'Data comparison is   --   BIAS: {:.2f}, SI: {:.2f}, RMSE: {:.2f}'.format(
         biasd,sid,rmsed
     )
-    return_title += '\n and Correlation (Pearson, Spearman): ({:.2f}, {:.2f})'.format(
+    return_title += '\n and Correlations (Pearson, Spearman): ({:.2f}, {:.2f})'.format(
         pearsond,spearmand
     )
 

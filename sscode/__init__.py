@@ -14,6 +14,8 @@ from . import config
 from . import utils
 from . import data
 from . import pca
+from . import experiment
+from . import mda_rbf
 
 # basic
 import os, glob, sys
