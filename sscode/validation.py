@@ -4,15 +4,56 @@ import pandas as pd
 from geopy.distance import geodesic
 from scipy.stats import pearsonr, spearmanr
 
+# sklearn metrics
+from sklearn.metrics import explained_variance_score, max_error, \
+    mean_absolute_error, mean_squared_error, mean_squared_log_error, \
+    median_absolute_error, r2_score, mean_tweedie_deviance
+
 # plotting
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 # custom
+from .config import evaluation_metrics
 from .plotting.validation import qqplot, scatterplot
 from .plotting.config import _fontsize_title, _fontsize_legend, \
     _figsize, _figsize_width, _figsize_height, _fontsize_label, \
         real_obs_col, pred_val_col
+
+# some custom metrics and the metrics_dictionary
+
+def si(predictions,targets):
+    pred_mean = np.nanmean(predictions)
+    tar_mean = np.nanmean(targets)
+    return np.sqrt(np.nansum(((predictions-pred_mean)-(targets-tar_mean))**2)/((np.nansum(targets**2))))
+
+def rmse(predictions,targets):
+    return np.sqrt(np.nanmean((targets-predictions)**2))/np.nanquantile(targets,0.95)
+
+def bias(predictions,targets):
+    return np.nanmean(targets-predictions)
+
+def pocid(predictions,targets):
+    return np.where(
+        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])<0,1,0
+    )
+
+metrics_dictionary = {
+    'expl_var': explained_variance_score,
+    'me': max_error, # max error in data
+    'mae': mean_absolute_error,
+    'mse': mean_squared_error,
+    'medae': median_absolute_error,
+    'msle': mean_squared_log_error,
+    'rscore': r2_score,
+    'tweedie': mean_tweedie_deviance,
+    'bias': bias, 
+    'si': si,
+    'rmse': rmse, 
+    'pearson': pearsonr,
+    'spearman': spearmanr,
+    'pocid': pocid
+} # this is the metrics dictionary with all the possible metrics
 
 
 def compare_datasets(dataset1, dataset1_coords, 
@@ -192,58 +233,66 @@ def compare_datasets(dataset1, dataset1_coords,
                  'spearman':((dataset1_coords[2]),np.array(ss_stats)[:,4])}), dataset2, ss_stats
 
 
-def generate_stats(data1, data2, not_nan_idxs=None):
+def generate_stats(data1, data2, # these are just the 1-d numpy arrays
+                   metrics: list = ['expl_var','mae','mse','me',
+                       'medae','tweedie', # check theory
+                       'ext_mae','ext_mse','ext_rmse','ext_pearson',
+                       'bias','si','rmse','pearson','spearman','rscore'
+                   ], ext_quantile: float = (0.9,0),
+                   not_nan_idxs=None):
     """
     Generates the title given two datasets
-    - BIAS, SI, RMSE and correlations!!
+    - BIAS, SI, RMSE ... and correlations!!
 
     """
 
-    # calculate statistics
-    try: 
-        biasd = bias(data1[not_nan_idxs],data2[not_nan_idxs])
-        sid = si(data1[not_nan_idxs],data2[not_nan_idxs])
-        rmsed = rmse(data1[not_nan_idxs],data2[not_nan_idxs])
-        pearsond = pearsonr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
-        spearmand = spearmanr(data1[not_nan_idxs],data2[not_nan_idxs])[0]
-        pocidd = pocid(data1[not_nan_idxs],data2[not_nan_idxs])
-    except:
-        biasd = bias(data1,data2)
-        sid = si(data1,data2)
-        rmsed = rmse(data1,data2)
-        pearsond = pearsonr(data1,data2)[0]
-        spearmand = spearmanr(data1,data2)[0]
-        pocidd = pocid(data1,data2)
+    metrics_dict = {} # empty dict for all the metrics
 
-    # get index from 0 to 1
-    # grade = 
+    # add bias, si, rmse, pearson and spearman...
+    for mta in evaluation_metrics: # defined in sscode/config.py
+        metrics.append(mta) if mta not in metrics else None
+
+    try:
+        data1 = data1[not_nan_idxs].reshape(-1)
+        data2 = data2[not_nan_idxs].reshape(-1)
+    except:
+        print('\n Not NaN indexes not passed!! \n') if True else None
+
+    if ext_quantile[0]:
+        ext_idxs = np.where(
+            data1>np.nanquantile(data1,ext_quantile[0])
+        )[0] if ext_quantile[1]==0 else \
+            np.where(
+               data2>np.nanquantile(data2,ext_quantile[0])
+            )[0]
+
+    # calculate metrics
+    for metric in metrics:
+        if metric=='pearson' or metric=='spearman':
+            metrics_dict[metric] = metrics_dictionary[metric](
+                data1,data2
+            )[0]
+        elif metric[:4]=='ext_':
+            metrics_dict[metric] = metrics_dictionary[metric[4:]](
+                data1[ext_idxs],data2[ext_idxs]
+            ) if metric[4:]!='pearson' and metric[4:]!='spearman' else \
+                metrics_dictionary[metric[4:]](
+                    data1[ext_idxs],data2[ext_idxs]
+                )[0]
+        else:
+            metrics_dict[metric] = metrics_dictionary[metric](
+                data1,data2
+            )
 
     # customize title
     return_title = 'Data comparison is   --   BIAS: {:.2f}, SI: {:.2f}, RMSE: {:.2f}'.format(
-        biasd,sid,rmsed
+        metrics_dict['bias'],metrics_dict['si'],metrics_dict['rmse']
     )
-    return_title += '\n and Correlations (Pearson, Spearman): ({:.2f}, {:.2f})'.format(
-        pearsond,spearmand
+    return_title += '\n and Correlations (Pearson, Rscore): ({:.2f}, {:.2f})'.format(
+        metrics_dict['pearson'],metrics_dict['rscore']
     )
 
-    return return_title, [biasd,sid,rmsed,pearsond,spearmand]
-
-
-def si(predictions,targets):
-    pred_mean = np.nanmean(predictions)
-    tar_mean = np.nanmean(targets)
-    return np.sqrt(np.nansum(((predictions-pred_mean)-(targets-tar_mean))**2)/((np.nansum(targets**2))))
-
-def rmse(predictions,targets):
-    return np.sqrt(np.nanmean((targets-predictions)**2))
-
-def bias(predictions,targets):
-    return np.nanmean(targets-predictions)
-
-def pocid(predictions,targets):
-    return np.where(
-        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])<0,1,0
-    )
+    return return_title, metrics_dict
 
 
 def calc_closest_data2_in_data1(data1, data2, # data 1 is bigger than data2

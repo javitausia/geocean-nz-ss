@@ -22,7 +22,10 @@ from .validation import generate_stats, validata_w_tgs
 def MultiLinear_Regression(
     X_set, y_set, pcs_scaler = None,
     validator: tuple = (False,None,None),
-    X_set_var: str = 'PCs', y_set_var: str = 'ss',
+    model_metrics: list = [
+        'bias','si','rmse','pearson','spearman','rscore',
+        'mae', 'me', 'expl_var', # ...
+    ], X_set_var: str = 'PCs', y_set_var: str = 'ss',
     train_size: float = 0.9, percentage_PCs: float = 0.95,
     plot_results: bool = False, verbose: bool = True,
     pca_ttls = None):
@@ -104,11 +107,11 @@ def MultiLinear_Regression(
     prediction = lm.predict(X_test)
 
     # check model results
-    title, stats = generate_stats(y_test,prediction)
-    r_score = lm.score(X_test,y_test)
-    stats.append(r_score)
+    title, stats = generate_stats(y_test,prediction,metrics=model_metrics)
+    stats['rscore'] = lm.score(X_test,y_test) \
+        if 'rscore' not in list(stats.keys()) else stats['rscore']
     title += '\n R score: {} -- in TEST data'.format(
-        round(r_score,2)
+        round(stats['rscore'],2)
     )
 
     # plot results

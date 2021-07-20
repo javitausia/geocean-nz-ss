@@ -29,7 +29,7 @@ def plot_pres_winds(data, data_name='CFSR',
 
     # figure and axis
     fig, axes = plt.subplots(
-        ncols=3,figsize=(_figsize_width*3.6,_figsize_height*1.2), 
+        ncols=3,figsize=(_figsize_width*4.0,_figsize_height*1.2), 
         subplot_kw={'projection':ccrs.PlateCarree(
             central_longitude=default_location[0]
         )}

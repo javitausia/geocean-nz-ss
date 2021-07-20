@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 # custom
-from .config import data_path, default_location, default_region # get config params
+from .config import data_path, default_location, default_region, \
+    evaluation_metrics # get config params
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
 from .pca import PCA_DynamicPred
@@ -47,6 +48,10 @@ class Experiment(object):
     def __init__(self, slp_data, wind_data, ss_data, # this must have several stations
                  sites_to_analyze: list = list(np.random.randint(10,1000,5)),
                  model: str = 'linear', # this is the model to analyze
+                 model_metrics: list = [
+                     'bias','si','rmse','pearson','spearman','rscore',
+                     'mae', 'me', 'expl_var', # ...
+                 ], # these are the metrics to evaluate
                  pca_attrs: dict = pca_attrs_default,
                  model_attrs: dict = linear_attrs_default):
         """
@@ -63,6 +68,8 @@ class Experiment(object):
             sites_to_analyze (list, optional): This is the list with all the moana v2
                 hindcast locations to analyze. Defaults to random locations.
             model (str, optional): Type of model to analyze. Defaults to 'linear'.
+            model_metrics (list, optional): These are all the evaluation metrics that might
+                be used to evaluate the model performance. Defaults to simple list.
             pca_attrs (dict, optional): PCA dictionary with all the parameters to use.
                 Defaults to pca_attrs_default.
             model_attrs (dict, optional): Model dictionary with all the parameters to use. 
@@ -80,6 +87,11 @@ class Experiment(object):
         self.pca_attrs = pca_attrs
         self.model_attrs = model_attrs # save class attributes
 
+        # add pre-defined metrics to existent
+        for mta in evaluation_metrics: # defined in sscode/config.py
+            model_metrics.append(mta) if mta not in model_metrics else None
+        self.model_metrics = model_metrics
+
         # more complicated features to save in model
         model_iters = 1
         exp_attrs_shape = []
@@ -94,11 +106,12 @@ class Experiment(object):
 
         print(
             '\n The model has been correctly initialized with || model = {} || \
+            \n\n and model evaluation metrics = {} \
             \n\n pca_params = {} \n\n model_params = {} \
             \n\n which makes a total of {} iterations as there are {} values for each parameter \
             \n\n the experiment will be performed in sites = {} \
             \n\n RUN CELL BELOW if this information is correct!!'.format(
-                self.model,self.pca_attrs,self.model_attrs,
+                self.model,self.model_metrics,self.pca_attrs,self.model_attrs,
                 self.model_iters,tuple(self.model_params_shape),
                 self.ss_sites # saved list with the sites
             )
@@ -134,7 +147,7 @@ class Experiment(object):
 
             # create the array to save all the models stats
             model_params_for_site = np.zeros(
-                tuple(self.model_params_shape+[6])
+                tuple(self.model_params_shape+[len(self.model_metrics)])
             )
 
             # lets iterate over all the pca_attrs + model_attrs
@@ -219,6 +232,7 @@ class Experiment(object):
                     # and lets now calculate the linear model
                     stats = MultiLinear_Regression(
                         pca_data,ss_site,pcs_scaler=None, # add to plot slp recon
+                        model_metrics=self.model_metrics,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
@@ -228,28 +242,10 @@ class Experiment(object):
                     for istat,stat in enumerate(stats):
                         model_params_for_site[
                             tuple(list(i_parameters)+[istat])
-                        ] = stat # append stat to each model / site
+                        ] = stats[stat] # append stat to each model / site
 
                     # sum 1 to counter
                     model_counter += 1
-
-                # save the model statistics in site
-                xr.Dataset(
-                    {'bias': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
-                        model_params_for_site[:,:,:,:,:,:,:,0]),
-                    'si': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
-                        model_params_for_site[:,:,:,:,:,:,:,1]),
-                    'rmse': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
-                        model_params_for_site[:,:,:,:,:,:,:,2]),
-                    'pearson': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
-                        model_params_for_site[:,:,:,:,:,:,:,3]),
-                    'spearman': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
-                        model_params_for_site[:,:,:,:,:,:,:,4]),
-                    'r2': (('grad','winds','tlapse','tresample','region','tsize','perpcs'),
-                        model_params_for_site[:,:,:,:,:,:,:,5])}
-                ).to_netcdf(
-                    data_path+'/statistics/experiments/experiment_linear_site_{}.nc'.format(site)
-                ) if save_ind_sites else None # we also save the model in case something happens
             
             elif self.model=='knn':
                 # loop over all the combinations for the knn model
@@ -334,6 +330,7 @@ class Experiment(object):
                     # and lets now calculate the linear model
                     stats, model, t_train = KNN_Regression(
                         pca_data,ss_site,pcs_scaler=None, # add to plot slp recon
+                        model_metrics=self.model_metrics,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
@@ -343,28 +340,10 @@ class Experiment(object):
                     for istat,stat in enumerate(stats):
                         model_params_for_site[
                             tuple(list(i_parameters)+[istat])
-                        ] = stat # append stat to each model / site
+                        ] = stats[stat] # append stat to each model / site
                     
                     # sum 1 to counter
                     model_counter += 1
-
-                # save the model statistics in site
-                xr.Dataset(
-                    {'bias': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
-                        model_params_for_site[:,:,:,:,:,:,:,:,0]),
-                    'si': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
-                        model_params_for_site[:,:,:,:,:,:,:,:,1]),
-                    'rmse': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
-                        model_params_for_site[:,:,:,:,:,:,:,:,2]),
-                    'pearson': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
-                        model_params_for_site[:,:,:,:,:,:,:,:,3]),
-                    'spearman': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
-                        model_params_for_site[:,:,:,:,:,:,:,:,4]),
-                    'r2': (('grad','winds','tlapse','tresample','region','tsize','perpcs','kneighs'),
-                        model_params_for_site[:,:,:,:,:,:,:,:,5])}
-                ).to_netcdf(
-                    data_path+'/statistics/experiments/experiment_knn_site_{}.nc'.format(site)
-                ) if save_ind_sites else None # we also save the model in case something happens
 
             model_params_for_sites.append(model_params_for_site)
 

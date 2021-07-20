@@ -125,7 +125,9 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     pcs_scaler = StandardScaler()
     pcs_stan = pcs_scaler.fit_transform(pcs_matrix)
     pcs_stan[np.isnan(pcs_stan)] = 0.0 # check additional nans
-    # calculate de PCAs
+
+    # --------------------------------------------------------------------------------- #
+    # THIS IS JUST TO ALLOW MY 32GB-RAM COMPUTER TO RUN
     # if pcs_stan.shape[1]>18000:
     #     pcs_stan = pcs_stan[:,::12]
     # elif pcs_stan.shape[1]>10000:
@@ -134,7 +136,10 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     #     pcs_stan = pcs_stan[:,::6] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::6]
     # elif pcs_stan.shape[1]>2000:
     #     pcs_stan = pcs_stan[:,::4] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::4]
-    print('\n calculated PCs matrix with shape: \n {} \n'.format(pcs_stan.shape)) \
+    # --------------------------------------------------------------------------------- #
+
+    # calculate de PCAs
+    print('\n calculating PCs matrix with shape: \n {} \n'.format(pcs_stan.shape)) \
         if verbose else None
     pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
     PCs = pca_fit.fit_transform(pcs_stan)

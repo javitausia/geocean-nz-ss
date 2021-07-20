@@ -6,3 +6,6 @@ default_location = (173.9,-40.5) # location at NZ
 
 default_region = (140,190,-20,-70) # region of NZ where pressure, winds... are downloaded
 default_region_reduced = (160,185,-30,-52) # reduced region of NZ (similar to moana region)
+
+# to model evaluation
+evaluation_metrics = ['bias','si','rmse','pearson','rscore']
