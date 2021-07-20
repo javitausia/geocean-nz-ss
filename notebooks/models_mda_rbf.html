@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>9. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
+    <title>10. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -54,7 +54,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="8. Experiments" href="experiments.html" />
+    <link rel="next" title="11. VISUALIZE experiments results" href="models_results.html" />
+    <link rel="prev" title="9. RUN experiments" href="experiments.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -133,13 +134,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="models_gp.html">
+   8. Extras 1: Kernel methods for regression (Beta version)
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   8. Experiments
+   9. RUN experiments
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   9. MDA - RBF model
+   10. MDA - RBF model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_results.html">
+   11. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -248,17 +259,22 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#maximum-dissimilarity-algorithm-mda">
-   9.1. Maximum Dissimilarity Algorithm (MDA)
+   10.1. Maximum Dissimilarity Algorithm (MDA)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruction-of-the-coastal-wave-climate-with-rbf">
-   9.2. Reconstruction of the coastal wave climate with RBF
+   10.2. Reconstruction of the coastal wave climate with RBF
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-data-and-linear-model-stats">
-   9.3. Load data and linear model stats
+   10.3. Load data and linear model stats
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-the-mda-rbf-model">
+   10.4. Create the MDA+RBF model
   </a>
  </li>
 </ul>
@@ -273,7 +289,7 @@
               <div>
                 
   <div class="section" id="mda-rbf-model">
-<h1><span class="section-number">9. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">10. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will perform a analysis using one of our most used methods, which involves MDA + RBF algorithms. The process will be the next:</p>
 <ul class="simple">
 <li><p>First, the areas where the study is wanted to be performed are selected.</p></li>
@@ -282,11 +298,11 @@
 <li><p>Finally, we use RBF to interpolate the final storm-surge surface in all the areas / locations!!</p></li>
 </ul>
 <div class="section" id="maximum-dissimilarity-algorithm-mda">
-<h2><span class="section-number">9.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
 <p>In this way, the first important step to carry out this method is the selection of the maximum dissimilar cases, so the posterior reconstruction of all the cases can be performed correctly:</p>
 <div class="figure align-default" id="mdacroquis">
 <a class="reference internal image-reference" href="../_images/mdacroquis.png"><img alt="../_images/mdacroquis.png" src="../_images/mdacroquis.png" style="height: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 9.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 10.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
 </div>
 <p>This sketch shows the workflow followed in the selection step. The data is firstly normalized for the correct performance of the algorithm, then the euclidean distance is used for the calculation of the distance between the different vectors in the dataset. Finally, the selected data is de-normalized so it can be used and plotted together with the original information.</p>
 <p>As it can be seen, the variables used are:</p>
@@ -299,7 +315,7 @@
 <p>where <span class="math notranslate nohighlight">\(PCn\)</span> refers to the principal components of the sea-level-pressure fields and the <span class="math notranslate nohighlight">\(SSn\)</span> variables belongs to the principal components of the <span class="math notranslate nohighlight">\(n\)</span> locations of the selected area.</p>
 </div>
 <div class="section" id="reconstruction-of-the-coastal-wave-climate-with-rbf">
-<h2><span class="section-number">9.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
 <p>Once we have the selected cases, we now have a lot of different situations with
 different characteristics all along the coast so the reconstruction of the storm surge climate can be done.</p>
 <p>The reconstruction of the storm surge in shallow waters is carried out by
@@ -327,7 +343,7 @@ basic radial function, <span class="math notranslate nohighlight">\(||\cdot||\)<
 the RBF interpolation.</p>
 <div class="figure align-default" id="rbf-color">
 <a class="reference internal image-reference" href="../_images/rbf-color.png"><img alt="../_images/rbf-color.png" src="../_images/rbf-color.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 9.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 10.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
 </div>
 <p>The polynomial <span class="math notranslate nohighlight">\(p(x)\)</span> in the expression of the RBF interpolation function is defined as a
 monomial base <span class="math notranslate nohighlight">\({p_0, p_1 ,..., p_d}\)</span>. The first is a monomial, consisting of a number of grade one monomials equal to the dimensionality of the data, where <span class="math notranslate nohighlight">\(b = {b_0 , b_1 ,..., b_d}\)</span> are the coefficients of these monomials.</p>
@@ -353,6 +369,7 @@ in the precision of the technique. In the methodology of propagation of the mari
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># custom</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
 <span class="kn">from</span> <span class="nn">sscode.mda_rbf</span> <span class="kn">import</span> <span class="n">MDA_RBF_Model</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
@@ -362,7 +379,7 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 </div>
 <div class="section" id="load-data-and-linear-model-stats">
-<h2><span class="section-number">9.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
 <p>We first load the data, and plot some multilinear regression statistics to compare…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -413,21 +430,109 @@ in the precision of the technique. In the methodology of propagation of the mari
  loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_3_1.png" src="../_images/models_mda_rbf_3_1.png" />
+<img alt="../_images/models_mda_rbf_4_1.png" src="../_images/models_mda_rbf_4_1.png" />
 </div>
 </div>
+</div>
+<div class="section" id="create-the-mda-rbf-model">
+<h2><span class="section-number">10.4. </span>Create the MDA+RBF model<a class="headerlink" href="#create-the-mda-rbf-model" title="Permalink to this headline">¶</a></h2>
+<p>In the cell below, we create the instance of the class <code class="docutils literal notranslate"><span class="pre">MDA_RBF_Model</span></code>, that is located at <code class="docutils literal notranslate"><span class="pre">sscode/mda_rbf.py</span></code>, and shown below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">MDA_RBF_Model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This MDA+RBF model allows the user to perform a model which consists in</span>
+<span class="sd">        reconstructing / interpolating the storm surge in different locations or</span>
+<span class="sd">        shores around New Zealand.</span>
+
+<span class="sd">        Two options are available for the reconstruction of the SS:</span>
+
+<span class="sd">            - First, the storm surge might be directly reconstructed in some</span>
+<span class="sd">            desired locations (this is what we will be doing to compare with</span>
+<span class="sd">            the results obtained in the linear and knn models)</span>
+
+<span class="sd">            - Moreover, we add here an extra option which consists in giving</span>
+<span class="sd">            the MDA+RBF interpolating machine the pcs extracted from the ss in </span>
+<span class="sd">            several locations from a desired shore. In this case, we will use</span>
+<span class="sd">            the slp fields pcs to interpolate the non-linear surface of these</span>
+<span class="sd">            ss-pcs, and then we will reconstruct the real ss in all the locations</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ss_data</span><span class="p">,</span> <span class="c1"># this should be the loaded moana with Loader class</span>
+            <span class="n">slp_data</span><span class="p">,</span> <span class="c1"># this will be used to calculate the local predictors</span>
+            <span class="n">dict_to_pca</span><span class="p">,</span> <span class="c1"># this is the parameters dictionary to calculate pca from the slp</span>
+            <span class="n">model_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;expl_var&#39;</span><span class="p">,</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="s1">&#39;me&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;medae&#39;</span><span class="p">,</span><span class="s1">&#39;tweedie&#39;</span><span class="p">,</span> <span class="c1"># check theory</span>
+                <span class="s1">&#39;ext_mae&#39;</span><span class="p">,</span><span class="s1">&#39;ext_mse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_pearson&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;bias&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;spearman&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span>
+            <span class="p">],</span> <span class="c1"># model metrics to evaluate performance</span>
+            <span class="n">ss_data_attrs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;site&#39;</span><span class="p">,</span><span class="s1">&#39;ss&#39;</span><span class="p">),</span> <span class="c1"># ss attrs</span>
+            <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+                <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
+                  <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
+                  <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
+                <span class="p">]</span>
+            <span class="p">)[::</span><span class="mi">3</span><span class="p">]),</span> <span class="c1"># sites to analyze in case individual analysis is performed</span>
+            <span class="c1"># lons / lats in case shore analysis is required</span>
+            <span class="n">lons</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">168.1</span><span class="p">,</span> <span class="mf">171.4</span><span class="p">,</span> <span class="mf">167.5</span><span class="p">,</span> <span class="mf">171.1</span><span class="p">,</span> <span class="mf">173.5</span><span class="p">,</span> <span class="mf">173.3</span><span class="p">,</span> <span class="mf">175.1</span><span class="p">,</span> <span class="mf">177.9</span><span class="p">,</span> <span class="mf">172.6</span><span class="p">],</span> 
+            <span class="n">lats</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">44.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">41.9</span><span class="p">,</span> <span class="o">-</span><span class="mf">47.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">45.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">42.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">40.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">40.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">40.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">34.3</span><span class="p">],</span>
+            <span class="n">min_dist_th</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">130</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="mi">400</span><span class="p">],</span>
+            <span class="n">extra_help</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span> <span class="c1"># this helps to stay in the wanted shore of NZ</span>
+                <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">time_resample</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># this is important, try 6H</span>
+            <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            As always, we have the initializator/constructor function, where the </span>
+<span class="sd">            instance of the class is created, giving some initial parameters</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                ss_data (xarray.Dataset): This is the previously loaded moana datasets.</span>
+<span class="sd">                    This might be just the shore moana dataset or the one including</span>
+<span class="sd">                    the continental platform until 300m of depth, which is now saved</span>
+<span class="sd">                    in data/storm_surge_data/moana_hindcast_v2/moana_ss_300m_daily.nc</span>
+<span class="sd">                slp_data (xarray.Dataset): This is the slp data, also loaded with the</span>
+<span class="sd">                    usually used, Loader class in data.py</span>
+<span class="sd">                dict_to_pca (dict): This is the parameters dictionary with all the</span>
+<span class="sd">                    requested information to calculate the slp principal components      </span>
+<span class="sd">                model_metrics (list): This is a list with all the model metrics to </span>
+<span class="sd">                    evaluate model performance          </span>
+<span class="sd">                ss_data_attrs (tuple): This is a tuple with the main info regarding</span>
+<span class="sd">                    the ss data, for posterior calculations</span>
+<span class="sd">                sites_to_analyze (list): This is the list with all the individual sites</span>
+<span class="sd">                    where the MDA+RBF technique will be performed</span>
+<span class="sd">                lons (list): Longitudes of the &quot;middle&quot; location of the shores</span>
+<span class="sd">                lats (list): Latitudes of the &quot;middle&quot; location of the shores</span>
+<span class="sd">                min_dist_th (list): Distances in km to find the nearest points to</span>
+<span class="sd">                    the lons/lats specified</span>
+<span class="sd">                extra_help (list): This is extra information, regarding the &quot;dimension&quot;</span>
+<span class="sd">                    in which the shore is projected, so fake nodes are not introduced</span>
+<span class="sd">                    in the pcs analysis</span>
+<span class="sd">                time_resample (str, optional): As usually, time resample step</span>
+<span class="sd">                verbose, plot (bools): Whether to log / plot the results</span>
+
+<span class="sd">            ***** OPTIONS ARE:</span>
+<span class="sd">                - Give the desired sites_to_analyze!!</span>
+<span class="sd">                - Give lon/lat locations and extra_help/min_dist_th for </span>
+<span class="sd">                    shore analysis!!</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>where this is the aspect of the initializator, and all the methods of the class and additional funtions must be consulted in the python script!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dict to pca</span>
 <span class="n">pca_attrs_default</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;pres_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="c1"># winds will not be used</span>
     <span class="s1">&#39;wind_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
-    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.1</span><span class="p">,</span><span class="mf">2.1</span><span class="p">)),</span>
-    <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;pca_ttls&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">],</span> 
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
+    <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;pca_ttls&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">],</span> 
     <span class="s1">&#39;pca_borders&#39;</span><span class="p">:</span> <span class="kc">None</span>
 <span class="p">}</span>
 <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
@@ -435,16 +540,19 @@ in the precision of the technique. In the methodology of propagation of the mari
       <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
       <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
     <span class="p">]</span>
-<span class="p">)[::</span><span class="mi">3</span><span class="p">]</span>
+<span class="p">)</span>
 
 <span class="c1"># construct the MDA + RBF object</span>
 <span class="n">mda_rbf_model</span> <span class="o">=</span> <span class="n">MDA_RBF_Model</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># load_cfsr_moana_uhslc.predictand, </span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
     <span class="n">pca_attrs_default</span><span class="p">,</span> <span class="c1"># all params to calculate the pcs</span>
-    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">)[:</span><span class="mi">2</span><span class="p">],</span>
-    <span class="c1"># lons=[173.3, 175.1], lats=[-40.7, -40.2],</span>
-    <span class="c1"># min_dist_th=60,extra_help=(&#39;lat&#39;,1)</span>
+    <span class="n">model_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;expl_var&#39;</span><span class="p">,</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="s1">&#39;me&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;medae&#39;,&#39;tweedie&#39;, # check theory</span>
+        <span class="c1"># &#39;ext_mae&#39;,&#39;ext_mse&#39;,&#39;ext_rmse&#39;,&#39;ext_pearson&#39;,</span>
+        <span class="s1">&#39;bias&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;spearman&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span>
+    <span class="p">],</span>
+    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">)[::</span><span class="mi">8</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -453,45 +561,130 @@ in the precision of the technique. In the methodology of propagation of the mari
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Initializing the MDA + RBF constructor... 
 
 
- in locations: [116, 328], with coords: ([168.34508816120908, 171.30730478589422],[-46.62520764994737, -44.36206664292558]) 
+ in locations: [116, 578, 999, 1217], 
+
+ with coords: ([168.34508816120908, 173.72544080604533, 174.02770780856423, 174.81360201511333],[-46.62520764994737, -42.4141452030056, -39.04490025426387, -36.78609400494574]) 
 
 
  data will be resampled to 1D 
 
  and the PC analysis             will be calculated using the parameters 
 
- {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: False, &#39;winds&#39;: (True, &lt;xarray.Dataset&gt;
-Dimensions:          (lat: 160, lon: 161, time: 11444)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float32 -20.1388 -20.451 ... -69.4709 -69.7831
-  * lon              (lon) float32 140.0 140.3125 140.625 ... 189.6875 190.0
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 ...
-    V_GRD_L103       (time, lat, lon) float32 ...
-    wind_proj        (time, lat, lon) float64 ...
-    bearings         (lat, lon) float64 ...
-    direc_proj_math  (lat, lon) float64 ...
-    wind_proj_mask   (time, lat, lon) float64 ...), &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;), &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.1, 2.1)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: False, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;SLP in t-1&#39;, &#39;Winds in t&#39;], &#39;pca_borders&#39;: None} 
+ {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: True, &#39;winds&#39;: (False, None), &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;), &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (True, (160, 185, -30, -52)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: True, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;Grad in t&#39;, &#39;SLP in t-1&#39;, &#39;Grad in t-1&#39;], &#39;pca_borders&#39;: None} 
 
 
  lets calculate the slp pcs... 
+
+ 
+
+             The slp pcs will be calculated for all the locations / shores...             
+
+pcs matrix calculation for site / shore 1
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 45, 51) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 4590) 
+
+
+ plotting 1 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_4_1.png" src="../_images/models_mda_rbf_4_1.png" />
-<img alt="../_images/models_mda_rbf_4_2.png" src="../_images/models_mda_rbf_4_2.png" />
-<img alt="../_images/models_mda_rbf_4_3.png" src="../_images/models_mda_rbf_4_3.png" />
-<img alt="../_images/models_mda_rbf_4_4.png" src="../_images/models_mda_rbf_4_4.png" />
+<img alt="../_images/models_mda_rbf_6_1.png" src="../_images/models_mda_rbf_6_1.png" />
+<img alt="../_images/models_mda_rbf_6_2.png" src="../_images/models_mda_rbf_6_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 2
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 45, 51) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 4590) 
+
+
+ plotting 1 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
 </div>
+<img alt="../_images/models_mda_rbf_6_4.png" src="../_images/models_mda_rbf_6_4.png" />
+<img alt="../_images/models_mda_rbf_6_5.png" src="../_images/models_mda_rbf_6_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 3
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 45, 51) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 4590) 
+
+
+ plotting 1 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_7.png" src="../_images/models_mda_rbf_6_7.png" />
+<img alt="../_images/models_mda_rbf_6_8.png" src="../_images/models_mda_rbf_6_8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 4
+ lets calculate the PCs... 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 45, 51) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 4590) 
+
+
+ plotting 1 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_10.png" src="../_images/models_mda_rbf_6_10.png" />
+<img alt="../_images/models_mda_rbf_6_11.png" src="../_images/models_mda_rbf_6_11.png" />
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Run the CELL below to run all the combinations, but be careful with the time it might take. Moreover, if the num_samples_ini parameter is too big, the searching of the optimal sigma in the RBF funtion might not converge!!</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the MDA + RBF adjustments</span>
 <span class="n">interpolated_ss_by_rbf</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
-    <span class="n">selected_shores</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># indexes in python counter</span>
-    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.999</span><span class="p">],</span>
-    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">],</span>
-    <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">50</span>
+    <span class="n">selected_shores</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">[::</span><span class="mi">8</span><span class="p">])),</span> <span class="c1"># indexes in python counter</span>
+    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.85</span><span class="p">,</span><span class="mf">0.90</span><span class="p">],</span>
+    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="mi">800</span><span class="p">],</span>
+    <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">try_all</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -500,55 +693,635 @@ Data variables:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets interpolate the SS using all the calculated             pcs (slp + ss) and the MDA+RBF technique!!             This interpolation will be performed in all the locations!! 
 
 
- ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.999 per of pcs and 500 samples!! 
-
- which means 14 PCs... 
+ Lets reconstruct the SS for location 1!! 
 
 
  ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_5_1.png" src="../_images/models_mda_rbf_5_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 546 points to interpolate with RBF!! 
 
 
-ix_scalar: 0,  optimization: 16.36 | interpolation: 0.81 | sigma: 0.8143
+ MDA + RBF with 0.85 per of pcs and 500 samples!! 
+
+ which means 12 PCs... 
+
+
+ ------------------------------------------------------------- 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_5_3.png" src="../_images/models_mda_rbf_5_3.png" />
-<img alt="../_images/models_mda_rbf_5_4.png" src="../_images/models_mda_rbf_5_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 0!! 
+<img alt="../_images/models_mda_rbf_8_1.png" src="../_images/models_mda_rbf_8_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 509 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 16.93 | interpolation: 0.53 | sigma: 0.5307
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_5_6.png" src="../_images/models_mda_rbf_5_6.png" />
+<img alt="../_images/models_mda_rbf_8_3.png" src="../_images/models_mda_rbf_8_3.png" />
+<img alt="../_images/models_mda_rbf_8_4.png" src="../_images/models_mda_rbf_8_4.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
 
 
- MDA + RBF with 0.999 per of pcs and 500 samples!! 
+ MDA + RBF with 0.9 per of pcs and 800 samples!! 
 
- which means 17 PCs... 
+ which means 18 PCs... 
 
 
  ------------------------------------------------------------- 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_5_8.png" src="../_images/models_mda_rbf_5_8.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 546 points to interpolate with RBF!! 
+<img alt="../_images/models_mda_rbf_8_6.png" src="../_images/models_mda_rbf_8_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 808 points to interpolate with RBF!! 
 
 
-ix_scalar: 0,  optimization: 16.19 | interpolation: 0.60 | sigma: 0.6006
+ix_scalar: 0,  optimization: 26.70 | interpolation: 0.64 | sigma: 0.6353
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_5_10.png" src="../_images/models_mda_rbf_5_10.png" />
-<img alt="../_images/models_mda_rbf_5_11.png" src="../_images/models_mda_rbf_5_11.png" />
+<img alt="../_images/models_mda_rbf_8_8.png" src="../_images/models_mda_rbf_8_8.png" />
+<img alt="../_images/models_mda_rbf_8_9.png" src="../_images/models_mda_rbf_8_9.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 1!! 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_5_13.png" src="../_images/models_mda_rbf_5_13.png" />
+<img alt="../_images/models_mda_rbf_8_11.png" src="../_images/models_mda_rbf_8_11.png" />
+<img alt="../_images/models_mda_rbf_8_12.png" src="../_images/models_mda_rbf_8_12.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets reconstruct the SS for location 2!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.85 per of pcs and 500 samples!! 
+
+ which means 12 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
 </div>
+<img alt="../_images/models_mda_rbf_8_14.png" src="../_images/models_mda_rbf_8_14.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 509 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 9.49 | interpolation: 0.44 | sigma: 0.4443
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_16.png" src="../_images/models_mda_rbf_8_16.png" />
+<img alt="../_images/models_mda_rbf_8_17.png" src="../_images/models_mda_rbf_8_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.9 per of pcs and 800 samples!! 
+
+ which means 18 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_19.png" src="../_images/models_mda_rbf_8_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 809 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 29.48 | interpolation: 0.65 | sigma: 0.6517
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_21.png" src="../_images/models_mda_rbf_8_21.png" />
+<img alt="../_images/models_mda_rbf_8_22.png" src="../_images/models_mda_rbf_8_22.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 2!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_24.png" src="../_images/models_mda_rbf_8_24.png" />
+<img alt="../_images/models_mda_rbf_8_25.png" src="../_images/models_mda_rbf_8_25.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets reconstruct the SS for location 3!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.85 per of pcs and 500 samples!! 
+
+ which means 12 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_27.png" src="../_images/models_mda_rbf_8_27.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 509 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 14.99 | interpolation: 0.44 | sigma: 0.4355
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_29.png" src="../_images/models_mda_rbf_8_29.png" />
+<img alt="../_images/models_mda_rbf_8_30.png" src="../_images/models_mda_rbf_8_30.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.9 per of pcs and 800 samples!! 
+
+ which means 18 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_32.png" src="../_images/models_mda_rbf_8_32.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 809 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 27.56 | interpolation: 0.61 | sigma: 0.6058
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_34.png" src="../_images/models_mda_rbf_8_34.png" />
+<img alt="../_images/models_mda_rbf_8_35.png" src="../_images/models_mda_rbf_8_35.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 3!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_37.png" src="../_images/models_mda_rbf_8_37.png" />
+<img alt="../_images/models_mda_rbf_8_38.png" src="../_images/models_mda_rbf_8_38.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets reconstruct the SS for location 4!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.85 per of pcs and 500 samples!! 
+
+ which means 12 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_40.png" src="../_images/models_mda_rbf_8_40.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 510 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 12.32 | interpolation: 0.55 | sigma: 0.5525
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_42.png" src="../_images/models_mda_rbf_8_42.png" />
+<img alt="../_images/models_mda_rbf_8_43.png" src="../_images/models_mda_rbf_8_43.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.9 per of pcs and 800 samples!! 
+
+ which means 18 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_45.png" src="../_images/models_mda_rbf_8_45.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 810 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 43.88 | interpolation: 0.61 | sigma: 0.6125
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_47.png" src="../_images/models_mda_rbf_8_47.png" />
+<img alt="../_images/models_mda_rbf_8_48.png" src="../_images/models_mda_rbf_8_48.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 4!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_8_50.png" src="../_images/models_mda_rbf_8_50.png" />
+<img alt="../_images/models_mda_rbf_8_51.png" src="../_images/models_mda_rbf_8_51.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpolated_ss_by_rbf</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:     (experiment: 2, site: 4, time: 8109)
+Coordinates:
+  * site        (site) int64 116 578 999 1217
+  * time        (time) datetime64[ns] 1994-11-13 1994-11-14 ... 2017-02-11
+  * experiment  (experiment) int64 0 1
+Data variables: (12/13)
+    ss_interp   (site, experiment, time) float64 0.1749 0.2023 ... 0.04516
+    perpcs      (site, experiment) float64 0.85 0.9 0.85 0.9 0.85 0.9 0.85 0.9
+    nsamples    (site, experiment) int64 500 800 500 800 500 800 500 800
+    expl_var    (site, experiment) float64 0.6179 0.6547 ... 0.5235 0.5777
+    mae         (site, experiment) float64 0.0519 0.04849 ... 0.03309 0.03061
+    mse         (site, experiment) float64 0.004573 0.004125 ... 0.001709
+    ...          ...
+    bias        (site, experiment) float64 0.006323 0.005316 ... 0.001596
+    si          (site, experiment) float64 0.6308 0.6024 ... 0.7659 0.7315
+    rmse        (site, experiment) float64 0.3146 0.3078 0.3913 ... 0.385 0.3594
+    pearson     (site, experiment) float64 0.7901 0.8112 0.751 ... 0.7316 0.7621
+    spearman    (site, experiment) float64 0.7848 0.8043 ... 0.6832 0.7133
+    rscore      (site, experiment) float64 0.6145 0.6523 ... 0.5235 0.5771</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-633e6a5e-0969-4c17-ab4e-9086aab35c82' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-633e6a5e-0969-4c17-ab4e-9086aab35c82' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>experiment</span>: 2</li><li><span class='xr-has-index'>site</span>: 4</li><li><span class='xr-has-index'>time</span>: 8109</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-c3b31976-0dff-4112-9a6a-794e18f29536' class='xr-section-summary-in' type='checkbox'  checked><label for='section-c3b31976-0dff-4112-9a6a-794e18f29536' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>116 578 999 1217</div><input id='attrs-7d18293c-a0ba-4455-b58e-987a742cf322' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7d18293c-a0ba-4455-b58e-987a742cf322' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-01cf124b-34ce-42c5-88e9-119912f0d04c' class='xr-var-data-in' type='checkbox'><label for='data-01cf124b-34ce-42c5-88e9-119912f0d04c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 116,  578,  999, 1217])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>1994-11-13 ... 2017-02-11</div><input id='attrs-17f89aa3-f560-4fff-84b7-f8505a56114e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-17f89aa3-f560-4fff-84b7-f8505a56114e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-96710dcf-a9e1-4ef5-8a00-f3b9eba2fd99' class='xr-var-data-in' type='checkbox'><label for='data-96710dcf-a9e1-4ef5-8a00-f3b9eba2fd99' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;1994-11-13T00:00:00.000000000&#x27;, &#x27;1994-11-14T00:00:00.000000000&#x27;,
+       &#x27;1994-11-15T00:00:00.000000000&#x27;, ..., &#x27;2017-02-09T00:00:00.000000000&#x27;,
+       &#x27;2017-02-10T00:00:00.000000000&#x27;, &#x27;2017-02-11T00:00:00.000000000&#x27;],
+      dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>experiment</span></div><div class='xr-var-dims'>(experiment)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>0 1</div><input id='attrs-6403cc9c-23e0-4c25-ba31-594369b14a65' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6403cc9c-23e0-4c25-ba31-594369b14a65' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3f864fb7-4d10-4ca4-8da5-d874718d59fa' class='xr-var-data-in' type='checkbox'><label for='data-3f864fb7-4d10-4ca4-8da5-d874718d59fa' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([0, 1])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-3a909f01-1559-4ebd-94d3-21bd263b85b7' class='xr-section-summary-in' type='checkbox'  checked><label for='section-3a909f01-1559-4ebd-94d3-21bd263b85b7' class='xr-section-summary' >Data variables: <span>(13)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>ss_interp</span></div><div class='xr-var-dims'>(site, experiment, time)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.1749 0.2023 ... 0.05509 0.04516</div><input id='attrs-e523538c-e348-4dd5-b0ee-6b0df32c91ce' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-e523538c-e348-4dd5-b0ee-6b0df32c91ce' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3701f9ba-3ac5-4e54-bba4-95821ee5acb9' class='xr-var-data-in' type='checkbox'><label for='data-3701f9ba-3ac5-4e54-bba4-95821ee5acb9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[ 0.17489154,  0.20225791,  0.19583417, ...,  0.02319852,
+          0.03185019,  0.1704228 ],
+        [ 0.15907601,  0.18066097,  0.20465928, ...,  0.03384354,
+          0.03717032,  0.14437503]],
+
+       [[ 0.08016683,  0.11401838,  0.10837167, ..., -0.05609904,
+          0.01169584,  0.09310405],
+        [ 0.07892944,  0.09484583,  0.13266943, ..., -0.02313878,
+          0.0280638 ,  0.06661959]],
+
+       [[ 0.0801864 ,  0.14139524,  0.1326945 , ...,  0.01835473,
+          0.06093656,  0.12072834],
+        [ 0.0569043 ,  0.09995595,  0.13981788, ..., -0.00753575,
+          0.03051823,  0.05893229]],
+
+       [[-0.01078613,  0.0237396 ,  0.03897558, ...,  0.05916407,
+          0.05802624,  0.05433839],
+        [-0.01154002,  0.02057411,  0.03599864, ...,  0.0509129 ,
+          0.05508629,  0.04516349]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>perpcs</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.85 0.9 0.85 0.9 0.85 0.9 0.85 0.9</div><input id='attrs-301c668f-0c3a-442b-8e5a-45b9a58b66ab' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-301c668f-0c3a-442b-8e5a-45b9a58b66ab' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e2bca772-aa4c-4c1e-9483-5a6add33d1de' class='xr-var-data-in' type='checkbox'><label for='data-e2bca772-aa4c-4c1e-9483-5a6add33d1de' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.85, 0.9 ],
+       [0.85, 0.9 ],
+       [0.85, 0.9 ],
+       [0.85, 0.9 ]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>nsamples</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>500 800 500 800 500 800 500 800</div><input id='attrs-8fd55822-7000-4e01-91fe-3bb4c029c0d7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8fd55822-7000-4e01-91fe-3bb4c029c0d7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-534ab974-c6f5-4b45-8130-0f01988447b3' class='xr-var-data-in' type='checkbox'><label for='data-534ab974-c6f5-4b45-8130-0f01988447b3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[500, 800],
+       [500, 800],
+       [500, 800],
+       [500, 800]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>expl_var</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.6179 0.6547 ... 0.5235 0.5777</div><input id='attrs-38be3912-cd06-4ff5-9011-16e85a6662eb' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-38be3912-cd06-4ff5-9011-16e85a6662eb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bb82d671-2744-4787-8fee-1f4432d140a3' class='xr-var-data-in' type='checkbox'><label for='data-bb82d671-2744-4787-8fee-1f4432d140a3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.61788546, 0.65465531],
+       [0.5625639 , 0.63291495],
+       [0.54069624, 0.66126335],
+       [0.52354319, 0.57769187]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>mae</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.0519 0.04849 ... 0.03309 0.03061</div><input id='attrs-344c1b43-3ec1-475e-b8e2-adccd217d43d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-344c1b43-3ec1-475e-b8e2-adccd217d43d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1c001cd6-6460-4573-98bb-ce8a3fad99db' class='xr-var-data-in' type='checkbox'><label for='data-1c001cd6-6460-4573-98bb-ce8a3fad99db' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.05189989, 0.04848585],
+       [0.03803743, 0.03392034],
+       [0.04625491, 0.03880914],
+       [0.03308858, 0.03061262]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>mse</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.004573 0.004125 ... 0.001709</div><input id='attrs-7152dd9b-1824-4f02-a6b3-13afd8625803' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7152dd9b-1824-4f02-a6b3-13afd8625803' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a3a3a62b-aab9-4819-a6df-e50c97d56fe5' class='xr-var-data-in' type='checkbox'><label for='data-a3a3a62b-aab9-4819-a6df-e50c97d56fe5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.00457272, 0.00412483],
+       [0.00247809, 0.00207809],
+       [0.00373198, 0.00273449],
+       [0.00192585, 0.00170943]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>me</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.3406 0.2794 ... 0.2641 0.2511</div><input id='attrs-150e2e62-faee-4472-a272-002e8c67d07a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-150e2e62-faee-4472-a272-002e8c67d07a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c9d73b58-4641-43a5-bf77-e4a94840fb28' class='xr-var-data-in' type='checkbox'><label for='data-c9d73b58-4641-43a5-bf77-e4a94840fb28' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.3405777 , 0.27938031],
+       [0.19823266, 0.18454682],
+       [0.32249913, 0.25540884],
+       [0.26409809, 0.25106003]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>bias</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.006323 0.005316 ... 0.001596</div><input id='attrs-bbc2d997-c1bb-4fc7-b45a-c6ea853a8600' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-bbc2d997-c1bb-4fc7-b45a-c6ea853a8600' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ef9112ef-664c-467a-baa0-101610f79752' class='xr-var-data-in' type='checkbox'><label for='data-ef9112ef-664c-467a-baa0-101610f79752' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.00632254, 0.00531572],
+       [0.00258307, 0.0020336 ],
+       [0.00683107, 0.00407035],
+       [0.00032888, 0.00159566]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>si</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.6308 0.6024 ... 0.7659 0.7315</div><input id='attrs-5d9f6b69-5e39-4ebb-86ec-1a4e9da813a4' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-5d9f6b69-5e39-4ebb-86ec-1a4e9da813a4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-13cf74da-fe72-418f-b0e2-abdc324ce227' class='xr-var-data-in' type='checkbox'><label for='data-13cf74da-fe72-418f-b0e2-abdc324ce227' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.63080402, 0.60243667],
+       [0.75376015, 0.67617745],
+       [0.73294039, 0.61488731],
+       [0.76594334, 0.7315256 ]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>rmse</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.3146 0.3078 ... 0.385 0.3594</div><input id='attrs-b24ab2e0-76f7-43c4-be4c-1d40eecf8be6' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b24ab2e0-76f7-43c4-be4c-1d40eecf8be6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ceff034d-6441-4db5-818a-2ee464738882' class='xr-var-data-in' type='checkbox'><label for='data-ceff034d-6441-4db5-818a-2ee464738882' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.31463623, 0.30783189],
+       [0.39133275, 0.34208327],
+       [0.36948565, 0.29831104],
+       [0.3849522 , 0.3593776 ]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>pearson</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.7901 0.8112 ... 0.7316 0.7621</div><input id='attrs-484a7f34-fd86-482e-bd7b-e8ea5ebf23d5' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-484a7f34-fd86-482e-bd7b-e8ea5ebf23d5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c345a9ff-488f-4df1-888b-f3237b70d2b0' class='xr-var-data-in' type='checkbox'><label for='data-c345a9ff-488f-4df1-888b-f3237b70d2b0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.79013582, 0.81124047],
+       [0.75099009, 0.79574135],
+       [0.74110476, 0.81512836],
+       [0.73158112, 0.76208685]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>spearman</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.7848 0.8043 ... 0.6832 0.7133</div><input id='attrs-02454660-a2dd-4d04-bef8-9377376cc12a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-02454660-a2dd-4d04-bef8-9377376cc12a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9cbbf01e-444f-4d1d-ab4a-3cad6f0c8112' class='xr-var-data-in' type='checkbox'><label for='data-9cbbf01e-444f-4d1d-ab4a-3cad6f0c8112' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.78478744, 0.80428224],
+       [0.74160578, 0.78778598],
+       [0.72727204, 0.80360862],
+       [0.68319149, 0.7132979 ]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>rscore</span></div><div class='xr-var-dims'>(site, experiment)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.6145 0.6523 ... 0.5235 0.5771</div><input id='attrs-ab7e51bd-3d89-4ef5-b755-c7bd8871ebed' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ab7e51bd-3d89-4ef5-b755-c7bd8871ebed' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fd7d75b7-93e1-4b08-9c2e-9ba8a78f232c' class='xr-var-data-in' type='checkbox'><label for='data-fd7d75b7-93e1-4b08-9c2e-9ba8a78f232c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[0.61451559, 0.65227325],
+       [0.56138292, 0.63218296],
+       [0.53488052, 0.65919848],
+       [0.52351648, 0.57706196]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8f8fd1c1-c33e-4138-b298-40a65f45aa74' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-8f8fd1c1-c33e-4138-b298-40a65f45aa74' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
 </div>
 </div>
@@ -578,7 +1351,8 @@ ix_scalar: 0,  optimization: 16.19 | interpolation: 0.60 | sigma: 0.6006
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="experiments.html" title="previous page"><span class="section-number">8. </span>Experiments</a>
+    <a class='left-prev' id="prev-link" href="experiments.html" title="previous page"><span class="section-number">9. </span>RUN experiments</a>
+    <a class='right-next' id="next-link" href="models_results.html" title="next page"><span class="section-number">11. </span>VISUALIZE experiments results</a>
 
         </div>
         
