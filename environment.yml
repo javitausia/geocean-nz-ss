@@ -13,6 +13,7 @@ dependencies:
   - matplotlib
   - cartopy
   - plotly
+  - panel
   - scikit-learn
   - scipy
   - pip
@@ -25,3 +26,5 @@ dependencies:
     - sphinx-thebe
     - netcdf4
     - zarr
+    - great_circle_calculator
+    - geopy

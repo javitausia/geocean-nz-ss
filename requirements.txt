@@ -8,6 +8,8 @@ dash-renderer
 dbfread
 hdf5storage
 html5lib
+geopy
+great_circle_calculator
 julian
 sphinx-thebe
 jupyter-book
@@ -17,6 +19,7 @@ numpy
 olefile
 owslib
 pandas-datareader
+panel
 partd
 pip-chill
 progress
