@@ -1,6 +1,7 @@
 # arrays and geomath
 import numpy as np
 import pandas as pd
+import xarray as xr
 from geopy.distance import geodesic
 from scipy.stats import pearsonr, spearmanr
 
@@ -81,14 +82,30 @@ def compare_datasets(dataset1, dataset1_coords,
     ))
     # check name coord in hindcast dataset
     if not dataset1_coords[2]:
-        dataset1 = dataset1.expand_dims(dim='name').assign_coords(
-            {'name':((dataset1_coords[1],dataset1_coords[0]),
-             np.arange(len(dataset1[dataset1_coords[1]].values)*\
-                       len(dataset1[dataset1_coords[0]].values))\
-                .reshape(len(dataset1[dataset1_coords[1]].values),
-                         len(dataset1[dataset1_coords[0]].values)))}
-        )
-        dataset1_coords = (dataset1_coords[0],dataset1_coords[1],'name',dataset1_coords[3])
+        dataset1 = xr.Dataset(
+            {
+                'ss': (('time','site'), dataset1.values.reshape(
+                    -1,len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))),
+                dataset1_coords[0]: (('site'), list(dataset1[dataset1_coords[0]].values)*int(
+                    (len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))\
+                        /len(dataset1[dataset1_coords[0]]))),
+                dataset1_coords[1]: (('site'), np.repeat(dataset1[dataset1_coords[1]].values,
+                    (len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))\
+                        /len(dataset1[dataset1_coords[1]])))
+            }, coords={
+                'site': np.arange(len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]])),
+                'time': dataset1.time.values
+            }
+        ).dropna(dim='site',how='all')
+        # dataset1 = dataset1.expand_dims(dim='name').assign_coords(
+        #     {'name':((dataset1_coords[1],dataset1_coords[0]),
+        #      np.arange(len(dataset1[dataset1_coords[1]].values)*\
+        #                len(dataset1[dataset1_coords[0]].values))\
+        #         .reshape(len(dataset1[dataset1_coords[1]].values),
+        #                  len(dataset1[dataset1_coords[0]].values)))}
+        # )
+        dataset1_coords = (dataset1_coords[0],dataset1_coords[1],'site',dataset1_coords[3])
+
     # resample if requested
     if time_resample:
         print('\n resampling to {}... \n'.format(time_resample))
@@ -202,6 +219,7 @@ def compare_datasets(dataset1, dataset1_coords,
                     'time':times_to_scatter[1]})[comparison_variables[0][axi]].values,
                 dataset2.isel({dataset2_coords[2]:istat,
                     'time':times_to_scatter[2]})[comparison_variables[1][axi]].values,
+                metrics=['bias','si','rmse','pearson','rscore'],
                 not_nan_idxs = np.where(
                     (~np.isnan(dataset1.isel({dataset1_coords[2]:istat,
                         'time':times_to_scatter[1]})[comparison_variables[0][axi]].values)) &
@@ -211,11 +229,10 @@ def compare_datasets(dataset1, dataset1_coords,
             fig_title += fig_title_last
             if axi==0:
                 ss_stats.append(stats) # append site stats to global
-            if axi==0:
                 fig.suptitle(
                     fig_title,
                     fontsize=_fontsize_title,
-                    y=1.01
+                    y=1.01 if len(comparison_variables[0])>1 else 1.2
                 )
             ax_time.set_title('')
             ax_time.legend(loc='upper right',fontsize=_fontsize_legend)
@@ -226,11 +243,7 @@ def compare_datasets(dataset1, dataset1_coords,
         plt.show()
 
     return dataset1.assign_coords({'tg_names':((dataset1_coords[2]),dataset2.name.values)})\
-        .assign({'bias':((dataset1_coords[2]),np.array(ss_stats)[:,0]),
-                 'si':((dataset1_coords[2]),np.array(ss_stats)[:,1]),
-                 'rmse':((dataset1_coords[2]),np.array(ss_stats)[:,2]),
-                 'pearson':((dataset1_coords[2]),np.array(ss_stats)[:,3]),
-                 'spearman':((dataset1_coords[2]),np.array(ss_stats)[:,4])}), dataset2, ss_stats
+        , dataset2, ss_stats
 
 
 def generate_stats(data1, data2, # these are just the 1-d numpy arrays
@@ -296,7 +309,7 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
 
 
 def calc_closest_data2_in_data1(data1, data2, # data 1 is bigger than data2
-                                min_dist_th: float = 20,
+                                min_dist_th: float = 100,
                                 extra_help: tuple = ('lon',1.5)):
     """
     This function calculates the closest stations of data1 to data2

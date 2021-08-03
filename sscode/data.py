@@ -26,14 +26,14 @@ warnings.filterwarnings('ignore')
 
 # loader dicts summary
 loader_dict_options = {
-    'predictor': ['cfsr','era5'],
+    'predictor': ['cfsr','era_5'],
     'predictand': ['dac','moana','codec'],
-    'validator': ['uhslc','privtgs','linz','other']
+    'validator': ['uhslc','linz','other','privtgs']
 }
 # dataset attrs
 datasets_attrs = {
-    'era5': ('longitude','latitude',None,'ERA 5 reanalysis'),
-    'cfsr': ('lon','lat',None,'CFSR reanalysis'),
+    'era5': ('longitude','latitude',None,'ERA 5 reanalysis','u10','v10'),
+    'cfsr': ('lon','lat',None,'CFSR reanalysis','U_GRD_L103','V_GRD_L103'),
     'dac': ('longitude','latitude',None,'DAC global reanalysis'),
     'moana': ('lon','lat','site','Moana v2 hindcast'),
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
@@ -57,8 +57,7 @@ class Loader(object):
 
     def __init__(self, data_to_load: list = ['cfsr','moana','uhslc'],
                  time_resample: str = '1D', load_winds: bool = True,
-                 location: tuple = default_location,
-                 plot: bool = True):
+                 location: tuple = default_location, plot: bool = True):
         """
         Loader class constructor
 
@@ -78,8 +77,8 @@ class Loader(object):
 
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
-            if data_to_load[0]=='era5':
-                predictor = load_era5(
+            if data_to_load[0]=='era_5':
+                predictor = load_era_5(
                     time=time_resample,
                     load_winds=(load_winds,location),
                     plot=plot
@@ -91,49 +90,45 @@ class Loader(object):
                     plot=plot
                 )
             else:
-                print('\n data not available for the predictor!! \n')
+                print('\n data not available for this predictor!! \n')
             if len(predictor)==1:
                 self.predictor_slp = predictor[0]
             else:
                 self.predictor_slp = predictor[0]
                 self.predictor_wind = predictor[1]
+            self.predictor_attrs = datasets_attrs[data_to_load[0]]
         else:
-            print('\n data not available for the predictor!! \n')
+            print('\n data not available for this predictor!! \n')
 
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
             if data_to_load[1]=='dac':
-                self.predictand = load_dac_hindcast()
-                self.predictand_attrs = datasets_attrs[data_to_load[1]]
+                self.predictand = load_dac_hindcast(plot=plot)
             elif data_to_load[1]=='moana':
                 self.predictand = load_moana_hindcast(plot=plot)
-                self.predictand_attrs = datasets_attrs[data_to_load[1]]
             elif data_to_load[1]=='codec':
                 self.predictand = load_codec_hindcast(plot=plot)
-                self.predictand_attrs = datasets_attrs[data_to_load[1]]
             else:
-                print('\n data not available for the predictand!! \n')
+                print('\n data not available for this predictand!! \n')
+            self.predictand_attrs = datasets_attrs[data_to_load[1]]
         else:
-            print('\n data not available for the predictand!! \n')
+            print('\n data not available for this predictand!! \n')
 
         # load the validator
         if data_to_load[2] in loader_dict_options['validator']:
             if data_to_load[2]=='uhslc':
                 self.validator = join_load_uhslc_tgs(plot=plot)
-                self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='privtgs':
                 self.validator = load_private_tgs(plot=plot)
-                self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='linz':
                 self.validator = join_load_linz_tgs(plot=plot)
-                self.validator_attrs = datasets_attrs[data_to_load[2]]
             elif data_to_load[2]=='other':
                 self.validator = join_load_other_tgs(plot=plot)
-                self.validator_attrs = datasets_attrs[data_to_load[2]]
             else:
-                print('\n data not available for the validation!! \n')
+                print('\n data not available for this validation!! \n')
+            self.validator_attrs = datasets_attrs[data_to_load[2]]
         else:
-            print('\n data not available for the validation!! \n')
+            print('\n data not available for this validation!! \n')
                 
                 
     def validate_datasets(self, # this is prepared for UHSLC-Moana
@@ -152,17 +147,16 @@ class Loader(object):
         ) # compare datasets
 
 
-def load_era5(data_path: str = data_path+'/era_5/',
-              time: str = '1997', # time cropping recommended
-              load_winds: tuple = (True,default_location),
-              plot: bool = True):
+def load_era_5(data_path: str = data_path+'/era_5/',
+               time: str = '1997', # time cropping recommended
+               load_winds: tuple = (True,default_location),
+               plot: bool = True):
     """
-    This function loas era5 data and crops it to a time frame
+    This function loads the era5 data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
     work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
     location if requested
-
     Args:
         data_path (str, optional): Data path folder in repository. 
             - Defaults to data_path.
@@ -172,7 +166,6 @@ def load_era5(data_path: str = data_path+'/era_5/',
         load_winds (tuple): this indicates wether the winds are loaded or not, and
             the location of the projected winds.
         plot (bool): Whether to plot or not the results.
-
     Returns:
         [list]: This is a list with the data loaded.
     """
@@ -183,17 +176,20 @@ def load_era5(data_path: str = data_path+'/era_5/',
         np.arange(1988,2022,1).astype(str) # years of data + 2
     ):
         # resample to daily
-        if os.path.isfile(data_path+'ERA5_MSLP_daily.nc'):
+        if time=='1D' and os.path.isfile(data_path+'ERA_5_MSLP_daily.nc') and \
+            os.path.isfile(
+                data_path+'ERA_5_WINDs_daily.nc'
+            ): # check files existance
             print('\n loading daily resampled data... \n')
             # loading resampled data
-            mslp = xr.open_dataarray(data_path+'ERA5_MSLP_daily.nc')
+            mslp = xr.open_dataarray(data_path+'ERA_5_MSLP_daily.nc')
             if load_winds[0]:
-                wind = xr.open_dataset(data_path+'ERA5_WINDs_daily.nc')
+                wind = xr.open_dataset(data_path+'ERA_5_WINDs_daily.nc')
                 # plot the data
                 plot_pres_winds(
-                    [mslp,wind],data_name=datasets_attrs['era5'][3],
-                    lat_name=datasets_attrs['era5'][1],
-                    lon_name=datasets_attrs['era5'][0],
+                    [mslp,wind],data_name=datasets_attrs['era_5'][3],
+                    lat_name=datasets_attrs['era_5'][1],
+                    lon_name=datasets_attrs['era_5'][0],
                     u_name='u10',v_name='v10',wind_proj='wind_proj_mask'
                 ) if plot else None
             # return data
@@ -211,14 +207,14 @@ def load_era5(data_path: str = data_path+'/era_5/',
                 .resample(time=time).mean()
             wind = calculate_relative_winds(
                 location=load_winds[1],uw=uw,vw=vw,
-                lat_name=datasets_attrs['era5'][1],
-                lon_name=datasets_attrs['era5'][0]
+                lat_name=datasets_attrs['era_5'][1],
+                lon_name=datasets_attrs['era_5'][0]
             )
             # plot the data
             plot_pres_winds(
-                [mslp,wind],data_name=datasets_attrs['era5'][3],
-                lat_name=datasets_attrs['era5'][1],
-                lon_name=datasets_attrs['era5'][0],
+                [mslp,wind],data_name=datasets_attrs['era_5'][3],
+                lat_name=datasets_attrs['era_5'][1],
+                lon_name=datasets_attrs['era_5'][0],
                 u_name='u10',v_name='v10'
             ) if plot else None
         else:
@@ -263,7 +259,7 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
               load_winds: tuple = (False,default_location),
               plot: bool = True):
     """
-    This function loas cfsr data and crops it to a time frame
+    This function loads the cfsr data and crops it to a time frame
     of a year, or resamples it daily, as it is very difficult to 
     work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
@@ -638,7 +634,8 @@ def load_moana_hindcast_msea(file_path: str =
 
 
 def load_dac_hindcast(file_path: str = 
-    data_path+'/storm_surge_data/dac_reanalysis/DAC_SS_6H_1993_2020.nc'):
+    data_path+'/storm_surge_data/dac_reanalysis/DAC_SS_6H_1993_2020.nc',
+    plot: bool = False):
 
     """
     Load the DAC hindcast in a single xarray dataset
