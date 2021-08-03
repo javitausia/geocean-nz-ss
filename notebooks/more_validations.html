@@ -330,7 +330,7 @@
 
 
  calculated min distances (km) in Moana v2 hindcast to LINZ tgs: 
- [5.319717747423619, 2.318472050133609, 4.698606345256596, 4.106133965791829, 3.1307877704095715, 17.988003692172256, 1.2755996354300694, 5.878134710490101, 2.1041482521719543, 4.015667223503161, 3.168586231604361, 5.3741308824231755, 10.09186164411121, 1.8956937268750171, 9.621120849018142, 4.625968007830678] 
+ [5.319717747423619, 2.3184720501332547, 4.698606345256596, 4.106133965791918, 3.130787770409219, 17.988003692172256, 1.2755996354300678, 5.878134710491162, 2.1041482521719543, 4.015667223502896, 3.1685862316040065, 5.3741308824231755, 10.09186164411121, 1.8956937268750171, 9.621120849018142, 4.625968007830678] 
 </pre></div>
 </div>
 <img alt="../_images/more_validations_3_8.png" src="../_images/more_validations_3_8.png" />
@@ -354,6 +354,67 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
+<span class="n">loader_linz_2</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loader_linz_2</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
+    <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">]]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+
+
+ loading daily resampled data... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_4_1.png" src="../_images/more_validations_4_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the DAC hindcast data... 
+
+
+ loading and plotting the LINZ tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_4_3.png" src="../_images/more_validations_4_3.png" />
+<img alt="../_images/more_validations_4_4.png" src="../_images/more_validations_4_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in DAC global reanalysis with LINZ tgs!! 
+
+
+ 
+ TGs to analyze are: 
+ [&#39;GBIT&#39; &#39;TAUT&#39; &#39;CPIT&#39; &#39;CHST&#39; &#39;SUMT&#39; &#39;NCPT&#39; &#39;AUCT&#39; &#39;KAIT&#39; &#39;PUYT&#39; &#39;MNKT&#39;
+ &#39;GIST&#39; &#39;WLGT&#39; &#39;NAPT&#39; &#39;OTAT&#39; &#39;LOTT&#39;] 
+
+
+ which correspond to 
+ [6757, 6034, 4461, 3958, 3236, 7594, 6512, 3725, 2002, 6390, 5557, 4334, 5190, 2140, 6163] 
+ in DAC global reanalysis 
+
+
+ calculated min distances (km) in DAC global reanalysis to LINZ tgs: 
+ [7.590038497049444, 12.57385829711142, 9.75774366494515, 12.41903418316871, 9.068172766589313, 10.389226310537907, 9.670289852849752, 10.19706091699214, 11.242251656455334, 5.728641373521477, 9.756618650072202, 4.591126900858283, 7.4684362429430315, 11.268854883263696, 9.26984591158987] 
+</pre></div>
+</div>
+<img alt="../_images/more_validations_4_6.png" src="../_images/more_validations_4_6.png" />
+<img alt="../_images/more_validations_4_7.png" src="../_images/more_validations_4_7.png" />
+<img alt="../_images/more_validations_4_8.png" src="../_images/more_validations_4_8.png" />
+<img alt="../_images/more_validations_4_9.png" src="../_images/more_validations_4_9.png" />
+<img alt="../_images/more_validations_4_10.png" src="../_images/more_validations_4_10.png" />
+<img alt="../_images/more_validations_4_11.png" src="../_images/more_validations_4_11.png" />
+<img alt="../_images/more_validations_4_12.png" src="../_images/more_validations_4_12.png" />
+<img alt="../_images/more_validations_4_13.png" src="../_images/more_validations_4_13.png" />
+<img alt="../_images/more_validations_4_14.png" src="../_images/more_validations_4_14.png" />
+<img alt="../_images/more_validations_4_15.png" src="../_images/more_validations_4_15.png" />
+<img alt="../_images/more_validations_4_16.png" src="../_images/more_validations_4_16.png" />
+<img alt="../_images/more_validations_4_17.png" src="../_images/more_validations_4_17.png" />
+<img alt="../_images/more_validations_4_18.png" src="../_images/more_validations_4_18.png" />
+<img alt="../_images/more_validations_4_19.png" src="../_images/more_validations_4_19.png" />
+<img alt="../_images/more_validations_4_20.png" src="../_images/more_validations_4_20.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
 <span class="n">loader_other</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">loader_other</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
     <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
@@ -368,16 +429,16 @@
  loading daily resampled data... 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_4_1.png" src="../_images/more_validations_4_1.png" />
+<img alt="../_images/more_validations_5_1.png" src="../_images/more_validations_5_1.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_4_3.png" src="../_images/more_validations_4_3.png" />
+<img alt="../_images/more_validations_5_3.png" src="../_images/more_validations_5_3.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the OTHER tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_4_5.png" src="../_images/more_validations_4_5.png" />
-<img alt="../_images/more_validations_4_6.png" src="../_images/more_validations_4_6.png" />
+<img alt="../_images/more_validations_5_5.png" src="../_images/more_validations_5_5.png" />
+<img alt="../_images/more_validations_5_6.png" src="../_images/more_validations_5_6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with OTHER tgs!! 
 
 
@@ -393,17 +454,17 @@
 
 
  calculated min distances (km) in Moana v2 hindcast to OTHER tgs: 
- [3.7511034902355385, 5.482027490429699, 7.339363979702297, 3.6193477047540705, 6.561342239106438, 11.820307701397114, 5.095093595142064, 1.28643175849521] 
+ [3.7511034902355367, 5.482027490429699, 7.339363979701588, 3.61934770475301, 6.561342239106438, 11.820307701397114, 5.095093595142064, 1.28643175849521] 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_4_8.png" src="../_images/more_validations_4_8.png" />
-<img alt="../_images/more_validations_4_9.png" src="../_images/more_validations_4_9.png" />
-<img alt="../_images/more_validations_4_10.png" src="../_images/more_validations_4_10.png" />
-<img alt="../_images/more_validations_4_11.png" src="../_images/more_validations_4_11.png" />
-<img alt="../_images/more_validations_4_12.png" src="../_images/more_validations_4_12.png" />
-<img alt="../_images/more_validations_4_13.png" src="../_images/more_validations_4_13.png" />
-<img alt="../_images/more_validations_4_14.png" src="../_images/more_validations_4_14.png" />
-<img alt="../_images/more_validations_4_15.png" src="../_images/more_validations_4_15.png" />
+<img alt="../_images/more_validations_5_8.png" src="../_images/more_validations_5_8.png" />
+<img alt="../_images/more_validations_5_9.png" src="../_images/more_validations_5_9.png" />
+<img alt="../_images/more_validations_5_10.png" src="../_images/more_validations_5_10.png" />
+<img alt="../_images/more_validations_5_11.png" src="../_images/more_validations_5_11.png" />
+<img alt="../_images/more_validations_5_12.png" src="../_images/more_validations_5_12.png" />
+<img alt="../_images/more_validations_5_13.png" src="../_images/more_validations_5_13.png" />
+<img alt="../_images/more_validations_5_14.png" src="../_images/more_validations_5_14.png" />
+<img alt="../_images/more_validations_5_15.png" src="../_images/more_validations_5_15.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -436,7 +497,7 @@
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Text(0.5, 1.0, &#39;LINZ&#39;), Text(0.5, 1.0, &#39;OTHER&#39;))
 </pre></div>
 </div>
-<img alt="../_images/more_validations_5_1.png" src="../_images/more_validations_5_1.png" />
+<img alt="../_images/more_validations_6_1.png" src="../_images/more_validations_6_1.png" />
 </div>
 </div>
 </div>

@@ -377,6 +377,25 @@
     <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
     <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
+
+<span class="c1"># ---- maybe DAC reanalysis wants to be used ----</span>
+<span class="c1"># dataset1 = load_cfsr_moana_uhslc.predictand</span>
+<span class="c1"># dataset1_coords = (&#39;longitude&#39;,&#39;latitude&#39;,None,&#39;DAC ...&#39;)</span>
+<span class="c1"># dataset1 = xr.Dataset(</span>
+<span class="c1">#     {</span>
+<span class="c1">#         &#39;ss&#39;: ((&#39;time&#39;,&#39;site&#39;), dataset1.values.reshape(</span>
+<span class="c1">#             -1,len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))),</span>
+<span class="c1">#         dataset1_coords[0]: ((&#39;site&#39;), list(dataset1[dataset1_coords[0]].values)*int(</span>
+<span class="c1">#             (len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))\</span>
+<span class="c1">#                 /len(dataset1[dataset1_coords[0]]))),</span>
+<span class="c1">#         dataset1_coords[1]: ((&#39;site&#39;), np.repeat(dataset1[dataset1_coords[1]].values,</span>
+<span class="c1">#             (len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))\</span>
+<span class="c1">#                 /len(dataset1[dataset1_coords[1]])))</span>
+<span class="c1">#     }, coords={</span>
+<span class="c1">#         &#39;site&#39;: np.arange(len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]])),</span>
+<span class="c1">#         &#39;time&#39;: dataset1.time.values</span>
+<span class="c1">#     }</span>
+<span class="c1"># ).dropna(dim=&#39;site&#39;,how=&#39;all&#39;)</span>
 </pre></div>
 </div>
 </div>

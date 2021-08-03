@@ -1,6 +1,6 @@
 # geoocean-nz-ss
 
-This repository will contain all the updated information in the shared project between GeoOcean-MetService
+This repository will contain all the updated information in the shared project between GeoOcean-MetOcean
 
 updated info at: https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing !!
 
@@ -15,7 +15,7 @@ jupyter book summary [here](https://javitausia.github.io/geocean-nz-ss/)
 related repos:
 * https://github.com/metocean/storm_surge (additonal python codes)
 * https://github.com/metocean/storm_surge_data (all storm surge data is hosted here)
-* https://gitlab.com/geoocean/teslakit (some tools were created here)
+* https://gitlab.com/geoocean/teslakit (some math tools were created here)
 
 ## TODO (or doing)
 
@@ -31,15 +31,27 @@ extra-tropical storms, over and above the astronomical tide (AT). Storm surge is
 coastal flooding and its magnitude has a large spatial variability. Flooding associated with storm surges is one of the
 most common natural hazards for coastal areas worldwide (Cagigal et al., 2019) ...
 
-In this project, which is a collaboration project between the University of Cantabria (Spain) and Metservice (New Zealand), 
+In this project, which is a collaboration project between the University of Cantabria (Spain) and MetOcean (New Zealand), 
 we will develop different machine learning tools that might help in the forecast of a storm-surge model ...
 
 ## Data explanation
 
 Different datasets will be used in the project, but all of them belongs to one of these categories:
+
 * Sea-level-pressure fields, which can be the ERA5 or the CFSR reanalysis
 * Storm surge hindcast data, which can be Moana, DAC, CoDEC...
 * Storm surge real observations, where different datasets / organizations are involved!!
+
+For the rest of the project and in the [book](https://javitausia.github.io/geocean-nz-ss/), the majority of the examples are
+built over the datasets explained below:
+
+* The [Moana v2 hindcast](https://github.com/metocean/storm_surge_data/tree/main/moana_hindcast_v2) as the storm surge hindcast predictand
+* The CFSR sea-level-pressure fields and u10 and v10 wind components as the predictors (notice here that we also calculated the projected winds to a determined location in the islands, go to the end of [this notebook](/notebooks/data_visualization.ipynb) to see results)
+* Some [UHSLC](https://uhslc.soest.hawaii.edu/) tidal gauges as the "validators", although more tidal gauges from different resources / organizations might be also helpful
+
+data format is available in the figure below:
+
+![data](/media/images/data-format.png)
 
 ## Main contents
 
@@ -128,8 +140,11 @@ conda activate ssnz
 
 ## Additional support:
 
-Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com!!
+Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com or tausiaj@unican.es!!
 
 ## Authors:
 
 * Javier Tausía Hoyal
+* Paula Camus Braña
+* Fernando J. Méndez Incera
+* Antonio S. Cofiño González

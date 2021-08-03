@@ -307,7 +307,7 @@
                 
   <div class="section" id="geoocean-nz-ss">
 <h1>geoocean-nz-ss<a class="headerlink" href="#geoocean-nz-ss" title="Permalink to this headline">¶</a></h1>
-<p>This repository will contain all the updated information in the shared project between GeoOcean-MetService</p>
+<p>This repository will contain all the updated information in the shared project between GeoOcean-MetOcean</p>
 <p>updated info at: <a class="reference external" href="https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing">https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing</a> !!</p>
 <p>And the last pptx presentation <a class="reference external" href="https://docs.google.com/presentation/d/19U6qWkH9g8NhS2SFkBasOcbjiEsGvInfBQ7C6YFkJhk/edit?usp=sharing">(20th of July)</a> !!</p>
 <p>below, a summary of the region and data involved in the first part of the analysis can be seen:</p>
@@ -317,7 +317,7 @@
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/metocean/storm_surge">https://github.com/metocean/storm_surge</a> (additonal python codes)</p></li>
 <li><p><a class="reference external" href="https://github.com/metocean/storm_surge_data">https://github.com/metocean/storm_surge_data</a> (all storm surge data is hosted here)</p></li>
-<li><p><a class="reference external" href="https://gitlab.com/geoocean/teslakit">https://gitlab.com/geoocean/teslakit</a> (some tools were created here)</p></li>
+<li><p><a class="reference external" href="https://gitlab.com/geoocean/teslakit">https://gitlab.com/geoocean/teslakit</a> (some math tools were created here)</p></li>
 </ul>
 <div class="section" id="todo-or-doing">
 <h2>TODO (or doing)<a class="headerlink" href="#todo-or-doing" title="Permalink to this headline">¶</a></h2>
@@ -334,7 +334,7 @@
 extra-tropical storms, over and above the astronomical tide (AT). Storm surge is one of the most critical components of
 coastal flooding and its magnitude has a large spatial variability. Flooding associated with storm surges is one of the
 most common natural hazards for coastal areas worldwide (Cagigal et al., 2019) …</p>
-<p>In this project, which is a collaboration project between the University of Cantabria (Spain) and Metservice (New Zealand),
+<p>In this project, which is a collaboration project between the University of Cantabria (Spain) and MetOcean (New Zealand),
 we will develop different machine learning tools that might help in the forecast of a storm-surge model …</p>
 </div>
 <div class="section" id="data-explanation">
@@ -345,6 +345,15 @@ we will develop different machine learning tools that might help in the forecast
 <li><p>Storm surge hindcast data, which can be Moana, DAC, CoDEC…</p></li>
 <li><p>Storm surge real observations, where different datasets / organizations are involved!!</p></li>
 </ul>
+<p>For the rest of the project and in the <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/">book</a>, the majority of the examples are
+built over the datasets explained below:</p>
+<ul class="simple">
+<li><p>The <a class="reference external" href="https://github.com/metocean/storm_surge_data/tree/main/moana_hindcast_v2">Moana v2 hindcast</a> as the storm surge hindcast predictand</p></li>
+<li><p>The CFSR sea-level-pressure fields and u10 and v10 wind components as the predictors (notice here that we also calculated the projected winds to a determined location in the islands, go to the end of <a class="reference internal" href="notebooks/data_visualization.html"><span class="doc std std-doc">this notebook</span></a> to see results)</p></li>
+<li><p>Some <a class="reference external" href="https://uhslc.soest.hawaii.edu/">UHSLC</a> tidal gauges as the “validators”, although more tidal gauges from different resources / organizations might be also helpful</p></li>
+</ul>
+<p>data format is available in the figure below:</p>
+<p><img alt="data" src="_images/data-format.png" /></p>
 </div>
 <div class="section" id="main-contents">
 <h2>Main contents<a class="headerlink" href="#main-contents" title="Permalink to this headline">¶</a></h2>
@@ -429,12 +438,15 @@ we will develop different machine learning tools that might help in the forecast
 </div>
 <div class="section" id="additional-support">
 <h2>Additional support:<a class="headerlink" href="#additional-support" title="Permalink to this headline">¶</a></h2>
-<p>Data used in the project and a detailed explanation of the acquisition can be requested from <a class="reference external" href="mailto:jtausiahoyal&#37;&#52;&#48;gmail&#46;com">jtausiahoyal<span>&#64;</span>gmail<span>&#46;</span>com</a>!!</p>
+<p>Data used in the project and a detailed explanation of the acquisition can be requested from <a class="reference external" href="mailto:jtausiahoyal&#37;&#52;&#48;gmail&#46;com">jtausiahoyal<span>&#64;</span>gmail<span>&#46;</span>com</a> or <a class="reference external" href="mailto:tausiaj&#37;&#52;&#48;unican&#46;es">tausiaj<span>&#64;</span>unican<span>&#46;</span>es</a>!!</p>
 </div>
 <div class="section" id="authors">
 <h2>Authors:<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Javier Tausía Hoyal</p></li>
+<li><p>Paula Camus Braña</p></li>
+<li><p>Fernando J. Méndez Incera</p></li>
+<li><p>Antonio S. Cofiño González</p></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
