@@ -144,6 +144,18 @@ Data used in the project and a detailed explanation of the acquisition can be re
 
 ## Authors:
 
+<!-- AUTHORS -->
+<h2 id="authors"> :bust_in_silhouette: Author</h2>
+
+<div>
+  <img align="left" src="media/images/logo.jpeg" alt="" width=180px id="geo_logo">
+  <p style='display:inline;float:right'>
+      :man: <b> GeoOcean (University of Cantabria) </b> <br>
+      GitHub: <a href="https://github.com/javitausia"> @javitausia </a> <br>
+      Web page <a href="https://geoocean.unican.es/"> GeoOcean group </a> 
+  </p>
+</div>
+
 * Javier Tausía Hoyal
 * Paula Camus Braña
 * Fernando J. Méndez Incera
