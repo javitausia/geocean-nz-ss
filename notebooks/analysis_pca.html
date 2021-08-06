@@ -516,7 +516,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  (11354, 25, 25) 
 
 
- calculated PCs matrix with shape: 
+ calculating PCs matrix with shape: 
  (11353, 1250) 
 
 
@@ -550,7 +550,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <span class="n">new_location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">178</span><span class="p">,</span><span class="o">-</span><span class="mi">38</span><span class="p">)</span>
 <span class="n">PCA_DynamicPred</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
-    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
         <span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
         <span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span>
@@ -558,7 +558,8 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
     <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span>
     <span class="n">wind_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
     <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t&#39;</span><span class="p">]</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-1&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -581,11 +582,11 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  (11354, 11, 11) 
 
 
- calculated PCs matrix with shape: 
- (11353, 363) 
+ calculating PCs matrix with shape: 
+ (11352, 726) 
 
 
- plotting 2 components with 3 EOFs + PC... 
+ plotting 2 components with 6 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
@@ -596,14 +597,14 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <img alt="../_images/analysis_pca_11_3.png" src="../_images/analysis_pca_11_3.png" />
 <img alt="../_images/analysis_pca_11_4.png" src="../_images/analysis_pca_11_4.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;xarray.Dataset&gt;
- Dimensions:   (n_components: 363, n_features: 363, n_lat: 11, n_lon: 11, time: 11353)
+ Dimensions:   (n_components: 726, n_features: 726, n_lat: 11, n_lon: 11, time: 11352)
  Coordinates:
-   * time      (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-30
+   * time      (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-29
  Dimensions without coordinates: n_components, n_features, n_lat, n_lon
  Data variables:
-     PCs       (time, n_components) float64 -7.43 4.781 ... 2.259e-18 1.382e-19
-     EOFs      (n_components, n_features) float64 -0.07382 -0.07481 ... 0.0 0.0
-     variance  (n_components) float64 138.3 54.97 42.0 ... 8.679e-35 5.777e-36
+     PCs       (time, n_components) float64 -3.971 -6.898 ... -1.152e-19
+     EOFs      (n_components, n_features) float64 -0.04315 -0.0443 ... -0.0 -0.0
+     variance  (n_components) float64 187.6 110.9 60.56 ... 4.635e-35 4.779e-36
      pcs_lon   (n_lon) float32 175.5 176.0 176.5 177.0 ... 179.5 180.0 180.5
      pcs_lat   (n_lat) float32 -35.5 -36.0 -36.5 -37.0 ... -39.5 -40.0 -40.5,
  StandardScaler())
@@ -616,9 +617,10 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <h3><span class="section-number">4.4.4. </span>Local PCs (just SLP with time lapse)<a class="headerlink" href="#local-pcs-just-slp-with-time-lapse" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># more pcs with time lapse</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_recon_pcs</span>
+<span class="c1"># more pcs with time lapse</span>
 <span class="n">new_location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">168</span><span class="p">,</span><span class="o">-</span><span class="mi">44</span><span class="p">)</span>
-<span class="n">PCA_DynamicPred</span><span class="p">(</span>
+<span class="n">pca_data</span><span class="p">,</span> <span class="n">pca_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
     <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
@@ -628,6 +630,14 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
     <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
     <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-3&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-4&#39;</span><span class="p">]</span>
 <span class="p">)</span>
+<span class="n">plot_recon_pcs</span><span class="p">(</span>
+    <span class="n">pca_data</span><span class="p">,</span> <span class="n">pca_scaler</span><span class="p">,</span> <span class="n">n_pcs_recon</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span>
+        <span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span>
+    <span class="p">),</span> <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;SLP in t-3&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-4&#39;</span><span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -635,7 +645,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> lets calculate the PCs... 
 
 
- calculated PCs matrix with shape: 
+ calculating PCs matrix with shape: 
  (11349, 605) 
 
 
@@ -651,20 +661,36 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <img alt="../_images/analysis_pca_13_4.png" src="../_images/analysis_pca_13_4.png" />
 <img alt="../_images/analysis_pca_13_5.png" src="../_images/analysis_pca_13_5.png" />
 <img alt="../_images/analysis_pca_13_6.png" src="../_images/analysis_pca_13_6.png" />
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;xarray.Dataset&gt;
- Dimensions:   (n_components: 605, n_features: 605, n_lat: 11, n_lon: 11, time: 11349)
- Coordinates:
-   * time      (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-26
- Dimensions without coordinates: n_components, n_features, n_lat, n_lon
- Data variables:
-     PCs       (time, n_components) float64 -15.87 -0.9563 ... -6.611e-06
-     EOFs      (n_components, n_features) float64 -0.03065 -0.03139 ... -0.009912
-     variance  (n_components) float64 374.0 134.9 47.98 ... 2.325e-11 2.303e-11
-     pcs_lon   (n_lon) float32 165.5 166.0 166.5 167.0 ... 169.5 170.0 170.5
-     pcs_lat   (n_lat) float32 -41.5 -42.0 -42.5 -43.0 ... -45.5 -46.0 -46.5,
- StandardScaler())
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting reconstruction of 5 EOFs... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1... 
 </pre></div>
 </div>
+<img alt="../_images/analysis_pca_13_8.png" src="../_images/analysis_pca_13_8.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
+<span class="c1"># plot the real slp in the reconstructed time</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;2010-07-29&#39;</span><span class="p">,</span><span class="s1">&#39;2010-08-02&#39;</span><span class="p">),</span>
+    <span class="n">longitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">),</span>
+    <span class="n">latitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">2.6</span><span class="p">,</span><span class="n">new_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">2.6</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="c1"># big figsize to read labels</span>
+    <span class="n">col</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="n">col_wrap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">,</span><span class="n">subplot_kws</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+    <span class="p">},</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">plot_ccrs_nz</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">plot_land</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">plot_labels</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/analysis_pca_14_0.png" src="../_images/analysis_pca_14_0.png" />
 </div>
 </div>
 </div>
@@ -698,7 +724,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  lets calculate the PCs... 
 
 
- calculated PCs matrix with shape: 
+ calculating PCs matrix with shape: 
  (8065, 4032) 
 
 
@@ -708,12 +734,12 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_15_1.png" src="../_images/analysis_pca_15_1.png" />
-<img alt="../_images/analysis_pca_15_2.png" src="../_images/analysis_pca_15_2.png" />
-<img alt="../_images/analysis_pca_15_3.png" src="../_images/analysis_pca_15_3.png" />
-<img alt="../_images/analysis_pca_15_4.png" src="../_images/analysis_pca_15_4.png" />
-<img alt="../_images/analysis_pca_15_5.png" src="../_images/analysis_pca_15_5.png" />
-<img alt="../_images/analysis_pca_15_6.png" src="../_images/analysis_pca_15_6.png" />
+<img alt="../_images/analysis_pca_16_1.png" src="../_images/analysis_pca_16_1.png" />
+<img alt="../_images/analysis_pca_16_2.png" src="../_images/analysis_pca_16_2.png" />
+<img alt="../_images/analysis_pca_16_3.png" src="../_images/analysis_pca_16_3.png" />
+<img alt="../_images/analysis_pca_16_4.png" src="../_images/analysis_pca_16_4.png" />
+<img alt="../_images/analysis_pca_16_5.png" src="../_images/analysis_pca_16_5.png" />
+<img alt="../_images/analysis_pca_16_6.png" src="../_images/analysis_pca_16_6.png" />
 </div>
 </div>
 </div>
