@@ -142,7 +142,6 @@ conda activate ssnz
 
 Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com or tausiaj@unican.es!!
 
-## Authors:
 
 <!-- AUTHORS -->
 <h2 id="authors"> :bust_in_silhouette: Author</h2>
@@ -150,13 +149,16 @@ Data used in the project and a detailed explanation of the acquisition can be re
 <div>
   <img align="left" src="media/images/logo.jpeg" alt="" width=180px id="geo_logo">
   <p style='display:inline;float:right'>
-      :man: <b> GeoOcean (University of Cantabria) </b> <br>
-      GitHub: <a href="https://github.com/javitausia"> @javitausia </a> <br>
-      Web page <a href="https://geoocean.unican.es/"> GeoOcean group </a> 
+    :office: <b>  GeoOcean (University of Cantabria) </b> <br>
+    GitHub: <a href="https://github.com/javitausia"> @javitausia </a> <br>
+    Web page <a href="https://geoocean.unican.es/"> GeoOcean group </a> 
+    Content creators: 
+    <ul>
+      <li>Javier Tausía Hoyal</li>
+      <li>Paula Camus Braña</li>
+      <li>Fernando J. Méndez Incera</li>
+      <li>Antonio S. Cofiño González</li>
+    </ul>
   </p>
 </div>
 
-* Javier Tausía Hoyal
-* Paula Camus Braña
-* Fernando J. Méndez Incera
-* Antonio S. Cofiño González
