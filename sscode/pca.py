@@ -104,10 +104,10 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     # lets now create the PCs matrix
     x_shape = len(pres.time.values)-time_lapse
     y_shape = len(pres[pres_vars[1]].values)*len(pres[pres_vars[2]].values)
-    pcs_matrix = np.zeros((x_shape,(time_lapse*grad_add+wind_add)*y_shape))
+    pcs_matrix = np.zeros((x_shape,(time_lapse*(grad_add+wind_add))*y_shape))
     # fill the pcs_matrix array with data
     for t in range(x_shape):
-        for tl in range(0,time_lapse*grad_add,grad_add):
+        for tl in range(0,time_lapse*(grad_add+wind_add),grad_add+wind_add):
             try:
                 pcs_matrix[t,y_shape*tl:y_shape*(tl+1)] = \
                     pres.isel(time=t-tl)[pres_vars[0]].values.reshape(-1)
@@ -117,9 +117,9 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
             if calculate_gradient:
                 pcs_matrix[t,y_shape*(tl+1):y_shape*(tl+2)] = \
                     pres.isel(time=t-tl)[pres_vars[0]+'_gradient'].values.reshape(-1)
-        if wind_add:
-            pcs_matrix[t,y_shape*(tl+grad_add):] = \
-                wind.isel(time=t-tl).values.reshape(-1)
+            if wind_add:
+                pcs_matrix[t,y_shape*(tl+grad_add):y_shape*(tl+grad_add+1)] = \
+                    wind.isel(time=t-tl).values.reshape(-1)
 
     # standarize the features
     pcs_scaler = StandardScaler()

@@ -326,6 +326,13 @@ class MDA_RBF_Model(object):
             \n'
         )
 
+        if self.dict_to_pca['region'][0]!='local':
+            return [PCA_DynamicPred(
+                        self.raw_slp_data, # this is always the same
+                        **self.dict_to_pca # extra arguments without the winds
+                    )[0]
+                ] * self.num_locs # same PCs in all sites
+
         for ipc in range(self.num_locs):
 
             print('pcs matrix calculation for site / shore {}'.format(
@@ -419,7 +426,7 @@ class MDA_RBF_Model(object):
             # iterate over all the shores / just one location
             for isite, site in enumerate(
                 self.ss_real_data[sel_loc].site.values if ss_pcs==1 else
-                    self.ss_real_data[sel_loc].site.values[::22]
+                    self.ss_real_data[sel_loc].site.values[::2] # TODO: Be careful with number of stations!!!
             ):  
 
                 experiment_datasets = []

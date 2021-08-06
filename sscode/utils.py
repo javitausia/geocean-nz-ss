@@ -4,8 +4,10 @@ import xarray as xr
 import great_circle_calculator.great_circle_calculator as gcc
 from math import sqrt
 
+from xarray.backends.api import open_dataarray
+
 # custom
-from .config import default_location
+from .config import default_location, data_path
 
 
 def calculate_relative_winds(location: tuple = default_location,
@@ -55,7 +57,7 @@ def calculate_relative_winds(location: tuple = default_location,
         (rel_direcs>delete_direc)|(rel_direcs<-delete_direc),np.nan,rel_direcs
     )
 
-    return wind.assign({
+    return_winds = wind.assign({
         'wind_proj': (('time',lat_name,lon_name),np.cos(rel_direcs*np.pi/180) * \
             np.sqrt(
                 wind[uw.name].values**2 + wind[vw.name].values**2 # add magnitude
@@ -63,6 +65,12 @@ def calculate_relative_winds(location: tuple = default_location,
         'bearings': ((lat_name,lon_name),bearings),
         'direc_proj_math': ((lat_name,lon_name),trans_geosdeg2mathdeg(bearings)*np.pi/180)
     }) # final dataset
+
+    return return_winds.assign({
+        'wind_proj_mask': (('time',lat_name,lon_name),
+            return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
+        ) # TODO: check file existance
+    })
 
 
 def calculate_bearings(latitudes, longitudes,

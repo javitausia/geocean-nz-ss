@@ -165,6 +165,8 @@ def plot_recon_pcs(pca_data, pcs_scaler,
     time_to_plot = np.random.randint(slp.shape[0])
     slp_plot = slp[time_to_plot,:]
 
+    vmin, vmax = np.nanmin(slp_plot), np.nanmax(slp_plot)
+
     # calculate number of different EOFs in data
     n_features = len(pca_data.n_features.values)
     n_lons = len(pca_data.n_lon.values)
@@ -185,7 +187,7 @@ def plot_recon_pcs(pca_data, pcs_scaler,
     # different EOFs
     axes = axes if n_EOFs>1 else [axes] # allow individual plotting
     # plot colorbars
-    plot_cbar = True if n_EOFs<=3 else False
+    plot_cbar = True if n_EOFs<=6 else False
     for ix,ax in enumerate(axes): # num_axes = n_EOFs
         eofp = ax.pcolormesh(
             pca_data.pcs_lon.values,
@@ -193,10 +195,11 @@ def plot_recon_pcs(pca_data, pcs_scaler,
             slp_plot[ix*(n_lons*n_lats):(ix+1)*(n_lons*n_lats)]\
                 .reshape(n_lats,n_lons),
             transform=ccrs.PlateCarree(),
-            cmap='RdBu_r',clim=(-1,1)
+            cmap='RdBu_r',clim=(-1,1),
+            vmin=vmin, vmax=vmax
         )
         ax.set_title(pca_ttls[ix])
-        if plot_cbar:
+        if plot_cbar and ix==len(axes)-1:
             pos_ax = ax.get_position()
             pos_colbar = fig.add_axes([
                 pos_ax.x0 + pos_ax.width + 0.02, 
