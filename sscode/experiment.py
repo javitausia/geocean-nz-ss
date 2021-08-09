@@ -181,12 +181,13 @@ class Experiment(object):
                     # perform all the individual experiments
                     print(
                         '\n --------------------------------------------------------- \
-                        \n\n Experiment {} in site {} ...... \
+                        \n\n Experiment {} in site {}, coords = {} ...... \
                         \n\n pca_params = {} \n\n linear_model_params = {} \
                         \n\n and iteration with indexes = {} \
                         \n\n ---------------------------------------------------------'.format(
                             model_counter+1, # this is just the counter
                             site, # site to analyze in this loop
+                            site_location, # site coordinates
                             dict(zip(self.pca_attrs.keys(),parameters[:5])),
                             dict(zip(self.model_attrs.keys(),parameters[5:])),
                             i_parameters # this are the parameters indexes
@@ -249,12 +250,12 @@ class Experiment(object):
                         )
 
                     # resample ss to time_resample parameter
-                    ss_site = ss_site.resample(time=parameters[3]).max()\
+                    ss_site_model = ss_site.resample(time=parameters[3]).max()\
                         .dropna(dim='time',how='all') # delete NaNs
 
                     # and lets now calculate the linear model
                     stats = MultiLinear_Regression(
-                        pca_data,ss_site,pcs_scaler=None, # add to plot slp recon
+                        pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
@@ -365,12 +366,12 @@ class Experiment(object):
                         )
 
                     # resample ss to time_resample parameter
-                    ss_site = ss_site.resample(time=parameters[3]).max()\
+                    ss_site_model = ss_site.resample(time=parameters[3]).max()\
                         .dropna(dim='time',how='all') # delete NaNs
 
                     # and lets now calculate the linear model
                     stats, model, t_train = KNN_Regression(
-                        pca_data,ss_site,pcs_scaler=None, # add to plot slp recon
+                        pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,

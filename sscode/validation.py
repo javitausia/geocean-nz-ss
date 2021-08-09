@@ -56,6 +56,9 @@ metrics_dictionary = {
     'pocid': pocid
 } # this is the metrics dictionary with all the possible metrics
 
+# TODO: import DESIRED metric in line 9 and append to metrics_dictionary
+#       if a new metric is wanted to be used !!
+
 
 def compare_datasets(dataset1, dataset1_coords, 
                      dataset2, dataset2_coords, # these 4 are loaded in Loader

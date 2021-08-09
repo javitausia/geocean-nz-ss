@@ -4,7 +4,7 @@ import pandas as pd
 
 # sklearn
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, ElasticNet
 
 # plotting
 import matplotlib.pyplot as plt
@@ -22,6 +22,8 @@ from .validation import generate_stats, validata_w_tgs
 def MultiLinear_Regression(
     X_set, y_set, pcs_scaler = None,
     validator: tuple = (False,None,None),
+    linear_model = LinearRegression, # this is the model to use
+    linear_model_parameters = {'normalize': True},
     model_metrics: list = [
         'bias','si','rmse','pearson','spearman','rscore',
         'mae', 'me', 'expl_var', # ...
@@ -42,6 +44,9 @@ def MultiLinear_Regression(
         validator (tuple, optional): This is the optional tuple to validate
             the data if required. Defaults to (False,None,None), but an
             example is (True,xarray.Validator(ss),'ss')
+        linear_model (sklearn.linear_model): This is the lineal model to use
+            where it can be any linear model in the statistical sklearn
+            module located at sklearn.linear_model
         X_set_var (str): This is the predictor var name. Defaults to 'PCs'.
         y_set_var (str): This is the predictand var name. Defaults to 'ss'.
         train_size (float, optional): Training set size out of 1. Defaults to 0.8.
@@ -102,7 +107,7 @@ def MultiLinear_Regression(
     )
 
     # perform the linear regression
-    lm = LinearRegression(normalize=True)
+    lm = linear_model(**linear_model_parameters)
     lm.fit(X_train, y_train)
     prediction = lm.predict(X_test)
 
