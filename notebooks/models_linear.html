@@ -356,7 +356,7 @@
 
 <span class="c1"># maths</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">ElasticNet</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 
 <span class="c1"># plotting</span>
@@ -393,6 +393,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;frozen importlib._bootstrap&gt;:219: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 16 from C header, got 88 from PyObject
+</pre></div>
+</div>
 <div class="output text_html">
 <style>
 .output_png {
@@ -474,7 +477,8 @@
             <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">stats_stat</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
             <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">model</span>
         <span class="p">)</span> <span class="c1"># pre-loaded pcs</span>
         <span class="n">stats_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
     <span class="c1"># save the statistics</span>
