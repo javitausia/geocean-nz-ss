@@ -135,22 +135,27 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_gp.html">
-   8. Extras 1: Kernel methods for regression (Beta version)
+   8. Kernel methods for regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_sarima_prophet.html">
+   9. Sarima and Prophet models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   9. RUN experiments
+   10. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   10. MDA - RBF model
+   11. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   11. VISUALIZE experiments results
+   12. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -397,7 +402,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
                         <span class="n">time_lapse</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay </span>
                         <span class="n">time_resample</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span>
                         <span class="n">region</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region</span><span class="p">),</span>
-                        <span class="n">pca_plot</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+                        <span class="n">pca_plot</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
                         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                         <span class="n">pca_ttls</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pca_borders</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -425,8 +430,9 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <span class="sd">            region (tuple, optional): Region to crop the slp to. </span>
 <span class="sd">                - Defaults to (True,default_region).</span>
 <span class="sd">            pca_plot (tuple, bool): Wether to plot or not the final results.</span>
-<span class="sd">                - Defaults to (True,False), as the second boolean indicator refers</span>
+<span class="sd">                - Defaults to (True,False,1), as the second boolean indicator refers</span>
 <span class="sd">                to the de-standarization of the EOFs, which is not totally validated</span>
+<span class="sd">                ** pca_plot[2] == n_plot</span>
 <span class="sd">            verbose (bool, optional): Wether or not to debug the actions.</span>
 <span class="sd">                - Defaults to True.</span>
 <span class="sd">            pca_ttls: These are the titles for the pca plots if wanted.</span>
@@ -442,6 +448,10 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <div class="section" id="pca-examples">
 <h2><span class="section-number">4.4. </span>PCA examples:<a class="headerlink" href="#pca-examples" title="Permalink to this headline">¶</a></h2>
 <p>Below, different PCA analysis with different inputs are shown:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful when trying to perform the PC Analysis over large amounts of data, as it works inversing the matrices of the data, and depending on the computer features, the kernel might die!!</p>
+</div>
 <div class="section" id="regional-pcs-analysis">
 <h3><span class="section-number">4.4.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
@@ -453,7 +463,10 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
         <span class="s1">&#39;../data/cfsr/cfsr_regional_daily_pcs.nc&#39;</span>
     <span class="p">)</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_pcs</span>
-    <span class="n">plot_pcs</span><span class="p">(</span><span class="n">pcs_cfsr</span><span class="p">,</span><span class="n">n_plot</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">plot_pcs</span><span class="p">(</span>
+        <span class="n">pcs_cfsr</span><span class="p">,</span><span class="n">n_plot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># we plot first 3 EOFs + PCs</span>
+        <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span> <span class="s1">&#39;Gradient in t&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="c1"># here is how this loaded regional pcs were calculated</span>
     <span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
@@ -493,15 +506,9 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">6.1</span><span class="p">,</span>
         <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">6.1</span>
     <span class="p">)),</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># (plot,scale,n_plot)</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="c1"># (plot,scale,n_plot)</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">sscode.plotting.pca</span> <span class="kn">import</span> <span class="n">plot_recon_pcs</span>
-    <span class="n">recon_slp</span> <span class="o">=</span> <span class="n">plot_recon_pcs</span><span class="p">(</span>
-        <span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="n">default_region_reduced</span><span class="p">,</span>
-        <span class="n">return_slp</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -532,13 +539,6 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <img alt="../_images/analysis_pca_9_4.png" src="../_images/analysis_pca_9_4.png" />
 <img alt="../_images/analysis_pca_9_5.png" src="../_images/analysis_pca_9_5.png" />
 <img alt="../_images/analysis_pca_9_6.png" src="../_images/analysis_pca_9_6.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting reconstruction of 2 EOFs... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1... 
-</pre></div>
-</div>
-<img alt="../_images/analysis_pca_9_8.png" src="../_images/analysis_pca_9_8.png" />
 </div>
 </div>
 </div>

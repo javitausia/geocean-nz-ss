@@ -132,22 +132,27 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_gp.html">
-   8. Extras 1: Kernel methods for regression (Beta version)
+   8. Kernel methods for regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/models_sarima_prophet.html">
+   9. Sarima and Prophet models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/experiments.html">
-   9. RUN experiments
+   10. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_mda_rbf.html">
-   10. MDA - RBF model
+   11. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/models_results.html">
-   11. VISUALIZE experiments results
+   12. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -307,7 +312,7 @@
                 
   <div class="section" id="geoocean-nz-ss">
 <h1>geoocean-nz-ss<a class="headerlink" href="#geoocean-nz-ss" title="Permalink to this headline">¶</a></h1>
-<p>This repository will contain all the updated information in the shared project between GeoOcean-MetOcean</p>
+<p>This repository will contain all the updated information in the shared project between <a class="reference external" href="https://geoocean.unican.es/">GeoOcean</a>-<a class="reference external" href="https://www.metocean.co.nz/">MetOcean</a></p>
 <p>updated info at: <a class="reference external" href="https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing">https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing</a> !!</p>
 <p>And the last pptx presentation <a class="reference external" href="https://docs.google.com/presentation/d/19U6qWkH9g8NhS2SFkBasOcbjiEsGvInfBQ7C6YFkJhk/edit?usp=sharing">(20th of July)</a> !!</p>
 <p>below, a summary of the region and data involved in the first part of the analysis can be seen:</p>
@@ -336,6 +341,11 @@ coastal flooding and its magnitude has a large spatial variability. Flooding ass
 most common natural hazards for coastal areas worldwide (Cagigal et al., 2019) …</p>
 <p>In this project, which is a collaboration project between the University of Cantabria (Spain) and MetOcean (New Zealand),
 we will develop different machine learning tools that might help in the forecast of a storm-surge model …</p>
+<p>In this first part, which involves the sensitivity analysis regarding the region, the data, and which statistical tools might be better to
+explain the behaviour of the storm surge, we developed different linear and non-linear models to predict the storm surge, given different local and
+regional predictors (involving these predictors the slp fields, the winds…). Below, a summary of how the <a class="reference external" href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">knn algorithm</a> behaves with different predictors and in different locations all around New Zealand is shown:</p>
+<p><img alt="pearson-knn" src="_images/pearson-knn.png" /></p>
+<p>This image with more results can be seen <a class="reference internal" href="notebooks/models_results.html"><span class="doc std std-doc">here</span></a>.</p>
 </div>
 <div class="section" id="data-explanation">
 <h2>Data explanation<a class="headerlink" href="#data-explanation" title="Permalink to this headline">¶</a></h2>
@@ -343,7 +353,7 @@ we will develop different machine learning tools that might help in the forecast
 <ul class="simple">
 <li><p>Sea-level-pressure fields, which can be the ERA5 or the CFSR reanalysis</p></li>
 <li><p>Storm surge hindcast data, which can be Moana, DAC, CoDEC…</p></li>
-<li><p>Storm surge real observations, where different datasets / organizations are involved!!</p></li>
+<li><p>Storm surge real observations, where different datasets / organizations are involved !!</p></li>
 </ul>
 <p>For the rest of the project and in the <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/">book</a>, the majority of the examples are
 built over the datasets explained below:</p>
@@ -438,7 +448,7 @@ built over the datasets explained below:</p>
 </div>
 <div class="section" id="additional-support">
 <h2>Additional support:<a class="headerlink" href="#additional-support" title="Permalink to this headline">¶</a></h2>
-<p>Data used in the project and a detailed explanation of the acquisition can be requested from <a class="reference external" href="mailto:jtausiahoyal&#37;&#52;&#48;gmail&#46;com">jtausiahoyal<span>&#64;</span>gmail<span>&#46;</span>com</a> or <a class="reference external" href="mailto:tausiaj&#37;&#52;&#48;unican&#46;es">tausiaj<span>&#64;</span>unican<span>&#46;</span>es</a>!!</p>
+<p>Data used in the project and a detailed explanation of the acquisition can be requested from <a class="reference external" href="mailto:jtausiahoyal&#37;&#52;&#48;gmail&#46;com">jtausiahoyal<span>&#64;</span>gmail<span>&#46;</span>com</a> or <a class="reference external" href="mailto:tausiaj&#37;&#52;&#48;unican&#46;es">tausiaj<span>&#64;</span>unican<span>&#46;</span>es</a> !!</p>
 </div>
 <div class="section" id="authors">
 <h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>

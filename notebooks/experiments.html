@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>9. RUN experiments &#8212; Storm Surge NZ - Summary</title>
+    <title>10. RUN experiments &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -52,8 +52,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="10. MDA - RBF model" href="models_mda_rbf.html" />
-    <link rel="prev" title="8. Extras 1: Kernel methods for regression (Beta version)" href="models_gp.html" />
+    <link rel="next" title="11. MDA - RBF model" href="models_mda_rbf.html" />
+    <link rel="prev" title="9. Sarima and Prophet models" href="models_sarima_prophet.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -133,22 +133,27 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_gp.html">
-   8. Extras 1: Kernel methods for regression (Beta version)
+   8. Kernel methods for regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_sarima_prophet.html">
+   9. Sarima and Prophet models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   9. RUN experiments
+   10. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   10. MDA - RBF model
+   11. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   11. VISUALIZE experiments results
+   12. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -257,12 +262,12 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   9.1. Load the data, SLP and SS
+   10.1. Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   9.2. Create / Run – Experiment object
+   10.2. Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -277,7 +282,7 @@
               <div>
                 
   <div class="section" id="run-experiments">
-<h1><span class="section-number">9. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">10. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will run all the required experiments using the <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class, which can be found at <code class="docutils literal notranslate"><span class="pre">sscode/experiment.py</span></code>, and can be seen below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -363,7 +368,7 @@
 </div>
 </div>
 <div class="section" id="load-the-data-slp-and-ss">
-<h2><span class="section-number">9.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
 <p>Below, we load the slp fields and the Moana v2 hindcast data nearshore. Have three things in mind:</p>
 <ul class="simple">
 <li><p>First, the winds are <strong>NOT</strong> loaded, as we prefer to calculate the gradient of the slp fields. Having in mind that winds have more resolution (more computation is required) and the fact that we are playing around with projected winds, adds this new calculation to each step (and the Loader class is calculated outside the class Experiment, so the projedted winds are calculated just to one location).</p></li>
@@ -416,7 +421,7 @@
 </div>
 </div>
 <div class="section" id="create-run-experiment-object">
-<h2><span class="section-number">9.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">10.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
 <p>In the two cells below, we first choose all the values that will have the different parameters for the model that will be used, and then we create the instance of the class <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>, where different logs will appear before running all the models.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -40092,8 +40097,8 @@ Data comparison is   --   BIAS: -0.00, SI: 0.61, RMSE: 0.30
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="models_gp.html" title="previous page"><span class="section-number">8. </span>Extras 1: Kernel methods for regression (Beta version)</a>
-    <a class='right-next' id="next-link" href="models_mda_rbf.html" title="next page"><span class="section-number">10. </span>MDA - RBF model</a>
+    <a class='left-prev' id="prev-link" href="models_sarima_prophet.html" title="previous page"><span class="section-number">9. </span>Sarima and Prophet models</a>
+    <a class='right-next' id="next-link" href="models_mda_rbf.html" title="next page"><span class="section-number">11. </span>MDA - RBF model</a>
 
         </div>
         

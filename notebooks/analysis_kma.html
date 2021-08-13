@@ -135,22 +135,27 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_gp.html">
-   8. Extras 1: Kernel methods for regression (Beta version)
+   8. Kernel methods for regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_sarima_prophet.html">
+   9. Sarima and Prophet models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   9. RUN experiments
+   10. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   10. MDA - RBF model
+   11. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   11. VISUALIZE experiments results
+   12. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -280,18 +285,23 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gev-analysis-by-cluster">
+   5.4. GEV analysis (by cluster)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#extras">
-   5.4. Extras..
+   5.5. Extras..
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#calculate-prediction-errors-not-the-goal">
-     5.4.1. Calculate prediction errors (not the goal)
+     5.5.1. Calculate prediction errors (not the goal)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#perform-analysis-in-south-west-coast">
-     5.4.2. Perform analysis in south-west coast
+     5.5.2. Perform analysis in south-west coast
     </a>
    </li>
   </ul>
@@ -491,20 +501,6 @@ v_j^{r+1} = \sum_{x_i\epsilon C_j} \frac{x_i}{n_j}
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sscode.plotting.kma</span> <span class="kn">import</span> <span class="n">plot_cluster_wgev</span>
-<span class="n">plot_cluster_wgev</span><span class="p">(</span><span class="n">kms_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">kms_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">13</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/analysis_kma_10_0.png" src="../_images/analysis_kma_10_0.png" />
-<img alt="../_images/analysis_kma_10_1.png" src="../_images/analysis_kma_10_1.png" />
-<img alt="../_images/analysis_kma_10_2.png" src="../_images/analysis_kma_10_2.png" />
-<img alt="../_images/analysis_kma_10_3.png" src="../_images/analysis_kma_10_3.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
 <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;notebook&#39;</span>
 <span class="c1"># plot PCs-bmus relations</span>
@@ -585,15 +581,52 @@ if (outputEl) {{
             </script>
         </div></div></div>
 </div>
+</div>
+<div class="section" id="gev-analysis-by-cluster">
+<h2><span class="section-number">5.4. </span>GEV analysis (by cluster)<a class="headerlink" href="#gev-analysis-by-cluster" title="Permalink to this headline">¶</a></h2>
+<p>For each cluster, we took the daily maxima and perform a GEV analysis, which code can be found <a class="reference external" href="https://github.com/javitausia/geocean-nz-ss/blob/main/sscode/statistical.py">here</a>.</p>
+<p>To refresh our memories, this probability density function is usually used to statistically represent the distribution of extreme events (in this case, daily maxima), where the equation can take the following aspects:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boxed{
+f(x)=\left\{\begin{matrix}
+\exp\left [ -\left ( 1+\xi \frac{x^{(r)}-\mu}{\psi}{} \right )^{-\frac{1}{\xi}}_+ \right ] \cdot \prod_{k=1}^{r}\psi ^{-1}\exp \left ( -\frac{x^{(k)}-\mu}{\psi} \right )^{-1-\frac{1}{\xi}}_+ &amp; \textrm{for } \xi\neq 0 \\ 
+\exp\left [- \exp \left ( -\xi \frac{x^{(r)}-\mu}{\psi}{} \right ) \right ] \cdot \prod_{k=1}^{r}\psi ^{-1}\exp \left ( -\frac{x^{(k)}-\mu}{\psi} \right )
+ &amp; \textrm{for } \xi =  0
+\end{matrix}\right.
+}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\((a)_+ = max(0,a)\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span> , <span class="math notranslate nohighlight">\(\psi\)</span> y <span class="math notranslate nohighlight">\(\xi\)</span> are the parameters of the GEV distribution. This parameters are estimated using the maximum likelihood estimation, which consists in finding the optimal parameters that maximizes the logarithm of the likelihood for the data:</p>
+<div class="math notranslate nohighlight">
+\[
+\boxed{
+\theta^{\textrm{ opt}}=\underset{\theta}{\textrm{arg max }}L(\theta)
+}
+\]</div>
+<p>more information can be found <a class="reference external" href="https://en.wikipedia.org/wiki/Generalized_extreme_value_distribution">here</a>!!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sscode.plotting.kma</span> <span class="kn">import</span> <span class="n">plot_cluster_wgev</span>
+<span class="n">plot_cluster_wgev</span><span class="p">(</span><span class="n">kms_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">kms_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">13</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/analysis_kma_12_0.png" src="../_images/analysis_kma_12_0.png" />
+<img alt="../_images/analysis_kma_12_1.png" src="../_images/analysis_kma_12_1.png" />
+<img alt="../_images/analysis_kma_12_2.png" src="../_images/analysis_kma_12_2.png" />
+<img alt="../_images/analysis_kma_12_3.png" src="../_images/analysis_kma_12_3.png" />
+</div>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Images generated by code, as the one above, can be easily open in a new window, as they have all been generated with good quality for this particular purpose!!</p>
 </div>
 </div>
 <div class="section" id="extras">
-<h2><span class="section-number">5.4. </span>Extras..<a class="headerlink" href="#extras" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.5. </span>Extras..<a class="headerlink" href="#extras" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="calculate-prediction-errors-not-the-goal">
-<h3><span class="section-number">5.4.1. </span>Calculate prediction errors (not the goal)<a class="headerlink" href="#calculate-prediction-errors-not-the-goal" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.5.1. </span>Calculate prediction errors (not the goal)<a class="headerlink" href="#calculate-prediction-errors-not-the-goal" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check predictions with the kmeans_algo==weather_types</span>
@@ -612,12 +645,12 @@ if (outputEl) {{
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
 </pre></div>
 </div>
-<img alt="../_images/analysis_kma_14_1.png" src="../_images/analysis_kma_14_1.png" />
+<img alt="../_images/analysis_kma_15_1.png" src="../_images/analysis_kma_15_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="perform-analysis-in-south-west-coast">
-<h3><span class="section-number">5.4.2. </span>Perform analysis in south-west coast<a class="headerlink" href="#perform-analysis-in-south-west-coast" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.5.2. </span>Perform analysis in south-west coast<a class="headerlink" href="#perform-analysis-in-south-west-coast" title="Permalink to this headline">¶</a></h3>
 <p>here goes extra info for the GEV… deleted… saved locally…</p>
 </div>
 </div>
