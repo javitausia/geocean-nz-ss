@@ -1,6 +1,6 @@
 # geoocean-nz-ss
 
-This repository will contain all the updated information in the shared project between GeoOcean-MetOcean
+This repository will contain all the updated information in the shared project between [GeoOcean](https://geoocean.unican.es/)-[MetOcean](https://www.metocean.co.nz/)
 
 updated info at: https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing !!
 
@@ -34,13 +34,21 @@ most common natural hazards for coastal areas worldwide (Cagigal et al., 2019) .
 In this project, which is a collaboration project between the University of Cantabria (Spain) and MetOcean (New Zealand), 
 we will develop different machine learning tools that might help in the forecast of a storm-surge model ...
 
+In this first part, which involves the sensitivity analysis regarding the region, the data, and which statistical tools might be better to 
+explain the behaviour of the storm surge, we developed different linear and non-linear models to predict the storm surge, given different local and
+regional predictors (involving these predictors the slp fields, the winds...). Below, a summary of how the [knn algorithm](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) behaves with different predictors and in different locations all around New Zealand is shown:
+
+![pearson-knn](/media/images/pearson-knn.png)
+
+This image with more results can be seen [here](/notebooks/models_results.ipynb).
+
 ## Data explanation
 
 Different datasets will be used in the project, but all of them belongs to one of these categories:
 
 * Sea-level-pressure fields, which can be the ERA5 or the CFSR reanalysis
 * Storm surge hindcast data, which can be Moana, DAC, CoDEC...
-* Storm surge real observations, where different datasets / organizations are involved!!
+* Storm surge real observations, where different datasets / organizations are involved !!
 
 For the rest of the project and in the [book](https://javitausia.github.io/geocean-nz-ss/), the majority of the examples are
 built over the datasets explained below:
@@ -140,7 +148,7 @@ conda activate ssnz
 
 ## Additional support:
 
-Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com or tausiaj@unican.es!!
+Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com or tausiaj@unican.es !!
 
 ## Authors
 
@@ -148,4 +156,3 @@ Data used in the project and a detailed explanation of the acquisition can be re
 * Paula Camus Braña
 * Fernando J. Méndez Incera
 * Antonio S. Cofiño González
-
