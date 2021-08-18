@@ -128,14 +128,14 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
 
     # --------------------------------------------------------------------------------- #
     # THIS IS JUST TO ALLOW MY 32GB-RAM COMPUTER TO RUN
-    # if pcs_stan.shape[1]>18000:
-    #     pcs_stan = pcs_stan[:,::12]
-    # elif pcs_stan.shape[1]>10000:
-    #     pcs_stan = pcs_stan[:,::8] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::8]
-    # elif pcs_stan.shape[1]>6000:
-    #     pcs_stan = pcs_stan[:,::6] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::6]
-    # elif pcs_stan.shape[1]>2000:
-    #     pcs_stan = pcs_stan[:,::4] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::4]
+    if pcs_stan.shape[1]>18000:
+        pcs_stan = pcs_stan[:,::12]
+    elif pcs_stan.shape[1]>10000:
+        pcs_stan = pcs_stan[:,::8] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::8]
+    elif pcs_stan.shape[1]>6000:
+        pcs_stan = pcs_stan[:,::6] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::6]
+    elif pcs_stan.shape[1]>2000:
+        pcs_stan = pcs_stan[:,::4] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::4]
     # --------------------------------------------------------------------------------- #
 
     # calculate de PCAs
