@@ -241,7 +241,7 @@ def preprocess_track(track, x0, y0,
     time_resolution='1H',
     interpolation=True,
     interpolation_step='20MIN',
-    interpolation_mode='mean',
+    interpolation_mode='mean', # 'first' available
     great_circle=True, 
     winds_fit=True
     ):
@@ -249,6 +249,10 @@ def preprocess_track(track, x0, y0,
     '''
     Edits initial track dataframe to work with vortex model
     '''
+
+    # convert data to bar
+    track[track_vars['pressure']] = track[track_vars['pressure']] \
+        if track[track_vars['pressure']].mean()<2000 else track[track_vars['pressure']]/100
 
     # round dataframe to desired resolution and set index
     track = track.set_index(
@@ -266,20 +270,18 @@ def preprocess_track(track, x0, y0,
         track[track_vars['longitude']]+360 # sum 360 to negative longitudes
     )
 
-    # storm coordinates timestep [hours]
+    # storm variables timestep [hours]
     ts = track.index[1:] - track.index[:-1]
     ts = [tsi.total_seconds() / 3600 for tsi in ts]
     
     # calculate Vmean
-    RE = 6378.135   # earth radius [km]
+    RE = 6378.135 # Earth radius [km]
     vmean = []
     for i in range(len(track.index)-1):
-
         # consecutive storm coordinates
         lon1, lon2 = track[track_vars['longitude']+'_360'][i], track[track_vars['longitude']+'_360'][i+1]
         lat1, lat2 = track[track_vars['latitude']][i], track[track_vars['latitude']][i+1]
-
-        # translation speed 
+        # translation speed
         arcl_h, gamma_h = gc_distance(lat2, lon2, lat1, lon1)
         r = arcl_h * np.pi / 180.0 * RE     # distance between consecutive coordinates (km)
         vmean.append(r / ts[i] / 1.852)     # translation speed (km/h to kt) 
@@ -303,24 +305,21 @@ def preprocess_track(track, x0, y0,
     else:
         interpolation_steps = int(time_resolution[:-3]) / int(interpolation_step[:-3])
 
-    # initialize
+    # initialize new variables
     move, vmean, pn, p0, lon, lat, vmax = [], [], [], [], [], [], []
     vu, vy = [], []
     interpolated_times = []
 
     for i, interp_time in enumerate(track.index[:-1]):
-
         # create new times to save interpolation
         interp_times = pd.date_range(
             start=interp_time, periods=interpolation_steps, freq=interpolation_step
         )
         for interp_time_i in interp_times:
             interpolated_times.append(interp_time_i)
-
         # consecutive storm coordinates
         lon1, lon2 = track[track_vars['longitude']+'_360'][i], track[track_vars['longitude']+'_360'][i+1]
         lat1, lat2 = track[track_vars['latitude']][i], track[track_vars['latitude']][i+1]
-
         # translation speed 
         arcl_h, gamma_h = gc_distance(lat2, lon2, lat1, lon1)
         r = arcl_h * np.pi / 180.0 * RE     # distance between consecutive storm coordinates [km]
@@ -328,6 +327,7 @@ def preprocess_track(track, x0, y0,
         vx = float(dx) / ts[i] / 3.6        # translation speed [km to m/s]
         vx = vx / 0.52                      # translation speed [m/s to kt]
 
+        # loop over times to interpolate for interp_time and interp_time+1
         for j, interp_time_j in enumerate(interp_times):
             # append storm track parameters
             move.append(gamma_h)
@@ -335,7 +335,6 @@ def preprocess_track(track, x0, y0,
             vu.append(vx * np.sin((gamma_h+180)*np.pi/180))
             vy.append(vx * np.cos((gamma_h+180)*np.pi/180))
             pn.append(1013)
-            
             # append pmin, wind with/without interpolation along the storm track
             if not interpolation:       
                 p0.append(track[track_vars['pressure']][i] + \
@@ -346,7 +345,7 @@ def preprocess_track(track, x0, y0,
                     p0.append(np.mean((
                         track[track_vars['pressure']][i], track[track_vars['pressure']][i+1]
                     )))
-                elif interpolation_mode=='first': 
+                elif interpolation_mode=='first':
                     p0.append(track[track_vars['pressure']][i])
             if winds_fit:
                 if not interpolation:   
@@ -359,14 +358,12 @@ def preprocess_track(track, x0, y0,
                         )))
                     elif interpolation_mode=='first':
                         vmax.append(track[track_vars['maxwinds']][i])
-
             # calculate timestep lon, lat
             if not great_circle:
                 lon_h = lon1 - (dx*180/(RE*np.pi)) * np.sin(gamma_h*np.pi/180) * j
                 lat_h = lat1 - (dx*180/(RE*np.pi)) * np.cos(gamma_h*np.pi/180) * j
             else:
                 lon_h, lat_h, baz = shoot(lon1, lat1, gamma_h + 180, float(dx) * j)
-
             lon.append(lon_h)
             lat.append(lat_h)
 
@@ -400,8 +397,7 @@ def preprocess_track(track, x0, y0,
             'p0': p0[loc],          # minimum central pressure [mbar]
             'lon': lon[loc],      # longitude coordinate
             'lat': lat[loc]      # latitude coordinate
-        },
-        index=np.array(interpolated_times)[loc]
+        }, index=np.array(interpolated_times)[loc]
     )
     
     # maximum wind speed (if no value is given it is assigned the empirical Pmin-Vmax basin-fitting)
@@ -556,7 +552,7 @@ def vortex_model(storm_track, coords_mode='SPHERICAL',
 
             # TODO revisar 
             # optional rmw
-            #if rmw == None:
+            # if rmw == None:
             if True:
 
                 # Knaff et al. (2016) - Radius of maximum wind (RMW)
@@ -612,6 +608,7 @@ def vortex_model(storm_track, coords_mode='SPHERICAL',
             hld_slp[:,:,c] = pr
 
         else:
+
             # hold wind data (m/s) and slp data
             hld_W[:,:,c] = 0
             hld_D[:,:,c] = 0  # direction (º clock. rel. north)
@@ -625,7 +622,7 @@ def vortex_model(storm_track, coords_mode='SPHERICAL',
         {
             'W':   ((lab_y, lab_x, 'time'), hld_W, {'units':'m/s'}),
             'Dir': ((lab_y, lab_x, 'time'), hld_D, {'units':'º'}),
-            'slp': ((lab_y, lab_x, 'time'), hld_slp, {'units':'mbar'})
+            'p0': ((lab_y, lab_x, 'time'), hld_slp, {'units':'mbar'})
         },
         coords={
             lab_y : cg_lat,
