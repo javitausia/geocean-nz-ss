@@ -4,7 +4,7 @@ This repository will contain all the updated information in the shared project b
 
 updated info at: https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing !!
 
-And the last pptx presentation [(20th of July)](https://docs.google.com/presentation/d/19U6qWkH9g8NhS2SFkBasOcbjiEsGvInfBQ7C6YFkJhk/edit?usp=sharing) !!
+And the last pptx presentation [(19th of August)](https://docs.google.com/presentation/d/18R62L9grGct8-iFsMeHnScZZndq6qW555QSUPa-qsMY/edit?usp=sharing) !!
 
 below, a summary of the region and data involved in the first part of the analysis can be seen:
 
@@ -19,10 +19,10 @@ related repos:
 
 ## TODO (or doing)
 
-* Preparing the FINAL experiments visualizations tools to evaluate results
+* Preparing the FINAL experiments visualizations tools to evaluate results (run in server)
 * Add EXTRA and better plots to KM analysis notebook + THEORY explanations
 * Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb)
-* Finalize notebooks regarding GPs and SARIMA models
+* Finalize notebooks regarding GPs and SARIMA models + vortex model
 
 ## Description
 
