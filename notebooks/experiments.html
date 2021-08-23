@@ -42,7 +42,7 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
@@ -502,6 +502,16 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run all the models</span>
+<span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># plot logs when computing the models</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># finally, we can save the results, using the following function</span>
 <span class="k">def</span> <span class="nf">save_final_results</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> 
     <span class="s1">&#39;../data/statistics/experiments/experiment_linear_final.nc&#39;</span><span class="p">):</span>
@@ -516,7 +526,7 @@
         <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">model_metrics</span><span class="p">):</span>
             <span class="n">site_metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">(</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">,</span><span class="s1">&#39;tlapse&#39;</span><span class="p">,</span><span class="s1">&#39;tresample&#39;</span><span class="p">,</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">),</span>
-                <span class="n">exp_metrics_site</span><span class="p">[:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span> 
+                <span class="n">exp_metrics_site</span><span class="p">[:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span>
         <span class="n">sites_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
             <span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">site</span><span class="p">]}</span>
         <span class="p">))</span>
