@@ -203,8 +203,8 @@ class Experiment(object):
                         local_region = (True,(
                             site_location[0]-parameters[4][1][0], # new lon / lat region
                             site_location[0]+parameters[4][1][0],
-                            site_location[1]+parameters[4][1][1],
-                            site_location[1]-parameters[4][1][1]
+                            site_location[1]-parameters[4][1][1],
+                            site_location[1]+parameters[4][1][1]
                         ))
                         # lets first calculate the pcs
                         pca_data, pca_scaler = PCA_DynamicPred(
@@ -219,7 +219,7 @@ class Experiment(object):
                                     lon_name=datasets_attrs[self.predictor_data][0]
                                 ) if parameters[1] else None 
                                 # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','lon','lat'),
+                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
                             region=local_region, # pass the calculated local region
                             pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
@@ -244,7 +244,7 @@ class Experiment(object):
                                     lon_name=datasets_attrs[self.predictor_data][0]
                                 ) if parameters[1] else None 
                                 # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','lon','lat'),
+                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
                             pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
                         )
@@ -319,8 +319,8 @@ class Experiment(object):
                         local_region = (True,(
                             site_location[0]-parameters[4][1][0], # new lon / lat region
                             site_location[0]+parameters[4][1][0],
-                            site_location[1]+parameters[4][1][1],
-                            site_location[1]-parameters[4][1][1]
+                            site_location[1]-parameters[4][1][1],
+                            site_location[1]+parameters[4][1][1]
                         ))
                         # lets first calculate the pcs
                         pca_data, pca_scaler = PCA_DynamicPred(
@@ -335,7 +335,7 @@ class Experiment(object):
                                     lon_name=datasets_attrs[self.predictor_data][0]
                                 ) if parameters[1] else None 
                                 # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','lon','lat'),
+                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
                             region=local_region, # pass the calculated local region
                             pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
@@ -360,7 +360,7 @@ class Experiment(object):
                                     lon_name=datasets_attrs[self.predictor_data][0]
                                 ) if parameters[1] else None 
                                 # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','lon','lat'),
+                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
                             pca_plot=(plot,False,1),verbose=verbose,
                             **dict_to_pca # extra arguments without the winds
                         )
