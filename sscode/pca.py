@@ -7,6 +7,11 @@ import xarray as xr
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
+# distributed pca calculations
+from datetime import datetime
+import dask.array as dask_array
+from dask_ml.decomposition import PCA as dask_ml_PCA
+
 # custom
 from .config import default_region_reduced, default_region
 from .utils import spatial_gradient
@@ -16,7 +21,7 @@ from .plotting.pca import plot_pcs
 def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
                     calculate_gradient: bool = False,
                     winds: tuple = (False,None),
-                    wind_vars: tuple = ('wind_proj_mask','lon','lat'),
+                    wind_vars: tuple = ('wind_proj_mask','longitude','latitude'),
                     time_lapse: int = 1, # 1 equals to NO time delay 
                     time_resample: str = '1D',
                     region: tuple = (True,default_region),
@@ -81,6 +86,7 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     else:
         pres = pres.resample(time=time_resample).mean().dropna(dim='time',how='all')
     if winds[0]:
+        print(wind)
         wind = wind[wind_vars[0]].resample(time=time_resample).mean().fillna(0.0)\
             .interp(coords={wind_vars[1]:pres[pres_vars[1]],
                             wind_vars[2]:pres[pres_vars[2]]}
@@ -128,22 +134,32 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
 
     # --------------------------------------------------------------------------------- #
     # THIS IS JUST TO ALLOW MY 32GB-RAM COMPUTER TO RUN
-    if pcs_stan.shape[1]>18000:
-        pcs_stan = pcs_stan[:,::12]
-    elif pcs_stan.shape[1]>10000:
-        pcs_stan = pcs_stan[:,::8] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::8]
-    elif pcs_stan.shape[1]>6000:
-        pcs_stan = pcs_stan[:,::6] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::6]
-    elif pcs_stan.shape[1]>2000:
-        pcs_stan = pcs_stan[:,::4] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::4]
+    if False:
+        if pcs_stan.shape[1]>18000:
+            pcs_stan = pcs_stan[:,::12]
+        elif pcs_stan.shape[1]>10000:
+            pcs_stan = pcs_stan[:,::8] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::8]
+        elif pcs_stan.shape[1]>6000:
+            pcs_stan = pcs_stan[:,::6] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::6]
+        elif pcs_stan.shape[1]>2000:
+            pcs_stan = pcs_stan[:,::4] # if pcs_stan.shape[0]<20000 else pcs_stan[::2,::4]
     # --------------------------------------------------------------------------------- #
 
     # calculate de PCAs
     print('\n calculating PCs matrix with shape: \n {} \n'.format(pcs_stan.shape)) \
         if verbose else None
-    pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
-    PCs = pca_fit.fit_transform(pcs_stan)
+    if True:
+        pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
+        PCs = pca_fit.fit_transform(pcs_stan)
+    else: # Distributed version
+        # Turn numpy array into dask array
+        dask_pcs_stan = dask_array.from_array(pcs_stan,
+                                              chunks=(pcs_stan.shape[0],
+                                                      pcs_stan.shape[1]//32))
 
+        pca_fit = dask_ml_PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
+        pca_fit.fit_transform(dask_pcs_stan)
+    
     # return data
     PCA_return = xr.Dataset(
         data_vars = {
