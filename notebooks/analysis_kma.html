@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. KM analysis &#8212; Storm Surge NZ - Summary</title>
+    <title>KM analysis &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. MultiLinear regression models" href="models_linear.html" />
-    <link rel="prev" title="4. PC analysis" href="analysis_pca.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -97,7 +95,7 @@
   Chapters
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
    1. Data visualization and validation
@@ -118,19 +116,19 @@
    4. PC analysis
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   5. KM analysis
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   6. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   7. KNN regressor models
+   6. KNN regressor models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_xgboost.html">
+   7. XGBoost (forest of trees) regressor models
   </a>
  </li>
  <li class="toctree-l1">
@@ -139,23 +137,18 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_sarima_prophet.html">
-   9. Sarima and Prophet models
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="experiments.html">
-   10. RUN experiments
+   9. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   11. MDA - RBF model
+   10. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   12. VISUALIZE experiments results
+   11. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -264,44 +257,44 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-means-clustering-theory">
-   5.1. K-means clustering theory
+   K-means clustering theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-and-plot-some-data-pcs">
-   5.2. Load and plot some data + PCs
+   Load and plot some data + PCs
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#plot-mean-slp-and-ss-circumstances">
-     5.2.1. Plot mean SLP and SS circumstances
+     Plot mean SLP and SS circumstances
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-the-weather-types">
-   5.3. Calculate the weather types
+   Calculate the weather types
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#gev-analysis-by-cluster">
-   5.4. GEV analysis (by cluster)
+   GEV analysis (by cluster)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#extras">
-   5.5. Extras..
+   Extras..
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#calculate-prediction-errors-not-the-goal">
-     5.5.1. Calculate prediction errors (not the goal)
+     Calculate prediction errors (not the goal)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#perform-analysis-in-south-west-coast">
-     5.5.2. Perform analysis in south-west coast
+     Perform analysis in south-west coast
     </a>
    </li>
   </ul>
@@ -318,9 +311,9 @@
               <div>
                 
   <div class="section" id="km-analysis">
-<h1><span class="section-number">5. </span>KM analysis<a class="headerlink" href="#km-analysis" title="Permalink to this headline">¶</a></h1>
+<h1>KM analysis<a class="headerlink" href="#km-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="k-means-clustering-theory">
-<h2><span class="section-number">5.1. </span>K-means clustering theory<a class="headerlink" href="#k-means-clustering-theory" title="Permalink to this headline">¶</a></h2>
+<h2>K-means clustering theory<a class="headerlink" href="#k-means-clustering-theory" title="Permalink to this headline">¶</a></h2>
 <p>In this notebook, a weather typing clasification is performed using the commonly known K-Means algorithm. With this clustering technique we are able to group the sea-level-pressure data into different related groups, and then associate a storm-surge situation to each of them… All the python code is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/kma.py</span></code>, where we use the scikit-learn package available <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">here</a>.</p>
 <p>Regarding the maths… a description of the algorithm can be found at <a class="reference external" href="https://en.wikipedia.org/wiki/K-means_clustering">wikipedia</a>!! But lets briefly explain the algorithm here:</p>
 <p>The KMA clustering technique divides the high-dimensional data space into a number of clusters, each one deﬁned by a prototype and formed by the data for which the prototype is the nearest. Given a database of n-dimensional vectors <span class="math notranslate nohighlight">\(X = {x_1, x_2, ..., x_N}\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the total amount of data and <span class="math notranslate nohighlight">\(n\)</span> is the dimension of each data <span class="math notranslate nohighlight">\(x_k = {x_{1k}, ..., x_{nk}}\)</span>, KMA is applied to obtain M groups deﬁned by a prototype or centroid <span class="math notranslate nohighlight">\(v_k = {v_{1k}, ..., v_{nk}}\)</span> of the same dimension of the original
@@ -336,7 +329,7 @@ v_j^{r+1} = \sum_{x_i\epsilon C_j} \frac{x_i}{n_j}
 <p>where <span class="math notranslate nohighlight">\(n_j\)</span> is the number of elements in the jth group and <span class="math notranslate nohighlight">\(C_j\)</span> is the subset of data included in group <span class="math notranslate nohighlight">\(j\)</span>. The KMA iteratively moves the centroids minimizing the overall within-cluster distance until it converges and data belonging to every group are stabilized.</p>
 <div class="figure align-default" id="kma">
 <a class="reference internal image-reference" href="../_images/k-means.png"><img alt="../_images/k-means.png" src="../_images/k-means.png" style="width: 550px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Performance of the k-means algorithm over a random dataset. It is important to highlight that the kma technique is just able to linearly separate the data (<a class="reference external" href="https://scikit-learn.org/stable/_images/sphx_glr_plot_kmeans_digits_001.png">image reference</a>)</span><a class="headerlink" href="#kma" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Performance of the k-means algorithm over a random dataset. It is important to highlight that the kma technique is just able to linearly separate the data (<a class="reference external" href="https://scikit-learn.org/stable/_images/sphx_glr_plot_kmeans_digits_001.png">image reference</a>)</span><a class="headerlink" href="#kma" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -371,7 +364,7 @@ v_j^{r+1} = \sum_{x_i\epsilon C_j} \frac{x_i}{n_j}
 </div>
 </div>
 <div class="section" id="load-and-plot-some-data-pcs">
-<h2><span class="section-number">5.2. </span>Load and plot some data + PCs<a class="headerlink" href="#load-and-plot-some-data-pcs" title="Permalink to this headline">¶</a></h2>
+<h2>Load and plot some data + PCs<a class="headerlink" href="#load-and-plot-some-data-pcs" title="Permalink to this headline">¶</a></h2>
 <p>As always, we load the data, both the storm surge and the PCs (regional PCs in this case), and then plot whatever we want to!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -422,7 +415,7 @@ v_j^{r+1} = \sum_{x_i\epsilon C_j} \frac{x_i}{n_j}
 </div>
 </div>
 <div class="section" id="plot-mean-slp-and-ss-circumstances">
-<h3><span class="section-number">5.2.1. </span>Plot mean SLP and SS circumstances<a class="headerlink" href="#plot-mean-slp-and-ss-circumstances" title="Permalink to this headline">¶</a></h3>
+<h3>Plot mean SLP and SS circumstances<a class="headerlink" href="#plot-mean-slp-and-ss-circumstances" title="Permalink to this headline">¶</a></h3>
 <p>As we are trying to represent all the different climate situations, we will now plot how the mean SLP and SS circumstances might look like in the area around New Zealand.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -459,7 +452,7 @@ v_j^{r+1} = \sum_{x_i\epsilon C_j} \frac{x_i}{n_j}
 </div>
 </div>
 <div class="section" id="calculate-the-weather-types">
-<h2><span class="section-number">5.3. </span>Calculate the weather types<a class="headerlink" href="#calculate-the-weather-types" title="Permalink to this headline">¶</a></h2>
+<h2>Calculate the weather types<a class="headerlink" href="#calculate-the-weather-types" title="Permalink to this headline">¶</a></h2>
 <p>add extra info regarding weather types!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -583,7 +576,7 @@ if (outputEl) {{
 </div>
 </div>
 <div class="section" id="gev-analysis-by-cluster">
-<h2><span class="section-number">5.4. </span>GEV analysis (by cluster)<a class="headerlink" href="#gev-analysis-by-cluster" title="Permalink to this headline">¶</a></h2>
+<h2>GEV analysis (by cluster)<a class="headerlink" href="#gev-analysis-by-cluster" title="Permalink to this headline">¶</a></h2>
 <p>For each cluster, we took the daily maxima and perform a GEV analysis, which code can be found <a class="reference external" href="https://github.com/javitausia/geocean-nz-ss/blob/main/sscode/statistical.py">here</a>.</p>
 <p>To refresh our memories, this probability density function is usually used to statistically represent the distribution of extreme events (in this case, daily maxima), where the equation can take the following aspects:</p>
 <div class="math notranslate nohighlight">
@@ -624,9 +617,9 @@ f(x)=\left\{\begin{matrix}
 </div>
 </div>
 <div class="section" id="extras">
-<h2><span class="section-number">5.5. </span>Extras..<a class="headerlink" href="#extras" title="Permalink to this headline">¶</a></h2>
+<h2>Extras..<a class="headerlink" href="#extras" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="calculate-prediction-errors-not-the-goal">
-<h3><span class="section-number">5.5.1. </span>Calculate prediction errors (not the goal)<a class="headerlink" href="#calculate-prediction-errors-not-the-goal" title="Permalink to this headline">¶</a></h3>
+<h3>Calculate prediction errors (not the goal)<a class="headerlink" href="#calculate-prediction-errors-not-the-goal" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check predictions with the kmeans_algo==weather_types</span>
@@ -650,7 +643,7 @@ f(x)=\left\{\begin{matrix}
 </div>
 </div>
 <div class="section" id="perform-analysis-in-south-west-coast">
-<h3><span class="section-number">5.5.2. </span>Perform analysis in south-west coast<a class="headerlink" href="#perform-analysis-in-south-west-coast" title="Permalink to this headline">¶</a></h3>
+<h3>Perform analysis in south-west coast<a class="headerlink" href="#perform-analysis-in-south-west-coast" title="Permalink to this headline">¶</a></h3>
 <p>here goes extra info for the GEV… deleted… saved locally…</p>
 </div>
 </div>
@@ -685,24 +678,6 @@ f(x)=\left\{\begin{matrix}
 
 <div class='prev-next-bottom'>
     
-    <div id="prev">
-        <a class="left-prev" href="analysis_pca.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title"><span class="section-number">4. </span>PC analysis</p>
-            </div>
-        </a>
-    </div>
-     <div id="next">
-        <a class="right-next" href="models_linear.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title"><span class="section-number">6. </span>MultiLinear regression models</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
 
 </div>
         
