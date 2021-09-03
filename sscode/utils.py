@@ -40,6 +40,10 @@ def calculate_relative_winds(location: tuple = default_location,
 
     # we first join uw and vw (change winds to where they go)
     wind = xr.merge([-uw,-vw]).dropna(dim='time',how='all')
+    wind = wind.assign({
+        'uw2': uw**2, 'vw2': vw**2,
+        'wind_magnitude': np.sqrt(uw**2+vw**2)
+    }) # add squared winds and wind module
     print('\n calculating winds with: \n\n {} \n'.format(
         wind # these are the wind merged components
     )) if True else None

@@ -1,4 +1,7 @@
-# useful variables
+"""
+    The user can save here all the useful variables that might be
+    used in the project
+"""
 
 data_path = '/home/javitausia/Documentos/geocean-nz-ss/data' # change for local user
 
@@ -8,4 +11,4 @@ default_region = (140,190,-20,-70) # region of NZ where pressure, winds... are d
 default_region_reduced = (160,185,-30,-52) # reduced region of NZ (similar to moana region)
 
 # to model evaluation
-evaluation_metrics = ['bias','si','rmse','pearson','rscore']
+default_evaluation_metrics = ['bias','si','rmse','rel_rmse','pearson','rscore','ext_rmse','ext_pearson']

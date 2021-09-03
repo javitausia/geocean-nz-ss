@@ -56,6 +56,8 @@ def plot_ccrs_nz(axes, # all axes to plot the map
             gl.ylocator = mticker.FixedLocator(list(ylabels))  
             gl.xlabels_top = False
             gl.ylabels_right = False
+
+    plt.show() # show results
             
             
 def get_n_colors(cmap,n_colors):

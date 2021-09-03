@@ -12,7 +12,7 @@ import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location, default_region, \
-    evaluation_metrics # get config params
+    default_evaluation_metrics # get config params
 from .data import datasets_attrs
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
@@ -91,7 +91,7 @@ class Experiment(object):
         self.model_attrs = model_attrs # save class attributes
 
         # add pre-defined metrics to existent ones
-        for mta in evaluation_metrics: # defined in sscode/config.py
+        for mta in default_evaluation_metrics: # defined in sscode/config.py
             model_metrics.append(mta) if mta not in model_metrics else None
         self.model_metrics = model_metrics
 

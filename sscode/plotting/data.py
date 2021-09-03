@@ -371,3 +371,5 @@ def plot_uhslc_locations(uhslc_data):
     plot_ccrs_nz([ax],plot_labels=(True,5,5))
     ax.set_facecolor('lightblue')
 
+    plt.show() # show results
+
