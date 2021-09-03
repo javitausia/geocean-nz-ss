@@ -20,9 +20,8 @@ related repos:
 ## TODO (or doing)
 
 * Preparing the FINAL experiments visualizations tools to evaluate results (run in server)
-* Add EXTRA and better plots to KM analysis notebook + THEORY explanations
-* Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb)
-* Finalize notebooks regarding GPs and SARIMA models + vortex model
+* Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb) and [xgboost](/notebooks/models_xgboost.ipynb)
+* Finalize notebooks regarding GPs and SARIMA models + vortex model ... ?
 
 ## Description
 
