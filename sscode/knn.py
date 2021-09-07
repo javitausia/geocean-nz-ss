@@ -142,7 +142,8 @@ def KNN_Regression(
         # use gridsearch to test all values for n_neighbors
         knn_gscv = GridSearchCV(
             neigh, param_grid, cv=cv_folds,
-            scoring=make_scorer(metrics_dictionary['ext_rmse']), # check with custom callable function
+            scoring='r2',
+            # make_scorer(metrics_dictionary['ext_rmse']), # check with custom callable function
             verbose=1 if verbose else 0
         )
         # fit model to data

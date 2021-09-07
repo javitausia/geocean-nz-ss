@@ -313,9 +313,10 @@ def plot_uhslc_locations(uhslc_data):
         fuction join_load_uhslc_tgs() in data.py
     """
 
-    fig, ax = plt.subplots(figsize=(9,9),subplot_kw={
+    fig, ax = plt.subplots(figsize=(6,6),subplot_kw={
         'projection':ccrs.PlateCarree(central_longitude=180)
     })
+    ax.set_facecolor('lightblue')
     xr.plot.scatter(
         uhslc_data.max(dim='time'),
         x='longitude',y='latitude',c='red',zorder=110,
@@ -369,7 +370,6 @@ def plot_uhslc_locations(uhslc_data):
                         fc=(1., 0.8, 0.8),
                     ))
     plot_ccrs_nz([ax],plot_labels=(True,5,5))
-    ax.set_facecolor('lightblue')
 
     plt.show() # show results
 

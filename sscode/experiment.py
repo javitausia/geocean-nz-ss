@@ -20,6 +20,7 @@ from .utils import calculate_relative_winds
 from .pca import PCA_DynamicPred
 from .linear import MultiLinear_Regression
 from .knn import KNN_Regression
+from .xgboost import XGBoost_Regression
 
 
 # below some example dictionarys to use
@@ -37,7 +38,12 @@ knn_attrs_default = {
     'train_size': [0.8,0.9], 'percentage_PCs': [0.80,0.88,0.95],
     'k_neighbors': [4,8,12,16,None] # None calculates the optimum k-neighs
 }
-
+xgboost_attrs_default = {
+    'train_size': [0.8,0.9], 'percentage_PCs': [0.80,0.88,0.95],
+    'n_estimators': [40,50,60], 'max_depth': np.arange(7,11,2),
+    'min_samples_split': np.linspace(0.01,0.4,5),
+    'learning_rate': [0.1], 'loss': ['ls'] # more could be added
+}
 
 class Experiment(object):
     """
@@ -369,13 +375,141 @@ class Experiment(object):
                     ss_site_model = ss_site.resample(time=parameters[3]).max()\
                         .dropna(dim='time',how='all') # delete NaNs
 
-                    # and lets now calculate the linear model
+                    # and lets now calculate the knn model
                     stats, model, t_train = KNN_Regression(
                         pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
+                    )
+
+                    # save results in matrix
+                    for istat,stat in enumerate(stats):
+                        model_params_for_site[
+                            tuple(list(i_parameters)+[istat])
+                        ] = stats[stat] # append stat to each model / site
+                    
+                    # sum 1 to counter
+                    model_counter += 1
+
+            elif self.model=='xgboost':
+                # loop over all the combinations for the xgboost model
+                model_counter = 0
+                for i_parameters,parameters in zip(
+                    [(icg,iw,itl,itr,ir,its,ipp,ine,imd,ims,ilr,ilf) \
+                        for icg in [i for i in range(len(list(self.pca_attrs.values())[0]))] \
+                        for iw in [i for i in range(len(list(self.pca_attrs.values())[1]))] \
+                        for itl in [i for i in range(len(list(self.pca_attrs.values())[2]))] \
+                        for itr in [i for i in range(len(list(self.pca_attrs.values())[3]))] \
+                        for ir in [i for i in range(len(list(self.pca_attrs.values())[4]))] \
+                        for its in [i for i in range(len(list(self.model_attrs.values())[0]))] \
+                        for ipp in [i for i in range(len(list(self.model_attrs.values())[1]))] \
+                        for ine in [i for i in range(len(list(self.model_attrs.values())[2]))] \
+                        for imd in [i for i in range(len(list(self.model_attrs.values())[3]))] \
+                        for ims in [i for i in range(len(list(self.model_attrs.values())[4]))] \
+                        for ilr in [i for i in range(len(list(self.model_attrs.values())[5]))] \
+                        for ilf in [i for i in range(len(list(self.model_attrs.values())[6]))]]
+                    , [(cg,w,tl,tr,r,ts,pp,ne,md,ms,lr,lf) \
+                        for cg in list(self.pca_attrs.values())[0] \
+                        for w in list(self.pca_attrs.values())[1] \
+                        for tl in list(self.pca_attrs.values())[2] \
+                        for tr in list(self.pca_attrs.values())[3] \
+                        for r in list(self.pca_attrs.values())[4] \
+                        for ts in list(self.model_attrs.values())[0] \
+                        for pp in list(self.model_attrs.values())[1] \
+                        for ne in list(self.model_attrs.values())[2] \
+                        for md in list(self.model_attrs.values())[3] \
+                        for ms in list(self.model_attrs.values())[4] \
+                        for lr in list(self.model_attrs.values())[5] \
+                        for lf in list(self.model_attrs.values())[6]]
+                ):  
+
+                    # perform all the individual experiments
+                    print(
+                        '\n --------------------------------------------------------- \
+                        \n\n Experiment {} in site {} ...... \
+                        \n\n pca_params = {} \n\n knn_model_params = {} \
+                        \n\n and iteration with indexes = {} \
+                        \n\n ---------------------------------------------------------'.format(
+                            model_counter+1, # this is just the counter
+                            site, # site to analyze in this loop
+                            dict(zip(self.pca_attrs.keys(),parameters[:5])),
+                            dict(zip(self.model_attrs.keys(),parameters[5:])),
+                            i_parameters # this are the parameters indexes
+                        ), end='\r'
+                    ) if verbose else None
+
+                    # perform the experiment
+                    dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
+                    trash = dict_to_pca.pop('winds')
+                    # change region parameter if local area is required
+                    if parameters[4][0]=='local':
+                        trash = dict_to_pca.pop('region')
+                        local_region = (True,(
+                            site_location[0]-parameters[4][1][0], # new lon / lat region
+                            site_location[0]+parameters[4][1][0],
+                            site_location[1]+parameters[4][1][1],
+                            site_location[1]-parameters[4][1][1]
+                        ))
+                        # lets first calculate the pcs
+                        pca_data, pca_scaler = PCA_DynamicPred(
+                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
+                            winds=(
+                                parameters[1], # this is winds True or False
+                                calculate_relative_winds(
+                                    location=site_location,
+                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
+                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
+                                    lat_name=datasets_attrs[self.predictor_data][1],
+                                    lon_name=datasets_attrs[self.predictor_data][0]
+                                ) if parameters[1] else None 
+                                # this are the winds projected in site
+                            ), wind_vars=('wind_proj_mask','lon','lat'),
+                            region=local_region, # pass the calculated local region
+                            pca_plot=(plot,False,1),verbose=verbose,
+                            **dict_to_pca # extra arguments without the winds
+                        )
+                    elif parameters[4][1]==default_region and parameters[0]==True \
+                        and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
+                        # we load the daily pcs
+                        pca_data = xr.open_dataset(
+                            data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
+                        )
+                    else:
+                        # lets first calculate the pcs
+                        pca_data, pca_scaler = PCA_DynamicPred(
+                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
+                            winds=(
+                                parameters[1], # this is winds True or False
+                                calculate_relative_winds(
+                                    location=site_location,
+                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
+                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
+                                    lat_name=datasets_attrs[self.predictor_data][1],
+                                    lon_name=datasets_attrs[self.predictor_data][0]
+                                ) if parameters[1] else None 
+                                # this are the winds projected in site
+                            ), wind_vars=('wind_proj_mask','lon','lat'),
+                            pca_plot=(plot,False,1),verbose=verbose,
+                            **dict_to_pca # extra arguments without the winds
+                        )
+
+                    # resample ss to time_resample parameter
+                    ss_site_model = ss_site.resample(time=parameters[3]).max()\
+                        .dropna(dim='time',how='all') # delete NaNs
+
+                    # and lets now calculate the xgboost model
+                    stats, model, t_train = XGBoost_Regression(
+                        pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
+                        model_metrics=self.model_metrics,
+                        X_set_var='PCs',y_set_var='ss',
+                        plot_results=plot,verbose=verbose,pca_ttls=None,
+                        train_size=parameters[5],percentage_PCs=parameters[6],
+                        xgboost_parameters=dict(zip(
+                            list(self.model_attrs.keys())[2:],
+                            parameters[7:]
+                        )) # this is the way XGBoost_Regression will work!!
                     )
 
                     # save results in matrix
@@ -401,7 +535,7 @@ class Experiment(object):
             '\n ------------------------------------------------------------------- \
             \n\n All the models and in all the sites have been correctly calculated!! \
             \n\n with a final mean stats (in the sites) with the following shape... \
-            \n\n BIAS, SI, RMSE, Pearson ans Spearman coorelations and the R2 score \n\n {} \
+            \n\n BIAS, SI, RMSE, Pearson and Spearman coorelations and the R2 score... \n\n {} \
             \n\n -------------------------------------------------------------------'.format(
                 model_mean_params
             )

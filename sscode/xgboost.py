@@ -24,9 +24,9 @@ def XGBoost_Regression(
     X_set, y_set, pcs_scaler = None,
     validator: tuple = (False,None,None),
     xgboost_parameters = {
-        'n_estimators': 40,
-        'max_depth': 6,
-        'min_samples_split': 0.04,
+        'n_estimators': 50,
+        'max_depth': 8,
+        'min_samples_split': 0.07,
         'learning_rate': 0.1,
         'loss': 'ls'
     }, # xgboost model parameters
@@ -149,7 +149,7 @@ def XGBoost_Regression(
         xgboost = ensemble.GradientBoostingRegressor() # TODO: add params
         # use gridsearch to test all values in the dictionary
         xgb_grid = GridSearchCV(
-            xgboost, xgboost_gscv_parameters, cv=3,
+            xgboost, xgboost_gscv_parameters, cv=2,
             scoring='r2', # TODO: check multiple scoring
             verbose=1 if verbose else 0
         ) # this is the GridSearchCV method
@@ -232,4 +232,5 @@ def XGBoost_Regression(
         )
 
     return stats, model_to_validate, np.arange(feature_importance.shape[0])[sorted_idx_pi]
+    # TODO: add [::-1] when returning the best pcs used
 
