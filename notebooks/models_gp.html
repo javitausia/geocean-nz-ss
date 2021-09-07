@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. Kernel methods for regression &#8212; Storm Surge NZ - Summary</title>
+    <title>Kernel methods for regression &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="9. RUN experiments" href="experiments.html" />
-    <link rel="prev" title="7. XGBoost (forest of trees) regressor models" href="models_xgboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -97,7 +95,7 @@
   Chapters
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
    1. Data visualization and validation
@@ -130,12 +128,12 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost (forest of trees) regressor models
+   7. XGBoost regression models
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   8. Kernel methods for regression
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_mda_rbf.html">
+   8. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
@@ -144,13 +142,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_mda_rbf.html">
-   10. MDA - RBF model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   11. VISUALIZE experiments results
+   10. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -259,56 +252,56 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#part-1-kernel-expansion-and-basis-functions-intuition">
-   8.1. Part 1. Kernel expansion and basis functions: Intuition
+   Part 1. Kernel expansion and basis functions: Intuition
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#kernel-based-function">
-     8.1.1. Kernel-based function
+     Kernel-based function
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#kernel-expansion">
-     8.1.2. Kernel expansion
+     Kernel expansion
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#different-kernels">
-     8.1.3. Different kernels
+     Different kernels
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#combinations-of-kernels">
-     8.1.4. Combinations of kernels
+     Combinations of kernels
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#part-2-nonlinear-regression-with-svr-and-krr">
-   8.2. Part 2. Nonlinear regression with SVR and KRR
+   Part 2. Nonlinear regression with SVR and KRR
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#parameter-optimization-by-grid-search-and-cross-validation">
-   8.3. Parameter optimization by Grid Search and Cross-validation
+   Parameter optimization by Grid Search and Cross-validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#part-3-gaussian-process-regression">
-   8.4. Part 3. Gaussian Process Regression
+   Part 3. Gaussian Process Regression
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#selecting-a-prior">
-     8.4.1. Selecting a prior
+     Selecting a prior
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#inference">
-   8.5. Inference
+   Inference
   </a>
  </li>
 </ul>
@@ -323,7 +316,7 @@
               <div>
                 
   <div class="section" id="kernel-methods-for-regression">
-<h1><span class="section-number">8. </span>Kernel methods for regression<a class="headerlink" href="#kernel-methods-for-regression" title="Permalink to this headline">¶</a></h1>
+<h1>Kernel methods for regression<a class="headerlink" href="#kernel-methods-for-regression" title="Permalink to this headline">¶</a></h1>
 <p>Still in beta version…</p>
 <p>Kernel-based regression combine linear regression techniques with the kernel trick.
 They learn a function in the space induced by the respective kernel and the data.
@@ -371,13 +364,13 @@ Lecturer: Steven Van Vaerenbergh.</p>
 </div></div>
 </div>
 <div class="section" id="part-1-kernel-expansion-and-basis-functions-intuition">
-<h2><span class="section-number">8.1. </span>Part 1. Kernel expansion and basis functions: Intuition<a class="headerlink" href="#part-1-kernel-expansion-and-basis-functions-intuition" title="Permalink to this headline">¶</a></h2>
+<h2>Part 1. Kernel expansion and basis functions: Intuition<a class="headerlink" href="#part-1-kernel-expansion-and-basis-functions-intuition" title="Permalink to this headline">¶</a></h2>
 <p>A linear regressor fits the following model to the observed data:</p>
 <div class="math notranslate nohighlight">
 \[f(x) = w^\top x\]</div>
 <p>This is the underlying function that is assumed to have generated the data, and the true data typically contains additive noise, <span class="math notranslate nohighlight">\(w^\top x + \epsilon\)</span>.</p>
 <div class="section" id="kernel-based-function">
-<h3><span class="section-number">8.1.1. </span>Kernel-based function<a class="headerlink" href="#kernel-based-function" title="Permalink to this headline">¶</a></h3>
+<h3>Kernel-based function<a class="headerlink" href="#kernel-based-function" title="Permalink to this headline">¶</a></h3>
 <p>The data model adopted by kernel-based regression techniques assumes the data fits a linear model in the feature space. By exploiting the representer theorem kernel trick, this model can be cast back into the input space as the following “kernel expansion”:</p>
 <div class="math notranslate nohighlight">
 \[f(x) = \sum_{i=1}^n \alpha_i \kappa(x, x_i)\]</div>
@@ -436,7 +429,7 @@ We will start with the Gaussian (or “<a class="reference external" href="https
 </div>
 </div>
 <div class="section" id="kernel-expansion">
-<h3><span class="section-number">8.1.2. </span>Kernel expansion<a class="headerlink" href="#kernel-expansion" title="Permalink to this headline">¶</a></h3>
+<h3>Kernel expansion<a class="headerlink" href="#kernel-expansion" title="Permalink to this headline">¶</a></h3>
 <p>The complete kernel expansion <span class="math notranslate nohighlight">\(f(x) = \sum_{i=1}^n \alpha_i \kappa(x, x_i)\)</span> is obtained by weighing the individual basis functions with coefficients <span class="math notranslate nohighlight">\(\alpha_i\)</span> and summing the result.
 A kernel expansion with 4 “bases” <span class="math notranslate nohighlight">\(x_i\)</span> is constructed as follows:</p>
 <div class="cell docutils container">
@@ -504,7 +497,7 @@ Dimensions of alpha_i: (4, 1)
 </div>
 </div>
 <div class="section" id="different-kernels">
-<h3><span class="section-number">8.1.3. </span>Different kernels<a class="headerlink" href="#different-kernels" title="Permalink to this headline">¶</a></h3>
+<h3>Different kernels<a class="headerlink" href="#different-kernels" title="Permalink to this headline">¶</a></h3>
 <p>In practice, kernel functions reperesent dissimilarity measures.
 Apart from the standard RBF kernel many more kernels are used, such as the polynomial kernel, linear kernel, etc.
 An overview of the kernels included in the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> section of scikit learn can be found at <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics.pairwise">https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics.pairwise</a>.</p>
@@ -544,13 +537,13 @@ An overview of the kernels included in the <code class="docutils literal notrans
 </div>
 </div>
 <div class="section" id="combinations-of-kernels">
-<h3><span class="section-number">8.1.4. </span>Combinations of kernels<a class="headerlink" href="#combinations-of-kernels" title="Permalink to this headline">¶</a></h3>
+<h3>Combinations of kernels<a class="headerlink" href="#combinations-of-kernels" title="Permalink to this headline">¶</a></h3>
 <p>Kernel functions can be combined in several ways to produce more complex basis functions.
 For instance, the summation or multiplication of two kernel functions produces a new kernel function.</p>
 </div>
 </div>
 <div class="section" id="part-2-nonlinear-regression-with-svr-and-krr">
-<h2><span class="section-number">8.2. </span>Part 2. Nonlinear regression with SVR and KRR<a class="headerlink" href="#part-2-nonlinear-regression-with-svr-and-krr" title="Permalink to this headline">¶</a></h2>
+<h2>Part 2. Nonlinear regression with SVR and KRR<a class="headerlink" href="#part-2-nonlinear-regression-with-svr-and-krr" title="Permalink to this headline">¶</a></h2>
 <p>Kernel methods for regression apply linear regression techniques in the feature space.</p>
 <p>We will now perform nonlinear regression using the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html">SVR</a> and <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.kernel_ridge.KernelRidge.html">KRR</a> algorithms.
 As we’ve seen, these algorithms aim to find suitable coefficients <span class="math notranslate nohighlight">\(\alpha_i\)</span> for the model <span class="math notranslate nohighlight">\(f(x) = \sum_{i=1}^n \alpha_i \kappa(x, x_i)\)</span> by minimizing the prediction error according to a given criterion (L2-norm, L1-norm, <span class="math notranslate nohighlight">\(\epsilon\)</span>-insensitive,…).</p>
@@ -705,7 +698,7 @@ As we’ve seen, these algorithms aim to find suitable coefficients <span class=
 </div>
 </div>
 <div class="section" id="parameter-optimization-by-grid-search-and-cross-validation">
-<h2><span class="section-number">8.3. </span>Parameter optimization by Grid Search and Cross-validation<a class="headerlink" href="#parameter-optimization-by-grid-search-and-cross-validation" title="Permalink to this headline">¶</a></h2>
+<h2>Parameter optimization by Grid Search and Cross-validation<a class="headerlink" href="#parameter-optimization-by-grid-search-and-cross-validation" title="Permalink to this headline">¶</a></h2>
 <p>Instead of fixing the parameters, we can apply the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> function to perform a grid search of candidate parameters and select the best set using cross-validation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -778,7 +771,7 @@ Best parameters for KRR: {&#39;alpha&#39;: 0.001, &#39;gamma&#39;: 0.01}
 </div>
 </div>
 <div class="section" id="part-3-gaussian-process-regression">
-<h2><span class="section-number">8.4. </span>Part 3. Gaussian Process Regression<a class="headerlink" href="#part-3-gaussian-process-regression" title="Permalink to this headline">¶</a></h2>
+<h2>Part 3. Gaussian Process Regression<a class="headerlink" href="#part-3-gaussian-process-regression" title="Permalink to this headline">¶</a></h2>
 <p>Gaussian Process Regression (GPR) is a Bayesian kernel-based technique that allows to perform nonlinear regression and thus to characterize nonlinear relationships between variables.
 When producing predictions for a new input, GPR outputs the complete probability distribution of the estimated output, which is a Gaussian centered around the “prediction mean”.
 Interestingly, the prediction mean of KRR and GPR are identical. The “prediction variance” calculated by GPR yields an uncertainty interval for each prediction.</p>
@@ -790,7 +783,7 @@ By the same token, this notion of an infinite-dimensional Gaussian represented a
 <p>Gaussian processes are Bayesian techniques: After specifying a model for the data, a prior on the functional form is chosen. Then, the data is observed.
 Finally, the posterior distribution of the function to estimate is calculated using Bayes’ rule.</p>
 <div class="section" id="selecting-a-prior">
-<h3><span class="section-number">8.4.1. </span>Selecting a prior<a class="headerlink" href="#selecting-a-prior" title="Permalink to this headline">¶</a></h3>
+<h3>Selecting a prior<a class="headerlink" href="#selecting-a-prior" title="Permalink to this headline">¶</a></h3>
 <p>The prior of a Gaussian process is encoded in the kernel function, which represents the covariance between any two output points. Below we select a Gaussian (RBF) prior with length scale 1, and we draw several functions that correspond to this covariance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -825,7 +818,7 @@ Finally, the posterior distribution of the function to estimate is calculated us
 </div>
 </div>
 <div class="section" id="inference">
-<h2><span class="section-number">8.5. </span>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h2>
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h2>
 <p>We fix two data points (x,y) and find the functions that pass through them, given the distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and covariance <span class="math notranslate nohighlight">\(K\)</span>. Then, we repeat with 3 data points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1007,24 +1000,6 @@ Log-marginal-likelihood: 1471.742
 
 <div class='prev-next-bottom'>
     
-    <div id="prev">
-        <a class="left-prev" href="models_xgboost.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title"><span class="section-number">7. </span>XGBoost (forest of trees) regressor models</p>
-            </div>
-        </a>
-    </div>
-     <div id="next">
-        <a class="right-next" href="experiments.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title"><span class="section-number">9. </span>RUN experiments</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
 
 </div>
         

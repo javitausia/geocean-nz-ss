@@ -130,12 +130,12 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost (forest of trees) regressor models
+   7. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_gp.html">
-   8. Kernel methods for regression
+  <a class="reference internal" href="models_mda_rbf.html">
+   8. MDA - RBF model
   </a>
  </li>
  <li class="toctree-l1">
@@ -144,13 +144,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_mda_rbf.html">
-   10. MDA - RBF model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   11. VISUALIZE experiments results
+   10. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -285,7 +280,7 @@
                 
   <div class="section" id="repository-workflow-theory">
 <h1><span class="section-number">3. </span>Repository workflow + THEORY<a class="headerlink" href="#repository-workflow-theory" title="Permalink to this headline">¶</a></h1>
-<p>Before start running all the notebooks, it might be interesting to understand the whole repository as a sinle piece. In the README file, accesible <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/README.html">here</a>, the project organigram can be seen, but here we will focus in how all the notebooks / python scripts / datasets … are used.</p>
+<p>Before start running all the notebooks, it might be interesting to understand the whole repository as a single piece. In the README file, accesible <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/README.html">here</a>, the project organigram can be seen, but here we will focus in how all the notebooks / python scripts / datasets … are used / run.</p>
 <div class="section" id="repository-global-aspect">
 <h2><span class="section-number">3.1. </span>Repository GLOBAL aspect<a class="headerlink" href="#repository-global-aspect" title="Permalink to this headline">¶</a></h2>
 <p>The way this repository is thought is based on running notebooks, and this means that all the results obtained in the project are extracted using the notebooks, which internally import the corresponfing python scripts. For this purpose, we created a modular code with different classes and functions, that correctly behaves offering a statistical / numerical tool to be applied over atmospheric and oceanographic data. Below a summary of the global picture:</p>
@@ -293,10 +288,10 @@
 <a class="reference internal image-reference" href="../_images/repo-sketch.png"><img alt="../_images/repo-sketch.png" src="../_images/repo-sketch.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Global picture of the geocean-nz-ss repository. As it can be seen, everything is hosted in GitHub, and all the code might be run correctly using the anaconda/miniconda interface</span><a class="headerlink" href="#repo-sketch" title="Permalink to this image">¶</a></p>
 </div>
-<p>In the <strong>data_visualization</strong> notebook we already used the <strong>Loader</strong> class, which internally uses more basic python libraries, and this is the basic idea in this project, we build python classes and functions that already use all the possible pre-built python packages, so the effort is optimized.</p>
+<p>In the <strong>data_visualization</strong> notebook we already used the <strong>Loader</strong> class, which internally uses more basic python libraries, so this is the basic idea in this project, we build python classes and functions that already use all the possible pre-built python packages, so the effort is optimized.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The jupyter notebook choice was prefered based on the level of difficulty these notebooksoffer, which is very basic, and also because of the popularity of them. Have a look at <a class="reference external" href="https://www.nature.com/articles/d41586-018-07196-1#:~:text=Jupyter%20is%20a%20free%2C%20open,resources%20in%20a%20single%20document.">this article</a> and <a class="reference external" href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1956s">this video</a> for more important reasons of why notebooks are helpful!!</p>
+<p>The jupyter notebook choice was prefered based on the level of difficulty these notebooks offer, which is very basic, and also because of the popularity of them. Have a look at <a class="reference external" href="https://www.nature.com/articles/d41586-018-07196-1#:~:text=Jupyter%20is%20a%20free%2C%20open,resources%20in%20a%20single%20document.">this article</a> and <a class="reference external" href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1956s">this video</a> for more important reasons of why notebooks are helpful !!</p>
 </div>
 </div>
 <div class="section" id="main-python-packages">
