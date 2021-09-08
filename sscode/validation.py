@@ -45,9 +45,14 @@ def bias(targets, predictions):
     return np.nanmean(targets-predictions)
 
 def pocid(targets, predictions):
-    return np.where(
-        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])<0,1,0
+    updown = np.where(
+        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])>0,1,0
     )
+    return np.sum(updown)/len(updown) * 100
+
+def tu_test(targets, predictions):
+    return np.sum([(targets[i]-predictions[i])**2 for i in range(1,len(targets))])/\
+        np.sum([(targets[i]-targets[i-1])**2 for i in range(1,len(targets))])
 
 
 metrics_dictionary = {
@@ -66,7 +71,8 @@ metrics_dictionary = {
     'rel_rmse': relative_rmse, 
     'pearson': pearsonr,
     'spearman': spearmanr,
-    'pocid': pocid
+    'pocid': pocid,
+    'tu_test': tu_test
 } # this is the metrics dictionary with all the possible metrics
 
 # TODO: import DESIRED metric in line 9 and append to metrics_dictionary
