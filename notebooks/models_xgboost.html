@@ -335,6 +335,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_private_tgs</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.xgboost</span> <span class="kn">import</span> <span class="n">XGBoost_Regression</span>
+<span class="c1"># https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_uhslc_locations</span>
 
 <span class="c1"># warnings</span>
@@ -548,8 +549,8 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
         <span class="n">xgboost_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># will perform CV</span>
         <span class="n">xgboost_gscv_parameters</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span>
-            <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
-            <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+            <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.12</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
             <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span>
             <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ls&#39;</span><span class="p">]</span> <span class="c1"># more could be added</span>
         <span class="p">},</span>
@@ -568,16 +569,17 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.07999999999999999, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.06444444444444444, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_1.png" src="../_images/models_xgboost_12_1.png" />
 <img alt="../_images/models_xgboost_12_2.png" src="../_images/models_xgboost_12_2.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.29
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.28
  and Correlations (Pearson, Rscore): (0.79, 0.62)
  R score: 0.62 -- in TEST data
 </pre></div>
@@ -586,34 +588,36 @@ Fitting 2 folds for each of 20 candidates, totalling 40 fits
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.045, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_6.png" src="../_images/models_xgboost_12_6.png" />
 <img alt="../_images/models_xgboost_12_7.png" src="../_images/models_xgboost_12_7.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.61, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.78, 0.59)
- R score: 0.59 -- in TEST data
+ and Correlations (Pearson, Rscore): (0.77, 0.58)
+ R score: 0.58 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_9.png" src="../_images/models_xgboost_12_9.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.045, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.05333333333333333, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_11.png" src="../_images/models_xgboost_12_11.png" />
 <img alt="../_images/models_xgboost_12_12.png" src="../_images/models_xgboost_12_12.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.26
  and Correlations (Pearson, Rscore): (0.82, 0.67)
  R score: 0.67 -- in TEST data
 </pre></div>
@@ -622,34 +626,36 @@ Fitting 2 folds for each of 20 candidates, totalling 40 fits
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.045, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 8, &#39;min_samples_split&#39;: 0.04222222222222222, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_16.png" src="../_images/models_xgboost_12_16.png" />
 <img alt="../_images/models_xgboost_12_17.png" src="../_images/models_xgboost_12_17.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.71, Relative - RMSE: 0.38
- and Correlations (Pearson, Rscore): (0.67, 0.44)
- R score: 0.44 -- in TEST data
+ and Correlations (Pearson, Rscore): (0.68, 0.45)
+ R score: 0.45 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_19.png" src="../_images/models_xgboost_12_19.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.045, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.05333333333333333, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_21.png" src="../_images/models_xgboost_12_21.png" />
 <img alt="../_images/models_xgboost_12_22.png" src="../_images/models_xgboost_12_22.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.26
  and Correlations (Pearson, Rscore): (0.82, 0.67)
  R score: 0.67 -- in TEST data
 </pre></div>
@@ -658,47 +664,50 @@ Fitting 2 folds for each of 20 candidates, totalling 40 fits
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.11499999999999998, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_26.png" src="../_images/models_xgboost_12_26.png" />
 <img alt="../_images/models_xgboost_12_27.png" src="../_images/models_xgboost_12_27.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.65, Relative - RMSE: 0.33
- and Correlations (Pearson, Rscore): (0.75, 0.54)
- R score: 0.54 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.64, Relative - RMSE: 0.32
+ and Correlations (Pearson, Rscore): (0.75, 0.55)
+ R score: 0.55 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_29.png" src="../_images/models_xgboost_12_29.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.045, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_31.png" src="../_images/models_xgboost_12_31.png" />
 <img alt="../_images/models_xgboost_12_32.png" src="../_images/models_xgboost_12_32.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.57, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.81, 0.65)
- R score: 0.65 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.57, Relative - RMSE: 0.28
+ and Correlations (Pearson, Rscore): (0.81, 0.64)
+ R score: 0.64 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_34.png" src="../_images/models_xgboost_12_34.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.045, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.06444444444444444, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_36.png" src="../_images/models_xgboost_12_36.png" />
@@ -712,16 +721,17 @@ Fitting 2 folds for each of 20 candidates, totalling 40 fits
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.07999999999999999, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.10888888888888888, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_41.png" src="../_images/models_xgboost_12_41.png" />
 <img alt="../_images/models_xgboost_12_42.png" src="../_images/models_xgboost_12_42.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.30
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.59, Relative - RMSE: 0.30
  and Correlations (Pearson, Rscore): (0.79, 0.62)
  R score: 0.62 -- in TEST data
 </pre></div>
@@ -730,11 +740,12 @@ Fitting 2 folds for each of 20 candidates, totalling 40 fits
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.07999999999999999, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.08666666666666666, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_46.png" src="../_images/models_xgboost_12_46.png" />
@@ -748,36 +759,38 @@ Fitting 2 folds for each of 20 candidates, totalling 40 fits
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.07999999999999999, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.05333333333333333, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_51.png" src="../_images/models_xgboost_12_51.png" />
 <img alt="../_images/models_xgboost_12_52.png" src="../_images/models_xgboost_12_52.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.62, Relative - RMSE: 0.32
- and Correlations (Pearson, Rscore): (0.77, 0.57)
- R score: 0.57 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.61, Relative - RMSE: 0.31
+ and Correlations (Pearson, Rscore): (0.77, 0.58)
+ R score: 0.58 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_54.png" src="../_images/models_xgboost_12_54.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([3, 5, 7, 9]), &#39;min_samples_split&#39;: array([0.01 , 0.045, 0.08 , 0.115, 0.15 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
+       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
 
-Fitting 2 folds for each of 20 candidates, totalling 40 fits
+Fitting 2 folds for each of 100 candidates, totalling 200 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.07999999999999999, &#39;n_estimators&#39;: 50} parameters!! 
+ best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_56.png" src="../_images/models_xgboost_12_56.png" />
 <img alt="../_images/models_xgboost_12_57.png" src="../_images/models_xgboost_12_57.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.68, Relative - RMSE: 0.35
- and Correlations (Pearson, Rscore): (0.70, 0.49)
- R score: 0.49 -- in TEST data
+ and Correlations (Pearson, Rscore): (0.70, 0.48)
+ R score: 0.48 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_xgboost_12_59.png" src="../_images/models_xgboost_12_59.png" />
@@ -829,7 +842,7 @@ Fitting 2 folds for each of 10 candidates, totalling 20 fits
 
  -- METRICS -- 
 
- {&#39;bias&#39;: -0.008857667594455292, &#39;si&#39;: 0.627367689994284, &#39;rmse&#39;: 0.07697954681160739, &#39;rel_rmse&#39;: 0.32267588974581435, &#39;pearson&#39;: 0.7621879228373296, &#39;rscore&#39;: 0.5616776822571815, &#39;ext_rmse&#39;: 0.10924264078968221, &#39;ext_pearson&#39;: 0.4518813321139543} 
+ {&#39;bias&#39;: -0.00885766759445529, &#39;si&#39;: 0.6273676899942839, &#39;rmse&#39;: 0.07697954681160739, &#39;rel_rmse&#39;: 0.32267588974581435, &#39;pearson&#39;: 0.7621879228373294, &#39;rscore&#39;: 0.5616776822571815, &#39;ext_rmse&#39;: 0.10924264078968221, &#39;ext_pearson&#39;: 0.45188133211395437} 
 
  obtained with GradientBoostingRegressor(max_depth=7, min_samples_split=0.1075,
                           n_estimators=40) !!
@@ -887,7 +900,7 @@ Fitting 2 folds for each of 45 candidates, totalling 90 fits
 
  -- METRICS -- 
 
- {&#39;bias&#39;: -0.00800252794340142, &#39;si&#39;: 0.5688119728522942, &#39;rmse&#39;: 0.071512099349321, &#39;rel_rmse&#39;: 0.3066062817299005, &#39;pearson&#39;: 0.7970019001321749, &#39;rscore&#39;: 0.6250330604928123, &#39;ext_rmse&#39;: 0.09558087872358761, &#39;ext_pearson&#39;: 0.38476507644777747} 
+ {&#39;bias&#39;: -0.008002527943401424, &#39;si&#39;: 0.5688119728522942, &#39;rmse&#39;: 0.071512099349321, &#39;rel_rmse&#39;: 0.3066062817299005, &#39;pearson&#39;: 0.7970019001321746, &#39;rscore&#39;: 0.6250330604928123, &#39;ext_rmse&#39;: 0.0955808787235876, &#39;ext_pearson&#39;: 0.38476507644777747} 
 
  obtained with GradientBoostingRegressor(max_depth=7, min_samples_split=0.08875000000000001,
                           n_estimators=40) !!
