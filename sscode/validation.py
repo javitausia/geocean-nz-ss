@@ -67,7 +67,7 @@ metrics_dictionary = {
     'bias': bias, 
     'si': si,
     'rmse': rmse,
-    'ext_rmse': ext_rmse,
+    'ext_rmse': ext_rmse, # this can be used as a score metric during training
     'rel_rmse': relative_rmse, 
     'pearson': pearsonr,
     'spearman': spearmanr,

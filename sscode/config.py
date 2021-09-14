@@ -11,4 +11,8 @@ default_region = (140,190,-20,-70) # region of NZ where pressure, winds... are d
 default_region_reduced = (160,185,-30,-52) # reduced region of NZ (similar to moana region)
 
 # to model evaluation
-default_evaluation_metrics = ['bias','si','rmse','rel_rmse','pearson','rscore','ext_rmse','ext_pearson']
+default_evaluation_metrics = [
+    'bias','si','rmse','rel_rmse','pearson','rscore',
+    'ext_rmse','ext_rel_rmse','ext_pearson',
+    'pocid','tu_test','expl_var'
+] # add more metrics if required

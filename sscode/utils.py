@@ -14,7 +14,8 @@ def calculate_relative_winds(location: tuple = default_location,
                              uw = None, vw = None,
                              lat_name: str = 'lat',
                              lon_name: str = 'lon',
-                             delete_direc: int = 180):
+                             delete_direc: int = 180,
+                             chunk=False):
     """
     This function calculates the projected winds in the direction to
     the given location. Winds with an angle greater than delete_direc with 
@@ -23,16 +24,23 @@ def calculate_relative_winds(location: tuple = default_location,
     Args:
         location (tuple, optional): Location where the winds will be
             projected. Defaults to default_location. Ex: (181,-30)
-        uw (xarray-DataArray): u10-component of winds in the direction where 
+        uw (xarray.DataArray): u10-component of winds in the direction where 
             they come (era5 raw data). Defaults to None.
-        vw (xarray-DataArray): v10-component of winds in the direction where 
+        vw (xarray.DataArray): v10-component of winds in the direction where 
             they come (era5 raw data). Defaults to None.
+        lon_name (str, optional): This is the longitude name in array
+        lat_name (str, optional): This is the latitude name un array
+        delete_direc (int, optional): Choose an angle below 180 degrees if 
+            directions opposite to location are wanted to be deleted
+        chunk (bool, optional): Whether to re-chunk the dataset for
+            memmory problems
 
     Returns:
         [xarray-Dataset]: an xarray Dataset with all the variables of
         interest, which are:
-            - u10 (winds direction), v10
-            - wind_proj: magnitud of the projected winds
+            - u10 (winds direction), v10, u102, v102
+            - wind_magnitude: module of the winds
+            - wind_proj: magnitud of the projected winds (module+direc)
             - bearings for all the lat/lon points (using great_circle_calculator)
             - direc_proj_math: mathematical representation of the bearings,
                 this is useful when plotting the data
@@ -44,6 +52,15 @@ def calculate_relative_winds(location: tuple = default_location,
         'uw2': uw**2, 'vw2': vw**2,
         'wind_magnitude': np.sqrt(uw**2+vw**2)
     }) # add squared winds and wind module
+    if chunk:
+        print('\n re-chunking dataset to avoid memmory problems... \n')
+        wind = wind.drop(
+            ['uw2','vw2'] # str(uw.name), str(vw.name)
+        ).chunk({
+            'time': int(len(wind.time)/20),
+            lon_name: int(len(wind[lon_name])/10),
+            lat_name: int(len(wind[lat_name])/10)
+        }) # rechunk and drop unused variables
     print('\n calculating winds with: \n\n {} \n'.format(
         wind # these are the wind merged components
     )) if True else None

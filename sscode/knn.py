@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
+from sklearn.preprocessing import StandardScaler
 
 # plotting
 import matplotlib.pyplot as plt
@@ -106,7 +107,8 @@ def KNN_Regression(
     # split predictors into train and test
     X_train, X_test, y_train, y_test, t_train, t_test = \
     train_test_split(
-        X, y, common_times[0], train_size=train_size, 
+        X, y, # StandardScaler().fit_transform(X) 
+        common_times[0], train_size=train_size, 
         random_state=88, shuffle=False
     )
 
@@ -197,7 +199,7 @@ def KNN_Regression(
     if validator[0]:
         validata_w_tgs(
             X_set[X_set_var].dropna(dim='time')[:,:num_pcs] \
-                if percentage_PCs else X_set[X_set_var].dropna(dim='time')[:,:50],
+                if percentage_PCs else X_set[X_set_var].dropna(dim='time')[:,:100],
             validator[1][validator[2]].dropna(dim='time'),
             model_to_validate, # pre-trained knn model
             str(validator[1].name.values)

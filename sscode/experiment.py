@@ -463,7 +463,7 @@ class Experiment(object):
                                     vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
                                     lat_name=datasets_attrs[self.predictor_data][1],
                                     lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None 
+                                ) if parameters[1] else None
                                 # this are the winds projected in site
                             ), wind_vars=('wind_proj_mask','lon','lat'),
                             region=local_region, # pass the calculated local region
