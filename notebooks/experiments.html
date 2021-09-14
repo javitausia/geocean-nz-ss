@@ -425,11 +425,11 @@
     <span class="p">]</span>
 <span class="p">)</span>
 <span class="n">pca_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
-    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
-    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
-    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
-    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">4.1</span><span class="p">,</span><span class="mf">4.1</span><span class="p">))]</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)),(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">)]</span>
 <span class="p">}</span>
 <span class="n">linear_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;train_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">],</span> <span class="s1">&#39;percentage_PCs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.98</span><span class="p">]</span>
@@ -440,8 +440,8 @@
 <span class="p">}</span>
 <span class="n">xgboost_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;train_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">],</span> <span class="s1">&#39;percentage_PCs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.98</span><span class="p">],</span>
-    <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
-    <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span>
+    <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.04</span><span class="p">,</span><span class="mf">0.06</span><span class="p">],</span>
     <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ls&#39;</span><span class="p">]</span> <span class="c1"># more could be added</span>
 <span class="p">}</span>
 </pre></div>

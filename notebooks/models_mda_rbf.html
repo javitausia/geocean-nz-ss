@@ -383,6 +383,16 @@ in the precision of the technique. In the methodology of propagation of the mari
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+.output_png {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+</style>
+</div></div>
 </div>
 </div>
 <div class="section" id="load-data-and-linear-model-stats">
@@ -532,14 +542,15 @@ in the precision of the technique. In the methodology of propagation of the mari
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dict to pca</span>
 <span class="n">pca_attrs_default</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;pres_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="c1"># winds will not be used</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span> 
     <span class="s1">&#39;wind_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
     <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
-    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
-    <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.3</span><span class="p">,</span><span class="mf">2.3</span><span class="p">)),</span>
+    <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="s1">&#39;pca_ttls&#39;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-2&#39;</span><span class="p">],</span> 
+        <span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-2&#39;</span>
+    <span class="p">],</span> 
     <span class="s1">&#39;pca_borders&#39;</span><span class="p">:</span> <span class="kc">None</span>
 <span class="p">}</span>
 <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
@@ -559,6 +570,39 @@ in the precision of the technique. In the methodology of propagation of the mari
         <span class="s1">&#39;ext_mae&#39;</span><span class="p">,</span><span class="s1">&#39;ext_mse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_pearson&#39;</span><span class="p">,</span>
         <span class="s1">&#39;bias&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;spearman&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span>
     <span class="p">],</span>
+    <span class="n">lons</span><span class="o">=</span><span class="p">[</span><span class="mf">171.2</span><span class="p">,</span> <span class="mf">169.5</span><span class="p">,</span> <span class="mf">167.0</span><span class="p">,</span> <span class="c1"># west-south coast</span>
+          <span class="mf">167.9</span><span class="p">,</span> <span class="mf">167.4</span><span class="p">,</span> <span class="c1"># south-south</span>
+          <span class="mf">170.3</span><span class="p">,</span> <span class="mf">171.6</span><span class="p">,</span> <span class="mf">173.7</span><span class="p">,</span> <span class="c1"># east-south</span>
+          <span class="mf">173.4</span><span class="p">,</span> <span class="mf">174.9</span><span class="p">,</span> <span class="c1"># middle bays</span>
+          <span class="mf">176.1</span><span class="p">,</span> <span class="mf">177.2</span><span class="p">,</span> <span class="mf">178.4</span><span class="p">,</span> <span class="c1"># east-north</span>
+          <span class="mf">176.6</span><span class="p">,</span> <span class="mf">175.5</span><span class="p">,</span> <span class="mf">173.9</span><span class="p">,</span> <span class="c1"># north-north</span>
+          <span class="mf">172.4</span><span class="p">,</span> <span class="mf">173.6</span><span class="p">,</span> <span class="mf">174.5</span> <span class="c1"># west-north</span>
+    <span class="p">],</span>
+    <span class="n">lats</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">41.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">43.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.8</span><span class="p">,</span> 
+          <span class="o">-</span><span class="mf">46.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">47.4</span><span class="p">,</span> 
+          <span class="o">-</span><span class="mf">46.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">42.8</span><span class="p">,</span> 
+          <span class="o">-</span><span class="mf">40.9</span><span class="p">,</span> <span class="o">-</span><span class="mf">39.9</span><span class="p">,</span> 
+          <span class="o">-</span><span class="mf">41.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">39.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.4</span><span class="p">,</span> 
+          <span class="o">-</span><span class="mf">37.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">35.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">34.7</span><span class="p">,</span> 
+          <span class="o">-</span><span class="mf">35.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">36.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">38.3</span>
+    <span class="p">],</span>
+    <span class="n">min_dist_th</span><span class="o">=</span><span class="p">[</span><span class="mi">110</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span>
+                 <span class="mi">110</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span>
+                 <span class="mi">90</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span>
+                 <span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="mi">90</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span>
+                 <span class="mi">100</span><span class="p">,</span><span class="mi">105</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span>
+                 <span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span>
+    <span class="p">],</span>
+    <span class="n">extra_help</span><span class="o">=</span><span class="p">[</span> <span class="c1"># this helps to stay in the wanted shore of NZ</span>
+        <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mf">1.2</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="p">],</span>
     <span class="c1"># -------------------------------------------------------- #</span>
     <span class="c1"># set sites_to_analyze to None to shore analysis</span>
     <span class="n">sites_to_analyze</span><span class="o">=</span><span class="kc">None</span> <span class="c1"># list(sites_to_analyze)[::8]</span>
@@ -571,11 +615,11 @@ in the precision of the technique. In the methodology of propagation of the mari
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Initializing the MDA + RBF constructor... 
 
 
- with longitudes = [168.1, 171.4, 167.5, 171.1, 173.5, 173.3, 175.1, 177.9, 172.6] 
+ with longitudes = [171.2, 169.5, 167.0, 167.9, 167.4, 170.3, 171.6, 173.7, 173.4, 174.9, 176.1, 177.2, 178.4, 176.6, 175.5, 173.9, 172.4, 173.6, 174.5] 
  
  and 
  
- latitudes = [-44.2, -41.9, -47.2, -45.4, -42.5, -40.7, -40.2, -40.1, -34.3] !!                 
+ latitudes = [-41.6, -43.3, -44.8, -46.3, -47.4, -46.0, -44.3, -42.8, -40.9, -39.9, -41.1, -39.1, -37.4, -37.8, -35.8, -34.7, -35.4, -36.8, -38.3] !!                 
 
  for the specified middle locations / shores !!
 
@@ -590,7 +634,19 @@ in the precision of the technique. In the methodology of propagation of the mari
 
  and the PC analysis             will be calculated using the parameters 
 
- {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: True, &#39;winds&#39;: (False, None), &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;), &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (True, (160, 185, -30, -52)), &#39;pca_plot&#39;: (False, False, 1), &#39;verbose&#39;: True, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;Grad in t&#39;, &#39;SLP in t-1&#39;, &#39;Grad in t-1&#39;, &#39;SLP in t-2&#39;, &#39;Grad in t-2&#39;], &#39;pca_borders&#39;: None} 
+ {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: False, &#39;winds&#39;: (True, &lt;xarray.Dataset&gt;
+Dimensions:          (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon              (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 ...
+    V_GRD_L103       (time, lat, lon) float32 ...
+    wind_proj        (time, lat, lon) float64 ...
+    bearings         (lat, lon) float64 ...
+    direc_proj_math  (lat, lon) float64 ...
+    wind_proj_mask   (time, lat, lon) float64 ...), &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;), &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.3, 2.3)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: True, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;Winds in t&#39;, &#39;SLP in t-1&#39;, &#39;Winds in t-1&#39;, &#39;SLP in t-2&#39;, &#39;Winds in t-2&#39;], &#39;pca_borders&#39;: None} 
 
 
  lets calculate the slp pcs... 
@@ -599,19 +655,1223 @@ in the precision of the technique. In the methodology of propagation of the mari
 
              The slp pcs will be calculated for all the locations / shores...             
 
+pcs matrix calculation for site / shore 1
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
 
  lets calculate the PCs... 
 
 
- calculating the gradient of the sea-level-pressure fields... 
+ adding the wind to the predictor... 
 
 
- pressure/gradient predictor both with shape: 
- (11354, 45, 51) 
+ winds predictor with shape: 
+ (11354, 9, 10) 
 
 
  calculating PCs matrix with shape: 
- (11351, 1722) 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_3.png" src="../_images/models_mda_rbf_6_3.png" />
+<img alt="../_images/models_mda_rbf_6_4.png" src="../_images/models_mda_rbf_6_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 2
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_6.png" src="../_images/models_mda_rbf_6_6.png" />
+<img alt="../_images/models_mda_rbf_6_7.png" src="../_images/models_mda_rbf_6_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 3
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_9.png" src="../_images/models_mda_rbf_6_9.png" />
+<img alt="../_images/models_mda_rbf_6_10.png" src="../_images/models_mda_rbf_6_10.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 4
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_12.png" src="../_images/models_mda_rbf_6_12.png" />
+<img alt="../_images/models_mda_rbf_6_13.png" src="../_images/models_mda_rbf_6_13.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 5
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 486) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_15.png" src="../_images/models_mda_rbf_6_15.png" />
+<img alt="../_images/models_mda_rbf_6_16.png" src="../_images/models_mda_rbf_6_16.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 6
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_18.png" src="../_images/models_mda_rbf_6_18.png" />
+<img alt="../_images/models_mda_rbf_6_19.png" src="../_images/models_mda_rbf_6_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 7
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_21.png" src="../_images/models_mda_rbf_6_21.png" />
+<img alt="../_images/models_mda_rbf_6_22.png" src="../_images/models_mda_rbf_6_22.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 8
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 600) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_24.png" src="../_images/models_mda_rbf_6_24.png" />
+<img alt="../_images/models_mda_rbf_6_25.png" src="../_images/models_mda_rbf_6_25.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 9
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 486) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_27.png" src="../_images/models_mda_rbf_6_27.png" />
+<img alt="../_images/models_mda_rbf_6_28.png" src="../_images/models_mda_rbf_6_28.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 10
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 486) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_30.png" src="../_images/models_mda_rbf_6_30.png" />
+<img alt="../_images/models_mda_rbf_6_31.png" src="../_images/models_mda_rbf_6_31.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 11
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 486) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_33.png" src="../_images/models_mda_rbf_6_33.png" />
+<img alt="../_images/models_mda_rbf_6_34.png" src="../_images/models_mda_rbf_6_34.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 12
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_36.png" src="../_images/models_mda_rbf_6_36.png" />
+<img alt="../_images/models_mda_rbf_6_37.png" src="../_images/models_mda_rbf_6_37.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 13
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 486) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_39.png" src="../_images/models_mda_rbf_6_39.png" />
+<img alt="../_images/models_mda_rbf_6_40.png" src="../_images/models_mda_rbf_6_40.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 14
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_42.png" src="../_images/models_mda_rbf_6_42.png" />
+<img alt="../_images/models_mda_rbf_6_43.png" src="../_images/models_mda_rbf_6_43.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 15
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_45.png" src="../_images/models_mda_rbf_6_45.png" />
+<img alt="../_images/models_mda_rbf_6_46.png" src="../_images/models_mda_rbf_6_46.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 16
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_48.png" src="../_images/models_mda_rbf_6_48.png" />
+<img alt="../_images/models_mda_rbf_6_49.png" src="../_images/models_mda_rbf_6_49.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 17
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 9, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 486) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_51.png" src="../_images/models_mda_rbf_6_51.png" />
+<img alt="../_images/models_mda_rbf_6_52.png" src="../_images/models_mda_rbf_6_52.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 18
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_54.png" src="../_images/models_mda_rbf_6_54.png" />
+<img alt="../_images/models_mda_rbf_6_55.png" src="../_images/models_mda_rbf_6_55.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pcs matrix calculation for site / shore 19
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (lat: 160, lon: 161, time: 11444)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
+  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103      (time, lat, lon) float32 -2.324 -2.207 -2.308 ... 2.449 nan
+    V_GRD_L103      (time, lat, lon) float32 -0.9279 -1.071 -1.217 ... 3.73 nan
+    uw2             (time, lat, lon) float32 5.402 4.869 5.328 ... 5.997 nan
+    vw2             (time, lat, lon) float32 0.861 1.146 1.481 ... 13.91 nan
+    wind_magnitude  (time, lat, lon) float32 2.503 2.453 2.61 ... 4.462 nan 
+
+
+ lets calculate the PCs... 
+
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 9) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 540) 
+
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_57.png" src="../_images/models_mda_rbf_6_57.png" />
+<img alt="../_images/models_mda_rbf_6_58.png" src="../_images/models_mda_rbf_6_58.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the MDA + RBF adjustments</span>
+<span class="n">interpolated_ss_by_rbf</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
+    <span class="n">selected_shores</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">19</span><span class="p">),</span> <span class="c1"># indexes in python counter</span>
+    <span class="c1"># len(sites_to_analyze[::8])</span>
+    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.95</span><span class="p">],</span>
+    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">],</span>
+    <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">try_all</span><span class="o">=</span><span class="kc">True</span>
+    <span class="c1"># the ss_pcs parameter is very important, set to 1 when working with single locations</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets interpolate the SS using all the calculated             pcs (slp + ss) and the MDA+RBF technique!!             This interpolation will be performed in all the locations!! 
+
+
+ Lets reconstruct the SS for location 1!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 107 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.82 | interpolation: 0.29 | sigma: 0.2868
+ix_scalar: 1,  optimization: 0.76 | interpolation: 0.32 | sigma: 0.3184
+ix_scalar: 2,  optimization: 1.00 | interpolation: 0.27 | sigma: 0.2657
+ix_scalar: 3,  optimization: 2.57 | interpolation: 0.28 | sigma: 0.2802
+ix_scalar: 4,  optimization: 1.23 | interpolation: 0.27 | sigma: 0.2674
+
+ Lets reconstruct the SS for location 2!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.73 | interpolation: 0.27 | sigma: 0.2677
+ix_scalar: 1,  optimization: 0.82 | interpolation: 0.27 | sigma: 0.2689
+ix_scalar: 2,  optimization: 0.98 | interpolation: 0.27 | sigma: 0.2688
+ix_scalar: 3,  optimization: 1.28 | interpolation: 0.27 | sigma: 0.2730
+ix_scalar: 4,  optimization: 0.90 | interpolation: 0.33 | sigma: 0.3253
+
+ Lets reconstruct the SS for location 3!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.95 | interpolation: 0.35 | sigma: 0.3537
+ix_scalar: 1,  optimization: 2.95 | interpolation: 0.36 | sigma: 0.3610
+ix_scalar: 2,  optimization: 1.10 | interpolation: 0.34 | sigma: 0.3418
+ix_scalar: 3,  optimization: 3.14 | interpolation: 0.39 | sigma: 0.3906
+ix_scalar: 4,  optimization: 3.42 | interpolation: 0.43 | sigma: 0.4325
+
+ Lets reconstruct the SS for location 4!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.09 | interpolation: 0.28 | sigma: 0.2820
+ix_scalar: 1,  optimization: 1.07 | interpolation: 0.37 | sigma: 0.3690
+ix_scalar: 2,  optimization: 0.87 | interpolation: 0.33 | sigma: 0.3327
+ix_scalar: 3,  optimization: 1.57 | interpolation: 0.34 | sigma: 0.3386
+ix_scalar: 4,  optimization: 1.16 | interpolation: 0.33 | sigma: 0.3325
+
+ Lets reconstruct the SS for location 5!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.70 | interpolation: 0.30 | sigma: 0.2967
+ix_scalar: 1,  optimization: 1.15 | interpolation: 0.28 | sigma: 0.2804
+ix_scalar: 2,  optimization: 3.11 | interpolation: 0.30 | sigma: 0.3004
+ix_scalar: 3,  optimization: 1.14 | interpolation: 0.34 | sigma: 0.3371
+ix_scalar: 4,  optimization: 0.77 | interpolation: 0.34 | sigma: 0.3391
+
+ Lets reconstruct the SS for location 6!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.75 | interpolation: 0.27 | sigma: 0.2689
+ix_scalar: 1,  optimization: 1.35 | interpolation: 0.27 | sigma: 0.2746
+ix_scalar: 2,  optimization: 0.91 | interpolation: 0.33 | sigma: 0.3253
+ix_scalar: 3,  optimization: 0.93 | interpolation: 0.33 | sigma: 0.3330
+ix_scalar: 4,  optimization: 0.87 | interpolation: 0.33 | sigma: 0.3337
+
+ Lets reconstruct the SS for location 7!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 10 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.82 | interpolation: 0.28 | sigma: 0.2802
+ix_scalar: 1,  optimization: 0.75 | interpolation: 0.28 | sigma: 0.2828
+ix_scalar: 2,  optimization: 2.76 | interpolation: 0.36 | sigma: 0.3648
+ix_scalar: 3,  optimization: 0.74 | interpolation: 0.34 | sigma: 0.3436
+ix_scalar: 4,  optimization: 0.84 | interpolation: 0.34 | sigma: 0.3432
+
+ Lets reconstruct the SS for location 8!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 108 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.89 | interpolation: 0.27 | sigma: 0.2704
+ix_scalar: 1,  optimization: 0.74 | interpolation: 0.27 | sigma: 0.2711
+ix_scalar: 2,  optimization: 1.11 | interpolation: 0.27 | sigma: 0.2707
+ix_scalar: 3,  optimization: 1.03 | interpolation: 0.31 | sigma: 0.3098
+ix_scalar: 4,  optimization: 0.93 | interpolation: 0.33 | sigma: 0.3301
+
+ Lets reconstruct the SS for location 9!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 11 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.79 | interpolation: 0.29 | sigma: 0.2896
+ix_scalar: 1,  optimization: 1.09 | interpolation: 0.29 | sigma: 0.2933
+ix_scalar: 2,  optimization: 0.90 | interpolation: 0.29 | sigma: 0.2931
+ix_scalar: 3,  optimization: 2.22 | interpolation: 0.38 | sigma: 0.3751
+ix_scalar: 4,  optimization: 0.81 | interpolation: 0.35 | sigma: 0.3547
+
+ Lets reconstruct the SS for location 10!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 10 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.93 | interpolation: 0.32 | sigma: 0.3179
+ix_scalar: 1,  optimization: 1.16 | interpolation: 0.36 | sigma: 0.3551
+ix_scalar: 2,  optimization: 0.79 | interpolation: 0.29 | sigma: 0.2864
+ix_scalar: 3,  optimization: 1.02 | interpolation: 0.32 | sigma: 0.3188
+ix_scalar: 4,  optimization: 3.30 | interpolation: 0.38 | sigma: 0.3849
+
+ Lets reconstruct the SS for location 11!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.15 | interpolation: 0.32 | sigma: 0.3203
+ix_scalar: 1,  optimization: 0.87 | interpolation: 0.33 | sigma: 0.3260
+ix_scalar: 2,  optimization: 1.12 | interpolation: 0.34 | sigma: 0.3351
+ix_scalar: 3,  optimization: 1.07 | interpolation: 0.33 | sigma: 0.3299
+ix_scalar: 4,  optimization: 1.64 | interpolation: 0.33 | sigma: 0.3309
+
+ Lets reconstruct the SS for location 12!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 9 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.40 | interpolation: 0.31 | sigma: 0.3111
+ix_scalar: 1,  optimization: 0.78 | interpolation: 0.36 | sigma: 0.3593
+ix_scalar: 2,  optimization: 0.97 | interpolation: 0.34 | sigma: 0.3402
+ix_scalar: 3,  optimization: 1.04 | interpolation: 0.38 | sigma: 0.3815
+ix_scalar: 4,  optimization: 0.86 | interpolation: 0.34 | sigma: 0.3410
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets reconstruct the SS for location 13!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.70 | interpolation: 0.35 | sigma: 0.3452
+ix_scalar: 1,  optimization: 1.22 | interpolation: 0.37 | sigma: 0.3687
+ix_scalar: 2,  optimization: 1.03 | interpolation: 0.39 | sigma: 0.3876
+ix_scalar: 3,  optimization: 1.16 | interpolation: 0.36 | sigma: 0.3573
+ix_scalar: 4,  optimization: 3.96 | interpolation: 0.41 | sigma: 0.4146
+
+ Lets reconstruct the SS for location 14!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 9 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.83 | interpolation: 0.28 | sigma: 0.2802
+ix_scalar: 1,  optimization: 0.73 | interpolation: 0.29 | sigma: 0.2861
+ix_scalar: 2,  optimization: 0.82 | interpolation: 0.29 | sigma: 0.2861
+ix_scalar: 3,  optimization: 1.37 | interpolation: 0.29 | sigma: 0.2895
+ix_scalar: 4,  optimization: 2.75 | interpolation: 0.41 | sigma: 0.4135
+
+ Lets reconstruct the SS for location 15!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.61 | interpolation: 0.32 | sigma: 0.3153
+ix_scalar: 1,  optimization: 0.99 | interpolation: 0.34 | sigma: 0.3392
+ix_scalar: 2,  optimization: 1.17 | interpolation: 0.36 | sigma: 0.3644
+ix_scalar: 3,  optimization: 1.20 | interpolation: 0.33 | sigma: 0.3343
+ix_scalar: 4,  optimization: 2.73 | interpolation: 0.39 | sigma: 0.3852
+
+ Lets reconstruct the SS for location 16!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 7 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.00 | interpolation: 0.27 | sigma: 0.2727
+ix_scalar: 1,  optimization: 2.66 | interpolation: 0.34 | sigma: 0.3435
+ix_scalar: 2,  optimization: 1.37 | interpolation: 0.38 | sigma: 0.3831
+ix_scalar: 3,  optimization: 3.25 | interpolation: 0.38 | sigma: 0.3831
+ix_scalar: 4,  optimization: 1.13 | interpolation: 0.35 | sigma: 0.3497
+
+ Lets reconstruct the SS for location 17!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 108 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.77 | interpolation: 0.29 | sigma: 0.2923
+ix_scalar: 1,  optimization: 1.14 | interpolation: 0.34 | sigma: 0.3400
+ix_scalar: 2,  optimization: 1.15 | interpolation: 0.40 | sigma: 0.4048
+ix_scalar: 3,  optimization: 1.41 | interpolation: 0.38 | sigma: 0.3814
+ix_scalar: 4,  optimization: 0.87 | interpolation: 0.35 | sigma: 0.3501
+
+ Lets reconstruct the SS for location 18!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.17 | interpolation: 0.40 | sigma: 0.4014
+ix_scalar: 1,  optimization: 1.23 | interpolation: 0.33 | sigma: 0.3335
+ix_scalar: 2,  optimization: 2.26 | interpolation: 0.36 | sigma: 0.3575
+ix_scalar: 3,  optimization: 2.27 | interpolation: 0.35 | sigma: 0.3533
+ix_scalar: 4,  optimization: 2.52 | interpolation: 0.35 | sigma: 0.3533
+
+ Lets reconstruct the SS for location 19!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 8 PCs... 
+
+
+ ------------------------------------------------------------- 
+
+
+
+We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.99 | interpolation: 0.27 | sigma: 0.2657
+ix_scalar: 1,  optimization: 1.30 | interpolation: 0.33 | sigma: 0.3347
+ix_scalar: 2,  optimization: 0.76 | interpolation: 0.33 | sigma: 0.3310
+ix_scalar: 3,  optimization: 3.11 | interpolation: 0.36 | sigma: 0.3577
+ix_scalar: 4,  optimization: 0.90 | interpolation: 0.33 | sigma: 0.3282
 </pre></div>
 </div>
 </div>
@@ -622,24 +1882,27 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the MDA + RBF adjustments</span>
-<span class="n">interpolated_ss_by_rbf</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
-    <span class="n">selected_shores</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span> <span class="c1"># indexes in python counter</span>
-    <span class="c1"># len(sites_to_analyze[::8])</span>
-    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.80</span><span class="p">,</span><span class="mf">0.85</span><span class="p">,</span><span class="mf">0.90</span><span class="p">],</span>
-    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="mi">750</span><span class="p">,</span><span class="mi">1000</span><span class="p">],</span>
-    <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">try_all</span><span class="o">=</span><span class="kc">True</span>
-    <span class="c1"># the ss_pcs parameter is very important, set to 1 when working with single locations</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># interpolated_ss_by_rbf.to_netcdf(&#39;../data/statistics/experiments/experiment_mdarbf_shores_2.nc&#39;)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpolated_ss_by_rbf</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_mdarbf_shores_2.nc&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rel_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_rel_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;tu_test&#39;</span><span class="p">]:</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">interpolated_ss_by_rbf</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/models_mda_rbf_10_0.png" src="../_images/models_mda_rbf_10_0.png" />
+<img alt="../_images/models_mda_rbf_10_1.png" src="../_images/models_mda_rbf_10_1.png" />
+<img alt="../_images/models_mda_rbf_10_2.png" src="../_images/models_mda_rbf_10_2.png" />
+<img alt="../_images/models_mda_rbf_10_3.png" src="../_images/models_mda_rbf_10_3.png" />
+<img alt="../_images/models_mda_rbf_10_4.png" src="../_images/models_mda_rbf_10_4.png" />
 </div>
 </div>
 </div>
