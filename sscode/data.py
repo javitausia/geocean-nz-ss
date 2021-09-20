@@ -67,17 +67,26 @@ class Loader(object):
 
         ** By default, the Loader loads / calculates the winds projected in
         default_location, but the loaded data can be re-projected using
-        the function calculate_relative_winds() in utils.py
+        the function calculate_relative_winds() in utils.py **
+
+        Most of the parameters in this Loader class refer to the predictor
+        loading functions, as those are the ones that might inccur memory
+        problems
 
         Args:
             data_to_load (list, optional): List with the predictor, predictand 
-            and validator: 
+            and validator:
                 - Defaults to ['cfsr','moana','uhslc'].
-            time_resample (str): Time step to resample the data to, this might
-                also by a year / years to crop the data to
-            load_winds (bool): Load or not the wind data
-            location: Location if required (to project the winds)
-            plot: Whether to plot or not the loaded data
+            time_resample (str, optional): Time step to resample the data to, this might
+                also by a year / years to crop the data to. Notice that this time
+                resample is only made in the predictor, as the other datasets
+                do not occupy much memory. Defaults to '1D'.
+            load_winds (bool, optional): Load or not the wind data. It is recommended
+                to be loaded, but be careful killing the kernel. Defaults to True.
+            location (tuple, optional): Location if required (to project the winds).
+                It is alsa saved in the class attributes. Defaults to default_location.
+            plot (bool, optional): Whether to plot or not the loaded data.
+                Defaults to True.
         """
 
         # save location
@@ -140,6 +149,13 @@ class Loader(object):
         """
         This method validates the loaded data with the compare_datasets function
 
+        Args:
+            comparison_variables (List of lists): These are two python lists that save
+                the name of the variables to be compared, the first list refer to the
+                predictand, and the second list refer to the validator
+            time_resample (str, optional): Time resample step in case the comparison
+                might be done in a reduced time step. Defaults to None.
+
         """
 
         self.predictand_reduced, self.validator_reduced, self.ss_stats = compare_datasets(
@@ -160,15 +176,19 @@ def load_era_5(data_path: str = data_path+'/era_5/',
     work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
     location if requested
+
     Args:
         data_path (str, optional): Data path folder in repository. 
             - Defaults to data_path.
         time (str, optional): Year to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 1D...
             - Defaults to '1997'.
-        load_winds (tuple): this indicates wether the winds are loaded or not, and
+        load_winds (tuple, optional): this indicates wether the winds are loaded or not, and
             the location of the projected winds.
-        plot (bool): Whether to plot or not the results.
+            - Defaults to (True,default_location)
+        plot (bool, optional): Whether to plot or not the results.
+            - Defaults to True.
+            
     Returns:
         [list]: This is a list with the data loaded.
     """
@@ -287,9 +307,11 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
         time (str, optional): Year to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 1D...
             - Defaults to '1997'.
-        load_winds (tuple): this indicates wether the winds are loaded or not, and
+        load_winds (tuple, optional): this indicates wether the winds are loaded or not, and
             the location of the projected winds.
-        plot (bool): Whether to plot or not the results.
+            - Defaults to (True,default_location)
+        plot (bool, optional): Whether to plot or not the results.
+            - Defaults to True.
 
     Returns:
         [list]: This is a list with the data loaded.
