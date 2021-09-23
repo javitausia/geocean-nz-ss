@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -70,6 +70,10 @@
     
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
       
       <img src="_static/logo.jpeg" class="logo" alt="logo">
       
@@ -309,7 +313,7 @@
 <h1>geoocean-nz-ss<a class="headerlink" href="#geoocean-nz-ss" title="Permalink to this headline">¶</a></h1>
 <p>This repository will contain all the updated information in the shared project between <a class="reference external" href="https://geoocean.unican.es/">GeoOcean</a>-<a class="reference external" href="https://www.metocean.co.nz/">MetOcean</a></p>
 <p>updated info at: <a class="reference external" href="https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing">https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing</a> !!</p>
-<p>And the last pptx presentation <a class="reference external" href="https://docs.google.com/presentation/d/18R62L9grGct8-iFsMeHnScZZndq6qW555QSUPa-qsMY/edit?usp=sharing">(19th of August)</a> !!</p>
+<p>And the last pptx presentation <a class="reference external" href="https://docs.google.com/presentation/d/14hNRBkjVMls6hz---Yo4iRpzKlBlGXABpRaOIM-3zPk/edit?usp=sharing">(9th of September)</a> !!</p>
 <p>below, a summary of the region and data involved in the first part of the analysis can be seen:</p>
 <p><img alt="gif" src="_images/READMEexample.gif" /></p>
 <p>jupyter book summary <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/">here</a></p>
@@ -337,7 +341,9 @@ most common natural hazards for coastal areas worldwide (Cagigal et al., 2019) �
 we will develop different machine learning tools that might help in the forecast of a storm-surge model …</p>
 <p>In this first part, which involves the sensitivity analysis regarding the region, the data, and which statistical tools might be better to
 explain the behaviour of the storm surge, we developed different linear and non-linear models to predict the storm surge, given different local and
-regional predictors (involving these predictors the slp fields, the winds…). Below, a summary of how the <a class="reference external" href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">knn algorithm</a> behaves with different predictors and in different locations all around New Zealand is shown:</p>
+regional predictors (involving these predictors the slp fields, the winds…). This process is shown in the figure below:</p>
+<p><img alt="methodology" src="_images/methodology.png" /></p>
+<p>Below, a summary of how the <a class="reference external" href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">knn algorithm</a> behaves with different predictors and in different locations all around New Zealand is shown:</p>
 <p><img alt="pearson-knn" src="_images/pearson-knn.png" /></p>
 <p>This image with more results can be seen <a class="reference internal" href="notebooks/models_results.html"><span class="doc std std-doc">here</span></a>.</p>
 </div>
@@ -358,6 +364,8 @@ built over the datasets explained below:</p>
 </ul>
 <p>data format is available in the figure below:</p>
 <p><img alt="data" src="_images/data-format.png" /></p>
+<p>where also the spatial resolutions and explanations regarding the variables are shown:</p>
+<p><img alt="datasketch" src="_images/datasummary.png" /></p>
 </div>
 <div class="section" id="main-contents">
 <h2>Main contents<a class="headerlink" href="#main-contents" title="Permalink to this headline">¶</a></h2>
@@ -450,10 +458,11 @@ built over the datasets explained below:</p>
 <div class="section" id="authors">
 <h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Javier Tausía Hoyal</p></li>
-<li><p>Paula Camus Braña</p></li>
-<li><p>Fernando J. Méndez Incera</p></li>
 <li><p>Antonio S. Cofiño González</p></li>
+<li><p>Fernando J. Méndez Incera</p></li>
+<li><p>Paula Camus Braña</p></li>
+<li><p>Sebastien Delaux (<a class="reference external" href="https://github.com/delauxs">https://github.com/delauxs</a>)</p></li>
+<li><p>Javier Tausía Hoyal</p></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -503,7 +512,7 @@ built over the datasets explained below:</p>
         
         </div>
     </div>
-    <footer class="footer mt-5 mt-md-0">
+    <footer class="footer">
     <div class="container">
       <p>
         
