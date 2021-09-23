@@ -4,7 +4,7 @@ This repository will contain all the updated information in the shared project b
 
 updated info at: https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing !!
 
-And the last pptx presentation [(19th of August)](https://docs.google.com/presentation/d/18R62L9grGct8-iFsMeHnScZZndq6qW555QSUPa-qsMY/edit?usp=sharing) !!
+And the last pptx presentation [(9th of September)](https://docs.google.com/presentation/d/14hNRBkjVMls6hz---Yo4iRpzKlBlGXABpRaOIM-3zPk/edit?usp=sharing) !!
 
 below, a summary of the region and data involved in the first part of the analysis can be seen:
 
@@ -35,7 +35,12 @@ we will develop different machine learning tools that might help in the forecast
 
 In this first part, which involves the sensitivity analysis regarding the region, the data, and which statistical tools might be better to 
 explain the behaviour of the storm surge, we developed different linear and non-linear models to predict the storm surge, given different local and
-regional predictors (involving these predictors the slp fields, the winds...). Below, a summary of how the [knn algorithm](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) behaves with different predictors and in different locations all around New Zealand is shown:
+regional predictors (involving these predictors the slp fields, the winds...). This process is shown in the figure below:
+
+![methodology](/media/images/methodology.png)
+
+
+Below, a summary of how the [knn algorithm](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) behaves with different predictors and in different locations all around New Zealand is shown:
 
 ![pearson-knn](/media/images/pearson-knn.png)
 
@@ -59,6 +64,10 @@ built over the datasets explained below:
 data format is available in the figure below:
 
 ![data](/media/images/data-format.png)
+
+where also the spatial resolutions and explanations regarding the variables are shown:
+
+![datasketch](/media/images/datasummary.png)
 
 ## Main contents
 
@@ -153,7 +162,8 @@ Data used in the project and a detailed explanation of the acquisition can be re
 
 ## Authors
 
-* Javier Tausía Hoyal
-* Paula Camus Braña
-* Fernando J. Méndez Incera
 * Antonio S. Cofiño González
+* Fernando J. Méndez Incera
+* Paula Camus Braña
+* Sebastien Delaux (https://github.com/delauxs)
+* Javier Tausía Hoyal
