@@ -20,9 +20,8 @@ related repos:
 ## TODO (or doing)
 
 * Preparing the FINAL experiments visualizations tools to evaluate results (run in server)
-* Add EXTRA and better plots to KM analysis notebook + THEORY explanations
-* Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb)
-* Finalize notebooks regarding GPs and SARIMA models + vortex model
+* Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb) and [xgboost](/notebooks/models_xgboost.ipynb)
+* Finalize notebooks regarding GPs and SARIMA models + vortex model ... ?
 
 ## Description
 
@@ -44,10 +43,10 @@ This image with more results can be seen [here](/notebooks/models_results.ipynb)
 
 ## Data explanation
 
-Different datasets will be used in the project, but all of them belongs to one of these categories:
+Different datasets will be used in the project, but all of them belong to one of these categories:
 
-* Sea-level-pressure fields, which can be the ERA5 or the CFSR reanalysis
-* Storm surge hindcast data, which can be Moana, DAC, CoDEC...
+* Sea-level-pressure fields and winds, which can be the ERA5 or the CFSR (preferable) reanalysis
+* Storm surge hindcast data, which can be Moana v2 (preferable), DAC, CoDEC...
 * Storm surge real observations, where different datasets / organizations are involved !!
 
 For the rest of the project and in the [book](https://javitausia.github.io/geocean-nz-ss/), the majority of the examples are
@@ -145,6 +144,8 @@ All the required packages have been now installed in an environment called `ssnz
 ```
 conda activate ssnz
 ```
+
+### TODO: Add Docker options for the repository...
 
 ## Additional support:
 

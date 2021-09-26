@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 # custom
-from .config import evaluation_metrics
+from .config import default_evaluation_metrics
 from .plotting.validation import qqplot, scatterplot
 from .plotting.config import _fontsize_title, _fontsize_legend, \
     _figsize, _figsize_width, _figsize_height, _fontsize_label, \
@@ -23,21 +23,37 @@ from .plotting.config import _fontsize_title, _fontsize_legend, \
 
 # some custom metrics and the metrics_dictionary
 
-def si(predictions,targets):
+def si(targets, predictions):
     pred_mean = np.nanmean(predictions)
     tar_mean = np.nanmean(targets)
     return np.sqrt(np.nansum(((predictions-pred_mean)-(targets-tar_mean))**2)/((np.nansum(targets**2))))
 
-def rmse(predictions,targets):
+def rmse(targets, predictions):
+    return np.sqrt(np.nanmean((targets-predictions)**2))
+
+def ext_rmse(targets, predictions, quant_threshold=0.75):
+    quant_threshold_idxs = np.where(
+        targets > np.nanquantile(targets,quant_threshold)
+    )[0]
+    return np.sqrt(np.nanmean((targets[quant_threshold_idxs] - \
+        predictions[quant_threshold_idxs])**2))
+
+def relative_rmse(targets, predictions):
     return np.sqrt(np.nanmean((targets-predictions)**2))/np.nanquantile(targets,0.95)
 
-def bias(predictions,targets):
+def bias(targets, predictions):
     return np.nanmean(targets-predictions)
 
-def pocid(predictions,targets):
-    return np.where(
-        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])<0,1,0
+def pocid(targets, predictions):
+    updown = np.where(
+        (predictions[1:]-predictions[:-1])*(targets[1:]-targets[:-1])>0,1,0
     )
+    return np.sum(updown)/len(updown) * 100
+
+def tu_test(targets, predictions):
+    return np.sum([(targets[i]-predictions[i])**2 for i in range(1,len(targets))])/\
+        np.sum([(targets[i]-targets[i-1])**2 for i in range(1,len(targets))])
+
 
 metrics_dictionary = {
     'expl_var': explained_variance_score,
@@ -50,10 +66,13 @@ metrics_dictionary = {
     'tweedie': mean_tweedie_deviance,
     'bias': bias, 
     'si': si,
-    'rmse': rmse, 
+    'rmse': rmse,
+    'ext_rmse': ext_rmse, # this can be used as a score metric during training
+    'rel_rmse': relative_rmse, 
     'pearson': pearsonr,
     'spearman': spearmanr,
-    'pocid': pocid
+    'pocid': pocid,
+    'tu_test': tu_test
 } # this is the metrics dictionary with all the possible metrics
 
 # TODO: import DESIRED metric in line 9 and append to metrics_dictionary
@@ -78,6 +97,9 @@ def compare_datasets(dataset1, dataset1_coords,
             Defaults to [['ss','msea'],['ss','msea']] -- moana/uhslc
         time_resample (str, optional): Time resample, recommended if not already
             performed. Defaults to None.
+
+    Returns:
+        [xarray.Dataset, dict]: Closest sites in hindcast and statistics
     """
 
     print('\n Lets compare data in {} with {}!! \n'.format(
@@ -253,19 +275,28 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
                    metrics: list = ['expl_var','mae','mse','me',
                        'medae','tweedie', # check theory
                        'ext_mae','ext_mse','ext_rmse','ext_pearson',
-                       'bias','si','rmse','pearson','spearman','rscore'
-                   ], ext_quantile: float = (0.9,0),
+                       'bias','si','rmse','rel_rmse','pearson','spearman','rscore'
+                   ], ext_quantile: tuple = (0.9,0),
                    not_nan_idxs=None):
     """
     Generates the title given two datasets
     - BIAS, SI, RMSE ... and correlations!!
+
+    *** The ext_quantile parameter refers to the quantile to evaluate the
+        models performance in the extremes, and the second element of the
+        tuple refers to the dataset over the quantile will be calculated,
+        0 refers to data1, and data2 otherwise
+    ***
+
+    Returns:
+        [dict]: A python dictionary with all the metrics
 
     """
 
     metrics_dict = {} # empty dict for all the metrics
 
     # add bias, si, rmse, pearson and spearman...
-    for mta in evaluation_metrics: # defined in sscode/config.py
+    for mta in default_evaluation_metrics: # defined in sscode/config.py
         metrics.append(mta) if mta not in metrics else None
 
     try:
@@ -301,8 +332,8 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
             )
 
     # customize title
-    return_title = 'Data comparison is   --   BIAS: {:.2f}, SI: {:.2f}, RMSE: {:.2f}'.format(
-        metrics_dict['bias'],metrics_dict['si'],metrics_dict['rmse']
+    return_title = 'Data comparison is   --   BIAS: {:.2f}, SI: {:.2f}, Relative - RMSE: {:.2f}'.format(
+        metrics_dict['bias'],metrics_dict['si'],metrics_dict['rel_rmse']
     )
     return_title += '\n and Correlations (Pearson, Rscore): ({:.2f}, {:.2f})'.format(
         metrics_dict['pearson'],metrics_dict['rscore']
