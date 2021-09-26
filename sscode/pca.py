@@ -151,6 +151,17 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     if True:
         pca_fit = PCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]))
         PCs = pca_fit.fit_transform(pcs_stan)
+    elif False:
+        # Incremental version
+        from sklearn.decomposition import IncrementalPCA
+
+        # calculate de PCAs (this is non-distributed but uses all CPU's on the machine)
+        print("Using incremental PCA algo")
+        # batch_size is set to the number of features which is the minimum allowed
+        pca_fit = IncrementalPCA(n_components=min(pcs_stan.shape[0],pcs_stan.shape[1]),
+                                 batch_size=pcs_stan.shape[0])
+        PCs = pca_fit.fit_transform(pcs_stan)
+
     else: # Distributed version
         # Turn numpy array into dask array
         dask_pcs_stan = dask_array.from_array(pcs_stan,
