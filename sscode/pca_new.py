@@ -204,7 +204,7 @@ class PCA_DynamicPred(object):
         if self.pca_plot[0]:
             region_plot = self.region[1] if self.region[0] else default_region
             pca_plot_scale = pcs_scaler if self.pca_plot[1] else None
-            plot_pcs(PCA_return,
+            plot_pcs(pcs_data,
                      pcs_scaler=pca_plot_scale,
                      n_plot=self.pca_plot[2],
                      region=region_plot,
@@ -221,7 +221,7 @@ class PCA_DynamicPred(object):
 
             if pca_data and pca_scaler:
                 print("PCs loaded from file")
-                self.pcs_plot(pcs_data, pcs_scaler)
+                self.pcs_plot(pca_data, pca_scaler)
                 return pca_data, pca_scaler
             
         
@@ -241,7 +241,7 @@ class PCA_DynamicPred(object):
                           pca_percent=self.pca_percent)
 
         # Plot if required
-        self.pcs_plot(pcs_data, pcs_scaler)
+        self.pcs_plot(pca_data, pca_scaler)
                     
         return pca_data, pca_scaler
 
