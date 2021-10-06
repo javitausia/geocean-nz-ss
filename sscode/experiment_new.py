@@ -269,7 +269,7 @@ class Experiment(object):
                         .dropna(dim='time',how='all') # delete NaNs
 
                     # and lets now calculate the linear model
-                    stats = MultiLinear_Regression(
+                    stats, model, t_train = MultiLinear_Regression(
                         pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
                         X_set_var='PCs',y_set_var='ss',
