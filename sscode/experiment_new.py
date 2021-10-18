@@ -133,7 +133,27 @@ class Experiment(object):
         ) # print experiment inputs
 
 
-    def get_pcs(self, parameters, site_id=None, site_location=None,plot=False):
+    def get_pcs(self,
+                parameters,
+                site_id=None,
+                site_location=None,
+                plot=False):
+        """
+           Calculate or load the PCs corresponding to a specific configuration of
+           the experiment.
+
+           Args:
+              (list)            parameters: The parameters of the experiment.
+              (int)                site_id: The id of the site the pcs are required for.
+              (tuple, float) site_location: The longitude and latitude of the site the pcs are required for.
+              (boolean)               plot: Whether to plot the PCs.
+
+           Returns:
+              (xarray dataset): A xarray dataset containing the principal components.
+              (object):         The scaler used to normalise the data before running the
+                                PCA.
+        """
+
         
         dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
         trash = dict_to_pca.pop('winds')
@@ -162,18 +182,6 @@ class Experiment(object):
             return PCA_DynamicPred(
                             self.slp_data,pres_vars=('SLP','longitude','latitude'),
                             wind=self.wind_data if parameters[1] else None,
-                            #winds=(
-                            #    parameters[1], # this is winds True or False
-                            #    calculate_relative_winds(
-                            #        location=site_location,
-                            #        uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                            #        vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                            #        lat_name=datasets_attrs[self.predictor_data][1],
-                            #        lon_name=datasets_attrs[self.predictor_data][0]
-                            #    ) if parameters[1] else None 
-                                # this are the winds projected in site
-                            #),
-                            #wind_vars=('wind_proj_mask','longitude','latitude'),
                             wind_vars=('wind_proj_mask',
                                        datasets_attrs[self.predictor_data][0],
                                        datasets_attrs[self.predictor_data][1],

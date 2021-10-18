@@ -98,7 +98,16 @@ class PCA_DynamicPred(object):
     
 
     def pca_assemble_matrix(self):
-        
+        """
+        Assemble the matrix on which the PCA analysis is to be carried on
+        from the parameters initialised when istantiating the object.
+
+        Returns:
+           (array, float):    The matrix on which the PCA analysis is to be
+                              carried on.
+           (array, datetime): The timestamp of each of the feature vectors in
+                              the matrix.
+        """
         
         pres = self.pres
         pres_vars = self.pres_vars
@@ -200,7 +209,14 @@ class PCA_DynamicPred(object):
         
 
     def pcs_plot(self, pcs_data, pcs_scaler):
+        """
+          Plots the resuls of the PCA analysis.
 
+          Args:
+              (xarry dataset): The results of the PCA analysis.
+              (scaler object): The scaler used to normalise the data
+                               prior to running the PCA analysis.
+        """
         if self.pca_plot[0]:
             region_plot = self.region[1] if self.region[0] else default_region
             pca_plot_scale = pcs_scaler if self.pca_plot[1] else None
@@ -214,6 +230,12 @@ class PCA_DynamicPred(object):
 
 
     def pcs_get(self):
+        """
+          Return the principal components for the configuration of the
+          instantiated object. If the components are already stored, those
+          are loaded from drive otherwise they are calculated, stored (if 
+          a folder name has been supplied) and returned by this function.
+        """
         
         if self.pcs_folder:
             # Attempt at loading the PCs
@@ -247,6 +269,11 @@ class PCA_DynamicPred(object):
 
     
     def pcs_compute_and_save(self):
+        """
+           Assemble the PCA matrix, does the analysis and stored the
+           result.
+        """
+
         
         pcs_matrix, pcs_time = self.pca_assemble_matrix()
             
@@ -261,6 +288,13 @@ class PCA_DynamicPred(object):
 
         
     def _pca_file_name(self):
+        """
+           Generates and return 2 unique deterministic names that corresponds
+           to the configuration of the instantiated object. The 2 names are
+           intended to be used to store the results of the PCA analsys and the
+           scaler object used as part of the analysis.
+        """
+
         
         name_attrs = []
 
@@ -296,6 +330,15 @@ class PCA_DynamicPred(object):
     
     
     def _pca_calculate_cpu(self, pcs_stan):
+        """
+           Runs the PCA decomposition algorithm implemented
+           as part of sklearn. This algorithm runs on CPU only and uses
+           as many cpus as available on the machine.
+
+           Args:
+              (array, float): The matrix to run the PCA decomposition on.
+        """
+        
         from sklearn.decomposition import PCA
         
         print("Computing using CPU")
@@ -309,6 +352,18 @@ class PCA_DynamicPred(object):
     
     
     def _pca_calculate_cpu_distributed(self, pcs_stan):
+        """
+           Runs the PCA decomposition algorithm implemented                                                                                 
+           as part of dask_ml. This algorithm runs on CPU only and uses                                                                     
+           a distributed framework. Due to the way the algorithm is
+           implemented, it is worth using this algorithm only if
+           the number of features is much smaller than the number
+           of feature vectors.
+
+           Args:
+              (array, float): The matrix to run the PCA decomposition on.
+        """
+        
         # Distributed version
         import dask.array as dask_array
         from dask_ml.decomposition import PCA
@@ -327,6 +382,15 @@ class PCA_DynamicPred(object):
     
     
     def _pca_calculate_gpu(self, pcs_stan):
+        """
+           Runs the PCA decomposition algorithm implemented
+           as part of cuml. This algorithm runs on GPUs and in consequence
+           is limited by the memory available on your GPU.
+
+           Args:
+              (array, float): The matrix to run the PCA decomposition on.
+        """
+        
         # GPU version
         #import pandas as pd
         #import cudf
@@ -356,24 +420,26 @@ class PCA_DynamicPred(object):
         
         return PCs, pca_fit.components_, pca_fit.explained_variance_
     
-    
-    def _pca_calculate_sklearn(self,
-                                pcs_stan):
-        from sklearn.decomposition import PCA
-        
-        pca_fit = PCA(n_components=min(pcs_stan.shape[0],
-                                       pcs_stan.shape[1]))
-        
-        PCs = pca_fit.fit_transform(pcs_stan)
-        
-        return PCS, pca_fit.components_, pca_fit.explained_variance_
-    
-    
     def pca_calculate(self,
                       pcs_matrix,
                       pcs_time,
                       method='cpu',
                       percent=None):
+        """
+           Runs the PCA decomposition on a given matrix using the chosen method.
+
+           Args:
+              (array float):    The matrix the PCA is to be run on.
+              (array datetime): The timestamps corresponding to the features vectors
+                                of the matrix.
+              (string):         The pca decomposition method to use (cpu, gpu and distributed)
+                                are valid options.
+              (float)           The fraction of the variance to keep PCs for.
+
+           Return:
+              (xarray dataset): The results of the PCA
+              (object):         The scaler used to normalise the matrix
+        """
         
         # standarize the features                                                           
         pcs_scaler = StandardScaler()
@@ -429,6 +495,14 @@ class PCA_DynamicPred(object):
     
     
     def pcs_load(self):
+        """
+          Loads the PCs for drive based on the configuration of
+          the instantiated object.
+
+          Returns:
+              (xarray dataset): The results of the PCA
+              (object):         The scaler used to normalise the matrix
+        """
         
         pca_data_file, pca_scaler_file = self._pca_file_name()
         print("FILE", pca_data_file)
