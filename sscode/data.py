@@ -1,5 +1,6 @@
 # basic
 import os, glob, sys
+from datetime import datetime
 
 # arrays
 import numpy as np
@@ -12,6 +13,8 @@ import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location # get config params
+#data_path = os.getenv('SSURGE_DATA_PATH', data_path)
+print("DATA PATH", data_path)
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
 from .utils import calculate_relative_winds
@@ -33,7 +36,8 @@ loader_dict_options = {
 # dataset attrs
 datasets_attrs = {
     'era5': ('longitude','latitude',None,'ERA 5 reanalysis','u10','v10'),
-    'cfsr': ('lon','lat',None,'CFSR reanalysis','U_GRD_L103','V_GRD_L103'),
+#    'cfsr': ('lon','lat',None,'CFSR reanalysis','U_GRD_L103','V_GRD_L103'),
+    'cfsr': ('longitude','latitude',None,'CFSR reanalysis','ugrd10m','vgrd10m'),
     'dac': ('longitude','latitude',None,'DAC global reanalysis'),
     'moana': ('lon','lat','site','Moana v2 hindcast'),
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
@@ -195,15 +199,18 @@ def load_era_5(data_path: str = data_path+'/era_5/',
         np.arange(1988,2022,1).astype(str) # years of data + 2
     ):
         # resample to daily
-        if time=='1D' and os.path.isfile(data_path+'ERA_5_MSLP_daily.nc') and \
+        if time=='1D' and os.path.isfile(os.path.join(data_path,
+                                                      'ERA5_MSLP_daily.nc')) and \
             os.path.isfile(
-                data_path+'ERA_5_WINDs_daily.nc'
+                os.path.join(data_path,'ERA_5_WINDs_daily.nc')
             ): # check files existance
             print('\n loading daily resampled data... \n')
             # loading resampled data
-            mslp = xr.open_dataarray(data_path+'ERA_5_MSLP_daily.nc')
+            mslp = xr.open_dataarray(os.path.join(data_path,
+                                                  'ERA5_MSLP_daily.nc'))
             if load_winds[0]:
-                wind = xr.open_dataset(data_path+'ERA_5_WINDs_daily.nc')
+                wind = xr.open_dataset(os.path.join(data_path,
+                                                    'ERA_5_WINDs_daily.nc'))
                 # plot the data
                 plot_pres_winds( # if plot, slp and winds must be loaded
                     [mslp,wind],data_name=datasets_attrs['era_5'][3],
@@ -218,13 +225,16 @@ def load_era_5(data_path: str = data_path+'/era_5/',
             return return_data
         else:
             print('\n resampling data to {}... \n'.format(time))
-            mslp = xr.open_dataset(data_path+'ERA5_MSLP_1H_1979_2021.nc')['msl']\
+            mslp = xr.open_dataset(os.path.join(data_path,
+                                                'ERA5_MSLP_1H_1979_2021.nc'))['msl']\
                 .resample(time=time).mean()
         if load_winds[0]:
             print('\n loading the winds... \n')
-            uw = xr.open_dataset(data_path+'ERA5_10mu_1H_1979_2021.nc')['u10']\
+            uw = xr.open_dataset(os.path.join(data_path,
+                                              'ERA5_10mu_1H_1979_2021.nc'))['u10']\
                 .resample(time=time).mean()
-            vw = xr.open_dataset(data_path+'ERA5_10mv_1H_1979_2021.nc')['v10']\
+            vw = xr.open_dataset(os.path.join(data_path,
+                                              'ERA5_10mv_1H_1979_2021.nc'))['v10']\
                 .resample(time=time).mean()
             wind = calculate_relative_winds(
                 location=load_winds[1],uw=uw,vw=vw,
@@ -242,7 +252,8 @@ def load_era_5(data_path: str = data_path+'/era_5/',
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
-        mslp = xr.open_dataset(data_path+'ERA5_MSLP_1H_1979_2021.nc')['msl']
+        mslp = xr.open_dataset(os.path.join(data_path,
+                                            'ERA5_MSLP_1H_1979_2021.nc'))['msl']
         # try year cropping
         if time:
             mslp = mslp.sel(time=time) # year cropping
@@ -251,9 +262,11 @@ def load_era_5(data_path: str = data_path+'/era_5/',
             print('\n LOADING ALL THE MSLP DATA (be careful with memory) \n')
         if load_winds[0]:
             print('\n loading the winds... \n')
-            uw = xr.open_dataset(data_path+'ERA5_10mu_1H_1979_2021.nc')['u10']\
+            uw = xr.open_dataset(os.path.join(data_path,
+                                              'ERA5_10mu_1H_1979_2021.nc'))['u10']\
                 .sel(time=time)
-            vw = xr.open_dataset(data_path+'ERA5_10mv_1H_1979_2021.nc')['v10']\
+            vw = xr.open_dataset(os.path.join(data_path,
+                                              'ERA5_10mv_1H_1979_2021.nc'))['v10']\
                 .sel(time=time)
             wind = calculate_relative_winds(
                 location=load_winds[1],uw=uw,vw=vw,
@@ -310,14 +323,18 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
         np.arange(1988,2022,1).astype(str) # years of data + 2
     ):
         # resample to daily
-        if time=='1D' and os.path.isfile(data_path+'CFSR_MSLP_daily.nc') \
-            and os.path.isfile(data_path+'CFSR_WINDs_daily.nc'):
+        if time=='1D' and os.path.isfile(os.path.join(data_path,
+                                                      'CFSR_MSLP_daily.nc')) \
+            and os.path.isfile(os.path.join(data_path,
+                                            'CFSR_WINDs_daily.nc')):
             # loading saved datasets
             print('\n loading daily resampled data... \n')
             # loading resampled data
-            mslp = xr.open_dataarray(data_path+'CFSR_MSLP_daily.nc')
+            mslp = xr.open_dataarray(os.path.join(data_path,
+                                                  'CFSR_MSLP_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
             if load_winds[0]:
-                wind = xr.open_dataset(data_path+'CFSR_WINDs_daily.nc')
+                wind = xr.open_dataset(os.path.join(data_path,
+                                                    'CFSR_WINDs_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
                 # plot the data
                 plot_pres_winds(
                     [mslp,wind],data_name=datasets_attrs['cfsr'][3],
@@ -332,15 +349,20 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
             return return_data
         else:
             print('\n resampling data to {}... \n'.format(time))
-            mslp = xr.open_dataarray(data_path+'CFSR_MSLP_1H_1990_2021.nc')\
-                .resample(time=time).mean()
+            mslp = xr.open_dataarray(os.path.join(data_path,
+                                                  'CFSR_MSLP_1H_1990_2021.nc'))\
+                .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
         if load_winds[0]:
             print('\n loading and calculating the winds... \n')
-            uw = xr.open_dataarray(data_path+'CFSR_uwnd_6H_1990_2021.nc')\
-                .resample(time=time).mean()
-            vw = xr.open_dataarray(data_path+'CFSR_vwnd_6H_1990_2021.nc')\
-                .resample(time=time).mean()
+            uw = xr.open_dataset(os.path.join(data_path,
+                                              'CFSR_uwnd_6H_1990_2021.nc'))[datasets_attrs['cfsr'][4]]\
+                .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
+            vw = xr.open_dataset(os.path.join(data_path,
+                                              'CFSR_vwnd_6H_1990_2021.nc'))[datasets_attrs['cfsr'][5]]\
+                .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
             wind = calculate_relative_winds(location=load_winds[1],
+                                            lat_name=datasets_attrs['cfsr'][1],
+                                            lon_name=datasets_attrs['cfsr'][0],
                                             uw=uw,vw=vw)
             # plot the data
             plot_pres_winds(
@@ -354,7 +376,8 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
-        mslp = xr.open_dataarray(data_path+'CFSR_MSLP_1H_1990_2021.nc')
+        mslp = xr.open_dataarray(os.path.join(data_path,
+                                              'CFSR_MSLP_1H_1990_2021.nc')).sel(time=slice(datetime(1990,1,1), None))
         # try year cropping
         if time:
             mslp = mslp.sel(time=time)
@@ -363,10 +386,12 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
             print('\n LOADING ALL THE MSLP DATA (be careful with RAM memory) \n')
         if load_winds[0]:
             print('\n loading the winds... \n')
-            uw = xr.open_dataarray(data_path+'CFSR_uwnd_6H_1990_2021.nc')\
-                .sel(time=time)
-            vw = xr.open_dataarray(data_path+'CFSR_vwnd_6H_1990_2021.nc')\
-                .sel(time=time)
+            uw = xr.open_dataarray(os.path.join(data_path,
+                                                'CFSR_uwnd_6H_1990_2021.nc'))\
+                .sel(time=slice(datetime(1990,1,1), None)).sel(time=time)
+            vw = xr.open_dataarray(os.path.join(data_path,
+                                                'CFSR_vwnd_6H_1990_2021.nc'))\
+                .sel(time=slice(datetime(1990,1,1), None)).sel(time=time)
             wind = calculate_relative_winds(
                 location=load_winds[1],uw=uw,vw=vw,
                 lat_name=datasets_attrs['cfsr'][1],
@@ -638,12 +663,14 @@ def load_moana_hindcast_ss(file_path: str =
 
     # TODO: add basic plotting
 
-    if os.path.isfile(file_path+'moana_ss_daily.nc') and daily:
+    if os.path.isfile(os.path.join(file_path,
+                                   'moana_ss_daily.nc')) and daily:
         return xr.open_dataarray(
-            file_path+'moana_ss_daily.nc'
+            os.path.join(file_path,
+                         'moana_ss_daily.nc')
         )
     else:
-        return xr.open_zarr(file_path+'ss/')
+        return xr.open_zarr(os.path.join(file_path,'ss/'))
 
 
 def load_moana_hindcast_msea(file_path: str = 

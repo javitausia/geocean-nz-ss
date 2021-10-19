@@ -17,7 +17,7 @@ from .data import datasets_attrs
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
 from .utils import calculate_relative_winds
-from .pca import PCA_DynamicPred
+from .pca_new import PCA_DynamicPred
 from .linear import MultiLinear_Regression
 from .knn import KNN_Regression
 from .xgboost import XGBoost_Regression
@@ -61,7 +61,9 @@ class Experiment(object):
                      'mae', 'me', 'expl_var', # ...
                  ], # these are the metrics to evaluate the model
                  pca_attrs: dict = pca_attrs_default,
-                 model_attrs: dict = linear_attrs_default):
+                 model_attrs: dict = linear_attrs_default,
+                 pcs_folder: str = '/home/metocean/pcas',
+                 verbose=False):
         """
         As the initializator, the __init__ function creates the instance of the class,
         given a set of parameters, which are described below
@@ -82,6 +84,8 @@ class Experiment(object):
                 Defaults to pca_attrs_default.
             model_attrs (dict, optional): Model dictionary with all the parameters to use. 
                 Defaults to linear_attrs_default.
+            pcs_folder (str, optional): Folder where the PCs are stored.
+                Default to ''/home/metocean/pcas'
         """
 
         # lets build the experiment!! + with CFSR
@@ -95,6 +99,8 @@ class Experiment(object):
         self.model = model
         self.pca_attrs = pca_attrs
         self.model_attrs = model_attrs # save class attributes
+        self.pcs_folder = pcs_folder
+        self.verbose = verbose
 
         # add pre-defined metrics to existent ones
         for mta in default_evaluation_metrics: # defined in sscode/config.py
@@ -125,6 +131,67 @@ class Experiment(object):
                 self.ss_sites # saved list with the sites
             )
         ) # print experiment inputs
+
+
+    def get_pcs(self,
+                parameters,
+                site_id=None,
+                site_location=None,
+                plot=False):
+        """
+           Calculate or load the PCs corresponding to a specific configuration of
+           the experiment.
+
+           Args:
+              (list)            parameters: The parameters of the experiment.
+              (int)                site_id: The id of the site the pcs are required for.
+              (tuple, float) site_location: The longitude and latitude of the site the pcs are required for.
+              (boolean)               plot: Whether to plot the PCs.
+
+           Returns:
+              (xarray dataset): A xarray dataset containing the principal components.
+              (object):         The scaler used to normalise the data before running the
+                                PCA.
+        """
+
+        
+        dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
+        trash = dict_to_pca.pop('winds')
+        # change region parameter if local area is required
+        if parameters[4][1]==default_region and parameters[0]==True \
+             and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
+            # we load the daily pcs
+            pca_data = xr.open_dataset(
+                            data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
+                        )
+            return pca_data, None
+        else:
+            
+            if parameters[4][0]=='local':
+                local_region = (True,(
+                            site_location[0]-parameters[4][1][0], # new lon / lat region
+                            site_location[0]+parameters[4][1][0],
+                            site_location[1]-parameters[4][1][1],
+                            site_location[1]+parameters[4][1][1]
+                        ))
+                dict_to_pca['region'] = local_region
+            if site_id:
+                dict_to_pca['site_id'] = site_id
+
+            # lets first calculate the pcs
+            return PCA_DynamicPred(
+                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
+                            wind=self.wind_data if parameters[1] else None,
+                            wind_vars=('wind_proj_mask',
+                                       datasets_attrs[self.predictor_data][0],
+                                       datasets_attrs[self.predictor_data][1],
+                                       datasets_attrs[self.predictor_data][4],
+                                       datasets_attrs[self.predictor_data][5]),
+                            pca_plot=(plot,False,1),verbose=self.verbose,
+                            site_location=site_location,
+                            pcs_folder=self.pcs_folder,
+                            **dict_to_pca # extra arguments without the winds
+                        ).pcs_get()
 
 
     def execute_cross_model_calculations(self, verbose: bool = False, 
@@ -200,60 +267,10 @@ class Experiment(object):
                         ), end='\r'
                     ) if verbose else None
 
-                    # perform the experiment
-                    dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
-                    trash = dict_to_pca.pop('winds')
-                    # change region parameter if local area is required
-                    if parameters[4][0]=='local':
-                        trash = dict_to_pca.pop('region')
-                        local_region = (True,(
-                            site_location[0]-parameters[4][1][0], # new lon / lat region
-                            site_location[0]+parameters[4][1][0],
-                            site_location[1]-parameters[4][1][1],
-                            site_location[1]+parameters[4][1][1]
-                        ))
-                        # lets first calculate the pcs
-                        pca_data, pca_scaler = PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            winds=(
-                                parameters[1], # this is winds True or False
-                                calculate_relative_winds(
-                                    location=site_location, # this is the location of site
-                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                                    lat_name=datasets_attrs[self.predictor_data][1],
-                                    lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None 
-                                # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
-                            region=local_region, # pass the calculated local region
-                            pca_plot=(plot,False,1),verbose=verbose,
-                            **dict_to_pca # extra arguments without the winds
-                        )
-                    elif parameters[4][1]==default_region and parameters[0]==True \
-                        and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
-                        # we load the daily pcs
-                        pca_data = xr.open_dataset(
-                            data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
-                        )
-                    else:
-                        # lets first calculate the pcs
-                        pca_data, pca_scaler = PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            winds=(
-                                parameters[1], # this is winds True or False
-                                calculate_relative_winds(
-                                    location=site_location,
-                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                                    lat_name=datasets_attrs[self.predictor_data][1],
-                                    lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None 
-                                # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
-                            pca_plot=(plot,False,1),verbose=verbose,
-                            **dict_to_pca # extra arguments without the winds
-                        )
+                    pca_data, pca_scaler = self.get_pcs(parameters=parameters,
+                                                        site_id=site,
+                                                        site_location=site_location,
+                                                        plot=plot)                    
 
                     # resample ss to time_resample parameter
                     ss_site_model = ss_site.resample(time=parameters[3]).max()\
@@ -316,61 +333,12 @@ class Experiment(object):
                         ), end='\r'
                     ) if verbose else None
 
-                    # perform the experiment
-                    dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
-                    trash = dict_to_pca.pop('winds')
-                    # change region parameter if local area is required
-                    if parameters[4][0]=='local':
-                        trash = dict_to_pca.pop('region')
-                        local_region = (True,(
-                            site_location[0]-parameters[4][1][0], # new lon / lat region
-                            site_location[0]+parameters[4][1][0],
-                            site_location[1]-parameters[4][1][1],
-                            site_location[1]+parameters[4][1][1]
-                        ))
-                        # lets first calculate the pcs
-                        pca_data, pca_scaler = PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            winds=(
-                                parameters[1], # this is winds True or False
-                                calculate_relative_winds(
-                                    location=site_location,
-                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                                    lat_name=datasets_attrs[self.predictor_data][1],
-                                    lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None 
-                                # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
-                            region=local_region, # pass the calculated local region
-                            pca_plot=(plot,False,1),verbose=verbose,
-                            **dict_to_pca # extra arguments without the winds
-                        )
-                    elif parameters[4][1]==default_region and parameters[0]==True \
-                        and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
-                        # we load the daily pcs
-                        pca_data = xr.open_dataset(
-                            data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
-                        )
-                    else:
-                        # lets first calculate the pcs
-                        pca_data, pca_scaler = PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            winds=(
-                                parameters[1], # this is winds True or False
-                                calculate_relative_winds(
-                                    location=site_location,
-                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                                    lat_name=datasets_attrs[self.predictor_data][1],
-                                    lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None 
-                                # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','longitude','latitude'),
-                            pca_plot=(plot,False,1),verbose=verbose,
-                            **dict_to_pca # extra arguments without the winds
-                        )
-
+                    # Get PCs
+                    pca_data, pca_scaler = self.get_pcs(parameters=parameters,
+                                                        site_id=site,
+                                                        site_location=site_location,
+                                                        plot=plot)    
+ 
                     # resample ss to time_resample parameter
                     ss_site_model = ss_site.resample(time=parameters[3]).max()\
                         .dropna(dim='time',how='all') # delete NaNs
@@ -440,61 +408,11 @@ class Experiment(object):
                         ), end='\r'
                     ) if verbose else None
 
-                    # perform the experiment
-                    dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
-                    trash = dict_to_pca.pop('winds')
-                    # change region parameter if local area is required
-                    if parameters[4][0]=='local':
-                        trash = dict_to_pca.pop('region')
-                        local_region = (True,(
-                            site_location[0]-parameters[4][1][0], # new lon / lat region
-                            site_location[0]+parameters[4][1][0],
-                            site_location[1]+parameters[4][1][1],
-                            site_location[1]-parameters[4][1][1]
-                        ))
-                        # lets first calculate the pcs
-                        pca_data, pca_scaler = PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            winds=(
-                                parameters[1], # this is winds True or False
-                                calculate_relative_winds(
-                                    location=site_location,
-                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                                    lat_name=datasets_attrs[self.predictor_data][1],
-                                    lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None
-                                # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','lon','lat'),
-                            region=local_region, # pass the calculated local region
-                            pca_plot=(plot,False,1),verbose=verbose,
-                            **dict_to_pca # extra arguments without the winds
-                        )
-                    elif parameters[4][1]==default_region and parameters[0]==True \
-                        and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
-                        # we load the daily pcs
-                        pca_data = xr.open_dataset(
-                            data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
-                        )
-                    else:
-                        # lets first calculate the pcs
-                        pca_data, pca_scaler = PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            winds=(
-                                parameters[1], # this is winds True or False
-                                calculate_relative_winds(
-                                    location=site_location,
-                                    uw=self.wind_data[datasets_attrs[self.predictor_data][4]],
-                                    vw=self.wind_data[datasets_attrs[self.predictor_data][5]],
-                                    lat_name=datasets_attrs[self.predictor_data][1],
-                                    lon_name=datasets_attrs[self.predictor_data][0]
-                                ) if parameters[1] else None 
-                                # this are the winds projected in site
-                            ), wind_vars=('wind_proj_mask','lon','lat'),
-                            pca_plot=(plot,False,1),verbose=verbose,
-                            **dict_to_pca # extra arguments without the winds
-                        )
-
+                    pca_data, pca_scaler = self.get_pcs(parameters=parameters,
+                                                        site_id=site,
+                                                        site_location=site_location,
+                                                        plot=plot)
+                    
                     # resample ss to time_resample parameter
                     ss_site_model = ss_site.resample(time=parameters[3]).max()\
                         .dropna(dim='time',how='all') # delete NaNs

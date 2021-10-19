@@ -3,12 +3,13 @@ import numpy as np
 import xarray as xr
 import great_circle_calculator.great_circle_calculator as gcc
 from math import sqrt
+import os
 
 from xarray.backends.api import open_dataarray
 
 # custom
 from .config import default_location, data_path
-
+data_path = os.getenv('SSURGE_DATA_PATH', data_path)
 
 def calculate_relative_winds(location: tuple = default_location,
                              uw = None, vw = None,
@@ -91,10 +92,13 @@ def calculate_relative_winds(location: tuple = default_location,
     }) # final dataset
 
     return return_winds.assign({
-        'wind_proj_mask': (('time',lat_name,lon_name),
-            return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
-        ) # TODO: check file existance
-    })
+        'wind_proj_mask': return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
+        })
+#    return return_winds.assign({
+#        'wind_proj_mask': (('time',lat_name,lon_name),
+#            return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
+#        ) # TODO: check file existance
+#    })
 
 
 def calculate_bearings(latitudes, longitudes,
