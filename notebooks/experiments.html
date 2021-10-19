@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -33,17 +33,17 @@
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -94,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p class="caption" role="heading">
  <span class="caption-text">
   Chapters
  </span>
@@ -275,7 +275,7 @@
         
               <div>
                 
-  <div class="section" id="run-experiments">
+  <div class="tex2jax_ignore mathjax_ignore section" id="run-experiments">
 <h1><span class="section-number">9. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will run all the required experiments using the <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class, which can be found at <code class="docutils literal notranslate"><span class="pre">sscode/experiment.py</span></code>, and can be seen below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -329,6 +329,19 @@
 <p>Below, different code cells with imports, loading functions, visualizations… will appear, but thw worflow is similar to all the notebooks in the repository. Once we load the data, we use the pre-built python classes to generate results!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">debugpy</span>
+<span class="n">debugpy</span><span class="o">.</span><span class="n">listen</span><span class="p">((</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="mi">5678</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;0.0.0.0&#39;, 5678)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">progressbar</span>
@@ -343,7 +356,9 @@
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 
 <span class="c1"># append sscode to path</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/metocean/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/data&#39;</span> <span class="c1">#&#39;/data/storm_surge_data/&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_location</span><span class="p">,</span> \
@@ -357,6 +372,11 @@
 
 <span class="c1"># for autocomplete code</span>
 <span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /data
 </pre></div>
 </div>
 </div>
@@ -374,7 +394,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
     <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
 <span class="c1"># ---- maybe DAC reanalysis wants to be used ----</span>
@@ -402,10 +422,30 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
 
 
- loading daily resampled data... 
+ resampling data to 6H... 
 
 
- loading the Moana v2 hindcast data... 
+ loading and calculating the winds... 
+
+
+ calculating winds with: 
+
+ &lt;xarray.Dataset&gt;
+Dimensions:         (time: 46141, latitude: 160, longitude: 161)
+Coordinates:
+  * time            (time) datetime64[ns] 1990-01-01 ... 2021-08-01
+  * latitude        (latitude) float32 -69.78 -69.47 -69.16 ... -20.45 -20.14
+  * longitude       (longitude) float32 140.0 140.3 140.6 ... 189.4 189.7 190.0
+Data variables:
+    ugrd10m         (time, latitude, longitude) float32 -1.25 -1.408 ... -10.53
+    vgrd10m         (time, latitude, longitude) float32 -8.33 -8.559 ... 10.06
+    uw2             (time, latitude, longitude) float32 1.562 1.982 ... 110.8
+    vw2             (time, latitude, longitude) float32 69.39 73.25 ... 101.2
+    wind_magnitude  (time, latitude, longitude) float32 8.423 8.674 ... 14.56 
+</pre></div>
+</div>
+<img alt="../_images/experiments_5_1.png" src="../_images/experiments_5_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
 
 
  loading and plotting the UHSLC tidal guages... 
@@ -429,8 +469,8 @@
     <span class="p">]</span>
 <span class="p">)</span>
 <span class="n">pca_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
-    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span><span class="c1">#[False,True],</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span><span class="c1">#[False,True],</span>
     <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
     <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
     <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)),(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">)]</span>
@@ -462,7 +502,7 @@
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># all the sites are passed to exp at first</span>
-    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="n">sites_to_analyze</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> 
+    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="n">sites_to_analyze</span><span class="p">,</span> 
     <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="c1"># model that will be used to predict</span>
     <span class="n">model_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;expl_var&#39;</span><span class="p">,</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="s1">&#39;me&#39;</span><span class="p">,</span>
         <span class="s1">&#39;medae&#39;</span><span class="p">,</span><span class="s1">&#39;tweedie&#39;</span><span class="p">,</span> <span class="c1"># check theory</span>
@@ -1156,6 +1196,32 @@ Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># finally, we can save the results, using the following function</span>
+<span class="k">def</span> <span class="nf">save_final_results_knn</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> 
+    <span class="s1">&#39;../data/statistics/experiments/experiment_linear_final.nc&#39;</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function saves the results in netCDF4 format</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">sites_datasets</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save all xarray.Dataset&#39;s in sites</span>
+    <span class="k">for</span> <span class="n">site</span><span class="p">,</span><span class="n">exp_metrics_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">,</span><span class="n">exp_parameters</span><span class="p">):</span>
+        <span class="n">site_metrics</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">model_metrics</span><span class="p">):</span>
+            <span class="n">site_metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">,</span><span class="s1">&#39;tlapse&#39;</span><span class="p">,</span><span class="s1">&#39;tresample&#39;</span><span class="p">,</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">,</span> <span class="s1">&#39;k_neighbors&#39;</span><span class="p">),</span>
+                <span class="n">exp_metrics_site</span><span class="p">[:,:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span> 
+        <span class="n">sites_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
+            <span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">site</span><span class="p">]}</span>
+        <span class="p">))</span>
+    <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sites_datasets</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">)</span>
+    <span class="n">experiment_metrics</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -1168,16 +1234,16 @@ Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "conda-env-.conda-seb_ss-py"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "conda-env-.conda-seb_ss-py",
             path: "./notebooks"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'conda-env-.conda-seb_ss-py'</script>
 
               </div>
               

@@ -1,0 +1,3158 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Experiments config &#8212; Storm Surge NZ - Summary</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/logo.jpeg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   geoocean-nz-ss
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Chapters
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data_visualization.html">
+   1. Data visualization and validation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../more_validations.html">
+   2. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../repo_workflow_theory.html">
+   3. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../analysis_pca.html">
+   4. PC analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models_linear.html">
+   5. MultiLinear regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models_knn.html">
+   6. KNN regressor models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models_xgboost.html">
+   7. XGBoost regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models_mda_rbf.html">
+   8. MDA - RBF model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../experiments.html">
+   9. RUN experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models_results.html">
+   10. VISUALIZE experiments results
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/ahanoa_experiments/model_results_linear_winds_and_gradients.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/ahanoa_experiments/model_results_linear_winds_and_gradients.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/ahanoa_experiments/model_results_linear_winds_and_gradients.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Experiments config
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plots">
+   Plots
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p>In this notebook we plot the results of the experiments for the following parameters:</p>
+<ul class="simple">
+<li><p>linear model</p></li>
+<li><p>wind fields as part of the predictors</p></li>
+<li><p>no gradients as part of the predictors</p></li>
+<li><p>PCA caculated using all rows and columns</p></li>
+</ul>
+<p>The notebook was run with</p>
+<div class="tex2jax_ignore mathjax_ignore section" id="experiments-config">
+<h1>Experiments config<a class="headerlink" href="#experiments-config" title="Permalink to this headline">¶</a></h1>
+<p>In a attempt to make things clearer, here is a copy of the experiments config/code:</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="plots">
+<h1>Plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h1>
+<p>Here the results aIn a attempt to make things clearer, here is a copy of the experiments config/code:re plotted using a copy of the code that was in the repository</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="c1"># arrays</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="c1"># application</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
+
+<span class="n">pn</span><span class="o">.</span><span class="n">extension</span><span class="p">()</span>
+
+<span class="c1"># to autocomplete code</span>
+<span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
+
+<span class="c1"># append sscode to path</span>
+<span class="c1">#sys.path.insert(0, os.path.join(os.path.abspath(&#39;&#39;), &#39;..&#39;))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/metocean/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/data&#39;</span> <span class="c1">#&#39;/data/storm_surge_data/&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
+<span class="n">default_region</span><span class="o">=</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span><span class="mi">190</span><span class="p">,</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">default_region_reduced</span> <span class="o">=</span> <span class="p">(</span><span class="mi">160</span><span class="p">,</span><span class="mi">185</span><span class="p">,</span><span class="o">-</span><span class="mi">52</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.config</span> <span class="kn">import</span> <span class="n">_figsize</span><span class="p">,</span> <span class="n">_fontsize_title</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">load_moana_hindcast</span>
+
+<span class="c1"># from bokeh.plotting import figure, show, output_notebook</span>
+<span class="c1"># output_notebook()</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  var force = true;
+
+  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) {
+        if (callback != null)
+          callback();
+      });
+    } finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.debug("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(css_urls, js_urls, js_modules, callback) {
+    if (css_urls == null) css_urls = [];
+    if (js_urls == null) js_urls = [];
+    if (js_modules == null) js_modules = [];
+
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls.length === 0 && js_modules.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = css_urls.length + js_urls.length + js_modules.length;
+
+    function on_load() {
+      root._bokeh_is_loading--;
+      if (root._bokeh_is_loading === 0) {
+        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
+        run_callbacks()
+      }
+    }
+
+    function on_error() {
+      console.error("failed to load " + url);
+    }
+
+    for (var i = 0; i < css_urls.length; i++) {
+      var url = css_urls[i];
+      const element = document.createElement("link");
+      element.onload = on_load;
+      element.onerror = on_error;
+      element.rel = "stylesheet";
+      element.type = "text/css";
+      element.href = url;
+      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
+      document.body.appendChild(element);
+    }
+
+    var skip = [];
+    if (window.requirejs) {
+      window.requirejs.config({'paths': {}, 'shim': {}});
+      
+    }
+    for (var i = 0; i < js_urls.length; i++) {
+      var url = js_urls[i];
+      if (skip.indexOf(url) >= 0) { on_load(); continue; }
+      var element = document.createElement('script');
+      element.onload = on_load;
+      element.onerror = on_error;
+      element.async = false;
+      element.src = url;
+      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.head.appendChild(element);
+    }
+    for (var i = 0; i < js_modules.length; i++) {
+      var url = js_modules[i];
+      if (skip.indexOf(url) >= 0) { on_load(); continue; }
+      var element = document.createElement('script');
+      element.onload = on_load;
+      element.onerror = on_error;
+      element.async = false;
+      element.src = url;
+      element.type = "module";
+      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.head.appendChild(element);
+    }
+    if (!js_urls.length && !js_modules.length) {
+      on_load()
+    }
+  };
+
+  function inject_raw_css(css) {
+    const element = document.createElement("style");
+    element.appendChild(document.createTextNode(css));
+    document.body.appendChild(element);
+  }
+
+  var js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-2.3.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.3.3.min.js", "https://unpkg.com/@holoviz/panel@0.12.0/dist/panel.min.js"];
+  var js_modules = [];
+  var css_urls = ["https://unpkg.com/@holoviz/panel@0.12.0/dist/css/widgets.css", "https://unpkg.com/@holoviz/panel@0.12.0/dist/css/card.css", "https://unpkg.com/@holoviz/panel@0.12.0/dist/css/loading.css", "https://unpkg.com/@holoviz/panel@0.12.0/dist/css/dataframe.css", "https://unpkg.com/@holoviz/panel@0.12.0/dist/css/markdown.css", "https://unpkg.com/@holoviz/panel@0.12.0/dist/css/alerts.css", "https://unpkg.com/@holoviz/panel@0.12.0/dist/css/json.css"];
+  var inline_js = [
+    function(Bokeh) {
+      inject_raw_css("\n    .bk.pn-loading.arcs:before {\n      background-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBzdHlsZT0ibWFyZ2luOiBhdXRvOyBiYWNrZ3JvdW5kOiBub25lOyBkaXNwbGF5OiBibG9jazsgc2hhcGUtcmVuZGVyaW5nOiBhdXRvOyIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIj4gIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjMyIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZT0iI2MzYzNjMyIgc3Ryb2tlLWRhc2hhcnJheT0iNTAuMjY1NDgyNDU3NDM2NjkgNTAuMjY1NDgyNDU3NDM2NjkiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+ICAgIDxhbmltYXRlVHJhbnNmb3JtIGF0dHJpYnV0ZU5hbWU9InRyYW5zZm9ybSIgdHlwZT0icm90YXRlIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgZHVyPSIxcyIga2V5VGltZXM9IjA7MSIgdmFsdWVzPSIwIDUwIDUwOzM2MCA1MCA1MCI+PC9hbmltYXRlVHJhbnNmb3JtPiAgPC9jaXJjbGU+PC9zdmc+\")\n    }\n    ");
+    },
+    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+    function(Bokeh) {} // ensure no trailing comma for IE
+  ];
+
+  function run_inline_js() {
+    if ((root.Bokeh !== undefined) || (force === true)) {
+      for (var i = 0; i < inline_js.length; i++) {
+        inline_js[i].call(root, root.Bokeh);
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    }
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(css_urls, js_urls, js_modules, function() {
+      console.debug("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));</script><script type="application/javascript">
+if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
+  window.PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
+}
+
+
+    function JupyterCommManager() {
+    }
+
+    JupyterCommManager.prototype.register_target = function(plot_id, comm_id, msg_handler) {
+      if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        comm_manager.register_target(comm_id, function(comm) {
+          comm.on_msg(msg_handler);
+        });
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        window.PyViz.kernels[plot_id].registerCommTarget(comm_id, function(comm) {
+          comm.onMsg = msg_handler;
+        });
+      } else if (typeof google != 'undefined' && google.colab.kernel != null) {
+        google.colab.kernel.comms.registerTarget(comm_id, (comm) => {
+          var messages = comm.messages[Symbol.asyncIterator]();
+          function processIteratorResult(result) {
+            var message = result.value;
+            console.log(message)
+            var content = {data: message.data, comm_id};
+            var buffers = []
+            for (var buffer of message.buffers || []) {
+              buffers.push(new DataView(buffer))
+            }
+            var metadata = message.metadata || {};
+            var msg = {content, buffers, metadata}
+            msg_handler(msg);
+            return messages.next().then(processIteratorResult);
+          }
+          return messages.next().then(processIteratorResult);
+        })
+      }
+    }
+
+    JupyterCommManager.prototype.get_client_comm = function(plot_id, comm_id, msg_handler) {
+      if (comm_id in window.PyViz.comms) {
+        return window.PyViz.comms[comm_id];
+      } else if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        var comm = comm_manager.new_comm(comm_id, {}, {}, {}, comm_id);
+        if (msg_handler) {
+          comm.on_msg(msg_handler);
+        }
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        var comm = window.PyViz.kernels[plot_id].connectToComm(comm_id);
+        comm.open();
+        if (msg_handler) {
+          comm.onMsg = msg_handler;
+        }
+      } else if (typeof google != 'undefined' && google.colab.kernel != null) {
+        var comm_promise = google.colab.kernel.comms.open(comm_id)
+        comm_promise.then((comm) => {
+          window.PyViz.comms[comm_id] = comm;
+          if (msg_handler) {
+            var messages = comm.messages[Symbol.asyncIterator]();
+            function processIteratorResult(result) {
+              var message = result.value;
+              var content = {data: message.data};
+              var metadata = message.metadata || {comm_id};
+              var msg = {content, metadata}
+              msg_handler(msg);
+              return messages.next().then(processIteratorResult);
+            }
+            return messages.next().then(processIteratorResult);
+          }
+        }) 
+        var sendClosure = (data, metadata, buffers, disposeOnDone) => {
+          return comm_promise.then((comm) => {
+            comm.send(data, metadata, buffers, disposeOnDone);
+          });
+        };
+        var comm = {
+          send: sendClosure
+        };
+      }
+      window.PyViz.comms[comm_id] = comm;
+      return comm;
+    }
+    window.PyViz.comm_manager = new JupyterCommManager();
+    
+
+
+var JS_MIME_TYPE = 'application/javascript';
+var HTML_MIME_TYPE = 'text/html';
+var EXEC_MIME_TYPE = 'application/vnd.holoviews_exec.v0+json';
+var CLASS_NAME = 'output';
+
+/**
+ * Render data to the DOM node
+ */
+function render(props, node) {
+  var div = document.createElement("div");
+  var script = document.createElement("script");
+  node.appendChild(div);
+  node.appendChild(script);
+}
+
+/**
+ * Handle when a new output is added
+ */
+function handle_add_output(event, handle) {
+  var output_area = handle.output_area;
+  var output = handle.output;
+  if ((output.data == undefined) || (!output.data.hasOwnProperty(EXEC_MIME_TYPE))) {
+    return
+  }
+  var id = output.metadata[EXEC_MIME_TYPE]["id"];
+  var toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+  if (id !== undefined) {
+    var nchildren = toinsert.length;
+    var html_node = toinsert[nchildren-1].children[0];
+    html_node.innerHTML = output.data[HTML_MIME_TYPE];
+    var scripts = [];
+    var nodelist = html_node.querySelectorAll("script");
+    for (var i in nodelist) {
+      if (nodelist.hasOwnProperty(i)) {
+        scripts.push(nodelist[i])
+      }
+    }
+
+    scripts.forEach( function (oldScript) {
+      var newScript = document.createElement("script");
+      var attrs = [];
+      var nodemap = oldScript.attributes;
+      for (var j in nodemap) {
+        if (nodemap.hasOwnProperty(j)) {
+          attrs.push(nodemap[j])
+        }
+      }
+      attrs.forEach(function(attr) { newScript.setAttribute(attr.name, attr.value) });
+      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+    if (JS_MIME_TYPE in output.data) {
+      toinsert[nchildren-1].children[1].textContent = output.data[JS_MIME_TYPE];
+    }
+    output_area._hv_plot_id = id;
+    if ((window.Bokeh !== undefined) && (id in Bokeh.index)) {
+      window.PyViz.plot_index[id] = Bokeh.index[id];
+    } else {
+      window.PyViz.plot_index[id] = null;
+    }
+  } else if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+    var bk_div = document.createElement("div");
+    bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+    var script_attrs = bk_div.children[0].attributes;
+    for (var i = 0; i < script_attrs.length; i++) {
+      toinsert[toinsert.length - 1].childNodes[1].setAttribute(script_attrs[i].name, script_attrs[i].value);
+    }
+    // store reference to server id on output_area
+    output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+  }
+}
+
+/**
+ * Handle when an output is cleared or removed
+ */
+function handle_clear_output(event, handle) {
+  var id = handle.cell.output_area._hv_plot_id;
+  var server_id = handle.cell.output_area._bokeh_server_id;
+  if (((id === undefined) || !(id in PyViz.plot_index)) && (server_id !== undefined)) { return; }
+  var comm = window.PyViz.comm_manager.get_client_comm("hv-extension-comm", "hv-extension-comm", function () {});
+  if (server_id !== null) {
+    comm.send({event_type: 'server_delete', 'id': server_id});
+    return;
+  } else if (comm !== null) {
+    comm.send({event_type: 'delete', 'id': id});
+  }
+  delete PyViz.plot_index[id];
+  if ((window.Bokeh !== undefined) & (id in window.Bokeh.index)) {
+    var doc = window.Bokeh.index[id].model.document
+    doc.clear();
+    const i = window.Bokeh.documents.indexOf(doc);
+    if (i > -1) {
+      window.Bokeh.documents.splice(i, 1);
+    }
+  }
+}
+
+/**
+ * Handle kernel restart event
+ */
+function handle_kernel_cleanup(event, handle) {
+  delete PyViz.comms["hv-extension-comm"];
+  window.PyViz.plot_index = {}
+}
+
+/**
+ * Handle update_display_data messages
+ */
+function handle_update_output(event, handle) {
+  handle_clear_output(event, {cell: {output_area: handle.output_area}})
+  handle_add_output(event, handle)
+}
+
+function register_renderer(events, OutputArea) {
+  function append_mime(data, metadata, element) {
+    // create a DOM node to render to
+    var toinsert = this.create_output_subarea(
+    metadata,
+    CLASS_NAME,
+    EXEC_MIME_TYPE
+    );
+    this.keyboard_manager.register_events(toinsert);
+    // Render to node
+    var props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+    render(props, toinsert[0]);
+    element.append(toinsert);
+    return toinsert
+  }
+
+  events.on('output_added.OutputArea', handle_add_output);
+  events.on('output_updated.OutputArea', handle_update_output);
+  events.on('clear_output.CodeCell', handle_clear_output);
+  events.on('delete.Cell', handle_clear_output);
+  events.on('kernel_ready.Kernel', handle_kernel_cleanup);
+
+  OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+    safe: true,
+    index: 0
+  });
+}
+
+if (window.Jupyter !== undefined) {
+  try {
+    var events = require('base/js/events');
+    var OutputArea = require('notebook/js/outputarea').OutputArea;
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  } catch(err) {
+  }
+}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /data
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linear_stats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../../data/statistics/experiments/ahanoa2_winds_and_gradient_experiment_linear_final_args.nc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linear_stats</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:      (site: 29, grad: 1, winds: 1, tlapse: 3, tresample: 3, region: 3, tsize: 1, perpcs: 1)
+Coordinates:
+  * site         (site) int64 116 200 224 328 378 ... 1217 1260 1296 1327 1442
+Dimensions without coordinates: grad, winds, tlapse, tresample, region, tsize, perpcs
+Data variables: (12/16)
+    expl_var     (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    mae          (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    mse          (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    me           (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    medae        (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    tweedie      (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    ...           ...
+    bias         (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    si           (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    rmse         (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    pearson      (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    spearman     (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...
+    rscore       (site, grad, winds, tlapse, tresample, region, tsize, perpcs) float64 ...</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-656f9fd6-a0de-48f6-8bae-8ea9db1cb2d4' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-656f9fd6-a0de-48f6-8bae-8ea9db1cb2d4' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>site</span>: 29</li><li><span>grad</span>: 1</li><li><span>winds</span>: 1</li><li><span>tlapse</span>: 3</li><li><span>tresample</span>: 3</li><li><span>region</span>: 3</li><li><span>tsize</span>: 1</li><li><span>perpcs</span>: 1</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-df7e1c20-560b-4a20-b91e-6a98185edc1e' class='xr-section-summary-in' type='checkbox'  checked><label for='section-df7e1c20-560b-4a20-b91e-6a98185edc1e' class='xr-section-summary' >Coordinates: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>116 200 224 328 ... 1296 1327 1442</div><input id='attrs-f0974595-ab3c-4b12-ba11-9993caca7448' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-f0974595-ab3c-4b12-ba11-9993caca7448' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-262899cc-3407-4da2-841f-55afdc4240eb' class='xr-var-data-in' type='checkbox'><label for='data-262899cc-3407-4da2-841f-55afdc4240eb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 116,  200,  224,  328,  378,  393,  480,  488,  578,  613,  689,  708,
+        744,  780,  803,  949,  999, 1025, 1064, 1124, 1146, 1174, 1177, 1214,
+       1217, 1260, 1296, 1327, 1442])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-072d410f-f2f1-442a-8169-3ad71f4ff164' class='xr-section-summary-in' type='checkbox'  ><label for='section-072d410f-f2f1-442a-8169-3ad71f4ff164' class='xr-section-summary' >Data variables: <span>(16)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>expl_var</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-55c2c0df-1b91-4d77-b60a-71be299c85e7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-55c2c0df-1b91-4d77-b60a-71be299c85e7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b7300199-ee1b-4255-8c0a-bda9d93c697a' class='xr-var-data-in' type='checkbox'><label for='data-b7300199-ee1b-4255-8c0a-bda9d93c697a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.644514]],
+
+            ...,
+
+            [[0.677911]]],
+
+
+           ...,
+
+
+           [[[0.62197 ]],
+
+            ...,
+
+            [[0.644078]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.718736]],
+
+            ...,
+
+            [[0.739195]]],
+
+
+           ...,
+
+
+           [[[0.752156]],
+
+            ...,
+
+            [[0.752904]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.558941]],
+
+            ...,
+
+            [[0.592186]]],
+
+
+           ...,
+
+
+           [[[0.570533]],
+
+            ...,
+
+            [[0.596323]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.660219]],
+
+            ...,
+
+            [[0.682589]]],
+
+
+           ...,
+
+
+           [[[0.690619]],
+
+            ...,
+
+            [[0.704554]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>mae</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-38b694a7-49bb-4353-983a-b92dfd69b537' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-38b694a7-49bb-4353-983a-b92dfd69b537' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b0ccd906-d218-4ef3-a970-eccb51d4ea09' class='xr-var-data-in' type='checkbox'><label for='data-b0ccd906-d218-4ef3-a970-eccb51d4ea09' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.052795]],
+
+            ...,
+
+            [[0.050053]]],
+
+
+           ...,
+
+
+           [[[0.053427]],
+
+            ...,
+
+            [[0.051233]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.046697]],
+
+            ...,
+
+            [[0.044968]]],
+
+
+           ...,
+
+
+           [[[0.042748]],
+
+            ...,
+
+            [[0.042645]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.028835]],
+
+            ...,
+
+            [[0.027782]]],
+
+
+           ...,
+
+
+           [[[0.02917 ]],
+
+            ...,
+
+            [[0.028396]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.02536 ]],
+
+            ...,
+
+            [[0.024757]]],
+
+
+           ...,
+
+
+           [[[0.0246  ]],
+
+            ...,
+
+            [[0.02403 ]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>mse</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-55fb4bb3-aab8-45fa-8949-c8052b577cef' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-55fb4bb3-aab8-45fa-8949-c8052b577cef' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4bea5d06-0ac8-4b43-a230-c988a9251c3d' class='xr-var-data-in' type='checkbox'><label for='data-4bea5d06-0ac8-4b43-a230-c988a9251c3d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.004366]],
+
+            ...,
+
+            [[0.003984]]],
+
+
+           ...,
+
+
+           [[[0.004507]],
+
+            ...,
+
+            [[0.004274]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.003469]],
+
+            ...,
+
+            [[0.003247]]],
+
+
+           ...,
+
+
+           [[[0.002956]],
+
+            ...,
+
+            [[0.002958]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.001402]],
+
+            ...,
+
+            [[0.001296]]],
+
+
+           ...,
+
+
+           [[[0.001429]],
+
+            ...,
+
+            [[0.001343]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.00108 ]],
+
+            ...,
+
+            [[0.001009]]],
+
+
+           ...,
+
+
+           [[[0.00103 ]],
+
+            ...,
+
+            [[0.000984]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>me</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-eaa538e0-2f05-46bc-a751-44cd529706f7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-eaa538e0-2f05-46bc-a751-44cd529706f7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-08384867-08db-4c08-8cd4-2c57e29bc8a4' class='xr-var-data-in' type='checkbox'><label for='data-08384867-08db-4c08-8cd4-2c57e29bc8a4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.290586]],
+
+            ...,
+
+            [[0.302411]]],
+
+
+           ...,
+
+
+           [[[0.244692]],
+
+            ...,
+
+            [[0.223678]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.24615 ]],
+
+            ...,
+
+            [[0.302244]]],
+
+
+           ...,
+
+
+           [[[0.22481 ]],
+
+            ...,
+
+            [[0.197439]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.17238 ]],
+
+            ...,
+
+            [[0.158296]]],
+
+
+           ...,
+
+
+           [[[0.173108]],
+
+            ...,
+
+            [[0.200999]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.16825 ]],
+
+            ...,
+
+            [[0.167399]]],
+
+
+           ...,
+
+
+           [[[0.166713]],
+
+            ...,
+
+            [[0.191398]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>medae</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-9ce197f7-e75b-41d4-937a-8b43c651acf0' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9ce197f7-e75b-41d4-937a-8b43c651acf0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-aa092ac3-7fb7-46db-a853-8f9890e3aeea' class='xr-var-data-in' type='checkbox'><label for='data-aa092ac3-7fb7-46db-a853-8f9890e3aeea' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.044683]],
+
+            ...,
+
+            [[0.041981]]],
+
+
+           ...,
+
+
+           [[[0.045274]],
+
+            ...,
+
+            [[0.042181]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.039036]],
+
+            ...,
+
+            [[0.03755 ]]],
+
+
+           ...,
+
+
+           [[[0.035247]],
+
+            ...,
+
+            [[0.03585 ]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.023014]],
+
+            ...,
+
+            [[0.022415]]],
+
+
+           ...,
+
+
+           [[[0.023448]],
+
+            ...,
+
+            [[0.022615]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.020488]],
+
+            ...,
+
+            [[0.020471]]],
+
+
+           ...,
+
+
+           [[[0.019653]],
+
+            ...,
+
+            [[0.01954 ]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tweedie</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-eee4dfa9-2693-4a87-80d7-805176e839ca' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-eee4dfa9-2693-4a87-80d7-805176e839ca' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-661b3716-c484-41bf-90b6-edd518892ea5' class='xr-var-data-in' type='checkbox'><label for='data-661b3716-c484-41bf-90b6-edd518892ea5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.004366]],
+
+            ...,
+
+            [[0.003984]]],
+
+
+           ...,
+
+
+           [[[0.004507]],
+
+            ...,
+
+            [[0.004274]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.003469]],
+
+            ...,
+
+            [[0.003247]]],
+
+
+           ...,
+
+
+           [[[0.002956]],
+
+            ...,
+
+            [[0.002958]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.001402]],
+
+            ...,
+
+            [[0.001296]]],
+
+
+           ...,
+
+
+           [[[0.001429]],
+
+            ...,
+
+            [[0.001343]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.00108 ]],
+
+            ...,
+
+            [[0.001009]]],
+
+
+           ...,
+
+
+           [[[0.00103 ]],
+
+            ...,
+
+            [[0.000984]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>ext_mae</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-cdc93ffb-be67-4a02-820c-55d7177afe78' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-cdc93ffb-be67-4a02-820c-55d7177afe78' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-08b57eb2-f06a-48f7-95fd-55a3694c8bd2' class='xr-var-data-in' type='checkbox'><label for='data-08b57eb2-f06a-48f7-95fd-55a3694c8bd2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.068998]],
+
+            ...,
+
+            [[0.06221 ]]],
+
+
+           ...,
+
+
+           [[[0.076017]],
+
+            ...,
+
+            [[0.067601]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.058353]],
+
+            ...,
+
+            [[0.052576]]],
+
+
+           ...,
+
+
+           [[[0.059787]],
+
+            ...,
+
+            [[0.057218]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.051779]],
+
+            ...,
+
+            [[0.045606]]],
+
+
+           ...,
+
+
+           [[[0.054349]],
+
+            ...,
+
+            [[0.050271]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.041151]],
+
+            ...,
+
+            [[0.036279]]],
+
+
+           ...,
+
+
+           [[[0.042799]],
+
+            ...,
+
+            [[0.039611]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>ext_mse</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-ea42c4fb-6e8a-4e86-b779-3b274f5d0189' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ea42c4fb-6e8a-4e86-b779-3b274f5d0189' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4a85ad7f-d64b-4b14-8c5b-e55f47c53e34' class='xr-var-data-in' type='checkbox'><label for='data-4a85ad7f-d64b-4b14-8c5b-e55f47c53e34' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.006859]],
+
+            ...,
+
+            [[0.005692]]],
+
+
+           ...,
+
+
+           [[[0.008013]],
+
+            ...,
+
+            [[0.006891]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.005047]],
+
+            ...,
+
+            [[0.004105]]],
+
+
+           ...,
+
+
+           [[[0.005226]],
+
+            ...,
+
+            [[0.00492 ]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.003732]],
+
+            ...,
+
+            [[0.003065]]],
+
+
+           ...,
+
+
+           [[[0.004147]],
+
+            ...,
+
+            [[0.003628]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.002513]],
+
+            ...,
+
+            [[0.001967]]],
+
+
+           ...,
+
+
+           [[[0.002818]],
+
+            ...,
+
+            [[0.002504]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>ext_rmse</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-54a252de-9407-4e43-aae4-df494f0e6797' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-54a252de-9407-4e43-aae4-df494f0e6797' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-60e2dcde-a693-4f5d-9bc6-c54306b18823' class='xr-var-data-in' type='checkbox'><label for='data-60e2dcde-a693-4f5d-9bc6-c54306b18823' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.276552]],
+
+            ...,
+
+            [[0.266537]]],
+
+
+           ...,
+
+
+           [[[0.278107]],
+
+            ...,
+
+            [[0.275399]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.239551]],
+
+            ...,
+
+            [[0.208428]]],
+
+
+           ...,
+
+
+           [[[0.217606]],
+
+            ...,
+
+            [[0.209983]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.416834]],
+
+            ...,
+
+            [[0.344151]]],
+
+
+           ...,
+
+
+           [[[0.399234]],
+
+            ...,
+
+            [[0.350607]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.283234]],
+
+            ...,
+
+            [[0.2473  ]]],
+
+
+           ...,
+
+
+           [[[0.291819]],
+
+            ...,
+
+            [[0.281247]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>ext_pearson</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-3674a6c4-8adc-4aec-a6f5-0e1117fa935e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-3674a6c4-8adc-4aec-a6f5-0e1117fa935e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9fdca1b1-9420-47fa-9435-71fefc24bdae' class='xr-var-data-in' type='checkbox'><label for='data-9fdca1b1-9420-47fa-9435-71fefc24bdae' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.586167]],
+
+            ...,
+
+            [[0.570185]]],
+
+
+           ...,
+
+
+           [[[0.556049]],
+
+            ...,
+
+            [[0.526061]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.62396 ]],
+
+            ...,
+
+            [[0.636955]]],
+
+
+           ...,
+
+
+           [[[0.655491]],
+
+            ...,
+
+            [[0.637571]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.658514]],
+
+            ...,
+
+            [[0.668599]]],
+
+
+           ...,
+
+
+           [[[0.672075]],
+
+            ...,
+
+            [[0.655989]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.721653]],
+
+            ...,
+
+            [[0.737916]]],
+
+
+           ...,
+
+
+           [[[0.690848]],
+
+            ...,
+
+            [[0.67396 ]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>bias</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-896b2151-9783-4d43-add7-371edb6ff928' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-896b2151-9783-4d43-add7-371edb6ff928' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0f67efd1-563b-41cd-b423-2e95ea2b4e80' class='xr-var-data-in' type='checkbox'><label for='data-0f67efd1-563b-41cd-b423-2e95ea2b4e80' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[ 0.004348]],
+
+            ...,
+
+            [[ 0.006703]]],
+
+
+           ...,
+
+
+           [[[ 0.002101]],
+
+            ...,
+
+            [[ 0.005851]]]],
+
+
+
+          ...,
+
+
+
+          [[[[ 0.005458]],
+
+            ...,
+
+            [[ 0.007619]]],
+
+
+           ...,
+
+
+           [[[ 0.001882]],
+
+            ...,
+
+            [[ 0.003871]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[-0.000244]],
+
+            ...,
+
+            [[ 0.000452]]],
+
+
+           ...,
+
+
+           [[[-0.000683]],
+
+            ...,
+
+            [[-0.000455]]]],
+
+
+
+          ...,
+
+
+
+          [[[[-0.000585]],
+
+            ...,
+
+            [[ 0.000415]]],
+
+
+           ...,
+
+
+           [[[-0.000544]],
+
+            ...,
+
+            [[-0.000791]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>si</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-65326c49-d6d7-4186-b7b7-95e4e8faeb6a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-65326c49-d6d7-4186-b7b7-95e4e8faeb6a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-723b02f3-ee96-43c3-9e21-7d92e0f5a700' class='xr-var-data-in' type='checkbox'><label for='data-723b02f3-ee96-43c3-9e21-7d92e0f5a700' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.712709]],
+
+            ...,
+
+            [[0.648779]]],
+
+
+           ...,
+
+
+           [[[0.67779 ]],
+
+            ...,
+
+            [[0.61845 ]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.604014]],
+
+            ...,
+
+            [[0.555349]]],
+
+
+           ...,
+
+
+           [[[0.517245]],
+
+            ...,
+
+            [[0.49901 ]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.943213]],
+
+            ...,
+
+            [[0.868008]]],
+
+
+           ...,
+
+
+           [[[0.866661]],
+
+            ...,
+
+            [[0.8119  ]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.750288]],
+
+            ...,
+
+            [[0.686444]]],
+
+
+           ...,
+
+
+           [[[0.654606]],
+
+            ...,
+
+            [[0.612885]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>rmse</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-5a0cb689-8fd4-40c3-8b5a-8ba354d0aa07' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-5a0cb689-8fd4-40c3-8b5a-8ba354d0aa07' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-da853f2e-bf65-4eb6-a3da-5e636a32b315' class='xr-var-data-in' type='checkbox'><label for='data-da853f2e-bf65-4eb6-a3da-5e636a32b315' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.372653]],
+
+            ...,
+
+            [[0.344341]]],
+
+
+           ...,
+
+
+           [[[0.330751]],
+
+            ...,
+
+            [[0.314107]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.31946 ]],
+
+            ...,
+
+            [[0.295546]]],
+
+
+           ...,
+
+
+           [[[0.261902]],
+
+            ...,
+
+            [[0.250933]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.523031]],
+
+            ...,
+
+            [[0.461044]]],
+
+
+           ...,
+
+
+           [[[0.440607]],
+
+            ...,
+
+            [[0.399663]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.415015]],
+
+            ...,
+
+            [[0.37133 ]]],
+
+
+           ...,
+
+
+           [[[0.328822]],
+
+            ...,
+
+            [[0.299104]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>pearson</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-f7b8be18-415a-45c6-bda1-3e59ec9bc9e6' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-f7b8be18-415a-45c6-bda1-3e59ec9bc9e6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1251cb03-f37d-44e8-9bd2-26d07be86692' class='xr-var-data-in' type='checkbox'><label for='data-1251cb03-f37d-44e8-9bd2-26d07be86692' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.803154]],
+
+            ...,
+
+            [[0.824203]]],
+
+
+           ...,
+
+
+           [[[0.788845]],
+
+            ...,
+
+            [[0.804056]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.847992]],
+
+            ...,
+
+            [[0.860928]]],
+
+
+           ...,
+
+
+           [[[0.867271]],
+
+            ...,
+
+            [[0.868202]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.749176]],
+
+            ...,
+
+            [[0.770525]]],
+
+
+           ...,
+
+
+           [[[0.757653]],
+
+            ...,
+
+            [[0.773734]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.813469]],
+
+            ...,
+
+            [[0.826241]]],
+
+
+           ...,
+
+
+           [[[0.831723]],
+
+            ...,
+
+            [[0.839377]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>spearman</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-939cc4f5-c809-4dcc-80aa-137cdd8175f9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-939cc4f5-c809-4dcc-80aa-137cdd8175f9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-05076102-8869-4371-beaa-aeb0656758ab' class='xr-var-data-in' type='checkbox'><label for='data-05076102-8869-4371-beaa-aeb0656758ab' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.791694]],
+
+            ...,
+
+            [[0.817133]]],
+
+
+           ...,
+
+
+           [[[0.776189]],
+
+            ...,
+
+            [[0.793612]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.838589]],
+
+            ...,
+
+            [[0.853374]]],
+
+
+           ...,
+
+
+           [[[0.852986]],
+
+            ...,
+
+            [[0.856338]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.701795]],
+
+            ...,
+
+            [[0.726292]]],
+
+
+           ...,
+
+
+           [[[0.710003]],
+
+            ...,
+
+            [[0.728429]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.772103]],
+
+            ...,
+
+            [[0.787741]]],
+
+
+           ...,
+
+
+           [[[0.803961]],
+
+            ...,
+
+            [[0.814099]]]]]]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>rscore</span></div><div class='xr-var-dims'>(site, grad, winds, tlapse, tresample, region, tsize, perpcs)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-f501c675-72c7-4c41-b719-67f99cab6a0b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-f501c675-72c7-4c41-b719-67f99cab6a0b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5b52c73b-1ea0-4a22-ac91-3e84e81d12a1' class='xr-var-data-in' type='checkbox'><label for='data-5b52c73b-1ea0-4a22-ac91-3e84e81d12a1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[[[[[0.642968]],
+
+            ...,
+
+            [[0.674236]]],
+
+
+           ...,
+
+
+           [[[0.621599]],
+
+            ...,
+
+            [[0.641204]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.7163  ]],
+
+            ...,
+
+            [[0.734447]]],
+
+
+           ...,
+
+
+           [[[0.751859]],
+
+            ...,
+
+            [[0.751646]]]]]]],
+
+
+
+
+
+
+       ...,
+
+
+
+
+
+
+       [[[[[[[0.558922]],
+
+            ...,
+
+            [[0.592122]]],
+
+
+           ...,
+
+
+           [[[0.570393]],
+
+            ...,
+
+            [[0.596261]]]],
+
+
+
+          ...,
+
+
+
+          [[[[0.660111]],
+
+            ...,
+
+            [[0.682535]]],
+
+
+           ...,
+
+
+           [[[0.69053 ]],
+
+            ...,
+
+            [[0.704366]]]]]]]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-2d9dd55f-4eee-40f8-97f3-618046a6c2d5' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-2d9dd55f-4eee-40f8-97f3-618046a6c2d5' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats_plot</span> <span class="o">=</span> <span class="n">linear_stats</span> <span class="c1"># EDIT TO PLOT KNN</span>
+
+<span class="c1"># generate labels for x-axis</span>
+<span class="n">variables_dictionary</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;GrT&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;WT&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TL1&#39;</span><span class="p">,</span><span class="s1">&#39;TL2&#39;</span><span class="p">,</span><span class="s1">&#39;TL3&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;local_2.1&#39;</span><span class="p">,</span> <span class="s1">&#39;local_4.1&#39;</span><span class="p">,</span> <span class="s1">&#39;NZ&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;train_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;70%&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;percentage_pcs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;98%&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;k_neighbors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;6&#39;</span><span class="p">,</span><span class="s1">&#39;9&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">x_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">cg</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;calculate_gradient&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">ws</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;winds&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">tl</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;time_lapse&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;time_resample&#39;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;train_size&#39;</span><span class="p">]:</span>
+                        <span class="k">for</span> <span class="n">pp</span> <span class="ow">in</span> <span class="n">variables_dictionary</span><span class="p">[</span><span class="s1">&#39;percentage_pcs&#39;</span><span class="p">]:</span>
+                            <span class="c1"># for kn in variables_dictionary[&#39;k_neighbors&#39;]:</span>
+                            <span class="n">x_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="n">cg</span><span class="o">+</span><span class="s1">&#39; - &#39;</span><span class="o">+</span><span class="n">tl</span><span class="o">+</span><span class="s1">&#39; - &#39;</span><span class="o">+</span><span class="n">tr</span><span class="o">+</span><span class="s1">&#39; - &#39;</span><span class="o">+</span><span class="n">r</span><span class="o">+</span><span class="s1">&#39; - &#39;</span> <span class="c1"># +kn</span>
+                            <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># and now we load the longitudes and latitudes for the selected sites</span>
+<span class="n">locations</span> <span class="o">=</span> <span class="n">load_moana_hindcast</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)[[</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">linear_stats</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="c1"># select colors for each location depending on the shore</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:  (site: 29)
+Coordinates:
+  * site     (site) int64 116 200 224 328 378 393 ... 1217 1260 1296 1327 1442
+Data variables:
+    lon      (site) float64 dask.array&lt;chunksize=(1,), meta=np.ndarray&gt;
+    lat      (site) float64 dask.array&lt;chunksize=(1,), meta=np.ndarray&gt;</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-07c697cb-0c35-4d12-a8d1-fe370af730c0' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-07c697cb-0c35-4d12-a8d1-fe370af730c0' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>site</span>: 29</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-c3f1fb87-f9ee-48cf-9323-e0001352a632' class='xr-section-summary-in' type='checkbox'  checked><label for='section-c3f1fb87-f9ee-48cf-9323-e0001352a632' class='xr-section-summary' >Coordinates: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>116 200 224 328 ... 1296 1327 1442</div><input id='attrs-a2b34328-66ed-4ca1-b6cb-c48a248b1926' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a2b34328-66ed-4ca1-b6cb-c48a248b1926' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7333eb75-50d6-424c-8de1-49cb98e0874c' class='xr-var-data-in' type='checkbox'><label for='data-7333eb75-50d6-424c-8de1-49cb98e0874c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 116,  200,  224,  328,  378,  393,  480,  488,  578,  613,  689,  708,
+        744,  780,  803,  949,  999, 1025, 1064, 1124, 1146, 1174, 1177, 1214,
+       1217, 1260, 1296, 1327, 1442])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-cf2db458-4b40-4558-b925-bddb36f612bb' class='xr-section-summary-in' type='checkbox'  checked><label for='section-cf2db458-4b40-4558-b925-bddb36f612bb' class='xr-section-summary' >Data variables: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1,), meta=np.ndarray&gt;</div><input id='attrs-77d83435-bf90-4870-b610-89cb0c2908fe' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-77d83435-bf90-4870-b610-89cb0c2908fe' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e5ca16fc-95bc-43b9-9b3b-872ef5599abf' class='xr-var-data-in' type='checkbox'><label for='data-e5ca16fc-95bc-43b9-9b3b-872ef5599abf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 232 B </td> <td> 8 B </td></tr>
+    <tr><th> Shape </th><td> (29,) </td> <td> (1,) </td></tr>
+    <tr><th> Count </th><td> 1478 Tasks </td><td> 29 Chunks </td></tr>
+    <tr><th> Type </th><td> float64 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="82" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="32" x2="120" y2="32" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="32" style="stroke-width:2" />
+  <line x1="4" y1="0" x2="4" y2="32" />
+  <line x1="12" y1="0" x2="12" y2="32" />
+  <line x1="16" y1="0" x2="16" y2="32" />
+  <line x1="24" y1="0" x2="24" y2="32" />
+  <line x1="28" y1="0" x2="28" y2="32" />
+  <line x1="37" y1="0" x2="37" y2="32" />
+  <line x1="41" y1="0" x2="41" y2="32" />
+  <line x1="49" y1="0" x2="49" y2="32" />
+  <line x1="53" y1="0" x2="53" y2="32" />
+  <line x1="62" y1="0" x2="62" y2="32" />
+  <line x1="66" y1="0" x2="66" y2="32" />
+  <line x1="74" y1="0" x2="74" y2="32" />
+  <line x1="78" y1="0" x2="78" y2="32" />
+  <line x1="86" y1="0" x2="86" y2="32" />
+  <line x1="91" y1="0" x2="91" y2="32" />
+  <line x1="99" y1="0" x2="99" y2="32" />
+  <line x1="103" y1="0" x2="103" y2="32" />
+  <line x1="111" y1="0" x2="111" y2="32" />
+  <line x1="120" y1="0" x2="120" y2="32" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 120.0,0.0 120.0,32.22963935323851 0.0,32.22963935323851" style="fill:#8B4903A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="52.229639" font-size="1.0rem" font-weight="100" text-anchor="middle" >29</text>
+  <text x="140.000000" y="16.114820" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,16.114820)">1</text>
+</svg>
+</td>
+</tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1,), meta=np.ndarray&gt;</div><input id='attrs-379013c7-7937-4f83-b10b-a395b29b2b01' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-379013c7-7937-4f83-b10b-a395b29b2b01' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-63ab95e2-320f-41c0-aa1b-6adc2643c26a' class='xr-var-data-in' type='checkbox'><label for='data-63ab95e2-320f-41c0-aa1b-6adc2643c26a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><table>
+<tr>
+<td>
+<table>
+  <thead>
+    <tr><td> </td><th> Array </th><th> Chunk </th></tr>
+  </thead>
+  <tbody>
+    <tr><th> Bytes </th><td> 232 B </td> <td> 8 B </td></tr>
+    <tr><th> Shape </th><td> (29,) </td> <td> (1,) </td></tr>
+    <tr><th> Count </th><td> 1478 Tasks </td><td> 29 Chunks </td></tr>
+    <tr><th> Type </th><td> float64 </td><td> numpy.ndarray </td></tr>
+  </tbody>
+</table>
+</td>
+<td>
+<svg width="170" height="82" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="32" x2="120" y2="32" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="32" style="stroke-width:2" />
+  <line x1="4" y1="0" x2="4" y2="32" />
+  <line x1="12" y1="0" x2="12" y2="32" />
+  <line x1="16" y1="0" x2="16" y2="32" />
+  <line x1="24" y1="0" x2="24" y2="32" />
+  <line x1="28" y1="0" x2="28" y2="32" />
+  <line x1="37" y1="0" x2="37" y2="32" />
+  <line x1="41" y1="0" x2="41" y2="32" />
+  <line x1="49" y1="0" x2="49" y2="32" />
+  <line x1="53" y1="0" x2="53" y2="32" />
+  <line x1="62" y1="0" x2="62" y2="32" />
+  <line x1="66" y1="0" x2="66" y2="32" />
+  <line x1="74" y1="0" x2="74" y2="32" />
+  <line x1="78" y1="0" x2="78" y2="32" />
+  <line x1="86" y1="0" x2="86" y2="32" />
+  <line x1="91" y1="0" x2="91" y2="32" />
+  <line x1="99" y1="0" x2="99" y2="32" />
+  <line x1="103" y1="0" x2="103" y2="32" />
+  <line x1="111" y1="0" x2="111" y2="32" />
+  <line x1="120" y1="0" x2="120" y2="32" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 120.0,0.0 120.0,32.22963935323851 0.0,32.22963935323851" style="fill:#8B4903A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="52.229639" font-size="1.0rem" font-weight="100" text-anchor="middle" >29</text>
+  <text x="140.000000" y="16.114820" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,16.114820)">1</text>
+</svg>
+</td>
+</tr>
+</table></div></li></ul></div></li><li class='xr-section-item'><input id='section-c4896d82-85fb-4c3f-a6a4-3dfc6a2fa8ce' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-c4896d82-85fb-4c3f-a6a4-3dfc6a2fa8ce' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># select colors for each location depending on the shore</span>
+<span class="n">locations_colors</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;gold&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;lime&#39;</span><span class="p">,</span><span class="s1">&#39;lime&#39;</span><span class="p">,</span><span class="s1">&#39;lime&#39;</span><span class="p">,</span><span class="s1">&#39;darkgreen&#39;</span><span class="p">,</span><span class="s1">&#39;darkgreen&#39;</span>
+<span class="p">]</span>
+<span class="c1"># plot all the locations with the colors</span>
+<span class="c1"># %matplotlib to zoom in the map</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">14</span><span class="p">),</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;projection&#39;</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">xr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">locations</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">isite</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="o">.</span><span class="n">site</span><span class="p">)),</span><span class="n">locations_colors</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">locations</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">isite</span><span class="p">]</span><span class="o">+</span><span class="mf">0.3</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">locations</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">isite</span><span class="p">],</span>
+        <span class="n">s</span><span class="o">=</span><span class="n">locations</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[</span><span class="n">isite</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">backgroundcolor</span><span class="o">=</span><span class="n">color</span>
+    <span class="p">)</span>
+<span class="n">plot_ccrs_nz</span><span class="p">([</span><span class="n">ax</span><span class="p">],</span><span class="n">plot_labels</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;lightblue&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/model_results_linear_winds_and_gradients_13_0.png" src="../../_images/model_results_linear_winds_and_gradients_13_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics_cmaps</span> <span class="o">=</span> <span class="p">{</span> <span class="c1"># ascendig = True</span>
+    <span class="s1">&#39;expl_var&#39;</span><span class="p">:</span> <span class="s1">&#39;Spectral&#39;</span><span class="p">,</span> <span class="s1">&#39;me&#39;</span><span class="p">:</span> <span class="s1">&#39;plasma_r&#39;</span><span class="p">,</span> <span class="s1">&#39;mae&#39;</span><span class="p">:</span> <span class="s1">&#39;hot&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="s1">&#39;hot&#39;</span><span class="p">,</span> <span class="s1">&#39;ext_rmse&#39;</span><span class="p">:</span> <span class="s1">&#39;plasma_r&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;medae&#39;</span><span class="p">:</span> <span class="s1">&#39;hot&#39;</span><span class="p">,</span> <span class="s1">&#39;tweedie&#39;</span><span class="p">:</span> <span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="s1">&#39;bias&#39;</span><span class="p">:</span> <span class="s1">&#39;pink_r&#39;</span><span class="p">,</span> <span class="s1">&#39;si&#39;</span><span class="p">:</span> <span class="s1">&#39;Spectral_r&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;rmse&#39;</span><span class="p">:</span> <span class="s1">&#39;plasma_r&#39;</span><span class="p">,</span> <span class="s1">&#39;pearson&#39;</span><span class="p">:</span> <span class="s1">&#39;Spectral&#39;</span><span class="p">,</span> <span class="s1">&#39;spearman&#39;</span><span class="p">:</span> <span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="s1">&#39;rscore&#39;</span><span class="p">:</span> <span class="s1">&#39;Spectral&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ext_pearson&#39;</span><span class="p">:</span> <span class="s1">&#39;Spectral&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># extract best sites order</span>
+<span class="n">num_sites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stats_plot</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+<span class="n">sites_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stats_plot</span><span class="p">[</span><span class="s1">&#39;pearson&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_sites</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span> <span class="c1"># this is not used</span>
+    
+<span class="k">for</span> <span class="n">metric_to_plot</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;ext_pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;me&#39;</span><span class="p">,</span><span class="s1">&#39;mse&#39;</span><span class="p">]:</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+    <span class="c1"># extract metric values from xarray.Dataset</span>
+    <span class="n">metric_values</span> <span class="o">=</span> <span class="n">stats_plot</span><span class="p">[</span><span class="n">metric_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_sites</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)[:,:]</span> \
+        <span class="k">if</span> <span class="n">metric_to_plot</span><span class="o">!=</span><span class="s1">&#39;bias&#39;</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+            <span class="n">stats_plot</span><span class="p">[</span><span class="n">metric_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_sites</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)[:,:]</span>
+        <span class="p">)</span>
+    <span class="c1"># plot pcolors </span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span>
+        <span class="n">metric_values</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">metrics_cmaps</span><span class="p">[</span><span class="n">metric_to_plot</span><span class="p">],</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">metric_values</span><span class="p">),</span><span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">metric_values</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">metric_values</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="c1"># last values in array</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_sites</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="c1"># y_positons</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">metric_values</span><span class="p">)[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="c1"># last values in array</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_sites</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="c1"># y_positons</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
+    <span class="p">)</span>
+    <span class="c1"># plot vertical lines to help eye</span>
+    <span class="c1"># ax.axvline(x=62.5,linewidth=2,linestyle=&#39;--&#39;,c=&#39;grey&#39;)</span>
+    <span class="c1"># ax.axvline(x=71.5,linewidth=2,linestyle=&#39;--&#39;,c=&#39;grey&#39;)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_sites</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># these are the positions, and below the labels = sites</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">stats_plot</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">[:],</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ytick</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">(),</span><span class="n">locations_colors</span><span class="p">):</span>
+        <span class="n">ytick</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">metric_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">x_labels</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">metric_to_plot</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_0.png" src="../../_images/model_results_linear_winds_and_gradients_14_0.png" />
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_1.png" src="../../_images/model_results_linear_winds_and_gradients_14_1.png" />
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_2.png" src="../../_images/model_results_linear_winds_and_gradients_14_2.png" />
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_3.png" src="../../_images/model_results_linear_winds_and_gradients_14_3.png" />
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_4.png" src="../../_images/model_results_linear_winds_and_gradients_14_4.png" />
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_5.png" src="../../_images/model_results_linear_winds_and_gradients_14_5.png" />
+<img alt="../../_images/model_results_linear_winds_and_gradients_14_6.png" src="../../_images/model_results_linear_winds_and_gradients_14_6.png" />
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-.conda-ssnz-py"
+        },
+        kernelOptions: {
+            kernelName: "conda-env-.conda-ssnz-py",
+            path: "./notebooks/ahanoa_experiments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-.conda-ssnz-py'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Javier Tausía Hoyal<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
