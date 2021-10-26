@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 # custom
-from .config import default_region, default_evaluation_metrics
+from .config import default_region, default_evaluation_metrics, default_ext_quantile
 from .plotting.config import _figsize, _fontsize_title, _figsize_width, \
     _figsize_height, _fontsize_legend, real_obs_col, pred_val_col
 from .plotting.pca import plot_recon_pcs
@@ -38,6 +38,7 @@ def XGBoost_Regression(
         'loss': ['ls'] # more could be added
     }, # xgboost to GridSearchCV model parameters
     model_metrics: list = default_evaluation_metrics,
+    ext_quantile: tuple = default_ext_quantile,
     X_set_var: str = 'PCs', y_set_var: str = 'ss',
     train_size: float = 0.8, percentage_PCs: float = 0.95,
     plot_results: bool = False, verbose: bool = False,
@@ -61,6 +62,9 @@ def XGBoost_Regression(
             that the GridSearchCV method will explore to find the optimal forest.
         model_metrics (list, optional): All the metrics to use.
             Defaults to default_evaluation_metrics.
+        ext_quantile (tuple, optional): These are the exterior quantiles to be used
+            in the case extreme analysis will be performed when calculating the model
+            performance metrics.
         X_set_var (str, optional): This is the predictor var name. Defaults to 'PCs'.
         y_set_var (str, optional): This is the predictand var name. Defaults to 'ss'.
         train_size (float, optional): Training set size out of 1. Defaults to 0.8.
@@ -134,7 +138,9 @@ def XGBoost_Regression(
         xgboost.fit(X_train, y_train)
         prediction = xgboost.predict(X_test)
         # check model results
-        title, stats = generate_stats(y_test,prediction,metrics=model_metrics)
+        title, stats = generate_stats(
+            y_test,prediction,metrics=model_metrics,ext_quantile=ext_quantile
+        ) # calculate model metrics
         stats['rscore'] = xgboost.score(X_test,y_test) \
             if 'rscore' not in list(stats.keys()) else stats['rscore']
         title += '\n R score: {} -- in TEST data'.format(
@@ -160,7 +166,9 @@ def XGBoost_Regression(
         )) if verbose else None
         prediction = xgb_grid.predict(X_test)
         # check model results
-        title, stats = generate_stats(y_test,prediction,metrics=model_metrics)
+        title, stats = generate_stats(
+            y_test,prediction,metrics=model_metrics,ext_quantile=ext_quantile
+        ) # calculate model metrics
         stats['rscore'] = xgb_grid.score(X_test,y_test) \
             if 'rscore' not in list(stats.keys()) else stats['rscore']
         title += '\n R score: {} -- in TEST data'.format(

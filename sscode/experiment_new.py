@@ -12,7 +12,7 @@ import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location, default_region, \
-    default_evaluation_metrics # get config params
+    default_evaluation_metrics, default_ext_quantile # get config params
 from .data import datasets_attrs
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
@@ -56,14 +56,12 @@ class Experiment(object):
     def __init__(self, slp_data, wind_data, ss_data, # this must have several stations
                  sites_to_analyze: list = list(np.random.randint(10,1000,5)),
                  model: str = 'linear', # this is the model to analyze
-                 model_metrics: list = [
-                     'bias','si','rmse','pearson','spearman','rscore',
-                     'mae', 'me', 'expl_var', # ...
-                 ], # these are the metrics to evaluate the model
+                 model_metrics: list = default_evaluation_metrics,
+                 ext_quantile: tuple = default_ext_quantile,
                  pca_attrs: dict = pca_attrs_default,
                  model_attrs: dict = linear_attrs_default,
-                 pcs_folder: str = '/home/metocean/pcas',
-                 verbose=False):
+                 pcs_folder: str = data_path+'/pcs',
+                 verbose=True):
         """
         As the initializator, the __init__ function creates the instance of the class,
         given a set of parameters, which are described below
@@ -80,12 +78,15 @@ class Experiment(object):
             model (str, optional): Type of model to analyze. Defaults to 'linear'.
             model_metrics (list, optional): These are all the evaluation metrics that might
                 be used to evaluate the model performance. Defaults to simple list.
+            ext_quantile (tuple, optional): These are the exterior quantiles to be used
+                in the case extreme analysis will be performed when calculating the model
+                performance metrics.
             pca_attrs (dict, optional): PCA dictionary with all the parameters to use in pca.
                 Defaults to pca_attrs_default.
             model_attrs (dict, optional): Model dictionary with all the parameters to use. 
                 Defaults to linear_attrs_default.
             pcs_folder (str, optional): Folder where the PCs are stored.
-                Default to ''/home/metocean/pcas'
+                Default to '/home/metocean/pcas'
         """
 
         # lets build the experiment!! + with CFSR
@@ -106,6 +107,7 @@ class Experiment(object):
         for mta in default_evaluation_metrics: # defined in sscode/config.py
             model_metrics.append(mta) if mta not in model_metrics else None
         self.model_metrics = model_metrics
+        self.ext_quantile = ext_quantile # quantiles analysis
 
         # more complicated features to save in model
         model_iters = 1
@@ -154,7 +156,7 @@ class Experiment(object):
                                 PCA.
         """
 
-        
+        # these are the pca arguments to calculate the matrix
         dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
         trash = dict_to_pca.pop('winds')
         # change region parameter if local area is required
@@ -162,36 +164,36 @@ class Experiment(object):
              and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
             # we load the daily pcs
             pca_data = xr.open_dataset(
-                            data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
-                        )
+                data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
+            )
             return pca_data, None
         else:
-            
+            # calculate the pca if they are not stored
             if parameters[4][0]=='local':
                 local_region = (True,(
-                            site_location[0]-parameters[4][1][0], # new lon / lat region
-                            site_location[0]+parameters[4][1][0],
-                            site_location[1]-parameters[4][1][1],
-                            site_location[1]+parameters[4][1][1]
-                        ))
+                    site_location[0]-parameters[4][1][0], # new lon / lat region
+                    site_location[0]+parameters[4][1][0],
+                    site_location[1]+parameters[4][1][1],
+                    site_location[1]-parameters[4][1][1]
+                ))
                 dict_to_pca['region'] = local_region
             if site_id:
                 dict_to_pca['site_id'] = site_id
 
             # lets first calculate the pcs
             return PCA_DynamicPred(
-                            self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                            wind=self.wind_data if parameters[1] else None,
-                            wind_vars=('wind_proj_mask',
-                                       datasets_attrs[self.predictor_data][0],
-                                       datasets_attrs[self.predictor_data][1],
-                                       datasets_attrs[self.predictor_data][4],
-                                       datasets_attrs[self.predictor_data][5]),
-                            pca_plot=(plot,False,1),verbose=self.verbose,
-                            site_location=site_location,
-                            pcs_folder=self.pcs_folder,
-                            **dict_to_pca # extra arguments without the winds
-                        ).pcs_get()
+                self.slp_data,pres_vars=('SLP','longitude','latitude'),
+                wind=self.wind_data if parameters[1] else None,
+                wind_vars=('wind_proj_mask',
+                    datasets_attrs[self.predictor_data][0],
+                    datasets_attrs[self.predictor_data][1],
+                    datasets_attrs[self.predictor_data][4],
+                    datasets_attrs[self.predictor_data][5]),
+                pca_plot=(plot,False,1),verbose=self.verbose,
+                site_location=site_location,
+                pcs_folder=self.pcs_folder,
+                **dict_to_pca # extra arguments without the winds
+            ).pcs_get()
 
 
     def execute_cross_model_calculations(self, verbose: bool = False, 
@@ -223,9 +225,16 @@ class Experiment(object):
             ]].load() # load the ss and the location of the site
             site_location = (ss_site.lon.values,ss_site.lat.values)
 
+            # get ext metrics in metrics
+            ext_counter = 0
+            for metric in self.model_metrics:
+                if 'ext_' in metric:
+                    ext_counter += 1
+
             # create the array to save all the models stats
             model_params_for_site = np.zeros(
-                tuple(self.model_params_shape+[len(self.model_metrics)])
+                tuple(self.model_params_shape+\
+                    [len(self.model_metrics)+ext_counter*(len(self.ext_quantile[0])-1)])
             )
 
             # lets iterate over all the pca_attrs + model_attrs
@@ -280,6 +289,7 @@ class Experiment(object):
                     stats, model, t_train = MultiLinear_Regression(
                         pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
+                        ext_quantile=self.ext_quantile,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
@@ -347,6 +357,7 @@ class Experiment(object):
                     stats, model, t_train = KNN_Regression(
                         pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
+                        ext_quantile=self.ext_quantile,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
                         **dict(zip(self.model_attrs.keys(),parameters[5:]))
@@ -421,6 +432,7 @@ class Experiment(object):
                     stats, model, t_train = XGBoost_Regression(
                         pca_data,ss_site_model,pcs_scaler=None, # add to plot slp recon
                         model_metrics=self.model_metrics,
+                        ext_quantile=self.ext_quantile,
                         X_set_var='PCs',y_set_var='ss',
                         plot_results=plot,verbose=verbose,pca_ttls=None,
                         train_size=parameters[5],percentage_PCs=parameters[6],
@@ -460,5 +472,5 @@ class Experiment(object):
         ) if verbose else None
 
 
-        return model_params_for_sites, model_mean_params
+        return model_params_for_sites, model_mean_params, stats.keys()
 

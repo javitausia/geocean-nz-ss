@@ -36,8 +36,8 @@ loader_dict_options = {
 # dataset attrs
 datasets_attrs = {
     'era5': ('longitude','latitude',None,'ERA 5 reanalysis','u10','v10'),
-#    'cfsr': ('lon','lat',None,'CFSR reanalysis','U_GRD_L103','V_GRD_L103'),
-    'cfsr': ('longitude','latitude',None,'CFSR reanalysis','ugrd10m','vgrd10m'),
+    'cfsr': ('lon','lat',None,'CFSR reanalysis','U_GRD_L103','V_GRD_L103'),
+    # 'cfsr': ('longitude','latitude',None,'CFSR reanalysis','ugrd10m','vgrd10m'),
     'dac': ('longitude','latitude',None,'DAC global reanalysis'),
     'moana': ('lon','lat','site','Moana v2 hindcast'),
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
@@ -332,6 +332,8 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
             # loading resampled data
             mslp = xr.open_dataarray(os.path.join(data_path,
                                                   'CFSR_MSLP_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
+            mslp = mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
+                .sorby(datasets_attrs['cfsr'][1],ascending=True)
             if load_winds[0]:
                 wind = xr.open_dataset(os.path.join(data_path,
                                                     'CFSR_WINDs_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
@@ -352,6 +354,8 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
             mslp = xr.open_dataarray(os.path.join(data_path,
                                                   'CFSR_MSLP_1H_1990_2021.nc'))\
                 .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
+            mslp = mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
+                .sorby(datasets_attrs['cfsr'][1],ascending=True)
         if load_winds[0]:
             print('\n loading and calculating the winds... \n')
             uw = xr.open_dataset(os.path.join(data_path,
@@ -378,6 +382,8 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
     else:
         mslp = xr.open_dataarray(os.path.join(data_path,
                                               'CFSR_MSLP_1H_1990_2021.nc')).sel(time=slice(datetime(1990,1,1), None))
+        mslp = mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
+            .sorby(datasets_attrs['cfsr'][1],ascending=True)
         # try year cropping
         if time:
             mslp = mslp.sel(time=time)
@@ -602,7 +608,7 @@ def load_moana_hindcast(file_path: str =
         [xarray.Dataset]: xarray dataset with all the moana data
     """
 
-    print('\n loading the Moana v2 hindcast data... \n')
+    # print('\n loading the Moana v2 hindcast data... \n')
 
     # load moana
     moana = xr.open_zarr(file_path)

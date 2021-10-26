@@ -9,13 +9,14 @@ from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics import explained_variance_score, max_error, \
     mean_absolute_error, mean_squared_error, mean_squared_log_error, \
     median_absolute_error, r2_score, mean_tweedie_deviance
+import hydroeval as he # hidrology used metrics
 
 # plotting
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 # custom
-from .config import default_evaluation_metrics
+from .config import default_evaluation_metrics, default_ext_quantile
 from .plotting.validation import qqplot, scatterplot
 from .plotting.config import _fontsize_title, _fontsize_legend, \
     _figsize, _figsize_width, _figsize_height, _fontsize_label, \
@@ -30,6 +31,8 @@ def si(targets, predictions):
 
 def rmse(targets, predictions):
     return np.sqrt(np.nanmean((targets-predictions)**2))
+def root_mean_squared_error(targets, predictions):
+    return np.sqrt(mean_squared_error(targets,predictions))
 
 def ext_rmse(targets, predictions, quant_threshold=0.75):
     quant_threshold_idxs = np.where(
@@ -54,6 +57,14 @@ def tu_test(targets, predictions):
     return np.sum([(targets[i]-predictions[i])**2 for i in range(1,len(targets))])/\
         np.sum([(targets[i]-targets[i-1])**2 for i in range(1,len(targets))])
 
+def nse(targets, predictions):
+    return he.evaluator(he.nse,predictions,targets)
+
+def kge(targets, predictions):
+    return he.evaluator(he.kge,predictions,targets)[0]
+
+def kgeprime(targets, predictions):
+    return he.evaluator(he.kgeprime,predictions,targets)[0]
 
 metrics_dictionary = {
     'expl_var': explained_variance_score,
@@ -66,13 +77,16 @@ metrics_dictionary = {
     'tweedie': mean_tweedie_deviance,
     'bias': bias, 
     'si': si,
-    'rmse': rmse,
+    'rmse': root_mean_squared_error,
     'ext_rmse': ext_rmse, # this can be used as a score metric during training
     'rel_rmse': relative_rmse, 
     'pearson': pearsonr,
     'spearman': spearmanr,
     'pocid': pocid,
-    'tu_test': tu_test
+    'tu_test': tu_test,
+    'nse': nse,
+    'kge': kge,
+    'kgeprime': kgeprime
 } # this is the metrics dictionary with all the possible metrics
 
 # TODO: import DESIRED metric in line 9 and append to metrics_dictionary
@@ -272,14 +286,11 @@ def compare_datasets(dataset1, dataset1_coords,
 
 
 def generate_stats(data1, data2, # these are just the 1-d numpy arrays
-                   metrics: list = ['expl_var','mae','mse','me',
-                       'medae','tweedie', # check theory
-                       'ext_mae','ext_mse','ext_rmse','ext_pearson',
-                       'bias','si','rmse','rel_rmse','pearson','spearman','rscore'
-                   ], ext_quantile: tuple = (0.9,0),
-                   not_nan_idxs=None):
+                   metrics: list = default_evaluation_metrics, 
+                   ext_quantile: tuple = default_ext_quantile,
+                   not_nan_idxs = None):
     """
-    Generates the title given two datasets
+    Generates the title and stats given two datasets
     - BIAS, SI, RMSE ... and correlations!!
 
     *** The ext_quantile parameter refers to the quantile to evaluate the
@@ -299,19 +310,34 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
     for mta in default_evaluation_metrics: # defined in sscode/config.py
         metrics.append(mta) if mta not in metrics else None
 
+    # try to extract just the not NaN indexes
     try:
         data1 = data1[not_nan_idxs].reshape(-1)
         data2 = data2[not_nan_idxs].reshape(-1)
     except:
         print('\n Not NaN indexes not passed!! \n') if True else None
 
-    if ext_quantile[0]:
-        ext_idxs = np.where(
-            data1>np.nanquantile(data1,ext_quantile[0])
-        )[0] if ext_quantile[1]==0 else \
+    if isinstance(ext_quantile[0],list):
+        ext_idxs_list = [
             np.where(
-               data2>np.nanquantile(data2,ext_quantile[0])
-            )[0]
+                data1>np.nanquantile(data1,ext_quant)
+            )[0] if ext_quantile[1]==0 else \
+                np.where(
+                    data2>np.nanquantile(data2,ext_quant)
+                )[0] for ext_quant in ext_quantile[0]
+        ]
+    elif isinstance(ext_quantile[0],int):
+        ext_idxs_list = [
+            np.where(
+                data1>np.nanquantile(data1,ext_quantile[0])
+            )[0] if ext_quantile[1]==0 else \
+                np.where(
+                    data2>np.nanquantile(data2,ext_quantile[0])
+                )[0]
+        ]
+        ext_quantile = ([ext_quantile[0]],ext_quantile[1])
+    else:
+        print('\n EXT metrics will not be calculated!! \n')
 
     # calculate metrics
     for metric in metrics:
@@ -320,12 +346,15 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
                 data1,data2
             )[0]
         elif metric[:4]=='ext_':
-            metrics_dict[metric] = metrics_dictionary[metric[4:]](
-                data1[ext_idxs],data2[ext_idxs]
-            ) if metric[4:]!='pearson' and metric[4:]!='spearman' else \
-                metrics_dictionary[metric[4:]](
+            for ext_quant,ext_idxs in zip(ext_quantile[0],ext_idxs_list):
+                metrics_dict[metric+'_'+str(ext_quant)[
+                        (str(ext_quant).find('.'))+1:
+                    ]] = metrics_dictionary[metric[4:]](
                     data1[ext_idxs],data2[ext_idxs]
-                )[0]
+                ) if metric[4:]!='pearson' and metric[4:]!='spearman' else \
+                    metrics_dictionary[metric[4:]](
+                        data1[ext_idxs],data2[ext_idxs]
+                    )[0]
         else:
             metrics_dict[metric] = metrics_dictionary[metric](
                 data1,data2
@@ -338,6 +367,9 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
     return_title += '\n and Correlations (Pearson, Rscore): ({:.2f}, {:.2f})'.format(
         metrics_dict['pearson'],metrics_dict['rscore']
     )
+    return_title += '\n NSE = {}, KGE = {} and KGE_PRIME = {}'.format(
+        metrics_dict['nse'], metrics_dict['kge'], metrics_dict['kgeprime']
+    ) if 'nse' in metrics_dict.keys() else '\n NSE / KGE not calculated!'
 
     return return_title, metrics_dict
 

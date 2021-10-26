@@ -17,5 +17,7 @@ default_region_reduced = (160,185,-52,-30) # reduced region of NZ (similar to mo
 default_evaluation_metrics = [
     'bias','si','rmse','rel_rmse','pearson','rscore',
     'ext_rmse','ext_rel_rmse','ext_pearson',
-    'pocid','tu_test','expl_var'
+    'pocid','tu_test','expl_var',
+    'nse','kge','kgeprime','ext_nse','ext_kge','ext_kgeprime'
 ] # add more metrics if required
+default_ext_quantile = ([0.9,0.95,0.99,0.999],0) # quantiles for extreme analysis

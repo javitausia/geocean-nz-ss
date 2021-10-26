@@ -93,12 +93,13 @@ def calculate_relative_winds(location: tuple = default_location,
 
     return return_winds.assign({
         'wind_proj_mask': return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
-        })
-#    return return_winds.assign({
-#        'wind_proj_mask': (('time',lat_name,lon_name),
-#            return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
-#        ) # TODO: check file existance
-#    })
+    })
+
+# return return_winds.assign({
+#     'wind_proj_mask': (('time',lat_name,lon_name),
+#         return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
+#     ) # TODO: check file existance
+# })
 
 
 def calculate_bearings(latitudes, longitudes,

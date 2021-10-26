@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # arrays
 import numpy as np
 import pandas as pd
@@ -11,7 +12,7 @@ import cartopy.crs as ccrs
 from .utils import plot_ccrs_nz, custom_cmap
 from .config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend, _mbar_diff
-from ..config import default_location, default_region
+from ..config import default_location, default_region, default_region_reduced
 
 
 def plot_pres_winds(data, data_name='CFSR',
@@ -62,6 +63,8 @@ def plot_pres_winds(data, data_name='CFSR',
                  plot_land=False)
     fig.suptitle(data_name+' data available',fontsize=_fontsize_title)
 
+    # plot_winds(data[1],quiv_step=6,n_times=8)
+
     # show results
     plt.show()
 
@@ -71,7 +74,8 @@ def plot_all_data(private_tgs = None,
                   codec_hind = None, 
                   moana_hind = None,
                   moana_hind_all = None,
-                  pres_cfsr = None):
+                  pres_cfsr = None,
+                  tgs_dict = None):
     """
     Plot all data available, both in a map and the time series if specified
 
@@ -91,7 +95,7 @@ def plot_all_data(private_tgs = None,
     if moana_hind:
         ax.scatter(
             moana_hind.lon.values,moana_hind.lat.values,
-            transform=ccrs.PlateCarree(),s=30,
+            transform=ccrs.PlateCarree(),s=10,
             label='Moana v2 hindcast shore - 5 km',
             c='red',alpha=0.8,zorder=14
         )
@@ -105,7 +109,7 @@ def plot_all_data(private_tgs = None,
                 moana_hind_all.lon.values,
                 moana_hind_all.lat.values
             )[1].reshape(-1),
-            transform=ccrs.PlateCarree(),s=5,
+            transform=ccrs.PlateCarree(),s=2,
             label='Moana v2 hindcast offshore - 20 km',
             c='orange',alpha=0.5,zorder=8
         )
@@ -124,12 +128,18 @@ def plot_all_data(private_tgs = None,
             label='More tidal gauges',
             c='darkblue',s=80,alpha=0.8,zorder=16
         )
+    if tgs_dict:
+        ax.scatter(
+			x=tgs_dict['longitudes'],y=tgs_dict['latitudes'],
+            transform=ccrs.PlateCarree(),zorder=250,s=333,marker='*',
+            c=tgs_dict['colors'],label='Experiments TGs'
+		)
     if uhslc_tgs:
         ax.scatter(
             uhslc_tgs.longitude.values,
             uhslc_tgs.latitude.values,
             transform=ccrs.PlateCarree(),label='UHSLC tidal gauges',
-            c='green',s=60,alpha=0.8,zorder=16
+            c='green',s=60,alpha=1,zorder=16
         )
     try:
         name = pres_cfsr.name # check xarray existence
@@ -143,15 +153,15 @@ def plot_all_data(private_tgs = None,
                 pres_cfsr.latitude.values
             )[1].reshape(-1),
             transform=ccrs.PlateCarree(),s=5,
-            label='CFSR slp fields - 0.5 º',
+            label='CFSR (slp-wind) fields - 0.5 º',
             c='darkblue',alpha=0.5,zorder=2
         )
     except:
         pass
     # legend attrs
     ax.legend(
-        loc='lower left', # bbox_to_anchor=(-0.1,1.05),
-        ncol=2,fancybox=True,shadow=True,
+        loc='lower right', # bbox_to_anchor=(-0.1,1.05),
+        ncol=1,fancybox=True,shadow=True,
         fontsize=_fontsize_legend
     ).set_zorder(20)
     # plot the map
@@ -167,7 +177,8 @@ def plot_all_data(private_tgs = None,
 def plot_winds(wind_data, n_times: int = 1,
                quiv_step: int = 2,
                wind_coords: tuple = ('lon','lat'),
-               wind_vars: tuple = ('U_GRD_L103','V_GRD_L103','wind_proj_mask')):
+               wind_vars: tuple = ('U_GRD_L103','V_GRD_L103','wind_proj_mask'),
+               plot_region: tuple = (True,default_region_reduced)):
 
     """
     This funtion plots the previously loaded wind data, so we
@@ -184,7 +195,7 @@ def plot_winds(wind_data, n_times: int = 1,
     
     times_to_plot = np.random.randint(0,len(wind_data.time.values),n_times)
     for time in times_to_plot:
-        fig, axes = plt.subplots(ncols=2,figsize=_figsize,
+        fig, axes = plt.subplots(ncols=4,figsize=(35,5),
             subplot_kw={
                 'projection':ccrs.PlateCarree(
                     central_longitude=default_location[0]
@@ -192,20 +203,48 @@ def plot_winds(wind_data, n_times: int = 1,
             }
         )
         wind_data[wind_vars[2]].isel(time=time).plot(
-            ax=axes[0],cmap='jet',vmin=-1,vmax=1,
+            ax=axes[0],cmap='jet', # vmin=-1,vmax=1,
             transform=ccrs.PlateCarree()
         )
-        axes[1].streamplot(
+        axes[0].quiver(
+            wind_data[wind_coords[0]].values[::quiv_step],
+            wind_data[wind_coords[1]].values[::quiv_step],
+            wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
+                np.cos(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
+            wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
+                np.sin(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
+            transform=ccrs.PlateCarree()
+        )
+        axes[1].quiver(
             wind_data[wind_coords[0]].values[::quiv_step],
             wind_data[wind_coords[1]].values[::quiv_step],
             wind_data.isel(time=time)[wind_vars[0]].values[::quiv_step,::quiv_step],
             wind_data.isel(time=time)[wind_vars[1]].values[::quiv_step,::quiv_step],
-            transform=ccrs.PlateCarree(),density=12
+            transform=ccrs.PlateCarree()
         )
-        axes[1].set_title('REAL stream-plot',fontsize=_fontsize_title)
+        axes[1].set_facecolor('lightblue')
+        axes[2].streamplot(
+            wind_data[wind_coords[0]].values[::quiv_step],
+            wind_data[wind_coords[1]].values[::quiv_step],
+            wind_data.isel(time=time)[wind_vars[0]].values[::quiv_step,::quiv_step],
+            wind_data.isel(time=time)[wind_vars[1]].values[::quiv_step,::quiv_step],
+            transform=ccrs.PlateCarree(),density=0.1
+        )
+        axes[3].quiver(
+            wind_data[wind_coords[0]].values[::quiv_step],
+            wind_data[wind_coords[1]].values[::quiv_step],
+            wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
+                np.cos(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
+            wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
+                np.sin(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
+            transform=ccrs.PlateCarree()
+        )
+        axes[3].set_facecolor('lightblue')
+        # axes[1].set_title('REAL stream-plot',fontsize=_fontsize_title)
+        axes[2].set_title('REAL stream-plot',fontsize=_fontsize_title)
         # plot map and show
         plot_ccrs_nz(
-            axes,plot_land=False,plot_labels=(False,None,None)
+            axes,plot_land=True,plot_labels=(False,None,None),plot_region=plot_region
         )
         plt.show()
 

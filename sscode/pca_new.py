@@ -1,77 +1,49 @@
 # basics
 import os, sys
-import progressbar
+# import progressbar
 
 # arrays
 import numpy as np
-import pandas as pd
 import xarray as xr
 
-import pickle
-
-# plotting
-#import matplotlib.pyplot as plt
-#import cartopy.crs as ccrs
-
-# append sscode to path
-sys.path.insert(0, '/home/metocean/geocean-nz-ss')
-data_path = '/data' #'/data/storm_surge_data/'
-os.environ["SSURGE_DATA_PATH"] = data_path
-#default_region=(140,190,-70,-20)
-#default_region_reduced = (160,185,-52,-30)
-
-#sys.path.insert(0, os.path.join(os.path.abspath(''), '..'))
+# import extras
+import pickle # saving
+import gc # garbage collection
+from sklearn.preprocessing import StandardScaler
 
 # custom
 from .config import data_path, default_location, \
     default_region, default_region_reduced
-from .data import Loader
-from .utils import calculate_relative_winds
-from .data import datasets_attrs
+from .data import Loader, datasets_attrs
+from .utils import calculate_relative_winds, spatial_gradient
+from .plotting.pca import plot_pcs
 
 # warnings
 import warnings
 warnings.filterwarnings('ignore')
 
 
-import gc
-
-# time                                                                                  
-from datetime import datetime
-
-# arrays and math                                                                       
-import numpy as np
-import xarray as xr
-
-from sklearn.preprocessing import StandardScaler
-
-# custom                                                                                
-from .config import default_region_reduced, default_region
-from .utils import spatial_gradient, calculate_relative_winds
-from .plotting.pca import plot_pcs
-
-
 class PCA_DynamicPred(object):
     
-    
     def __init__(self,
-                 pres, pres_vars: tuple = ('SLP','longitude','latitude'),
+                 pres, 
+                 pres_vars: tuple = ('SLP','longitude','latitude'),
                  calculate_gradient: bool = False,
-                 wind=None,
-                 wind_vars: tuple = ('wind_proj_mask','longitude','latitude','ugrd10m','vgrd10m'),
+                 wind = None,
+                 wind_vars: tuple = ('wind_proj_mask','lon','lat','U_GRD_L103','V_GRD_L103'),
                  time_lapse: int = 1, # 1 equals to NO time delay                    
                  time_resample: str = '1D',
                  region: tuple = (True,default_region),
-                 #ss_site: tuple	= (False, None),
-                 site_location=None,
+                 #ss_site: tuple = (False, None),
+                 site_location = None,
                  pca_plot: tuple = (True,False,2),
                  verbose: bool = True,
                  pca_ttls = None,
                  pca_borders = None,
                  pcs_folder = None,
                  site_id = None,
-                 pca_percent=0.99,
-                 pca_method='cpu'):
+                 pca_percent = 0.99,
+                 pca_method = 'cpu'):
         
         self.pres = pres
         self.pres_vars = pres_vars
@@ -81,7 +53,7 @@ class PCA_DynamicPred(object):
         self.time_lapse = time_lapse
         self.time_resample = time_resample
         self.region = region
-   #     self.ss_site = ss_site
+        # self.ss_site = ss_site
         self.site_location = site_location
         self.pca_plot = pca_plot
         self.verbose = verbose
@@ -94,7 +66,7 @@ class PCA_DynamicPred(object):
         
         self.args = locals()
         
-        print("time resample", time_resample)
+        print('Time resample', time_resample)
     
 
     def pca_assemble_matrix(self):
@@ -119,19 +91,17 @@ class PCA_DynamicPred(object):
 
         # if winds then calculate projected winds
         if self.wind:
-            
             winds = (True,
-                     calculate_relative_winds(
-                                    location=self.site_location, # this is the location of site
-                                    uw=self.wind[self.wind_vars[3]],
-                                    vw=self.wind[self.wind_vars[4]],
-                                    lat_name=self.wind_vars[2],
-                                    lon_name=self.wind_vars[1]
-                                )
-                     )
+                calculate_relative_winds(
+                    location=self.site_location, # this is the location of site
+                    uw=self.wind[self.wind_vars[3]],
+                    vw=self.wind[self.wind_vars[4]],
+                    lat_name=self.wind_vars[2],
+                    lon_name=self.wind_vars[1]
+                )
+            )
         else:
             winds = (False, None)
-        
         
         print('Assembling matrix')
         print('Start', os.system('free -h'))
@@ -146,16 +116,14 @@ class PCA_DynamicPred(object):
                 wind = winds[1].sel({
                     wind_vars[1]:slice(region[1][0],region[1][1]),
                     wind_vars[2]:slice(region[1][2],region[1][3])
-                }) # TODO: check lat order when cropping 
-                
+                }) # TODO: check lat order when cropping
         
-        # check if data is resampled and dropna                                             
+        # check if data is resampled and dropna                                    
         if pres_vars[0]=='wind_proj' or pres_vars[0]=='wind_proj_mask': # when just winds are loaded                                                                               
             pres = pres.resample(time=time_resample).mean().fillna(0.0)
         else:
             pres = pres.resample(time=time_resample).mean().dropna(dim='time',how='all')
         if winds[0]:
-            print(wind)
             wind = wind[wind_vars[0]].resample(time=time_resample).mean().fillna(0.0)\
                 .interp(coords={wind_vars[1]:pres[pres_vars[1]],
                                 wind_vars[2]:pres[pres_vars[2]]}
@@ -177,9 +145,7 @@ class PCA_DynamicPred(object):
             grad_add = 2
         else:
             grad_add = 1
-            
-        #self.pres = pres
-            
+                        
         # lets now create the PCs matrix                                                    
         x_shape = len(pres.time.values)-time_lapse
         y_shape = len(pres[pres_vars[1]].values)*len(pres[pres_vars[2]].values)
@@ -204,6 +170,8 @@ class PCA_DynamicPred(object):
         # to a minimum is critical
         del winds
         gc.collect()
+
+        self.pres = pres.copy() # copy new pres to self
                     
         return pcs_matrix, pres.time.values[:-self.time_lapse]
         
@@ -217,6 +185,7 @@ class PCA_DynamicPred(object):
               (scaler object): The scaler used to normalise the data
                                prior to running the PCA analysis.
         """
+
         if self.pca_plot[0]:
             region_plot = self.region[1] if self.region[0] else default_region
             pca_plot_scale = pcs_scaler if self.pca_plot[1] else None
@@ -226,7 +195,7 @@ class PCA_DynamicPred(object):
                      region=region_plot,
                      pca_ttls=self.pca_ttls,
                      pca_borders=self.pca_borders,
-                     verbose=self.verbose)    
+                     verbose=self.verbose)
 
 
     def pcs_get(self):
@@ -242,10 +211,9 @@ class PCA_DynamicPred(object):
             pca_data, pca_scaler = self.pcs_load()
 
             if pca_data and pca_scaler:
-                print("PCs loaded from file")
+                print('PCs loaded from file')
                 self.pcs_plot(pca_data, pca_scaler)
                 return pca_data, pca_scaler
-            
         
         # PCs need calculating
         pcs_matrix, pcs_time = self.pca_assemble_matrix()
@@ -392,8 +360,6 @@ class PCA_DynamicPred(object):
         """
         
         # GPU version
-        #import pandas as pd
-        #import cudf
         import cuml
         from cuml.decomposition import PCA
         
@@ -405,14 +371,14 @@ class PCA_DynamicPred(object):
         # First we convert the matrix into a dataframe on the GPU
         import pandas as pd
         import cudf
-        #def np2cudf(df):
-        #    # convert numpy array to cuDF dataframe
-        #    df = pd.DataFrame({'fea%d'%i:df[:,i] for i in range(df.shape[1])})
-        #    pdf = cudf.DataFrame()
-        #    for c,column in enumerate(df):
-        #        pdf[str(c)] = df[column]
-        #    return pdf
-        #pcs_stan_df = np2cudf(pcs_stran)
+        # def np2cudf(df):
+        #     # convert numpy array to cuDF dataframe
+        #     df = pd.DataFrame({'fea%d'%i:df[:,i] for i in range(df.shape[1])})
+        #     pdf = cudf.DataFrame()
+        #     for c,column in enumerate(df):
+        #         pdf[str(c)] = df[column]
+        #     return pdf
+        # pcs_stan_df = np2cudf(pcs_stran)
 
         #return pca_fit.fit_transform(pcs_stan_df)
         
@@ -447,7 +413,6 @@ class PCA_DynamicPred(object):
         pcs_stan[np.isnan(pcs_stan)] = 0.0 # check additional nans                          
 
         # ---------------------------------------------------------------------------------\
-        #                                                                                      
         # THIS IS JUST TO ALLOW MY 32GB-RAM COMPUTER TO RUN                                 
         # if pcs_stan.shape[1]>18000:                                                       
         #     pcs_stan = pcs_stan[:,::12]                                                   
@@ -507,7 +472,7 @@ class PCA_DynamicPred(object):
         pca_data_file, pca_scaler_file = self._pca_file_name()
         print("FILE", pca_data_file)
         
-        if not os.path.isfile(pca_data_file) or\
+        if not os.path.isfile(pca_data_file) or \
             not os.path.isfile(pca_scaler_file):
             return None, None
         
@@ -550,3 +515,4 @@ class PCA_DynamicPred(object):
         file_to_store = open(pca_scaler_file, "wb")
         pickle.dump(pca_scaler, file_to_store)
         file_to_store.close()
+

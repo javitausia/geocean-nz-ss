@@ -96,10 +96,10 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
             ax.axhline(point, **rug_y_params)
 
     # Draw the q-q plot
+    ax.plot([min_value,max_value],[min_value,max_value],
+            c='grey',lw=1,ls='--')
     ax.scatter(x_quantiles, y_quantiles, c=qqplot_points_col, 
                edgecolors=qqplot_edges_col,**kwargs)
-    ax.plot([min_value,max_value],[min_value,max_value],
-            c='royalblue',lw=3,zorder=10)
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
     ax.axis('square')
@@ -136,8 +136,8 @@ def scatterplot(x, y, ax=None, density=True,
     else:
         ax.scatter(x,y,**kwargs)
         
-    ax.plot([min_value,max_value],[min_value,max_value],
-            c='royalblue',lw=3,zorder=10)
+    # ax.plot([min_value,max_value],[min_value,max_value],
+    #         c='royalblue',lw=1,zorder=1,ls='--')
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
     ax.axis('square')
@@ -166,12 +166,13 @@ def plot_stats(statistics_data, plot_stats, **kwargs):
         p = xr.plot.scatter(
             statistics_data, # this is the data
             x='longitude',y='latitude',hue=var,cmap='jet',
-            ax=ax,transform=ccrs.PlateCarree(),zorder=40
+            ax=ax,transform=ccrs.PlateCarree(),zorder=40,
+            **kwargs
         ) # TODO: add kwargs
         ax.set_facecolor('lightblue')
         ax.set_title(var,fontsize=20)
     # plot map
-    plot_ccrs_nz(axes.flatten(),plot_labels=(True,5,5),
+    plot_ccrs_nz(axes.flatten(),plot_labels=(False,5,5),
                  plot_coastline=(False,None,None))
     # figure title
     fig.suptitle('Model statistics for all the stations!!',

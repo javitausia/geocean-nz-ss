@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 # custom
-from .config import default_region, default_evaluation_metrics
+from .config import default_region, default_evaluation_metrics, default_ext_quantile
 from .plotting.config import _figsize, _fontsize_title, _figsize_width, \
     _figsize_height, _fontsize_legend, real_obs_col, pred_val_col
 from .plotting.pca import plot_recon_pcs
@@ -26,6 +26,7 @@ def KNN_Regression(
     X_set, y_set, pcs_scaler = None,
     validator: tuple = (False,None,None),
     model_metrics: list = default_evaluation_metrics,
+    ext_quantile: tuple = default_ext_quantile,
     X_set_var: str = 'PCs', y_set_var: str = 'ss',
     percentage_PCs: float = 0.95,
     train_size = 0.8, # should be float -- (0,1)
@@ -47,6 +48,9 @@ def KNN_Regression(
             example is (True,xarray.Validator(ss),'ss').
         model_metrics (list, optional): All the metrics to use.
             Defaults to default_evaluation_metrics.
+        ext_quantile (tuple, optional): These are the exterior quantiles to be used
+            in the case extreme analysis will be performed when calculating the model
+            performance metrics.
         X_set_var (str, optional): This is the predictor var name. Defaults to 'PCs'.
         y_set_var (str, optional): This is the predictand var name. Defaults to 'ss'.
         train_size (float, optional): Training set size out of 1. Defaults to 0.8.
@@ -122,7 +126,9 @@ def KNN_Regression(
         neigh.fit(X_train,y_train)
         prediction = neigh.predict(X_test)
         # check model results
-        title, stats = generate_stats(y_test,prediction,metrics=model_metrics)
+        title, stats = generate_stats(
+            y_test,prediction,metrics=model_metrics,ext_quantile=ext_quantile
+        ) # generate model stats
         stats['rscore'] = neigh.score(X_test,y_test) \
             if 'rscore' not in list(stats.keys()) else stats['rscore']
         title += '\n R score: {} -- in TEST data'.format(
@@ -137,15 +143,15 @@ def KNN_Regression(
         neigh = KNeighborsRegressor() # TODO: add params
         # specify parameters to test
         param_grid = {
-            'n_neighbors': np.arange(1,max_neighbors,2),
+            'n_neighbors': np.arange(1,max_neighbors,1),
             # 'weights': ['uniform', 'distance'],
             # 'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
         }
         # use gridsearch to test all values for n_neighbors
         knn_gscv = GridSearchCV(
             neigh, param_grid, cv=cv_folds,
-            scoring='r2',
-            # make_scorer(metrics_dictionary['ext_rmse']), # check with custom callable function
+            scoring='r2', # check with custom callable function
+            # make_scorer(metrics_dictionary['ext_rmse']),
             verbose=1 if verbose else 0
         )
         # fit model to data
@@ -155,7 +161,9 @@ def KNN_Regression(
         )) if verbose else None
         prediction = knn_gscv.predict(X_test)
         # check model results
-        title, stats = generate_stats(y_test,prediction,metrics=model_metrics)
+        title, stats = generate_stats(
+            y_test,prediction,metrics=model_metrics,ext_quantile=ext_quantile
+        ) # generate model stats
         stats['rscore'] = knn_gscv.score(X_test,y_test) \
             if 'rscore' not in list(stats.keys()) else stats['rscore']
         title += '\n R score: {} -- in TEST data'.format(

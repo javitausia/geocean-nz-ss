@@ -49,17 +49,19 @@ def plot_ccrs_nz(axes, # all axes to plot the map
         if plot_labels[0]:
             gl = ax.gridlines(crs=ccrs.PlateCarree(),draw_labels=True,
                               linewidth=2,color='gray',linestyle='--')
-            xlabels = np.arange(plot_region[1][0],plot_region[1][1],plot_labels[1])
+            xlabels = np.arange(plot_region[1][0],plot_region[1][1]+5,plot_labels[1])
             xlabels = np.where(xlabels<180,xlabels,xlabels-360)
-            ylabels = np.arange(plot_region[1][3],plot_region[1][2],plot_labels[2])
+            ylabels = np.arange(plot_region[1][2],plot_region[1][3],plot_labels[2])
             gl.xlocator = mticker.FixedLocator(list(xlabels))
             gl.ylocator = mticker.FixedLocator(list(ylabels))  
+            # gl.xlabel_style = {'size':16} # ,'weight':'bold'
+            # gl.ylabel_style = {'size':16}
             gl.xlabels_top = False
             gl.ylabels_right = False
 
     plt.show() # show results
-            
-            
+
+
 def get_n_colors(cmap,n_colors):
     """
     Summary
