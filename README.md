@@ -21,7 +21,8 @@ related repos:
 
 * Preparing the FINAL experiments visualizations tools to evaluate results (run in server)
 * Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb) and [xgboost](/notebooks/models_xgboost.ipynb)
-* Finalize notebooks regarding GPs and SARIMA models + vortex model ... ?
+* Write first machine learning paper
+* Integrate all python classes to work with experiment_new.py and pca_new.py
 
 ## Description
 
