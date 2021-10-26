@@ -28,3 +28,4 @@ dependencies:
     - zarr
     - great_circle_calculator
     - geopy
+    - hydroeval
