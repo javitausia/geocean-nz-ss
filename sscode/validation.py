@@ -20,7 +20,7 @@ from .config import default_evaluation_metrics, default_ext_quantile
 from .plotting.validation import qqplot, scatterplot
 from .plotting.config import _fontsize_title, _fontsize_legend, \
     _figsize, _figsize_width, _figsize_height, _fontsize_label, \
-        real_obs_col, pred_val_col
+    real_obs_col, pred_val_col
 
 # some custom metrics and the metrics_dictionary
 
@@ -369,7 +369,8 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
     )
     return_title += '\n NSE = {}, KGE = {} and KGE_PRIME = {}'.format(
         metrics_dict['nse'], metrics_dict['kge'], metrics_dict['kgeprime']
-    ) if 'nse' in metrics_dict.keys() else '\n NSE / KGE not calculated!'
+    ) if 'nse' in metrics_dict.keys() and 'kge' in metrics_dict.keys() and \
+    'kgeprime' in metrics_dict.keys() else '\n NSE / KGE not calculated!'
 
     return return_title, metrics_dict
 
