@@ -173,8 +173,8 @@ class Experiment(object):
                 local_region = (True,(
                     site_location[0]-parameters[4][1][0], # new lon / lat region
                     site_location[0]+parameters[4][1][0],
-                    site_location[1]+parameters[4][1][1],
-                    site_location[1]-parameters[4][1][1]
+                    site_location[1]-parameters[4][1][1],
+                    site_location[1]+parameters[4][1][1]
                 ))
                 dict_to_pca['region'] = local_region
             if site_id:
