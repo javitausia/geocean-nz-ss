@@ -22,4 +22,4 @@ default_evaluation_metrics = [
     'pocid','tu_test','expl_var', # some more metrics are computed
     'nse','kge','kgeprime','ext_nse','ext_kge','ext_kgeprime' # hydrologic metrics
 ] # add more metrics if required
-default_ext_quantile = ([0.9,0.95,0.99,0.999],0) # quantiles for extreme analysis
+default_ext_quantile = ([0.9,0.95,0.99],0) # quantiles for extreme analysis
