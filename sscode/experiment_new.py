@@ -227,15 +227,28 @@ class Experiment(object):
 
             # get ext metrics in metrics
             ext_counter = 0
+            kges_counter = 0
+            ext_kges_counter = 0
             for metric in self.model_metrics:
-                if 'ext_' in metric:
+                if 'ext_' in metric and 'kge' not in metric:
                     ext_counter += 1
+                if 'kge' in metric and 'ext_' not in metric:
+                    kges_counter += 1
+                if 'ext_' in metric and 'kge' in metric:
+                    ext_kges_counter += 1
 
             # create the array to save all the models stats
             model_params_for_site = np.zeros(
                 tuple(self.model_params_shape+\
-                    [len(self.model_metrics)+ext_counter*(len(self.ext_quantile[0])-1)])
+                    [len(self.model_metrics)+\
+                        ext_counter*(len(self.ext_quantile[0])-1)+\
+                        kges_counter*3+\
+                        ext_kges_counter*(4*len(self.ext_quantile[0])-1)
+                    ]
+                )
             )
+
+            print(model_params_for_site.shape)
 
             # lets iterate over all the pca_attrs + model_attrs
             if self.model=='linear':

@@ -54,17 +54,22 @@ def pocid(targets, predictions):
     return np.sum(updown)/len(updown) * 100
 
 def tu_test(targets, predictions):
-    return np.sum([(targets[i]-predictions[i])**2 for i in range(1,len(targets))])/\
-        np.sum([(targets[i]-targets[i-1])**2 for i in range(1,len(targets))])
+    return np.sum((targets-predictions)**2) / np.sum((targets[1:]-targets[:-1])**2)
 
 def nse(targets, predictions):
     return he.evaluator(he.nse,predictions,targets)
 
 def kge(targets, predictions):
-    return he.evaluator(he.kge,predictions,targets)[0]
+    return he.evaluator(he.kge,predictions,targets)
 
 def kgeprime(targets, predictions):
-    return he.evaluator(he.kgeprime,predictions,targets)[0]
+    return he.evaluator(he.kgeprime,predictions,targets)
+
+def pearson_corr(targets, predictions):
+    return pearsonr(targets,predictions)[0]
+
+def spearman_corr(targets, predictions):
+    return spearmanr(targets,predictions)[0]
 
 metrics_dictionary = {
     'expl_var': explained_variance_score,
@@ -80,8 +85,8 @@ metrics_dictionary = {
     'rmse': root_mean_squared_error,
     'ext_rmse': ext_rmse, # this can be used as a score metric during training
     'rel_rmse': relative_rmse, 
-    'pearson': pearsonr,
-    'spearman': spearmanr,
+    'pearson': pearson_corr,
+    'spearman': spearman_corr,
     'pocid': pocid,
     'tu_test': tu_test,
     'nse': nse,
@@ -341,20 +346,47 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
 
     # calculate metrics
     for metric in metrics:
-        if metric=='pearson' or metric=='spearman':
-            metrics_dict[metric] = metrics_dictionary[metric](
-                data1,data2
-            )[0]
-        elif metric[:4]=='ext_':
+        if metric[:4]=='ext_':
             for ext_quant,ext_idxs in zip(ext_quantile[0],ext_idxs_list):
-                metrics_dict[metric+'_'+str(ext_quant)[
+                if metric[4:]=='kge' or metric[4:]=='kgeprime':
+                    for iam,add_metric in enumerate([
+                        metric,metric+'_r',metric+'_gamma',metric+'_beta'
+                    ]): # add metrics regarding kge and kgeprime
+                        metrics_dict[add_metric+'_'+str(ext_quant)[
+                            (str(ext_quant).find('.'))+1:
+                        ]] = metrics_dictionary[metric[4:]](
+                            data1[ext_idxs],data2[ext_idxs]
+                        )[iam]
+                else:
+                    metrics_dict[metric[4:]+'_'+str(ext_quant)[
                         (str(ext_quant).find('.'))+1:
                     ]] = metrics_dictionary[metric[4:]](
-                    data1[ext_idxs],data2[ext_idxs]
-                ) if metric[4:]!='pearson' and metric[4:]!='spearman' else \
-                    metrics_dictionary[metric[4:]](
                         data1[ext_idxs],data2[ext_idxs]
-                    )[0]
+                    )
+        elif metric=='kge' or metric=='kgeprime':
+            for iam,add_metric in enumerate([
+                metric,metric+'_r',metric+'_gamma',metric+'_beta'
+            ]): # add metrics regarding kge and kgeprime
+                metrics_dict[add_metric] = metrics_dictionary[metric](
+                    data1,data2
+                )[iam]
+        elif metric[-6:]=='_naive':
+            if metric[:-6]=='kge' or metric[:-6]=='kgeprime':
+                add_metrics = metrics_dictionary[metric[:-6]](
+                    data1,data2
+                ) / metrics_dictionary[metric[:-6]](
+                    data1[1:],data1[:-1]
+                ) # compare each coeff with naive model
+                for iam,add_metric in enumerate([
+                    metric,metric+'_r',metric+'_gamma',metric+'_beta'
+                ]): # add metrics regarding kge and kgeprime
+                    metrics_dict[add_metric] = add_metrics[iam]
+            else:
+                metrics_dict[metric] = metrics_dictionary[metric[:-6]](
+                    data1,data2
+                ) / metrics_dictionary[metric[:-6]](
+                    data1[1:],data1[:-1]
+            ) # this is the coeficient divided by its naive model
         else:
             metrics_dict[metric] = metrics_dictionary[metric](
                 data1,data2
@@ -371,6 +403,8 @@ def generate_stats(data1, data2, # these are just the 1-d numpy arrays
         metrics_dict['nse'], metrics_dict['kge'], metrics_dict['kgeprime']
     ) if 'nse' in metrics_dict.keys() and 'kge' in metrics_dict.keys() and \
     'kgeprime' in metrics_dict.keys() else '\n NSE / KGE not calculated!'
+
+    # print(len(metrics_dict.keys()))
 
     return return_title, metrics_dict
 

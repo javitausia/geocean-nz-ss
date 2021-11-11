@@ -324,17 +324,20 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
     ):
         # resample to daily
         if time=='1D' and os.path.isfile(os.path.join(data_path,
-                                                      'CFSR_MSLP_daily.nc')) \
-            and os.path.isfile(os.path.join(data_path,
-                                            'CFSR_WINDs_daily.nc')):
+                                                      'CFSR_MSLP_daily.nc')):
             # loading saved datasets
             print('\n loading daily resampled data... \n')
             # loading resampled data
             mslp = xr.open_dataarray(os.path.join(data_path,
                                                   'CFSR_MSLP_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
-            mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sortby(datasets_attrs['cfsr'][1],ascending=True)
-            if load_winds[0]:
+#<<<<<<< HEAD
+#            mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+#                .sortby(datasets_attrs['cfsr'][1],ascending=True)
+#            if load_winds[0]:
+#=======
+            if load_winds[0] and os.path.isfile(os.path.join(data_path,
+                                                             'CFSR_WINDs_daily.nc')):
+#>>>>>>> b0a8047e35346e2a115f52728b2cc6b7feb50090
                 wind = xr.open_dataset(os.path.join(data_path,
                                                     'CFSR_WINDs_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
                 # plot the data
@@ -347,15 +350,24 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
                     wind_proj='wind_proj_mask'
                 ) if plot else None
             # return data
-            return_data = [mslp] if not load_winds[0] else [mslp,wind]
+            return_data = [mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                .sortby(datasets_attrs['cfsr'][1],ascending=True)] if not load_winds[0] else [
+                    mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                        .sortby(datasets_attrs['cfsr'][1],ascending=True),
+                    wind.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                        .sortby(datasets_attrs['cfsr'][1],ascending=True)
+                ]
             return return_data
         else:
             print('\n resampling data to {}... \n'.format(time))
             mslp = xr.open_dataarray(os.path.join(data_path,
                                                   'CFSR_MSLP_1H_1990_2021.nc'))\
                 .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
-            mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sortby(datasets_attrs['cfsr'][1],ascending=True)
+#<<<<<<< HEAD
+#            mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+#                .sortby(datasets_attrs['cfsr'][1],ascending=True)
+#=======
+#>>>>>>> b0a8047e35346e2a115f52728b2cc6b7feb50090
         if load_winds[0]:
             print('\n loading and calculating the winds... \n')
             uw = xr.open_dataset(os.path.join(data_path,
@@ -382,8 +394,13 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
     else:
         mslp = xr.open_dataarray(os.path.join(data_path,
                                               'CFSR_MSLP_1H_1990_2021.nc')).sel(time=slice(datetime(1990,1,1), None))
-        mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-            .sortby(datasets_attrs['cfsr'][1],ascending=True)
+#<<<<<<< HEAD
+#        mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+#            .sortby(datasets_attrs['cfsr'][1],ascending=True)
+#=======
+        # mslp = mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
+        #     .sorby(datasets_attrs['cfsr'][1],ascending=True)
+#>>>>>>> b0a8047e35346e2a115f52728b2cc6b7feb50090
         # try year cropping
         if time:
             mslp = mslp.sel(time=time)
@@ -415,7 +432,13 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
             print('\n projected winds will not be calculated... returning the SLP... \n')
 
     # return the loaded datasets
-    return_data = [mslp] if not load_winds[0] else [mslp,wind]
+    return_data = [mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+        .sortby(datasets_attrs['cfsr'][1],ascending=True)] if not load_winds[0] else [
+            mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                .sortby(datasets_attrs['cfsr'][1],ascending=True),
+            wind.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                .sortby(datasets_attrs['cfsr'][1],ascending=True)
+        ]
 
     return return_data
 
