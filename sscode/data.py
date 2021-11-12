@@ -344,12 +344,12 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
                     wind_proj='wind_proj_mask'
                 ) if plot else None
             # return data
-            return_data = [mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sorby(datasets_attrs['cfsr'][1],ascending=True)] if not load_winds[0] else [
-                    mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-                        .sorby(datasets_attrs['cfsr'][1],ascending=True),
-                    wind.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-                        .sorby(datasets_attrs['cfsr'][1],ascending=True)
+            return_data = [mslp.sortby('longitude',ascending=True)\
+                .sortby('latitude',ascending=True)] if not load_winds[0] else [
+                    mslp.sortby('longitude',ascending=True)\
+                        .sortby('latitude',ascending=True),
+                    wind.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                        .sortby(datasets_attrs['cfsr'][1],ascending=True)
                 ]
             return return_data
         else:
@@ -416,12 +416,12 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
             print('\n projected winds will not be calculated... returning the SLP... \n')
 
     # return the loaded datasets
-    return_data = [mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-        .sorby(datasets_attrs['cfsr'][1],ascending=True)] if not load_winds[0] else [
-            mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sorby(datasets_attrs['cfsr'][1],ascending=True),
-            wind.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sorby(datasets_attrs['cfsr'][1],ascending=True)
+    return_data = [mslp.sortby('longitude',ascending=True)\
+        .sortby('latitude',ascending=True)] if not load_winds[0] else [
+            mslp.sortby('longitude',ascending=True)\
+                .sortby('latitude',ascending=True),
+            wind.sortby(datasets_attrs['cfsr'][0],ascending=True)\
+                .sortby(datasets_attrs['cfsr'][1],ascending=True)
         ]
 
     return return_data
