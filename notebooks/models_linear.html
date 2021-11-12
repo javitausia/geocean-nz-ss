@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>5. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -57,7 +57,10 @@
     <link rel="next" title="6. KNN regressor models" href="models_knn.html" />
     <link rel="prev" title="4. PC analysis" href="analysis_pca.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -96,7 +99,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Chapters
  </span>
@@ -436,9 +439,6 @@
 
 
  loading daily resampled data... 
-
-
- loading the Moana v2 hindcast data... 
 
 
  loading and plotting the UHSLC tidal guages... 
@@ -894,7 +894,8 @@
 <span class="n">ss_kapiti</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Kapiti_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">stats_kapiti</span><span class="p">,</span> <span class="n">lm_kapiti</span><span class="p">,</span> <span class="n">pcs_to_use_kapiti</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
     <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_kapiti</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">model_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tu_test&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">]</span>
+    <span class="n">model_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;ext_kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;kgeprime_naive&#39;</span><span class="p">],</span>
+    <span class="n">ext_quantile</span><span class="o">=</span><span class="p">([</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.95</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_kapiti</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">lm_kapiti</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
 </pre></div>
@@ -922,12 +923,13 @@
 <img alt="../_images/models_linear_15_1.png" src="../_images/models_linear_15_1.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.50, Relative - RMSE: 0.26
  and Correlations (Pearson, Rscore): (0.85, 0.72)
+ NSE = [0.7156399], KGE = [0.62978572] and KGE_PRIME = [0.51395225]
  R score: 0.72 -- in TEST data
 
 
  -- METRICS -- 
 
- {&#39;tu_test&#39;: 0.6328260211273947, &#39;pocid&#39;: 77.54098360655738, &#39;bias&#39;: -0.010944688103278769, &#39;si&#39;: 0.5007030217432502, &#39;rmse&#39;: 0.06200302620280216, &#39;rel_rmse&#39;: 0.25989866757575514, &#39;pearson&#39;: 0.8512398789054239, &#39;rscore&#39;: 0.7156399005866414, &#39;ext_rmse&#39;: 0.06381855397126245, &#39;ext_pearson&#39;: 0.4772185192798654} 
+ {&#39;kgeprime&#39;: array([0.51395225]), &#39;kgeprime_r&#39;: array([0.85123988]), &#39;kgeprime_gamma&#39;: array([0.64711165]), &#39;kgeprime_beta&#39;: array([1.29930362]), &#39;ext_kgeprime_9&#39;: array([0.22866462]), &#39;ext_kgeprime_r_9&#39;: array([0.47721852]), &#39;ext_kgeprime_gamma_9&#39;: array([1.54466609]), &#39;ext_kgeprime_beta_9&#39;: array([0.84189674]), &#39;ext_kgeprime_95&#39;: array([-0.21835544]), &#39;ext_kgeprime_r_95&#39;: array([0.16959363]), &#39;ext_kgeprime_gamma_95&#39;: array([1.87783945]), &#39;ext_kgeprime_beta_95&#39;: array([0.84439431]), &#39;kgeprime_naive&#39;: array([0.66288414]), &#39;kgeprime_naive_r&#39;: array([1.09790923]), &#39;kgeprime_naive_gamma&#39;: array([0.64736413]), &#39;kgeprime_naive_beta&#39;: array([1.29879136]), &#39;bias&#39;: -0.010944688103278769, &#39;si&#39;: 0.5007030217432502, &#39;rmse&#39;: 0.06200302620280216, &#39;rel_rmse&#39;: 0.25989866757575514, &#39;rmse_9&#39;: 0.06381855397126245, &#39;rmse_95&#39;: 0.06895468004731822, &#39;rel_rmse_9&#39;: 0.19621951707819293, &#39;rel_rmse_95&#39;: 0.20369298446325737, &#39;pearson&#39;: 0.8512398789054239, &#39;rscore&#39;: 0.7156399005866414, &#39;spearman&#39;: 0.8402127817401007, &#39;pearson_9&#39;: 0.4772185192798654, &#39;pearson_95&#39;: 0.16959363482930542, &#39;rscore_9&#39;: -1.3535263437553704, &#39;rscore_95&#39;: -4.0462726410342915, &#39;spearman_9&#39;: 0.506292966684294, &#39;spearman_95&#39;: 0.2826612903225807, &#39;pocid&#39;: 77.54098360655738, &#39;tu_test&#39;: 0.6328368417690503, &#39;expl_var&#39;: 0.724500225812825, &#39;nse&#39;: array([0.7156399]), &#39;kge&#39;: array([0.62978572]), &#39;kge_r&#39;: array([0.85123988]), &#39;kge_gamma&#39;: array([0.84079452]), &#39;kge_beta&#39;: array([1.29930362]), &#39;nse_9&#39;: array([-1.35352634]), &#39;nse_95&#39;: array([-4.04627264]), &#39;ext_kge_9&#39;: array([0.37664863]), &#39;ext_kge_r_9&#39;: array([0.47721852]), &#39;ext_kge_gamma_9&#39;: array([1.30044935]), &#39;ext_kge_beta_9&#39;: array([0.84189674]), &#39;ext_kge_95&#39;: array([-0.0279876]), &#39;ext_kge_r_95&#39;: array([0.16959363]), &#39;ext_kge_gamma_95&#39;: array([1.58563695]), &#39;ext_kge_beta_95&#39;: array([0.84439431])} 
 
  obtained with LinearRegression(normalize=True) !!
 </pre></div>
@@ -1278,31 +1280,22 @@ Data variables:
               </div>
               
         
-            
-
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="analysis_pca.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title"><span class="section-number">4. </span>PC analysis</p>
-            </div>
-        </a>
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="analysis_pca.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">4. </span>PC analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="models_knn.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>KNN regressor models</p>
     </div>
-     <div id="next">
-        <a class="right-next" href="models_knn.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title"><span class="section-number">6. </span>KNN regressor models</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
         
         </div>
@@ -1323,8 +1316,7 @@ Data variables:
       </div>
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-  
   </body>
 </html>
