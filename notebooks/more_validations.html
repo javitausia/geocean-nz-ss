@@ -28,6 +28,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -40,13 +42,16 @@
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -243,6 +248,14 @@
         
         
         
+        <a class="colab-button" href="https://colab.research.google.com/github/javitausia/geocean-nz-ss/blob/master/notebooks/more_validations.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -289,11 +302,16 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
-<span class="n">loader_linz</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loader_linz</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr_&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">])</span>
 <span class="n">loader_linz</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
     <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
 <span class="p">)</span>
@@ -301,22 +319,15 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
-
-
- loading daily resampled data... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> data not available for this predictor!! 
 </pre></div>
 </div>
 <img alt="../_images/more_validations_3_1.png" src="../_images/more_validations_3_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
-</pre></div>
-</div>
-<img alt="../_images/more_validations_3_3.png" src="../_images/more_validations_3_3.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the LINZ tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_3_5.png" src="../_images/more_validations_3_5.png" />
-<img alt="../_images/more_validations_3_6.png" src="../_images/more_validations_3_6.png" />
+<img alt="../_images/more_validations_3_3.png" src="../_images/more_validations_3_3.png" />
+<img alt="../_images/more_validations_3_4.png" src="../_images/more_validations_3_4.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with LINZ tgs!! 
 
 
@@ -335,6 +346,8 @@
  [5.319717747423619, 2.3184720501332547, 4.698606345256596, 4.106133965791918, 3.130787770409219, 17.988003692172256, 1.2755996354300678, 5.878134710491162, 2.1041482521719543, 4.015667223502896, 3.1685862316040065, 5.3741308824231755, 10.09186164411121, 1.8956937268750171, 9.621120849018142, 4.625968007830678] 
 </pre></div>
 </div>
+<img alt="../_images/more_validations_3_6.png" src="../_images/more_validations_3_6.png" />
+<img alt="../_images/more_validations_3_7.png" src="../_images/more_validations_3_7.png" />
 <img alt="../_images/more_validations_3_8.png" src="../_images/more_validations_3_8.png" />
 <img alt="../_images/more_validations_3_9.png" src="../_images/more_validations_3_9.png" />
 <img alt="../_images/more_validations_3_10.png" src="../_images/more_validations_3_10.png" />
@@ -349,14 +362,12 @@
 <img alt="../_images/more_validations_3_19.png" src="../_images/more_validations_3_19.png" />
 <img alt="../_images/more_validations_3_20.png" src="../_images/more_validations_3_20.png" />
 <img alt="../_images/more_validations_3_21.png" src="../_images/more_validations_3_21.png" />
-<img alt="../_images/more_validations_3_22.png" src="../_images/more_validations_3_22.png" />
-<img alt="../_images/more_validations_3_23.png" src="../_images/more_validations_3_23.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
-<span class="n">loader_linz_2</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loader_linz_2</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr_&#39;</span><span class="p">,</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">])</span>
 <span class="n">loader_linz_2</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
     <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">]]</span>
 <span class="p">)</span>
@@ -364,21 +375,17 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> data not available for this predictor!! 
 
 
- loading daily resampled data... 
-</pre></div>
-</div>
-<img alt="../_images/more_validations_4_1.png" src="../_images/more_validations_4_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the DAC hindcast data... 
+ loading the DAC hindcast data... 
 
 
  loading and plotting the LINZ tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_4_3.png" src="../_images/more_validations_4_3.png" />
-<img alt="../_images/more_validations_4_4.png" src="../_images/more_validations_4_4.png" />
+<img alt="../_images/more_validations_4_1.png" src="../_images/more_validations_4_1.png" />
+<img alt="../_images/more_validations_4_2.png" src="../_images/more_validations_4_2.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in DAC global reanalysis with LINZ tgs!! 
 
 
@@ -397,6 +404,8 @@
  [7.590038497049444, 12.57385829711142, 9.75774366494515, 12.41903418316871, 9.068172766589313, 10.389226310537907, 9.670289852849752, 10.19706091699214, 11.242251656455334, 5.728641373521477, 9.756618650072202, 4.591126900858283, 7.4684362429430315, 11.268854883263696, 9.26984591158987] 
 </pre></div>
 </div>
+<img alt="../_images/more_validations_4_4.png" src="../_images/more_validations_4_4.png" />
+<img alt="../_images/more_validations_4_5.png" src="../_images/more_validations_4_5.png" />
 <img alt="../_images/more_validations_4_6.png" src="../_images/more_validations_4_6.png" />
 <img alt="../_images/more_validations_4_7.png" src="../_images/more_validations_4_7.png" />
 <img alt="../_images/more_validations_4_8.png" src="../_images/more_validations_4_8.png" />
@@ -410,14 +419,12 @@
 <img alt="../_images/more_validations_4_16.png" src="../_images/more_validations_4_16.png" />
 <img alt="../_images/more_validations_4_17.png" src="../_images/more_validations_4_17.png" />
 <img alt="../_images/more_validations_4_18.png" src="../_images/more_validations_4_18.png" />
-<img alt="../_images/more_validations_4_19.png" src="../_images/more_validations_4_19.png" />
-<img alt="../_images/more_validations_4_20.png" src="../_images/more_validations_4_20.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and validate, do not pay attention to the pressure</span>
-<span class="n">loader_other</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">],</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loader_other</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr_&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">])</span>
 <span class="n">loader_other</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
     <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">,</span><span class="s1">&#39;msea&#39;</span><span class="p">,</span><span class="s1">&#39;tide&#39;</span><span class="p">]]</span>
 <span class="p">)</span>
@@ -425,22 +432,15 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
-
-
- loading daily resampled data... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> data not available for this predictor!! 
 </pre></div>
 </div>
 <img alt="../_images/more_validations_5_1.png" src="../_images/more_validations_5_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
-</pre></div>
-</div>
-<img alt="../_images/more_validations_5_3.png" src="../_images/more_validations_5_3.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the OTHER tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/more_validations_5_5.png" src="../_images/more_validations_5_5.png" />
-<img alt="../_images/more_validations_5_6.png" src="../_images/more_validations_5_6.png" />
+<img alt="../_images/more_validations_5_3.png" src="../_images/more_validations_5_3.png" />
+<img alt="../_images/more_validations_5_4.png" src="../_images/more_validations_5_4.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with OTHER tgs!! 
 
 
@@ -459,14 +459,14 @@
  [3.7511034902355367, 5.482027490429699, 7.339363979701588, 3.61934770475301, 6.561342239106438, 11.820307701397114, 5.095093595142064, 1.28643175849521] 
 </pre></div>
 </div>
+<img alt="../_images/more_validations_5_6.png" src="../_images/more_validations_5_6.png" />
+<img alt="../_images/more_validations_5_7.png" src="../_images/more_validations_5_7.png" />
 <img alt="../_images/more_validations_5_8.png" src="../_images/more_validations_5_8.png" />
 <img alt="../_images/more_validations_5_9.png" src="../_images/more_validations_5_9.png" />
 <img alt="../_images/more_validations_5_10.png" src="../_images/more_validations_5_10.png" />
 <img alt="../_images/more_validations_5_11.png" src="../_images/more_validations_5_11.png" />
 <img alt="../_images/more_validations_5_12.png" src="../_images/more_validations_5_12.png" />
 <img alt="../_images/more_validations_5_13.png" src="../_images/more_validations_5_13.png" />
-<img alt="../_images/more_validations_5_14.png" src="../_images/more_validations_5_14.png" />
-<img alt="../_images/more_validations_5_15.png" src="../_images/more_validations_5_15.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -496,10 +496,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../_images/more_validations_6_0.png" src="../_images/more_validations_6_0.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Text(0.5, 1.0, &#39;LINZ&#39;), Text(0.5, 1.0, &#39;OTHER&#39;))
 </pre></div>
 </div>
-<img alt="../_images/more_validations_6_1.png" src="../_images/more_validations_6_1.png" />
 </div>
 </div>
 </div>
@@ -508,7 +508,7 @@
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "javitausia/geocean-nz-ss",
             ref: "master",
         },
         codeMirrorConfig: {

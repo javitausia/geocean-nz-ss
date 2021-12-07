@@ -28,6 +28,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -40,15 +42,18 @@
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -245,6 +250,14 @@
         
         
         
+        <a class="colab-button" href="https://colab.research.google.com/github/javitausia/geocean-nz-ss/blob/master/notebooks/models_knn.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -369,6 +382,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+</pre></div>
+</div>
 <div class="output text_html">
 <style>
 .output_png {
@@ -397,9 +413,6 @@
 
 
  loading daily resampled data... 
-
-
- loading the Moana v2 hindcast data... 
 
 
  loading and plotting the UHSLC tidal guages... 
@@ -535,6 +548,11 @@
 <span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="c1"># select sites and append closest to UHSLC tgs</span>
 <span class="n">clos_to_uhslc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">689</span><span class="p">,</span> <span class="mi">328</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">949</span><span class="p">,</span> <span class="mi">708</span><span class="p">]</span>
+<span class="c1"># check behavior with normalized PCs</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="n">pcs_cfsr</span> <span class="o">=</span> <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">assign</span><span class="p">({</span>
+    <span class="s1">&#39;PCs_stan&#39;</span><span class="p">:</span> <span class="p">((</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;n_components&#39;</span><span class="p">),</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">PCs</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="p">})</span>
 <span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clos_to_uhslc</span><span class="p">):</span>
     <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
         <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -543,165 +561,186 @@
         <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
             <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
         <span class="p">),</span> 
-        <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span>
+        <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
+        <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.8</span>
     <span class="p">)</span>
+    <span class="c1"># stats_stat, model, train_times = KNN_Regression(</span>
+    <span class="c1">#     pcs_cfsr, ss_moana, X_set_var=&#39;PCs_stan&#39;,</span>
+    <span class="c1">#     validator=(</span>
+    <span class="c1">#         True,load_cfsr_moana_uhslc.validator.isel(name=istat),&#39;ss&#39;</span>
+    <span class="c1">#     ), </span>
+    <span class="c1">#     plot_results=True, verbose=True, k_neighbors=10, </span>
+    <span class="c1">#     train_size=0.8, percentage_PCs=0.8</span>
+    <span class="c1"># )</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_1.png" src="../_images/models_knn_12_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.69, Relative - RMSE: 0.35
- and Correlations (Pearson, Rscore): (0.67, 0.45)
- R score: 0.45 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.65, Relative - RMSE: 0.32
+ and Correlations (Pearson, Rscore): (0.73, 0.52)
+ NSE = [0.51632815], KGE = [0.52834256] and KGE_PRIME = [0.53521638]
+ R score: 0.52 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_3.png" src="../_images/models_knn_12_3.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_5.png" src="../_images/models_knn_12_5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.73, Relative - RMSE: 0.37
- and Correlations (Pearson, Rscore): (0.64, 0.41)
- R score: 0.41 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.68, Relative - RMSE: 0.35
+ and Correlations (Pearson, Rscore): (0.70, 0.48)
+ NSE = [0.47929785], KGE = [0.49896543] and KGE_PRIME = [0.47439957]
+ R score: 0.48 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_7.png" src="../_images/models_knn_12_7.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_9.png" src="../_images/models_knn_12_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.65, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.72, 0.51)
- R score: 0.51 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.62, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.76, 0.56)
+ NSE = [0.56377871], KGE = [0.55664859] and KGE_PRIME = [0.62663659]
+ R score: 0.56 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_11.png" src="../_images/models_knn_12_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_13.png" src="../_images/models_knn_12_13.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.83, Relative - RMSE: 0.44
- and Correlations (Pearson, Rscore): (0.51, 0.22)
- R score: 0.22 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.77, Relative - RMSE: 0.41
+ and Correlations (Pearson, Rscore): (0.59, 0.33)
+ NSE = [0.32580467], KGE = [0.23021853] and KGE_PRIME = [0.39758255]
+ R score: 0.33 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_15.png" src="../_images/models_knn_12_15.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_17.png" src="../_images/models_knn_12_17.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.65, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.72, 0.51)
- R score: 0.51 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.62, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.76, 0.56)
+ NSE = [0.56377871], KGE = [0.55664859] and KGE_PRIME = [0.62663659]
+ R score: 0.56 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_19.png" src="../_images/models_knn_12_19.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_21.png" src="../_images/models_knn_12_21.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.75, Relative - RMSE: 0.37
- and Correlations (Pearson, Rscore): (0.62, 0.38)
- R score: 0.38 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.71, Relative - RMSE: 0.35
+ and Correlations (Pearson, Rscore): (0.68, 0.45)
+ NSE = [0.44807175], KGE = [0.47307048] and KGE_PRIME = [0.44262738]
+ R score: 0.45 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_23.png" src="../_images/models_knn_12_23.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_25.png" src="../_images/models_knn_12_25.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.67, Relative - RMSE: 0.33
- and Correlations (Pearson, Rscore): (0.71, 0.50)
- R score: 0.5 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.64, Relative - RMSE: 0.32
+ and Correlations (Pearson, Rscore): (0.76, 0.54)
+ NSE = [0.54230661], KGE = [0.48079458] and KGE_PRIME = [0.59943262]
+ R score: 0.54 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_27.png" src="../_images/models_knn_12_27.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_29.png" src="../_images/models_knn_12_29.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.70, Relative - RMSE: 0.36
- and Correlations (Pearson, Rscore): (0.66, 0.43)
- R score: 0.43 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.65, Relative - RMSE: 0.34
+ and Correlations (Pearson, Rscore): (0.72, 0.50)
+ NSE = [0.5037758], KGE = [0.50981131] and KGE_PRIME = [0.50681277]
+ R score: 0.5 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_31.png" src="../_images/models_knn_12_31.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_33.png" src="../_images/models_knn_12_33.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.71, Relative - RMSE: 0.36
- and Correlations (Pearson, Rscore): (0.66, 0.43)
- R score: 0.43 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.66, Relative - RMSE: 0.33
+ and Correlations (Pearson, Rscore): (0.72, 0.51)
+ NSE = [0.51012506], KGE = [0.5265432] and KGE_PRIME = [0.49062232]
+ R score: 0.51 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_35.png" src="../_images/models_knn_12_35.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_37.png" src="../_images/models_knn_12_37.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.78, Relative - RMSE: 0.39
- and Correlations (Pearson, Rscore): (0.57, 0.30)
- R score: 0.3 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.72, Relative - RMSE: 0.36
+ and Correlations (Pearson, Rscore): (0.64, 0.40)
+ NSE = [0.3963071], KGE = [0.37400338] and KGE_PRIME = [0.49854645]
+ R score: 0.4 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_39.png" src="../_images/models_knn_12_39.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_41.png" src="../_images/models_knn_12_41.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.73, Relative - RMSE: 0.37
- and Correlations (Pearson, Rscore): (0.64, 0.41)
- R score: 0.41 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.69, Relative - RMSE: 0.35
+ and Correlations (Pearson, Rscore): (0.69, 0.47)
+ NSE = [0.47123186], KGE = [0.4809781] and KGE_PRIME = [0.53331845]
+ R score: 0.47 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_43.png" src="../_images/models_knn_12_43.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 388 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89 PCs (0.8 expl. variance) will be used to train the model!! 
 
 
- KNN regression with 4 neighbors... 
+ KNN regression with 10 neighbors... 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_45.png" src="../_images/models_knn_12_45.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.77, Relative - RMSE: 0.40
- and Correlations (Pearson, Rscore): (0.59, 0.33)
- R score: 0.33 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.73, Relative - RMSE: 0.38
+ and Correlations (Pearson, Rscore): (0.64, 0.40)
+ NSE = [0.3989404], KGE = [0.43059797] and KGE_PRIME = [0.46910979]
+ R score: 0.4 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_12_47.png" src="../_images/models_knn_12_47.png" />
@@ -763,8 +802,81 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_knn_14_0.png" src="../_images/models_knn_14_0.png" />
-<img alt="../_images/models_knn_14_1.png" src="../_images/models_knn_14_1.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">5</span><span class="n">ae14d6412ea</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">predicted</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="n">time</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>             <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">PCs</span><span class="p">[:</span><span class="mi">388</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="c1"># TODO: edit pcs limit above if error is raised!!</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/neighbors/_base.py</span> in <span class="ni">kneighbors</span><span class="nt">(self, X, n_neighbors, return_distance)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span>                 <span class="n">kwds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_metric_params_</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span> 
+<span class="ne">--&gt; </span><span class="mi">705</span>             <span class="n">chunked_results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pairwise_distances_chunked</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>                 <span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_X</span><span class="p">,</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">reduce_func</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>                 <span class="n">metric</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_metric_</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">pairwise_distances_chunked</span><span class="nt">(X, Y, reduce_func, metric, n_jobs, working_memory, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1621</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1622</span>             <span class="n">X_chunk</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+<span class="ne">-&gt; </span><span class="mi">1623</span>         <span class="n">D_chunk</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">X_chunk</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1624</span>                                      <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1625</span>         <span class="k">if</span> <span class="p">((</span><span class="n">X</span> <span class="ow">is</span> <span class="n">Y</span> <span class="ow">or</span> <span class="n">Y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/utils/validation.py</span> in <span class="ni">inner_f</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span>             <span class="n">extra_args</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_args</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span>             <span class="k">if</span> <span class="n">extra_args</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">63</span>                 <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span> 
+<span class="g g-Whitespace">     </span><span class="mi">65</span>             <span class="c1"># extra_args &gt; 0</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">pairwise_distances</span><span class="nt">(X, Y, metric, n_jobs, force_all_finite, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1788</span>         <span class="n">func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1789</span> 
+<span class="ne">-&gt; </span><span class="mi">1790</span>     <span class="k">return</span> <span class="n">_parallel_pairwise</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1791</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1792</span> 
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">_parallel_pairwise</span><span class="nt">(X, Y, func, n_jobs, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1357</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1358</span>     <span class="k">if</span> <span class="n">effective_n_jobs</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1359</span>         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1360</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1361</span>     <span class="c1"># enforce a threading backend to prevent data communication overhead</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/utils/validation.py</span> in <span class="ni">inner_f</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span>             <span class="n">extra_args</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_args</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span>             <span class="k">if</span> <span class="n">extra_args</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">63</span>                 <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span> 
+<span class="g g-Whitespace">     </span><span class="mi">65</span>             <span class="c1"># extra_args &gt; 0</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">euclidean_distances</span><span class="nt">(X, Y, Y_norm_squared, squared, X_norm_squared)</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span>            <span class="p">[</span><span class="mf">1.41421356</span><span class="p">]])</span>
+<span class="g g-Whitespace">    </span><span class="mi">271</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">272</span><span class="s2">     X, Y = check_pairwise_arrays(X, Y)</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span><span class="s2"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">274</span><span class="s2">     # If norms are passed as float32, they are unused. If arrays are passed as</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/utils/validation.py</span> in <span class="ni">inner_f</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span><span class="s2">             extra_args = len(args) - len(all_args)</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span><span class="s2">             if extra_args &lt;= 0:</span>
+<span class="ne">---&gt; </span><span class="mi">63</span><span class="s2">                 return f(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span><span class="s2"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span><span class="s2">             # extra_args &gt; 0</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">check_pairwise_arrays</span><span class="nt">(X, Y, precomputed, dtype, accept_sparse, force_all_finite, copy)</span>
+<span class="g g-Whitespace">    </span><span class="mi">158</span><span class="s2">                              (X.shape[0], X.shape[1], Y.shape[0]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">159</span><span class="s2">     elif X.shape[1] != Y.shape[1]:</span>
+<span class="ne">--&gt; </span><span class="mi">160</span><span class="s2">         raise ValueError(&quot;Incompatible dimension for X and Y matrices: &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">161</span><span class="s2">                          &quot;X.shape[1] == </span><span class="si">%d</span><span class="s2"> while Y.shape[1] == </span><span class="si">%d</span><span class="s2">&quot; % (</span>
+<span class="g g-Whitespace">    </span><span class="mi">162</span><span class="s2">                              X.shape[1], Y.shape[1]))</span>
+
+<span class="ne">ValueError</span>: Incompatible dimension for X and Y matrices: X.shape[1] == 388 while Y.shape[1] == 89
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -782,37 +894,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the private tidal guages... 
-
-
- 388 PCs (0.95 expl. variance) will be used to train the model!! 
-
-
- KNN regression with 50-max neighbors... 
-
-Fitting 5 folds for each of 25 candidates, totalling 125 fits
-
- best model fitted with 13 neighbors!! 
-</pre></div>
-</div>
-<img alt="../_images/models_knn_16_1.png" src="../_images/models_knn_16_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.64, Relative - RMSE: 0.32
- and Correlations (Pearson, Rscore): (0.77, 0.56)
- R score: 0.56 -- in TEST data
-
-
- -- METRICS -- 
-
- {&#39;bias&#39;: -0.0015285616636085014, &#39;si&#39;: 0.6350180125294149, &#39;rmse&#39;: 0.07741581439648468, &#39;rel_rmse&#39;: 0.32450459668094417, &#39;pearson&#39;: 0.7710032618129431, &#39;rscore&#39;: 0.5566953799267037, &#39;ext_rmse&#39;: 0.12429278513958268, &#39;ext_pearson&#39;: 0.3373388815485981} 
-
- obtained with GridSearchCV(cv=5, estimator=KNeighborsRegressor(),
-             param_grid={&#39;n_neighbors&#39;: array([ 1,  3,  5,  7,  9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,
-       35, 37, 39, 41, 43, 45, 47, 49])},
-             scoring=&#39;r2&#39;, verbose=1) !!
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -822,37 +903,6 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
     <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_green</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">50</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_green</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">green_model</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the private tidal guages... 
-
-
- 388 PCs (0.95 expl. variance) will be used to train the model!! 
-
-
- KNN regression with 50-max neighbors... 
-
-Fitting 5 folds for each of 25 candidates, totalling 125 fits
-
- best model fitted with 21 neighbors!! 
-</pre></div>
-</div>
-<img alt="../_images/models_knn_17_1.png" src="../_images/models_knn_17_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.66, Relative - RMSE: 0.35
- and Correlations (Pearson, Rscore): (0.73, 0.50)
- R score: 0.5 -- in TEST data
-
-
- -- METRICS -- 
-
- {&#39;bias&#39;: 0.004429875224171553, &#39;si&#39;: 0.6573999339618537, &#39;rmse&#39;: 0.08224979822961154, &#39;rel_rmse&#39;: 0.35264388876391156, &#39;pearson&#39;: 0.7289628380759541, &#39;rscore&#39;: 0.5039749548624455, &#39;ext_rmse&#39;: 0.12292491219105416, &#39;ext_pearson&#39;: 0.1638124645337349} 
-
- obtained with GridSearchCV(cv=5, estimator=KNeighborsRegressor(),
-             param_grid={&#39;n_neighbors&#39;: array([ 1,  3,  5,  7,  9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,
-       35, 37, 39, 41, 43, 45, 47, 49])},
-             scoring=&#39;r2&#39;, verbose=1) !!
 </pre></div>
 </div>
 </div>
@@ -877,60 +927,6 @@ Fitting 5 folds for each of 25 candidates, totalling 125 fits
     <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_green_local</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">green_model_local</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the private tidal guages... 
-
-
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 9, 9) 
-
-
- calculating PCs matrix with shape: 
- (11351, 486) 
-
-
- plotting 2 components with 6 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_knn_18_1.png" src="../_images/models_knn_18_1.png" />
-<img alt="../_images/models_knn_18_2.png" src="../_images/models_knn_18_2.png" />
-<img alt="../_images/models_knn_18_3.png" src="../_images/models_knn_18_3.png" />
-<img alt="../_images/models_knn_18_4.png" src="../_images/models_knn_18_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 8 PCs (0.95 expl. variance) will be used to train the model!! 
-
-
- KNN regression with 12-max neighbors... 
-
-Fitting 5 folds for each of 6 candidates, totalling 30 fits
-
- best model fitted with 11 neighbors!! 
-</pre></div>
-</div>
-<img alt="../_images/models_knn_18_6.png" src="../_images/models_knn_18_6.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.55, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.80, 0.63)
- R score: 0.63 -- in TEST data
-
-
- -- METRICS -- 
-
- {&#39;bias&#39;: 0.012289976085802826, &#39;si&#39;: 0.5532514613446661, &#39;rmse&#39;: 0.07029055186752714, &#39;rel_rmse&#39;: 0.2996428966545874, &#39;pearson&#39;: 0.8001126696133937, &#39;rscore&#39;: 0.6287396968385198, &#39;ext_rmse&#39;: 0.09504433483567637, &#39;ext_pearson&#39;: 0.32997711467786806} 
-
- obtained with GridSearchCV(cv=5, estimator=KNeighborsRegressor(),
-             param_grid={&#39;n_neighbors&#39;: array([ 1,  3,  5,  7,  9, 11])},
-             scoring=&#39;r2&#39;, verbose=1) !!
 </pre></div>
 </div>
 </div>
@@ -1084,9 +1080,6 @@ Fitting 5 folds for each of 6 candidates, totalling 30 fits
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/models_knn_24_0.png" src="../_images/models_knn_24_0.png" />
-</div>
 </div>
 </div>
 </div>
@@ -1095,7 +1088,7 @@ Fitting 5 folds for each of 6 candidates, totalling 30 fits
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "javitausia/geocean-nz-ss",
             ref: "master",
         },
         codeMirrorConfig: {

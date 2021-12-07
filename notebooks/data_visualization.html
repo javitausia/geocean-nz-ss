@@ -28,6 +28,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -40,15 +42,18 @@
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -245,6 +250,14 @@
         
         
         
+        <a class="colab-button" href="https://colab.research.google.com/github/javitausia/geocean-nz-ss/blob/master/notebooks/data_visualization.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -321,9 +334,10 @@
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># custom</span>
-<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast</span><span class="p">,</span> <span class="n">load_cfsr</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast</span><span class="p">,</span> <span class="n">load_predictor</span><span class="p">,</span> \
     <span class="n">join_load_uhslc_tgs</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_all_data</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_location</span>
 
 <span class="c1"># warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -351,60 +365,12 @@
 <p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">Main datasets format that will be used in all the available notebooks</span><a class="headerlink" href="#data-format" title="Permalink to this image">¶</a></p>
 </div>
 <p>and all this data is plotted in the figure below, using a plotting function located at <code class="docutils literal notranslate"><span class="pre">sscode/plotting/data.py</span></code> !!</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we first plot all the data that will be used in the notebooks</span>
-<span class="n">selected_locations</span> <span class="o">=</span> <span class="n">load_moana_hindcast</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)[[</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-    <span class="n">site</span><span class="o">=</span><span class="p">[</span> 
-        <span class="mi">116</span><span class="p">,</span>  <span class="mi">200</span><span class="p">,</span>  <span class="mi">224</span><span class="p">,</span>  <span class="mi">328</span><span class="p">,</span>  <span class="mi">378</span><span class="p">,</span>  <span class="mi">393</span><span class="p">,</span>  <span class="mi">480</span><span class="p">,</span>  <span class="mi">488</span><span class="p">,</span>  <span class="mi">578</span><span class="p">,</span>  <span class="mi">613</span><span class="p">,</span>  <span class="mi">689</span><span class="p">,</span>  <span class="mi">708</span><span class="p">,</span>
-        <span class="mi">744</span><span class="p">,</span>  <span class="mi">780</span><span class="p">,</span>  <span class="mi">803</span><span class="p">,</span>  <span class="mi">949</span><span class="p">,</span>  <span class="mi">999</span><span class="p">,</span> <span class="mi">1025</span><span class="p">,</span> <span class="mi">1064</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">1146</span><span class="p">,</span> <span class="mi">1174</span><span class="p">,</span> <span class="mi">1177</span><span class="p">,</span> <span class="mi">1214</span><span class="p">,</span>
-        <span class="mi">1217</span><span class="p">,</span> <span class="mi">1260</span><span class="p">,</span> <span class="mi">1296</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">1442</span>
-    <span class="p">]</span>
-<span class="p">)</span>
-<span class="n">tgs_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;longitudes&#39;</span><span class="p">:</span> <span class="n">selected_locations</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-    <span class="s1">&#39;latitudes&#39;</span><span class="p">:</span> <span class="n">selected_locations</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-    <span class="s1">&#39;colors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;gold&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;darkgreen&#39;</span>
-              <span class="p">]</span>
-<span class="p">}</span>
-<span class="n">plot_all_data</span><span class="p">(</span>
-    <span class="n">moana_hind</span><span class="o">=</span><span class="n">load_moana_hindcast</span><span class="p">(),</span>
-    <span class="n">moana_hind_all</span><span class="o">=</span><span class="n">load_moana_hindcast_ss</span><span class="p">(),</span>
-    <span class="c1"># uhslc_tgs=join_load_uhslc_tgs(),</span>
-    <span class="n">pres_cfsr</span><span class="o">=</span><span class="n">load_cfsr</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;2003&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
-
-
- loading the Moana v2 hindcast data... 
-
-
- loading the Moana v2 hindcast data (ss)... 
-
-
- loading the sea-level-pressure fields... 
-
- cropping the data to 2003 
-
-
- projected winds will not be calculated... returning the SLP... 
-</pre></div>
-</div>
-<img alt="../_images/data_visualization_4_1.png" src="../_images/data_visualization_4_1.png" />
-</div>
-</div>
 </div>
 <div class="section" id="load-and-validate-the-data">
 <h2><span class="section-number">1.2. </span>Load and validate the data<a class="headerlink" href="#load-and-validate-the-data" title="Permalink to this headline">¶</a></h2>
 <p>Below we use the <strong>class Loader</strong> to simultaneously load the three datasets that will be commonly used in all the notebooks. Notice that here, we say <code class="docutils literal notranslate"><span class="pre">plot=True</span></code>, but this parameter can be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to save time and space in our running notebooks. This class uses different loading funtions, and is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/data.py</span></code>, where the <code class="docutils literal notranslate"><span class="pre">data_to_load</span></code> parameter accepts the following inputs:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">loader_dict_options</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;predictor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;era5&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;predictor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;era_5&#39;</span><span class="p">],</span>
         <span class="s1">&#39;predictand&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;codec&#39;</span><span class="p">],</span>
         <span class="s1">&#39;validator&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;uhslc&#39;</span><span class="p">,</span><span class="s1">&#39;privtgs&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">]</span>
     <span class="p">}</span>
@@ -415,7 +381,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr_&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1"># validate the data</span>
 <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
@@ -425,52 +392,68 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> data not available for this predictor!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and managing atmospheric data... 
 
 
- loading the Moana v2 hindcast data... 
+ resampling data to 1D... 
+
+
+ loading the sea-level-pressure fields... 
+
+
+ loading and calculating the winds... 
 </pre></div>
 </div>
-<img alt="../_images/data_visualization_6_1.png" src="../_images/data_visualization_6_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the LINZ tidal guages... 
+<img alt="../_images/data_visualization_5_1.png" src="../_images/data_visualization_5_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/data_visualization_6_3.png" src="../_images/data_visualization_6_3.png" />
-<img alt="../_images/data_visualization_6_4.png" src="../_images/data_visualization_6_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with LINZ tgs!! 
+<img alt="../_images/data_visualization_5_3.png" src="../_images/data_visualization_5_3.png" />
+<img alt="../_images/data_visualization_5_4.png" src="../_images/data_visualization_5_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with UHSLC tgs!! 
 
 
  
  TGs to analyze are: 
- [&#39;GBIT&#39; &#39;CHIT&#39; &#39;TAUT&#39; &#39;CPIT&#39; &#39;CHST&#39; &#39;SUMT&#39; &#39;NCPT&#39; &#39;AUCT&#39; &#39;KAIT&#39; &#39;PUYT&#39;
- &#39;MNKT&#39; &#39;GIST&#39; &#39;WLGT&#39; &#39;NAPT&#39; &#39;OTAT&#39; &#39;LOTT&#39;] 
+ [&#39;a_Wellington&#39; &#39;a_Timaru&#39; &#39;b_JacksonBay&#39; &#39;a_MarsdenPoint&#39; &#39;a_JacksonBay&#39;
+ &#39;a_Lyttelton&#39; &#39;a_Taranaki&#39; &#39;a_Bluff&#39; &#39;a_PortChalmers&#39; &#39;a_Tauranga&#39;
+ &#39;a_Napier&#39; &#39;a_Nelson&#39;] 
 
 
  which correspond to 
- [1296, 378, 1124, 780, 613, 488, 1442, 1217, 578, 200, 1177, 1025, 689, 949, 224, 1146] 
+ [689, 328, 393, 1327, 393, 480, 999, 116, 224, 1124, 949, 708] 
  in Moana v2 hindcast 
 
 
- calculated min distances (km) in Moana v2 hindcast to LINZ tgs: 
- [5.319717747423619, 2.3184720501332547, 4.698606345256596, 4.106133965791918, 3.130787770409219, 17.988003692172256, 1.2755996354300678, 5.878134710491162, 2.1041482521719543, 4.015667223502896, 3.1685862316040065, 5.3741308824231755, 10.09186164411121, 1.8956937268750171, 9.621120849018142, 4.625968007830678] 
+ calculated min distances (km) in Moana v2 hindcast to UHSLC tgs: 
+ [10.091858550595918, 5.125532152668501, 6.897621081071355, 7.807937095794992, 6.897621081071355, 8.749086655427975, 0.7284939428839287, 2.827544577707935, 8.837335750916106, 4.69880874581877, 1.8441234559361162, 4.255617965385927] 
 </pre></div>
 </div>
-<img alt="../_images/data_visualization_6_6.png" src="../_images/data_visualization_6_6.png" />
-<img alt="../_images/data_visualization_6_7.png" src="../_images/data_visualization_6_7.png" />
-<img alt="../_images/data_visualization_6_8.png" src="../_images/data_visualization_6_8.png" />
-<img alt="../_images/data_visualization_6_9.png" src="../_images/data_visualization_6_9.png" />
-<img alt="../_images/data_visualization_6_10.png" src="../_images/data_visualization_6_10.png" />
-<img alt="../_images/data_visualization_6_11.png" src="../_images/data_visualization_6_11.png" />
-<img alt="../_images/data_visualization_6_12.png" src="../_images/data_visualization_6_12.png" />
-<img alt="../_images/data_visualization_6_13.png" src="../_images/data_visualization_6_13.png" />
-<img alt="../_images/data_visualization_6_14.png" src="../_images/data_visualization_6_14.png" />
-<img alt="../_images/data_visualization_6_15.png" src="../_images/data_visualization_6_15.png" />
-<img alt="../_images/data_visualization_6_16.png" src="../_images/data_visualization_6_16.png" />
-<img alt="../_images/data_visualization_6_17.png" src="../_images/data_visualization_6_17.png" />
-<img alt="../_images/data_visualization_6_18.png" src="../_images/data_visualization_6_18.png" />
-<img alt="../_images/data_visualization_6_19.png" src="../_images/data_visualization_6_19.png" />
-<img alt="../_images/data_visualization_6_20.png" src="../_images/data_visualization_6_20.png" />
-<img alt="../_images/data_visualization_6_21.png" src="../_images/data_visualization_6_21.png" />
+<img alt="../_images/data_visualization_5_6.png" src="../_images/data_visualization_5_6.png" />
+<img alt="../_images/data_visualization_5_7.png" src="../_images/data_visualization_5_7.png" />
+<img alt="../_images/data_visualization_5_8.png" src="../_images/data_visualization_5_8.png" />
+<img alt="../_images/data_visualization_5_9.png" src="../_images/data_visualization_5_9.png" />
+<img alt="../_images/data_visualization_5_10.png" src="../_images/data_visualization_5_10.png" />
+<img alt="../_images/data_visualization_5_11.png" src="../_images/data_visualization_5_11.png" />
+<img alt="../_images/data_visualization_5_12.png" src="../_images/data_visualization_5_12.png" />
+<img alt="../_images/data_visualization_5_13.png" src="../_images/data_visualization_5_13.png" />
+<img alt="../_images/data_visualization_5_14.png" src="../_images/data_visualization_5_14.png" />
+<img alt="../_images/data_visualization_5_15.png" src="../_images/data_visualization_5_15.png" />
+<img alt="../_images/data_visualization_5_16.png" src="../_images/data_visualization_5_16.png" />
+<img alt="../_images/data_visualization_5_17.png" src="../_images/data_visualization_5_17.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># class attributes can be inspectioned below</span>
+<span class="n">load_cfsr_moana_uhslc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sscode.data.Loader at 0x7f9883bbc130&gt;
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -526,6 +509,42 @@ f(x)=\left\{\begin{matrix}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>N/A% (0 of 108) |                        | Elapsed Time: 0:00:00 ETA:  --:--:--
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (108 of 108) |######################| Elapsed Time: 0:01:59 Time:  0:01:59
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> the GEV fit has improved 16 times by random/gumbel in cluster -1... 
+</pre></div>
+</div>
+<img alt="../_images/data_visualization_8_5.png" src="../_images/data_visualization_8_5.png" />
+<img alt="../_images/data_visualization_8_6.png" src="../_images/data_visualization_8_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>N/A% (0 of 108) |                        | Elapsed Time: 0:00:00 ETA:  --:--:--
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (108 of 108) |######################| Elapsed Time: 0:02:08 Time:  0:02:08
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> the GEV fit has improved 9 times by random/gumbel in cluster -1... 
+</pre></div>
+</div>
+<img alt="../_images/data_visualization_8_12.png" src="../_images/data_visualization_8_12.png" />
+<img alt="../_images/data_visualization_8_13.png" src="../_images/data_visualization_8_13.png" />
+</div>
 </div>
 </div>
 <div class="section" id="projected-winds-inverse-barometer">
@@ -534,7 +553,7 @@ f(x)=\left\{\begin{matrix}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot extra data if wanted</span>
-<span class="n">plot_extra_data</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">plot_extra_data</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">if</span> <span class="n">plot_extra_data</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_winds</span><span class="p">,</span> <span class="n">plot_pres_ibar</span>
     <span class="n">plot_winds</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span> 
@@ -553,7 +572,7 @@ f(x)=\left\{\begin{matrix}
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "javitausia/geocean-nz-ss",
             ref: "master",
         },
         codeMirrorConfig: {
