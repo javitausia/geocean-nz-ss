@@ -21,8 +21,9 @@ related repos:
 
 * Preparing the FINAL experiments visualizations tools to evaluate results (run in server)
 * Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb) and [xgboost](/notebooks/models_xgboost.ipynb)
-* Write first machine learning paper
-* Integrate all python classes to work with experiment_new.py and pca_new.py
+* Write first machine learning paper (in process)
+* Integrate all python classes to work with experiment_new.py and pca_new.py (in process, cuasi-finished)
+* When paper is done, finish jupyter book, with final images and code runnig
 
 ## Description
 
