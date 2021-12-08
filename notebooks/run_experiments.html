@@ -296,14 +296,13 @@
 
 <span class="c1"># append sscode to path</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
-<span class="c1"># data_path = &#39;/data/&#39; #&#39;/data/storm_surge_data/&#39;</span>
-<span class="c1"># os.environ[&quot;SSURGE_DATA_PATH&quot;] = data_path</span>
 
 <span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">default_location</span><span class="p">,</span>
     <span class="n">default_region</span><span class="p">,</span>
-    <span class="n">default_region_reduced</span>
+    <span class="n">default_region_reduced</span><span class="p">,</span>
+    <span class="n">data_path</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span>
 <span class="kn">from</span> <span class="nn">sscode.pca_new</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
@@ -317,15 +316,30 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+</pre></div>
+</div>
+</div>
 </div>
 <p>We start by loading the data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data... 
+
+
+ loading the UHSLC tidal guages... 
 </pre></div>
 </div>
 </div>
@@ -338,7 +352,6 @@ The following class has been designed to sequentialy run the PCA analysis for al
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class allows to compute the principal components for givens sets of predictors and</span>
 <span class="sd">    store them on drive</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slp_data</span><span class="p">,</span>
@@ -362,7 +375,7 @@ The following class has been designed to sequentialy run the PCA analysis for al
 <span class="sd">                hindcast locations to analyze. Defaults to random locations.</span>
 <span class="sd">            pca_attrs (dict, optional): PCA dictionary with all the parameters to use in pca.</span>
 <span class="sd">                Defaults to pca_attrs_default.</span>
-<span class="sd">            pca_folder (string, optionl): The folder from/in which the PCs should be loaded/saved.</span>
+<span class="sd">            pcs_folder (string, optionl): The folder from/in which the PCs should be loaded/saved.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">slp_data</span> <span class="o">=</span> <span class="n">slp_data</span>
@@ -376,14 +389,7 @@ The following class has been designed to sequentialy run the PCA analysis for al
     <span class="k">def</span> <span class="nf">compute_pcas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function goes over all the sites/configurations and computes</span>
-<span class="sd">        and stores the results of the PCA analysis if not already available.</span>
-
-<span class="sd">        Args:</span>
-
-
-<span class="sd">        Returns:</span>
-<span class="sd">            </span>
-<span class="sd">            </span>
+<span class="sd">        and stores the results of the PCA analysis if not already available       </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">isite</span><span class="p">,</span><span class="n">site</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">):</span>
@@ -435,10 +441,12 @@ The following class has been designed to sequentialy run the PCA analysis for al
                     <span class="n">local_region</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
                         <span class="n">site_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># new lon / lat region</span>
                         <span class="n">site_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                        <span class="n">site_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
-                        <span class="n">site_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">site_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">site_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
                     <span class="p">))</span>
                     <span class="n">dict_to_pca</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_region</span>
+                    
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> PCs will be calculated with </span><span class="si">{</span><span class="n">dict_to_pca</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
                 <span class="n">pca_data</span><span class="p">,</span> <span class="n">pca_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">slp_data</span><span class="p">,</span>
@@ -472,13 +480,20 @@ The following class has been designed to sequentialy run the PCA analysis for al
     <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;12H&#39;</span><span class="p">,</span> <span class="s1">&#39;6H&#39;</span><span class="p">],</span> <span class="c1"># 1D and 12H, 6H available...</span>
     <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">)]</span>
 <span class="p">}</span>
+<span class="n">pca_attrs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 1D and 12H, 6H available...</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))]</span>
+<span class="p">}</span>
 
 <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span> <span class="c1"># closest Moana v2 Hindcast to tidal gauges</span>
     <span class="p">[</span>  <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
        <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
        <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
     <span class="p">]</span>   
-<span class="p">)</span>
+<span class="p">)[::</span><span class="mi">12</span><span class="p">]</span>
 
 <span class="n">PCA_precomputer</span> <span class="o">=</span> <span class="n">PCA_PreComputer</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
@@ -493,23 +508,89 @@ The following class has been designed to sequentialy run the PCA analysis for al
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ---------------------------------------------------------                     
+
+ Experiment 1 in site 116, coords = (array(168.34508816), array(-46.62520765)) ......                     
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.5, 1.5))} 
+
+                     
+
+ and iteration with indexes = (0, 0, 0, 0, 0)                     
+
+ ---------------------------------------------------------
+ PCs will be calculated with {&#39;calculate_gradient&#39;: True, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (True, (166.84508816120908, 169.84508816120908, -48.12520764994737, -45.12520764994737))} 
+
+/home/javitausia/Documentos/geocean-nz-ss/data/pcs/ [&#39;local_1.5_1.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs/local_1.5_1.5_116_winds_gradients_1D_tl3.nc
+PCs loaded from file
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_7_1.png" src="../_images/run_experiments_7_1.png" />
+<img alt="../_images/run_experiments_7_2.png" src="../_images/run_experiments_7_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ---------------------------------------------------------                     
+
+ Experiment 1 in site 744, coords = (array(173.0604534), array(-41.05019325)) ......                     
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.5, 1.5))} 
+
+                     
+
+ and iteration with indexes = (0, 0, 0, 0, 0)                     
+
+ ---------------------------------------------------------
+ PCs will be calculated with {&#39;calculate_gradient&#39;: True, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (True, (171.56045340050377, 174.56045340050377, -42.550193246772764, -39.550193246772764))} 
+
+/home/javitausia/Documentos/geocean-nz-ss/data/pcs/ [&#39;local_1.5_1.5&#39;, &#39;744&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs/local_1.5_1.5_744_winds_gradients_1D_tl3.nc
+PCs loaded from file
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_7_4.png" src="../_images/run_experiments_7_4.png" />
+<img alt="../_images/run_experiments_7_5.png" src="../_images/run_experiments_7_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ---------------------------------------------------------                     
+
+ Experiment 1 in site 1217, coords = (array(174.81360202), array(-36.786094)) ......                     
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.5, 1.5))} 
+
+                     
+
+ and iteration with indexes = (0, 0, 0, 0, 0)                     
+
+ ---------------------------------------------------------
+ PCs will be calculated with {&#39;calculate_gradient&#39;: True, &#39;time_lapse&#39;: 3, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (True, (173.31360201511333, 176.31360201511333, -38.28609400494574, -35.28609400494574))} 
+
+/home/javitausia/Documentos/geocean-nz-ss/data/pcs/ [&#39;local_1.5_1.5&#39;, &#39;1217&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs/local_1.5_1.5_1217_winds_gradients_1D_tl3.nc
+PCs loaded from file
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_7_7.png" src="../_images/run_experiments_7_7.png" />
+<img alt="../_images/run_experiments_7_8.png" src="../_images/run_experiments_7_8.png" />
+</div>
 </div>
 <p>Now that the principal components are available on drive, we can release the memory occupied by the different data and objects used in the precomputing step.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">PCA_precomputer</span>
-<span class="k">del</span> <span class="n">load_cfsr_moana_uhslc</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">60</span><span class="n">ba38f9aae0</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">del</span> <span class="n">PCA_precomputer</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">del</span> <span class="n">load_cfsr_moana_uhslc</span>
-
-<span class="ne">NameError</span>: name &#39;PCA_precomputer&#39; is not defined
+<span class="c1"># del load_cfsr_moana_uhslc</span>
 </pre></div>
 </div>
 </div>
@@ -522,7 +603,7 @@ The following class has been designed to sequentialy run the PCA analysis for al
     
     <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
     <span class="c1"># append sscode to path</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/metocean/geocean-nz-ss&#39;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/javitausia/Documentos/geocean-nz-ss&#39;</span><span class="p">)</span>
     <span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/data&#39;</span> <span class="c1">#&#39;/data/storm_surge_data/&#39;</span>
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
     
@@ -536,47 +617,50 @@ The following class has been designed to sequentialy run the PCA analysis for al
     
     <span class="c1"># experiment attributes</span>
     <span class="c1"># ---------------------</span>
-    <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="p">[</span><span class="n">site_num</span><span class="p">]</span>
+    <span class="c1"># sites_to_analyze = [site_num]</span>
+    <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">site_num</span>
     
     <span class="c1"># Predictor configurations to iterate through</span>
     <span class="n">pca_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
-            <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
-            <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
-            <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
-            <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)),(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">)]</span>
+        <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+        <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+        <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
+        <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">))]</span>
     <span class="p">}</span>
     
     <span class="c1"># Labels to use for the different predictor domains</span>
-    <span class="n">region_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;local_1.5_1.5&#39;</span><span class="p">,</span> <span class="s1">&#39;local_2.5_2.5&#39;</span><span class="p">,</span> <span class="s1">&#39;default_region_reduced&#39;</span><span class="p">]</span>
-    
+    <span class="n">region_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;local_1.5_1.5&#39;</span><span class="p">]</span> <span class="c1">#,&#39;local_2.5_2.5&#39;,&#39;default_region_reduced&#39;]</span>
     
     <span class="c1"># Configuration of the xgboost regression algorithm to iterate through</span>
     <span class="n">xgboost_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;train_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">],</span> <span class="s1">&#39;percentage_PCs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.98</span><span class="p">],</span>
-        <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">18</span><span class="p">],</span>
-        <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.1</span><span class="p">],</span>
+        <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">],</span>
+        <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.06</span><span class="p">],</span>
         <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ls&#39;</span><span class="p">]</span> <span class="c1"># more could be added</span>
     <span class="p">}</span>
     
     <span class="c1"># Loading predictand data</span>
-    <span class="n">predictand</span> <span class="o">=</span> <span class="n">load_moana_hindcast</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># predictand = load_moana_hindcast(plot=False)</span>
     
     <span class="c1"># create the experiment</span>
-    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># No need for pressure data we expect PCs to be already available</span>
-                            <span class="kc">None</span><span class="p">,</span> <span class="c1"># No need for wind data we expect PCs to be already available</span>
-                            <span class="n">predictand</span><span class="p">,</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="c1"># None, # No need for pressure data we expect PCs to be already available</span>
+                            <span class="c1"># None, # No need for wind data we expect PCs to be already available</span>
+                            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
+                            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+                            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># all the sites are passed to exp at first</span>
                             <span class="n">sites_to_analyze</span><span class="o">=</span><span class="n">sites_to_analyze</span><span class="p">,</span> 
                             <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="c1"># model that will be used to predict</span>
                             <span class="n">pca_attrs</span><span class="o">=</span><span class="n">pca_attrs_exp</span><span class="p">,</span>
                             <span class="n">model_attrs</span><span class="o">=</span><span class="n">xgboost_attrs_exp</span><span class="p">,</span>
-                            <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/home/metocean/pcs/&#39;</span><span class="p">)</span>
+                            <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/home/javitausia/Documentos/geocean-nz-ss/data/pcs/&#39;</span>
+    <span class="p">)</span>
     
     <span class="c1"># Run experiment</span>
-    <span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span><span class="p">,</span> <span class="n">stats_keys</span> <span class="o">=</span>\
-        <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                    <span class="n">plot</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># plot logs when computing the models</span>
-                                                    <span class="p">)</span>
+    <span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span><span class="p">,</span> <span class="n">stats_keys</span> <span class="o">=</span> \
+        <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                    <span class="n">plot</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># plot logs when computing the models</span>
+    <span class="p">)</span>
     
     <span class="c1"># Pack results</span>
     <span class="n">coords_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;grad&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;calculate_gradient&#39;</span><span class="p">],</span>
@@ -597,12 +681,13 @@ The following class has been designed to sequentialy run the PCA analysis for al
     <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats_keys</span><span class="p">):</span>
         <span class="n">site_metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">,</span><span class="s1">&#39;tlapse&#39;</span><span class="p">,</span><span class="s1">&#39;tresample&#39;</span><span class="p">,</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;n_estimators&#39;</span><span class="p">,</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">,</span> <span class="s1">&#39;min_samples_split&#39;</span><span class="p">,</span> <span class="s1">&#39;learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;loss&#39;</span><span class="p">),</span>
+             <span class="s1">&#39;n_estimators&#39;</span><span class="p">,</span><span class="s1">&#39;max_depth&#39;</span><span class="p">,</span><span class="s1">&#39;min_samples_split&#39;</span><span class="p">,</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">,</span><span class="s1">&#39;loss&#39;</span><span class="p">),</span>
              <span class="n">exp_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,:,:,:,:,:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span>
-    <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">coords_dict</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">[</span><span class="mi">0</span><span class="p">]]})</span>
+    <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">coords_dict</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">[</span><span class="mi">0</span><span class="p">]]})</span>
   
     <span class="c1"># Return results as pickle object</span>
-    <span class="k">return</span> <span class="n">dill</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">experiment_metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">experiment_metrics</span> <span class="c1"># dill.dumps(experiment_metrics)</span>
 </pre></div>
 </div>
 </div>
@@ -615,10 +700,133 @@ The following class has been designed to sequentialy run the PCA analysis for al
       <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span>  <span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
       <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
     <span class="p">]</span>
-<span class="p">)</span>
+<span class="p">)[::</span><span class="mi">20</span><span class="p">]</span>
     
-<span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-    <span class="n">all_results</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">run_xgboost_experiment</span><span class="p">,</span> <span class="n">sites_to_analyze</span><span class="p">)</span>
+<span class="c1"># with Pool(8) as p:</span>
+<span class="c1">#     all_results = p.map(run_xgboost_experiment, sites_to_analyze)</span>
+
+<span class="n">all_results</span> <span class="o">=</span> <span class="n">run_xgboost_experiment</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> The model has been correctly initialized with || model = xgboost ||             
+
+ and model evaluation metrics = [&#39;bias&#39;, &#39;si&#39;, &#39;rmse&#39;, &#39;rel_rmse&#39;, &#39;ext_rmse&#39;, &#39;ext_rel_rmse&#39;, &#39;pearson&#39;, &#39;rscore&#39;, &#39;spearman&#39;, &#39;ext_pearson&#39;, &#39;ext_rscore&#39;, &#39;ext_spearman&#39;, &#39;pocid&#39;, &#39;tu_test&#39;, &#39;expl_var&#39;, &#39;nse&#39;, &#39;kge&#39;, &#39;kgeprime&#39;, &#39;ext_nse&#39;, &#39;ext_kge&#39;, &#39;ext_kgeprime&#39;]             
+
+ pca_params = {&#39;calculate_gradient&#39;: [True], &#39;winds&#39;: [True], &#39;time_lapse&#39;: [2], &#39;time_resample&#39;: [&#39;1D&#39;], &#39;region&#39;: [(&#39;local&#39;, (1.5, 1.5))]} 
+
+ model_params = {&#39;train_size&#39;: [0.7], &#39;percentage_PCs&#39;: [0.98], &#39;n_estimators&#39;: [50], &#39;max_depth&#39;: [12], &#39;min_samples_split&#39;: [0.06], &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]}             
+
+ which makes a total of 1 iterations as there are (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1) values for each parameter             
+
+ the experiment will be performed in sites = [ 116 1146]             
+
+ RUN CELL BELOW if this information is correct!!
+
+ ---------------------------------------------------------                         
+
+ Experiment 1 in site 116 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.5, 1.5))} 
+
+ knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 50, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.06, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+/home/javitausia/Documentos/geocean-nz-ss/data/pcs/ [&#39;local_1.5_1.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl2&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs/local_1.5_1.5_116_winds_gradients_1D_tl2.nc
+PCs loaded from file
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_14_1.png" src="../_images/run_experiments_14_1.png" />
+<img alt="../_images/run_experiments_14_2.png" src="../_images/run_experiments_14_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 8 PCs (0.98 expl. variance) will be used to train the model!! 
+
+
+ XGBoost regression with {&#39;n_estimators&#39;: 50, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.06, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_14_4.png" src="../_images/run_experiments_14_4.png" />
+<img alt="../_images/run_experiments_14_5.png" src="../_images/run_experiments_14_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.51, Relative - RMSE: 0.27
+ and Correlations (Pearson, Rscore): (0.84, 0.70)
+ NSE = [0.69739981], KGE = [0.75906842] and KGE_PRIME = [0.77021925]
+ R score: 0.7 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 1 in site 1146 ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (1.5, 1.5))} 
+
+ knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 50, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.06, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+/home/javitausia/Documentos/geocean-nz-ss/data/pcs/ [&#39;local_1.5_1.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl2&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs/local_1.5_1.5_1146_winds_gradients_1D_tl2.nc
+PCs loaded from file
+
+ plotting 1 components with 6 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_14_7.png" src="../_images/run_experiments_14_7.png" />
+<img alt="../_images/run_experiments_14_8.png" src="../_images/run_experiments_14_8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 9 PCs (0.98 expl. variance) will be used to train the model!! 
+
+
+ XGBoost regression with {&#39;n_estimators&#39;: 50, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.06, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
+</pre></div>
+</div>
+<img alt="../_images/run_experiments_14_10.png" src="../_images/run_experiments_14_10.png" />
+<img alt="../_images/run_experiments_14_11.png" src="../_images/run_experiments_14_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.56, Relative - RMSE: 0.29
+ and Correlations (Pearson, Rscore): (0.80, 0.65)
+ NSE = [0.64649031], KGE = [0.70747014] and KGE_PRIME = [0.69178716]
+ R score: 0.65 -- in TEST data
+
+ -------------------------------------------------------------------             
+
+ All the models and in all the sites have been correctly calculated!!             
+
+ with a final mean stats (in the sites) with the following shape...             
+
+ BIAS, SI, RMSE, Pearson and Spearman coorelations and the R2 score... 
+
+ [[[[[[[[[[[[[ 1.35461179e-04  5.38026413e-01  4.78203367e-02
+              2.77323693e-01  6.89292866e-02  7.56935751e-02
+              9.60243810e-02  2.53273530e-01  2.45913507e-01
+              2.63851664e-01  8.19772178e-01  6.71945059e-01
+              8.07895207e-01  5.95997939e-01  5.71397456e-01
+              6.04347513e-01 -1.28504529e+00 -2.30033611e+00
+             -9.37377186e+00  5.06984420e-01  4.70757644e-01
+              4.51772909e-01  7.95024671e+01  5.59055261e-01
+              6.72012818e-01  6.71945059e-01  7.33269278e-01
+              8.19772179e-01  8.04747348e-01  1.00429199e+00
+              7.31003205e-01  8.19772179e-01  8.02195874e-01
+              1.00429199e+00 -1.28504529e+00 -2.30033611e+00
+             -9.37377186e+00  4.82460237e-01  5.95997940e-01
+              1.15731722e+00  7.17552229e-01  4.44160618e-01
+              5.71397454e-01  1.19777918e+00  7.18141352e-01
+              1.52006227e-01  6.04347514e-01  1.54107328e+00
+              7.02144556e-01  2.12733349e-01  5.95997940e-01
+              1.61358106e+00  7.17552229e-01  1.56459052e-01
+              5.71397454e-01  1.66681134e+00  7.18141352e-01
+             -3.48365890e-01  6.04347514e-01  2.19926965e+00
+              7.02144556e-01]]]]]]]]]]]]]             
+
+ -------------------------------------------------------------------
 </pre></div>
 </div>
 </div>
@@ -626,9 +834,8 @@ The following class has been designed to sequentialy run the PCA analysis for al
 <p>Once all the experiments are run, the results can be put together into an xarray dataset and stored to drive.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgboost_results</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dill</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">],</span>
-                             <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">)</span>
-<span class="n">xgboost_results</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;xgboost_results.nc&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># xgboost_results = xr.concat([dill.loads(r) for r in all_results], dim=&#39;site&#39;)</span>
+<span class="c1"># xgboost_results.to_netcdf(&#39;xgboost_results.nc&#39;)</span>
 </pre></div>
 </div>
 </div>
@@ -640,7 +847,7 @@ The following class has been designed to sequentialy run the PCA analysis for al
     
     <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
     <span class="c1"># append sscode to path</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/metocean/geocean-nz-ss&#39;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/javitausia/Documentos/geocean-nz-ss&#39;</span><span class="p">)</span>
     <span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/data&#39;</span> <span class="c1">#&#39;/data/storm_surge_data/&#39;</span>
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
     
@@ -654,20 +861,20 @@ The following class has been designed to sequentialy run the PCA analysis for al
     
     <span class="c1"># experiment attributes</span>
     <span class="c1"># ---------------------</span>
+    <span class="c1"># sites_to_analyze = [site_num]</span>
+    <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">site_num</span>
     
-    <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="p">[</span><span class="n">site_num</span><span class="p">]</span>
-
     <span class="c1"># Predictor configurations to iterate through</span>
     <span class="n">pca_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
-        <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span>
-        <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
-        <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
-        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)),(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">)]</span>
+        <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+        <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+        <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
+        <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">))]</span>
     <span class="p">}</span>
-        
+    
     <span class="c1"># Labels to use for the different predictor domains</span>
-    <span class="n">region_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;local_1.5_1.5&#39;</span><span class="p">,</span> <span class="s1">&#39;local_2.5_2.5&#39;</span><span class="p">,</span> <span class="s1">&#39;default_region_reduced&#39;</span><span class="p">]</span>
+    <span class="n">region_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;local_1.5_1.5&#39;</span><span class="p">,</span><span class="s1">&#39;local_2.5_2.5&#39;</span><span class="p">,</span><span class="s1">&#39;default_region_reduced&#39;</span><span class="p">]</span>
     
     <span class="c1"># Configuration of the linear regression algorithm to iterate through</span>
     <span class="n">linear_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
@@ -678,20 +885,23 @@ The following class has been designed to sequentialy run the PCA analysis for al
     <span class="n">predictand</span> <span class="o">=</span> <span class="n">load_moana_hindcast</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     
     <span class="c1"># Create the experiment</span>
-    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">predictand</span><span class="p">,</span> <span class="c1"># all the sites are passed to exp at first</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="c1"># None, # No need for pressure data we expect PCs to be already available</span>
+                            <span class="c1"># None, # No need for wind data we expect PCs to be already available</span>
+                            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
+                            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+                            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># all the sites are passed to exp at first</span>
                             <span class="n">sites_to_analyze</span><span class="o">=</span><span class="n">sites_to_analyze</span><span class="p">,</span> 
                             <span class="n">model</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="c1"># model that will be used to predict</span>
                             <span class="n">pca_attrs</span><span class="o">=</span><span class="n">pca_attrs_exp</span><span class="p">,</span>
                             <span class="n">model_attrs</span><span class="o">=</span><span class="n">linear_attrs_exp</span><span class="p">,</span>
-                            <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/home/metocean/pcs/&#39;</span><span class="p">)</span>
+                            <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/home/javitausia/Documentos/geocean-nz-ss/data/pcs/&#39;</span>
+    <span class="p">)</span>
     
     <span class="c1"># Run the experiment</span>
     <span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span><span class="p">,</span> <span class="n">stats_keys</span> <span class="o">=</span>\
         <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                     <span class="n">plot</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># plot logs when computing the models</span>
-                                                    <span class="p">)</span>
+    <span class="p">)</span>
     
     <span class="n">coords_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;grad&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;calculate_gradient&#39;</span><span class="p">],</span>
                    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;winds&#39;</span><span class="p">],</span>
@@ -706,7 +916,8 @@ The following class has been designed to sequentialy run the PCA analysis for al
         <span class="n">site_metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">,</span><span class="s1">&#39;tlapse&#39;</span><span class="p">,</span><span class="s1">&#39;tresample&#39;</span><span class="p">,</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">),</span>
              <span class="n">exp_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span>
-    <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">coords_dict</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">[</span><span class="mi">0</span><span class="p">]]})</span>
+    <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">coords_dict</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">[</span><span class="mi">0</span><span class="p">]]})</span>
     
     <span class="k">return</span> <span class="n">dill</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">experiment_metrics</span><span class="p">)</span>
 </pre></div>
@@ -796,7 +1007,7 @@ The following class has been designed to sequentialy run the PCA analysis for al
     <span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span><span class="p">,</span> <span class="n">stats_keys</span> <span class="o">=</span>\
         <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                     <span class="n">plot</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># plot logs when computing the models</span>
-                                                    <span class="p">)</span>
+                                                   <span class="p">)</span>
     <span class="c1"># Pack results</span>
     <span class="n">coords_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:</span> <span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">,</span>
                    <span class="s1">&#39;grad&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;calculate_gradient&#39;</span><span class="p">],</span>
@@ -849,16 +1060,16 @@ The following class has been designed to sequentialy run the PCA analysis for al
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "conda-env-.conda-ssnz-py"
+            mode: "python"
         },
         kernelOptions: {
-            kernelName: "conda-env-.conda-ssnz-py",
+            kernelName: "python3",
             path: "./notebooks"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'conda-env-.conda-ssnz-py'</script>
+    <script>kernelName = 'python3'</script>
 
               </div>
               
