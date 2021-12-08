@@ -271,7 +271,7 @@ class PCA_DynamicPred(object):
         elif self.region[1] == default_region_reduced:
             name_attrs.append('default_region_reduced')
         else:
-            name_attrs.append('local_'+str((self.region[1][1]-self.region[1][0])/2.)+'_'+str((self.region[1][3]-self.region[1][2])/2.))
+            name_attrs.append('local_'+str(np.fabs(self.region[1][1]-self.region[1][0])/2.)+'_'+str(np.fabs(self.region[1][3]-self.region[1][2])/2.))
 
         if (self.region[1] != default_region and self.region[1] != default_region_reduced)\
             or self.wind: # PCA is site dependent

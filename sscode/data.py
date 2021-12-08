@@ -60,7 +60,7 @@ class Loader(object):
 
     def __init__(self, data_to_load: list = ('cfsr','moana','uhslc'),
                  time_resample: str = '1D', 
-                 load_winds: bool = (True,False),
+                 load_winds: bool = (True,None),
                  plot: bool = (True,True,True),
                  load_predictor_files: tuple = (False,None)):
         """
@@ -201,7 +201,15 @@ def load_predictor(atmospheric_data: str = 'cfsr',
     # load previously calculated data if specified
     if load_files[0]:
         print('\n loading previously saved atmospheric data... \n')
-        return [xr.open_dataset(file) for file in load_files[1]]
+        return [
+            xr.open_dataset(file).sortby(
+                datasets_attrs[atmospheric_data][0],ascending=True).sortby(
+                datasets_attrs[atmospheric_data][1],ascending=True)
+            if 'WIND' not in file else xr.open_dataset(file).sortby(
+                datasets_attrs[atmospheric_data+'_winds'][0],ascending=True).sortby(
+                datasets_attrs[atmospheric_data+'_winds'][1],ascending=True)
+            for file in load_files[1]
+        ]
 
     # load / calculate... xarray datasets
     print('\n loading and managing atmospheric data... \n')
