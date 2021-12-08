@@ -441,20 +441,54 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
-
-
- loading daily resampled data... 
-
-
- loading and plotting the UHSLC tidal guages... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_4_1.png" src="../_images/models_linear_4_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_4_3.png" src="../_images/models_linear_4_3.png" />
+<img alt="../_images/models_linear_4_4.png" src="../_images/models_linear_4_4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;xarray.Dataset&gt;
+ Dimensions:    (time: 11354, longitude: 101, latitude: 101)
+ Coordinates:
+   * time       (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-31
+   * longitude  (longitude) float32 140.0 140.5 141.0 141.5 ... 189.0 189.5 190.0
+   * latitude   (latitude) float32 -70.0 -69.5 -69.0 -68.5 ... -21.0 -20.5 -20.0
+ Data variables:
+     SLP        (time, latitude, longitude) float64 ...,
+ &lt;xarray.Dataset&gt;
+ Dimensions:          (time: 11444, lat: 160, lon: 161)
+ Coordinates:
+   * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+   * lat              (lat) float32 -69.78 -69.47 -69.16 ... -20.76 -20.45 -20.14
+   * lon              (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+ Data variables:
+     U_GRD_L103       (time, lat, lon) float32 ...
+     V_GRD_L103       (time, lat, lon) float32 ...
+     wind_proj        (time, lat, lon) float64 ...
+     bearings         (lat, lon) float64 ...
+     direc_proj_math  (lat, lon) float64 ...
+     wind_proj_mask   (time, lat, lon) float64 ...)
 </pre></div>
 </div>
 </div>
@@ -548,7 +582,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_8_0.png" src="../_images/models_linear_8_0.png" />
+<img alt="../_images/models_linear_9_0.png" src="../_images/models_linear_9_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -580,7 +614,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_9_0.png" src="../_images/models_linear_9_0.png" />
+<img alt="../_images/models_linear_10_0.png" src="../_images/models_linear_10_0.png" />
 </div>
 </div>
 <div class="admonition tip">
@@ -604,7 +638,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_12_0.png" src="../_images/models_linear_12_0.png" />
+<img alt="../_images/models_linear_13_0.png" src="../_images/models_linear_13_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -613,284 +647,719 @@
 <span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="c1"># select sites and append closest to UHSLC tgs</span>
 <span class="n">clos_to_uhslc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">689</span><span class="p">,</span> <span class="mi">328</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">949</span><span class="p">,</span> <span class="mi">708</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clos_to_uhslc</span><span class="p">):</span>
+<span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span> <span class="c1"># closest Moana v2 Hindcast to tidal gauges</span>
+    <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
+      <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
+      <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">):</span>
     <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
         <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
-        <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
-            <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
+    <span class="c1"># stats_stat, model, pcs_to_use = MultiLinear_Regression(</span>
+    <span class="c1">#     pcs_cfsr, ss_moana, plot_results=True, verbose=True,</span>
+    <span class="c1">#     validator=(</span>
+    <span class="c1">#         True,load_cfsr_moana_uhslc.validator.isel(name=istat),&#39;ss&#39;</span>
+    <span class="c1">#     )</span>
+    <span class="c1"># )</span>
+    <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
+        <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
+            <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span>
+            <span class="p">)),</span> <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">calculate_relative_winds</span><span class="p">(</span>
+                <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">uw</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">U_GRD_L103</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">({</span>
+                    <span class="s1">&#39;lon&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">),</span>
+                    <span class="s1">&#39;lat&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">)</span>
+                <span class="p">}),</span>
+                <span class="n">vw</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">V_GRD_L103</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">({</span>
+                    <span class="s1">&#39;lon&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">),</span>
+                    <span class="s1">&#39;lat&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">)</span>
+                <span class="p">})</span>
+            <span class="p">)),</span> <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-2&#39;</span><span class="p">]</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span>
         <span class="p">)</span>
-    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 111 PCs : [  6   1   5   3  11   4   8  21   7   0  24  29  25  19 114  15  16  50
-  13  14 122 142 119  59  33  99  85  12  37  20  90  54 115  89  42  68
-  98 172 111 113  84  48 173  87  96 176 186 208 139  22 261  27  77 121
- 174 244  36 110 213  28  71 220  97  57 188 265  39  58 329 130  61   2
-  95 330 104 236 296  30 333 323  44 166  38 203  64  26 318  72 385  62
- 124  78 109 273 103 189 127  10 233  32 256 135 347  35 117 187 341 129
- 282 175  81], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -48.86 -48.55 -48.24 ... -44.8 -44.49 -44.18
+  * lon              (lon) float64 165.9 166.2 166.6 166.9 ... 170.0 170.3 170.6
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -5.6 -5.944 ... -0.4466 -0.03221
+    bearings         (lat, lon) float64 36.77 32.96 28.83 ... 204.8 208.8 212.4
+    direc_proj_math  (lat, lon) float64 0.929 0.9955 1.068 ... -2.073 -2.136
+    wind_proj_mask   (time, lat, lon) float64 -5.6 -5.944 -6.154 ... nan nan nan
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_1.png" src="../_images/models_linear_13_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.49, Relative - RMSE: 0.25
- and Correlations (Pearson, Rscore): (0.85, 0.72)
- R score: 0.72 -- in TEST data
+<img alt="../_images/models_linear_14_1.png" src="../_images/models_linear_14_1.png" />
+<img alt="../_images/models_linear_14_2.png" src="../_images/models_linear_14_2.png" />
+<img alt="../_images/models_linear_14_3.png" src="../_images/models_linear_14_3.png" />
+<img alt="../_images/models_linear_14_4.png" src="../_images/models_linear_14_4.png" />
+<img alt="../_images/models_linear_14_5.png" src="../_images/models_linear_14_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -48.55 -48.24 -47.93 ... -44.49 -44.18 -43.87
+  * lon              (lon) float64 164.1 164.4 164.7 165.0 ... 168.1 168.4 168.8
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -5.696 -6.028 ... -1.927 -1.111
+    bearings         (lat, lon) float64 35.01 31.39 27.5 ... 206.5 210.7 214.6
+    direc_proj_math  (lat, lon) float64 0.9598 1.023 1.091 ... -2.107 -2.175
+    wind_proj_mask   (time, lat, lon) float64 -5.696 -6.028 ... -1.927 -1.111
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_3.png" src="../_images/models_linear_13_3.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_7.png" src="../_images/models_linear_14_7.png" />
+<img alt="../_images/models_linear_14_8.png" src="../_images/models_linear_14_8.png" />
+<img alt="../_images/models_linear_14_9.png" src="../_images/models_linear_14_9.png" />
+<img alt="../_images/models_linear_14_10.png" src="../_images/models_linear_14_10.png" />
+<img alt="../_images/models_linear_14_11.png" src="../_images/models_linear_14_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 99 PCs : [  1   6   4   7   3   5  11   8  28  10  25  12  24   9  22  21  18  14
-  50  15  20  81  31  63  67 114 142  85  68 123   2  13  54  16  23  35
-  32 220  46  45 278  84 329 256  49  76 113 115  17 170  77   0 261 111
- 313 134  58 196  62 157  96 283 249 318 149 166 363  41  19 110 119  47
- 122 185  64  59 108 152 188 330  33  69  94 204 181 286  65  57 102 385
- 139 173 103 156 209 333  53 143 172], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -48.24 -47.93 -47.61 ... -44.18 -43.87 -43.56
+  * lon              (lon) float64 168.4 168.8 169.1 169.4 ... 172.5 172.8 173.1
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -3.221 -3.024 ... -1.608 -3.347
+    bearings         (lat, lon) float64 34.14 30.35 26.27 ... 208.0 212.0 215.7
+    direc_proj_math  (lat, lon) float64 0.975 1.041 1.112 ... -2.129 -2.194
+    wind_proj_mask   (time, lat, lon) float64 -3.221 -3.024 -2.89 ... nan -3.347
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_5.png" src="../_images/models_linear_13_5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.55, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.82, 0.66)
- R score: 0.66 -- in TEST data
+<img alt="../_images/models_linear_14_13.png" src="../_images/models_linear_14_13.png" />
+<img alt="../_images/models_linear_14_14.png" src="../_images/models_linear_14_14.png" />
+<img alt="../_images/models_linear_14_15.png" src="../_images/models_linear_14_15.png" />
+<img alt="../_images/models_linear_14_16.png" src="../_images/models_linear_14_16.png" />
+<img alt="../_images/models_linear_14_17.png" src="../_images/models_linear_14_17.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -46.68 -46.37 -46.05 ... -42.62 -42.31 -41.99
+  * lon              (lon) float64 169.1 169.4 169.7 170.0 ... 173.1 173.4 173.8
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -0.8931 -0.8115 ... -1.857 -2.992
+    bearings         (lat, lon) float64 34.99 31.0 26.69 ... 208.6 212.5 216.1
+    direc_proj_math  (lat, lon) float64 0.9602 1.03 1.105 ... -2.139 -2.201
+    wind_proj_mask   (time, lat, lon) float64 -0.8931 -0.8115 -1.003 ... nan nan
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_7.png" src="../_images/models_linear_13_7.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_19.png" src="../_images/models_linear_14_19.png" />
+<img alt="../_images/models_linear_14_20.png" src="../_images/models_linear_14_20.png" />
+<img alt="../_images/models_linear_14_21.png" src="../_images/models_linear_14_21.png" />
+<img alt="../_images/models_linear_14_22.png" src="../_images/models_linear_14_22.png" />
+<img alt="../_images/models_linear_14_23.png" src="../_images/models_linear_14_23.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 116 PCs : [  3   6   1   0   5  11  21   8  24  19  16  15  50 122  59 142  20  37
-  25   9  48  10 139  32 172  40  22  33 121  26  38 129 114  46  60  99
-  27  14  86  85  90  72 179 176  68  54 213 113  62 235 336 111  87  64
-  66 286 119  78  61 273  98  58 379 133 291 181 385  29 216 369 347 265
- 237 166 194   2  97 374 218 198 345  67  76 190 127  47 267 257  45   7
- 196 115 301 200 145 104 268  42 173 150  18 308 318  88 280 201 323 147
- 103  63 143  43 365  53 298 299], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -46.37 -46.05 -45.74 ... -42.31 -41.99 -41.68
+  * lon              (lon) float64 181.2 181.6 181.9 182.2 ... 185.3 185.6 185.9
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 6.871 6.809 6.649 ... -12.74 -12.6
+    bearings         (lat, lon) float64 36.44 32.63 28.49 ... 207.2 211.3 215.1
+    direc_proj_math  (lat, lon) float64 0.9347 1.001 1.074 ... -2.117 -2.183
+    wind_proj_mask   (time, lat, lon) float64 6.871 6.809 6.649 ... -12.74 -12.6
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_9.png" src="../_images/models_linear_13_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.48, Relative - RMSE: 0.23
- and Correlations (Pearson, Rscore): (0.86, 0.74)
- R score: 0.74 -- in TEST data
+<img alt="../_images/models_linear_14_25.png" src="../_images/models_linear_14_25.png" />
+<img alt="../_images/models_linear_14_26.png" src="../_images/models_linear_14_26.png" />
+<img alt="../_images/models_linear_14_27.png" src="../_images/models_linear_14_27.png" />
+<img alt="../_images/models_linear_14_28.png" src="../_images/models_linear_14_28.png" />
+<img alt="../_images/models_linear_14_29.png" src="../_images/models_linear_14_29.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -46.37 -46.05 -45.74 ... -42.31 -41.99 -41.68
+  * lon              (lon) float64 166.2 166.6 166.9 167.2 ... 170.3 170.6 170.9
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -6.362 -5.094 ... -3.004 -2.215
+    bearings         (lat, lon) float64 34.86 31.05 26.93 ... 208.9 213.0 216.8
+    direc_proj_math  (lat, lon) float64 0.9624 1.029 1.101 ... -2.147 -2.213
+    wind_proj_mask   (time, lat, lon) float64 -6.362 -5.094 ... -3.004 -2.215
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_11.png" src="../_images/models_linear_13_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_31.png" src="../_images/models_linear_14_31.png" />
+<img alt="../_images/models_linear_14_32.png" src="../_images/models_linear_14_32.png" />
+<img alt="../_images/models_linear_14_33.png" src="../_images/models_linear_14_33.png" />
+<img alt="../_images/models_linear_14_34.png" src="../_images/models_linear_14_34.png" />
+<img alt="../_images/models_linear_14_35.png" src="../_images/models_linear_14_35.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 156 PCs : [  8   5  13   6  10   0   7  12   4  22   9  27  36  29 115  16  17  30
-  93  21  20 191 121  50 223   3  45 225  63 118  69  46 154  65  67  88
-   2  58  83  81  51 102  19  60 166  57  11  40  49  38 142 247 310 169
- 120 284 367 198  61  75 245  76   1 211 233 281 122 109 369  33  91  25
-  94 237  39 106 108  44  90 325 101  99 181 190 147 205 131 144 152 185
-  55 385 347 123  26  92 127 112 165 130  54 254  43  37 230  47 212 100
- 116 340  35  14 194 379 114 164 365  82 242 332 345 188 286 303 295 298
- 374 240 383 282 153 300 159 262 249 248 320  70  73 388 235 259 135 323
-  42 138 387 157 250 270 232 161  41 160 314 111], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -46.05 -45.74 -45.43 ... -41.99 -41.68 -41.37
+  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -3.571 -4.578 ... -6.387 -5.656
+    bearings         (lat, lon) float64 32.88 28.94 24.71 ... 211.4 215.4 219.0
+    direc_proj_math  (lat, lon) float64 0.997 1.066 1.139 ... -2.189 -2.252
+    wind_proj_mask   (time, lat, lon) float64 -3.571 -4.578 ... -6.387 -5.656
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_13.png" src="../_images/models_linear_13_13.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.80, 0.63)
- R score: 0.63 -- in TEST data
+<img alt="../_images/models_linear_14_37.png" src="../_images/models_linear_14_37.png" />
+<img alt="../_images/models_linear_14_38.png" src="../_images/models_linear_14_38.png" />
+<img alt="../_images/models_linear_14_39.png" src="../_images/models_linear_14_39.png" />
+<img alt="../_images/models_linear_14_40.png" src="../_images/models_linear_14_40.png" />
+<img alt="../_images/models_linear_14_41.png" src="../_images/models_linear_14_41.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -45.74 -45.43 -45.12 ... -41.68 -41.37 -41.06
+  * lon              (lon) float64 170.3 170.6 170.9 171.2 ... 174.4 174.7 175.0
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -2.063 -3.21 ... -5.095 -4.455
+    bearings         (lat, lon) float64 38.51 34.69 30.51 ... 205.7 209.8 213.6
+    direc_proj_math  (lat, lon) float64 0.8987 0.9654 1.038 ... -2.091 -2.157
+    wind_proj_mask   (time, lat, lon) float64 -2.063 -3.21 ... -5.095 -4.455
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_15.png" src="../_images/models_linear_13_15.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_43.png" src="../_images/models_linear_14_43.png" />
+<img alt="../_images/models_linear_14_44.png" src="../_images/models_linear_14_44.png" />
+<img alt="../_images/models_linear_14_45.png" src="../_images/models_linear_14_45.png" />
+<img alt="../_images/models_linear_14_46.png" src="../_images/models_linear_14_46.png" />
+<img alt="../_images/models_linear_14_47.png" src="../_images/models_linear_14_47.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 116 PCs : [  3   6   1   0   5  11  21   8  24  19  16  15  50 122  59 142  20  37
-  25   9  48  10 139  32 172  40  22  33 121  26  38 129 114  46  60  99
-  27  14  86  85  90  72 179 176  68  54 213 113  62 235 336 111  87  64
-  66 286 119  78  61 273  98  58 379 133 291 181 385  29 216 369 347 265
- 237 166 194   2  97 374 218 198 345  67  76 190 127  47 267 257  45   7
- 196 115 301 200 145 104 268  42 173 150  18 308 318  88 280 201 323 147
- 103  63 143  43 365  53 298 299], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -44.8 -44.49 -44.18 ... -40.75 -40.43 -40.12
+  * lon              (lon) float64 171.2 171.6 171.9 172.2 ... 175.3 175.6 175.9
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -3.051 -3.587 ... -1.833 -2.122
+    bearings         (lat, lon) float64 37.72 33.98 29.91 ... 207.0 211.3 215.2
+    direc_proj_math  (lat, lon) float64 0.9124 0.9777 1.049 ... -2.117 -2.186
+    wind_proj_mask   (time, lat, lon) float64 -3.051 -3.587 -3.789 ... nan nan
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_17.png" src="../_images/models_linear_13_17.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.48, Relative - RMSE: 0.23
- and Correlations (Pearson, Rscore): (0.86, 0.74)
- R score: 0.74 -- in TEST data
+<img alt="../_images/models_linear_14_49.png" src="../_images/models_linear_14_49.png" />
+<img alt="../_images/models_linear_14_50.png" src="../_images/models_linear_14_50.png" />
+<img alt="../_images/models_linear_14_51.png" src="../_images/models_linear_14_51.png" />
+<img alt="../_images/models_linear_14_52.png" src="../_images/models_linear_14_52.png" />
+<img alt="../_images/models_linear_14_53.png" src="../_images/models_linear_14_53.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -44.18 -43.87 -43.56 ... -40.12 -39.81 -39.5
+  * lon              (lon) float64 169.1 169.4 169.7 170.0 ... 173.1 173.4 173.8
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -1.991 -2.158 ... 0.4473 -0.06424
+    bearings         (lat, lon) float64 37.65 33.74 29.46 ... 207.9 212.0 215.8
+    direc_proj_math  (lat, lon) float64 0.9136 0.9819 1.057 ... -2.13 -2.196
+    wind_proj_mask   (time, lat, lon) float64 nan nan nan ... 0.4473 -0.06424
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_19.png" src="../_images/models_linear_13_19.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_55.png" src="../_images/models_linear_14_55.png" />
+<img alt="../_images/models_linear_14_56.png" src="../_images/models_linear_14_56.png" />
+<img alt="../_images/models_linear_14_57.png" src="../_images/models_linear_14_57.png" />
+<img alt="../_images/models_linear_14_58.png" src="../_images/models_linear_14_58.png" />
+<img alt="../_images/models_linear_14_59.png" src="../_images/models_linear_14_59.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 117 PCs : [  1   6   4   7   5  11   8  10   3  25  28  24  14  13  22  21  18  12
-  31 114  50  20  16  81 142 220  85 329  23  68 278  49 111  46 115  67
-  76  32  45 170 181  17  58  54  29   9 261  84 123  96  30  33 113  40
- 119 185  63  99  77 110  47 256  41 188  42  35 152 313   2  59  93 196
-  64 157 333 318 122 103  57 166 224  86 249  15 106 205 143 364 323  69
- 134  56 321 209 262 363 203 159 382 124 251 283 332 156  82 173 174 154
- 302 144 107 169 127 109 187 330 244], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 17, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -43.87 -43.56 -43.24 ... -39.5 -39.18 -38.87
+  * lon              (lon) float64 172.5 172.8 173.1 173.4 ... 176.6 176.9 177.2
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -2.448 -2.89 ... -4.059 -5.185
+    bearings         (lat, lon) float64 34.35 30.43 26.19 ... 208.4 212.3 215.9
+    direc_proj_math  (lat, lon) float64 0.9712 1.04 1.114 ... -2.135 -2.198
+    wind_proj_mask   (time, lat, lon) float64 -2.448 -2.89 -3.299 ... nan -5.185
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_21.png" src="../_images/models_linear_13_21.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.57, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.80, 0.63)
- R score: 0.63 -- in TEST data
+<img alt="../_images/models_linear_14_61.png" src="../_images/models_linear_14_61.png" />
+<img alt="../_images/models_linear_14_62.png" src="../_images/models_linear_14_62.png" />
+<img alt="../_images/models_linear_14_63.png" src="../_images/models_linear_14_63.png" />
+<img alt="../_images/models_linear_14_64.png" src="../_images/models_linear_14_64.png" />
+<img alt="../_images/models_linear_14_65.png" src="../_images/models_linear_14_65.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -43.56 -43.24 -42.93 ... -39.5 -39.18 -38.87
+  * lon              (lon) float64 170.9 171.2 171.6 171.9 ... 175.0 175.3 175.6
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -1.23 -1.52 ... -2.528 -2.011
+    bearings         (lat, lon) float64 37.02 33.03 28.67 ... 209.1 213.2 216.9
+    direc_proj_math  (lat, lon) float64 0.9247 0.9943 1.07 ... -2.15 -2.215
+    wind_proj_mask   (time, lat, lon) float64 nan nan nan nan ... nan nan nan
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_23.png" src="../_images/models_linear_13_23.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_67.png" src="../_images/models_linear_14_67.png" />
+<img alt="../_images/models_linear_14_68.png" src="../_images/models_linear_14_68.png" />
+<img alt="../_images/models_linear_14_69.png" src="../_images/models_linear_14_69.png" />
+<img alt="../_images/models_linear_14_70.png" src="../_images/models_linear_14_70.png" />
+<img alt="../_images/models_linear_14_71.png" src="../_images/models_linear_14_71.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 118 PCs : [  3   6   5   0   8   1  11  24   4  14  10  16  29  21  19  25 122  50
-  18 114  33  45  97  36  61  71  38  13  90  84  15 111  59   7 142 119
-  23 166  86  28 121 129 172  85  60  54  68  65  30  89  37  72  42 318
- 110 273  98 261 208  40 285  55 379  64  48  39 148  62 139 101 344  92
- 108 193  87 374 213 186  26 113  95 124 216 383  43 334 322 107 197 376
- 308 127 206 311 203 112  74 220 117 169 268 329  20 211 337  99 331  31
- 330  76  78 187  49 118 296 174 347 251], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -43.24 -42.93 -42.62 ... -39.18 -38.87 -38.56
+  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -0.6124 -0.8636 ... -2.835 -2.351
+    bearings         (lat, lon) float64 40.28 36.38 32.08 ... 206.1 210.3 214.1
+    direc_proj_math  (lat, lon) float64 0.8677 0.9359 1.011 ... -2.099 -2.166
+    wind_proj_mask   (time, lat, lon) float64 nan nan nan nan ... -3.288 nan nan
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_25.png" src="../_images/models_linear_13_25.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.50, Relative - RMSE: 0.25
- and Correlations (Pearson, Rscore): (0.85, 0.72)
- R score: 0.72 -- in TEST data
+<img alt="../_images/models_linear_14_73.png" src="../_images/models_linear_14_73.png" />
+<img alt="../_images/models_linear_14_74.png" src="../_images/models_linear_14_74.png" />
+<img alt="../_images/models_linear_14_75.png" src="../_images/models_linear_14_75.png" />
+<img alt="../_images/models_linear_14_76.png" src="../_images/models_linear_14_76.png" />
+<img alt="../_images/models_linear_14_77.png" src="../_images/models_linear_14_77.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -43.24 -42.93 -42.62 ... -39.18 -38.87 -38.56
+  * lon              (lon) float64 174.1 174.4 174.7 175.0 ... 178.1 178.4 178.8
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -3.964 -3.948 ... -10.41 -11.35
+    bearings         (lat, lon) float64 35.77 31.67 27.19 ... 210.7 214.7 218.3
+    direc_proj_math  (lat, lon) float64 0.9464 1.018 1.096 ... -2.177 -2.239
+    wind_proj_mask   (time, lat, lon) float64 -3.964 -3.948 ... -10.41 -11.35
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_27.png" src="../_images/models_linear_13_27.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_79.png" src="../_images/models_linear_14_79.png" />
+<img alt="../_images/models_linear_14_80.png" src="../_images/models_linear_14_80.png" />
+<img alt="../_images/models_linear_14_81.png" src="../_images/models_linear_14_81.png" />
+<img alt="../_images/models_linear_14_82.png" src="../_images/models_linear_14_82.png" />
+<img alt="../_images/models_linear_14_83.png" src="../_images/models_linear_14_83.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 109 PCs : [  6   3   1  15  11  21  16   7   8  24   4   2  12  19  47   9  25  32
-  50  67  22  72 142  13  59 139 104  46  10  31 150  42  17 122 157  18
- 286  98  65  71 115  53 172  99 176  29  14  48 280 211  34 173 231   5
- 281 289 130 385 201 113 228  68 103 174 120   0 133  91  20 300 164 257
-  94  76 351 283 129 101 302  78  37 136  89 169 188 215  28 247  62 323
- 179 154  58  49 220  51  82  35 160 237 112 326 363  64 205 288 178 367
-  26], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -43.24 -42.93 -42.62 ... -39.18 -38.87 -38.56
+  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -0.8756 -1.19 ... -2.632 -2.198
+    bearings         (lat, lon) float64 34.9 30.95 26.66 ... 211.6 215.7 219.5
+    direc_proj_math  (lat, lon) float64 0.9616 1.031 1.106 ... -2.195 -2.26
+    wind_proj_mask   (time, lat, lon) float64 nan nan nan nan ... -3.006 nan nan
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_29.png" src="../_images/models_linear_13_29.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.50, Relative - RMSE: 0.26
- and Correlations (Pearson, Rscore): (0.84, 0.71)
- R score: 0.71 -- in TEST data
+<img alt="../_images/models_linear_14_85.png" src="../_images/models_linear_14_85.png" />
+<img alt="../_images/models_linear_14_86.png" src="../_images/models_linear_14_86.png" />
+<img alt="../_images/models_linear_14_87.png" src="../_images/models_linear_14_87.png" />
+<img alt="../_images/models_linear_14_88.png" src="../_images/models_linear_14_88.png" />
+<img alt="../_images/models_linear_14_89.png" src="../_images/models_linear_14_89.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -41.68 -41.37 -41.06 ... -37.62 -37.31 -37.0
+  * lon              (lon) float64 174.7 175.0 175.3 175.6 ... 178.8 179.1 179.4
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -1.281 -1.196 ... -11.94 -11.61
+    bearings         (lat, lon) float64 38.31 34.15 29.56 ... 209.5 213.5 217.1
+    direc_proj_math  (lat, lon) float64 0.9021 0.9748 1.055 ... -2.155 -2.219
+    wind_proj_mask   (time, lat, lon) float64 -1.281 -1.196 ... -11.94 -11.61
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_31.png" src="../_images/models_linear_13_31.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_91.png" src="../_images/models_linear_14_91.png" />
+<img alt="../_images/models_linear_14_92.png" src="../_images/models_linear_14_92.png" />
+<img alt="../_images/models_linear_14_93.png" src="../_images/models_linear_14_93.png" />
+<img alt="../_images/models_linear_14_94.png" src="../_images/models_linear_14_94.png" />
+<img alt="../_images/models_linear_14_95.png" src="../_images/models_linear_14_95.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 100 PCs : [  6   1   3   7   4  11   8  15  21   9  12  25  10  24  28   2  50   5
-  22  18  19  67 142  35  63 104  72  76 157 115  23 139  54  20 286 114
- 113  45  58 283  30  94 220 256  81  16 172 123 134 173  59  77  65 122
- 150  46 130  68 363 129 278 280  62 231  71 174 289 385 257 176 179 235
-  85 108 149 204 201 237 147 313  98  89   0 170 281  99  53  86 228 300
-  13 103 329  79 137 244  47 240  61 169], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -41.37 -41.06 -40.75 ... -37.31 -37.0 -36.69
+  * lon              (lon) float64 171.6 171.9 172.2 172.5 ... 175.6 175.9 176.2
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 1.688 1.392 ... -2.833 -3.629
+    bearings         (lat, lon) float64 39.8 35.96 31.75 ... 207.6 212.0 216.0
+    direc_proj_math  (lat, lon) float64 0.8762 0.9432 1.017 ... -2.13 -2.199
+    wind_proj_mask   (time, lat, lon) float64 1.688 1.392 ... -2.833 -3.629
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_33.png" src="../_images/models_linear_13_33.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.52, Relative - RMSE: 0.26
- and Correlations (Pearson, Rscore): (0.84, 0.70)
- R score: 0.7 -- in TEST data
+<img alt="../_images/models_linear_14_97.png" src="../_images/models_linear_14_97.png" />
+<img alt="../_images/models_linear_14_98.png" src="../_images/models_linear_14_98.png" />
+<img alt="../_images/models_linear_14_99.png" src="../_images/models_linear_14_99.png" />
+<img alt="../_images/models_linear_14_100.png" src="../_images/models_linear_14_100.png" />
+<img alt="../_images/models_linear_14_101.png" src="../_images/models_linear_14_101.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -41.06 -40.75 -40.43 ... -37.0 -36.69 -36.37
+  * lon              (lon) float64 175.6 175.9 176.2 176.6 ... 179.7 180.0 180.3
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -1.099 -1.467 ... -10.42 -10.07
+    bearings         (lat, lon) float64 38.83 34.91 30.61 ... 209.0 213.3 217.2
+    direc_proj_math  (lat, lon) float64 0.8931 0.9615 1.036 ... -2.152 -2.22
+    wind_proj_mask   (time, lat, lon) float64 nan -1.467 ... -10.42 -10.07
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_35.png" src="../_images/models_linear_13_35.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_103.png" src="../_images/models_linear_14_103.png" />
+<img alt="../_images/models_linear_14_104.png" src="../_images/models_linear_14_104.png" />
+<img alt="../_images/models_linear_14_105.png" src="../_images/models_linear_14_105.png" />
+<img alt="../_images/models_linear_14_106.png" src="../_images/models_linear_14_106.png" />
+<img alt="../_images/models_linear_14_107.png" src="../_images/models_linear_14_107.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 143 PCs : [  6   5   8  13   4   0   1  10  27  29  36   7   9  16   3  25   2  22
-  11  50  19  33  65  42  93  26 169 154 121 223  63 122  46 102 115 118
-  58  88 127  81 225  17 119  85  61  30  83 323 143 164 106 248  67 114
- 191  57  40 194  12 211  69 165 228  32  75  60 310  47 166  68  51  39
-  34 144 379 198 372 181 175  20  98  45 245 112  96 149 216 233  76 369
-  23 286 159 142  87 261 213  91 383 124 285  62 385 296 215 298 387 230
- 212 320  49  84 105 117 363  95  70 351 120 157 234 249 268 314 221 184
- 264  53 350 100  55  56 247  38  37 176 240 187 265 137 345 237 219], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -40.43 -40.12 -39.81 ... -36.37 -36.06 -35.75
+  * lon              (lon) float64 172.5 172.8 173.1 173.4 ... 176.6 176.9 177.2
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 2.774 1.355 ... -2.19 -0.7578
+    bearings         (lat, lon) float64 36.86 32.79 28.34 ... 211.7 215.9 219.6
+    direc_proj_math  (lat, lon) float64 0.9274 0.9985 1.076 ... -2.197 -2.262
+    wind_proj_mask   (time, lat, lon) float64 2.774 1.355 ... -2.19 -0.7578
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_37.png" src="../_images/models_linear_13_37.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.56, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.80, 0.64)
- R score: 0.64 -- in TEST data
+<img alt="../_images/models_linear_14_109.png" src="../_images/models_linear_14_109.png" />
+<img alt="../_images/models_linear_14_110.png" src="../_images/models_linear_14_110.png" />
+<img alt="../_images/models_linear_14_111.png" src="../_images/models_linear_14_111.png" />
+<img alt="../_images/models_linear_14_112.png" src="../_images/models_linear_14_112.png" />
+<img alt="../_images/models_linear_14_113.png" src="../_images/models_linear_14_113.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -39.81 -39.5 -39.18 ... -35.75 -35.44 -35.13
+  * lon              (lon) float64 173.8 174.1 174.4 174.7 ... 177.8 178.1 178.4
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 2.262 1.914 ... -4.106 -4.527
+    bearings         (lat, lon) float64 41.84 37.92 33.57 ... 207.1 211.3 215.2
+    direc_proj_math  (lat, lon) float64 0.8406 0.909 0.9849 ... -2.118 -2.186
+    wind_proj_mask   (time, lat, lon) float64 2.262 1.914 ... -4.106 -4.527
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_39.png" src="../_images/models_linear_13_39.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_115.png" src="../_images/models_linear_14_115.png" />
+<img alt="../_images/models_linear_14_116.png" src="../_images/models_linear_14_116.png" />
+<img alt="../_images/models_linear_14_117.png" src="../_images/models_linear_14_117.png" />
+<img alt="../_images/models_linear_14_118.png" src="../_images/models_linear_14_118.png" />
+<img alt="../_images/models_linear_14_119.png" src="../_images/models_linear_14_119.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 109 PCs : [  1   5   6   4   8  13  11   0  25  29   9  42  36  32  21  33   3 114
-   7 119 124  85  27   2  19  46  50 169  44  31 164  12  65 175  68 127
-  16  28 261  99  77 137  98 323  23 154 198 106 213 122 144  96 149  56
- 113  34  39 158  62  37 150  83  89 171 173  59  26 314 107 351 101 138
- 143  60 350 223 118  43 203 372 108 172  75  94 333 342  93 296 174  47
-  38  20  24 298 327  57 216 244 159 165 186 379  54 105  14  40 103 315
-  87], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -39.81 -39.5 -39.18 ... -35.75 -35.44 -35.13
+  * lon              (lon) float64 175.9 176.2 176.6 176.9 ... 180.0 180.3 180.6
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -0.3179 -0.9219 ... -7.121 -6.871
+    bearings         (lat, lon) float64 37.53 33.32 28.7 ... 211.6 215.6 219.3
+    direc_proj_math  (lat, lon) float64 0.9159 0.9892 1.07 ... -2.192 -2.256
+    wind_proj_mask   (time, lat, lon) float64 nan nan nan ... -7.121 -6.871
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_41.png" src="../_images/models_linear_13_41.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.82, 0.67)
- R score: 0.67 -- in TEST data
+<img alt="../_images/models_linear_14_121.png" src="../_images/models_linear_14_121.png" />
+<img alt="../_images/models_linear_14_122.png" src="../_images/models_linear_14_122.png" />
+<img alt="../_images/models_linear_14_123.png" src="../_images/models_linear_14_123.png" />
+<img alt="../_images/models_linear_14_124.png" src="../_images/models_linear_14_124.png" />
+<img alt="../_images/models_linear_14_125.png" src="../_images/models_linear_14_125.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -39.5 -39.18 -38.87 ... -35.44 -35.13 -34.81
+  * lon              (lon) float64 173.1 173.4 173.8 174.1 ... 177.2 177.5 177.8
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 2.97 2.649 2.095 ... -5.504 -4.625
+    bearings         (lat, lon) float64 38.66 34.69 30.32 ... 210.4 214.7 218.6
+    direc_proj_math  (lat, lon) float64 0.896 0.9654 1.042 ... -2.176 -2.244
+    wind_proj_mask   (time, lat, lon) float64 2.97 2.649 2.095 ... -5.504 -4.625
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_43.png" src="../_images/models_linear_13_43.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 389 PCs (0.95 expl. variance) will be used to train the model!! 
+<img alt="../_images/models_linear_14_127.png" src="../_images/models_linear_14_127.png" />
+<img alt="../_images/models_linear_14_128.png" src="../_images/models_linear_14_128.png" />
+<img alt="../_images/models_linear_14_129.png" src="../_images/models_linear_14_129.png" />
+<img alt="../_images/models_linear_14_130.png" src="../_images/models_linear_14_130.png" />
+<img alt="../_images/models_linear_14_131.png" src="../_images/models_linear_14_131.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
 
-
- A forward selection will be performed... 
-
- where 112 PCs : [  6   1   5   8  13  11   3   0   4  21  24  29  19  50 114  27  42  25
-  17  33 119  16  85  20 122 127  99 169  36  26  64  54 213  65 261  59
-  96 142   9 124  40 128 172  37 121  48 323  68  49  12  22  97  90  77
- 273 379 173  58 196 381  32 164 255   2 318 175 296 176 203 129 137  62
- 223 148 177  51 266  47 151 268  57 369 216 170 113 156 185 333 106 102
- 105 241 187  86 111  31 256 365 235  93 109 244 312 330 166 316  39  80
- 372 125  76 162], 
- will be finally used to train the model!! 
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -39.5 -39.18 -38.87 ... -35.44 -35.13 -34.81
+  * lon              (lon) float64 172.2 172.5 172.8 173.1 ... 176.2 176.6 176.9
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 2.035 2.629 2.761 ... -7.07 -6.455
+    bearings         (lat, lon) float64 37.75 33.76 29.4 ... 211.4 215.7 219.5
+    direc_proj_math  (lat, lon) float64 0.912 0.9815 1.058 ... -2.193 -2.26
+    wind_proj_mask   (time, lat, lon) float64 2.035 2.629 2.761 ... -7.07 -6.455
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_45.png" src="../_images/models_linear_13_45.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.61, Relative - RMSE: 0.32
- and Correlations (Pearson, Rscore): (0.76, 0.58)
- R score: 0.58 -- in TEST data
+<img alt="../_images/models_linear_14_133.png" src="../_images/models_linear_14_133.png" />
+<img alt="../_images/models_linear_14_134.png" src="../_images/models_linear_14_134.png" />
+<img alt="../_images/models_linear_14_135.png" src="../_images/models_linear_14_135.png" />
+<img alt="../_images/models_linear_14_136.png" src="../_images/models_linear_14_136.png" />
+<img alt="../_images/models_linear_14_137.png" src="../_images/models_linear_14_137.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -39.18 -38.87 -38.56 ... -35.13 -34.81 -34.5
+  * lon              (lon) float64 173.4 173.8 174.1 174.4 ... 177.5 177.8 178.1
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 3.009 2.603 ... -6.764 -6.151
+    bearings         (lat, lon) float64 39.62 35.69 31.37 ... 209.5 213.9 217.8
+    direc_proj_math  (lat, lon) float64 0.8794 0.9479 1.023 ... -2.162 -2.231
+    wind_proj_mask   (time, lat, lon) float64 3.009 2.603 nan ... -6.764 -6.151
 </pre></div>
 </div>
-<img alt="../_images/models_linear_13_47.png" src="../_images/models_linear_13_47.png" />
+<img alt="../_images/models_linear_14_139.png" src="../_images/models_linear_14_139.png" />
+<img alt="../_images/models_linear_14_140.png" src="../_images/models_linear_14_140.png" />
+<img alt="../_images/models_linear_14_141.png" src="../_images/models_linear_14_141.png" />
+<img alt="../_images/models_linear_14_142.png" src="../_images/models_linear_14_142.png" />
+<img alt="../_images/models_linear_14_143.png" src="../_images/models_linear_14_143.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -39.18 -38.87 -38.56 ... -35.13 -34.81 -34.5
+  * lon              (lon) float64 172.5 172.8 173.1 173.4 ... 176.6 176.9 177.2
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 2.033 2.63 2.963 ... -7.564 -7.118
+    bearings         (lat, lon) float64 37.96 33.95 29.55 ... 211.4 215.7 219.5
+    direc_proj_math  (lat, lon) float64 0.9082 0.9783 1.055 ... -2.193 -2.26
+    wind_proj_mask   (time, lat, lon) float64 2.033 2.63 2.963 ... -7.564 -7.118
+</pre></div>
+</div>
+<img alt="../_images/models_linear_14_145.png" src="../_images/models_linear_14_145.png" />
+<img alt="../_images/models_linear_14_146.png" src="../_images/models_linear_14_146.png" />
+<img alt="../_images/models_linear_14_147.png" src="../_images/models_linear_14_147.png" />
+<img alt="../_images/models_linear_14_148.png" src="../_images/models_linear_14_148.png" />
+<img alt="../_images/models_linear_14_149.png" src="../_images/models_linear_14_149.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -38.87 -38.56 -38.25 ... -34.81 -34.5 -34.19
+  * lon              (lon) float64 171.9 172.2 172.5 172.8 ... 175.9 176.2 176.6
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 0.2199 0.9384 ... -7.121 -7.174
+    bearings         (lat, lon) float64 36.49 32.36 27.86 ... 213.3 217.4 221.1
+    direc_proj_math  (lat, lon) float64 0.934 1.006 1.085 ... -2.224 -2.289
+    wind_proj_mask   (time, lat, lon) float64 0.2199 0.9384 ... -7.121 -7.174
+</pre></div>
+</div>
+<img alt="../_images/models_linear_14_151.png" src="../_images/models_linear_14_151.png" />
+<img alt="../_images/models_linear_14_152.png" src="../_images/models_linear_14_152.png" />
+<img alt="../_images/models_linear_14_153.png" src="../_images/models_linear_14_153.png" />
+<img alt="../_images/models_linear_14_154.png" src="../_images/models_linear_14_154.png" />
+<img alt="../_images/models_linear_14_155.png" src="../_images/models_linear_14_155.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -38.56 -38.25 -37.94 ... -34.5 -34.19 -33.88
+  * lon              (lon) float64 173.1 173.4 173.8 174.1 ... 177.2 177.5 177.8
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 2.993 3.647 ... -7.708 -7.707
+    bearings         (lat, lon) float64 39.82 35.9 31.59 ... 209.7 214.1 218.1
+    direc_proj_math  (lat, lon) float64 0.8758 0.9442 1.019 ... -2.166 -2.235
+    wind_proj_mask   (time, lat, lon) float64 2.993 3.647 ... -7.708 -7.707
+</pre></div>
+</div>
+<img alt="../_images/models_linear_14_157.png" src="../_images/models_linear_14_157.png" />
+<img alt="../_images/models_linear_14_158.png" src="../_images/models_linear_14_158.png" />
+<img alt="../_images/models_linear_14_159.png" src="../_images/models_linear_14_159.png" />
+<img alt="../_images/models_linear_14_160.png" src="../_images/models_linear_14_160.png" />
+<img alt="../_images/models_linear_14_161.png" src="../_images/models_linear_14_161.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -38.25 -37.94 -37.62 ... -34.19 -33.88 -33.56
+  * lon              (lon) float64 172.2 172.5 172.8 173.1 ... 176.2 176.6 176.9
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 0.5839 1.389 ... -6.384 -6.314
+    bearings         (lat, lon) float64 39.03 34.99 30.54 ... 210.9 215.2 219.1
+    direc_proj_math  (lat, lon) float64 0.8895 0.9601 1.038 ... -2.185 -2.252
+    wind_proj_mask   (time, lat, lon) float64 0.5839 1.389 ... -6.384 -6.314
+</pre></div>
+</div>
+<img alt="../_images/models_linear_14_163.png" src="../_images/models_linear_14_163.png" />
+<img alt="../_images/models_linear_14_164.png" src="../_images/models_linear_14_164.png" />
+<img alt="../_images/models_linear_14_165.png" src="../_images/models_linear_14_165.png" />
+<img alt="../_images/models_linear_14_166.png" src="../_images/models_linear_14_166.png" />
+<img alt="../_images/models_linear_14_167.png" src="../_images/models_linear_14_167.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+
+&lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 16, lon: 16)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float64 -36.69 -36.37 -36.06 ... -32.63 -32.32 -32.0
+  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
+    wind_proj        (time, lat, lon) float64 -1.569 -1.169 ... -4.493 -4.347
+    bearings         (lat, lon) float64 41.73 37.79 33.41 ... 209.1 213.5 217.5
+    direc_proj_math  (lat, lon) float64 0.8425 0.9113 0.9876 ... -2.155 -2.225
+    wind_proj_mask   (time, lat, lon) float64 -1.569 -1.169 ... -4.493 -4.347
+</pre></div>
+</div>
+<img alt="../_images/models_linear_14_169.png" src="../_images/models_linear_14_169.png" />
+<img alt="../_images/models_linear_14_170.png" src="../_images/models_linear_14_170.png" />
+<img alt="../_images/models_linear_14_171.png" src="../_images/models_linear_14_171.png" />
+<img alt="../_images/models_linear_14_172.png" src="../_images/models_linear_14_172.png" />
+<img alt="../_images/models_linear_14_173.png" src="../_images/models_linear_14_173.png" />
 </div>
 </div>
 </div>
@@ -933,7 +1402,7 @@
  will be finally used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_1.png" src="../_images/models_linear_15_1.png" />
+<img alt="../_images/models_linear_16_1.png" src="../_images/models_linear_16_1.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.50, Relative - RMSE: 0.26
  and Correlations (Pearson, Rscore): (0.85, 0.72)
  NSE = [0.7156399], KGE = [0.62978572] and KGE_PRIME = [0.51395225]
@@ -1018,10 +1487,10 @@ Data variables:
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_17_1.png" src="../_images/models_linear_17_1.png" />
-<img alt="../_images/models_linear_17_2.png" src="../_images/models_linear_17_2.png" />
-<img alt="../_images/models_linear_17_3.png" src="../_images/models_linear_17_3.png" />
-<img alt="../_images/models_linear_17_4.png" src="../_images/models_linear_17_4.png" />
+<img alt="../_images/models_linear_18_1.png" src="../_images/models_linear_18_1.png" />
+<img alt="../_images/models_linear_18_2.png" src="../_images/models_linear_18_2.png" />
+<img alt="../_images/models_linear_18_3.png" src="../_images/models_linear_18_3.png" />
+<img alt="../_images/models_linear_18_4.png" src="../_images/models_linear_18_4.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 27 PCs (0.98 expl. variance) will be used to train the model!! 
 
 
@@ -1031,7 +1500,7 @@ Data variables:
  will be finally used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_17_6.png" src="../_images/models_linear_17_6.png" />
+<img alt="../_images/models_linear_18_6.png" src="../_images/models_linear_18_6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.50, Relative - RMSE: 0.26
  and Correlations (Pearson, Rscore): (0.85, 0.72)
  R score: 0.72 -- in TEST data
@@ -1075,7 +1544,7 @@ Data variables:
  will be finally used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_18_1.png" src="../_images/models_linear_18_1.png" />
+<img alt="../_images/models_linear_19_1.png" src="../_images/models_linear_19_1.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.01, SI: 0.48, Relative - RMSE: 0.26
  and Correlations (Pearson, Rscore): (0.86, 0.74)
  R score: 0.74 -- in TEST data
@@ -1188,7 +1657,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_22_0.png" src="../_images/models_linear_22_0.png" />
+<img alt="../_images/models_linear_23_0.png" src="../_images/models_linear_23_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1220,7 +1689,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_23_0.png" src="../_images/models_linear_23_0.png" />
+<img alt="../_images/models_linear_24_0.png" src="../_images/models_linear_24_0.png" />
 </div>
 </div>
 </div>
@@ -1264,7 +1733,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_25_0.png" src="../_images/models_linear_25_0.png" />
+<img alt="../_images/models_linear_26_0.png" src="../_images/models_linear_26_0.png" />
 </div>
 </div>
 </div>
