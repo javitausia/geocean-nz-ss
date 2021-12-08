@@ -165,7 +165,7 @@ def plot_stats(statistics_data, plot_stats, **kwargs):
     for i,var,ax in zip(range(n_plots),plot_stats,axes.flatten()):
         p = xr.plot.scatter(
             statistics_data, # this is the data
-            x='longitude',y='latitude',hue=var,cmap='jet',
+            x='longitude',y='latitude',hue=var, #cmap='jet',
             ax=ax,transform=ccrs.PlateCarree(),zorder=40,
             **kwargs
         ) # TODO: add kwargs

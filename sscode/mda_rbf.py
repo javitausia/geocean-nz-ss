@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 # arrays
+from datetime import datetime
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -63,7 +65,7 @@ class MDA_RBF_Model(object):
               176.6, 175.5, 173.7,  # north-north
               172.8, 173.9, 174.9,  # west-north
               183.5                 # east island
-        ],
+        ][:1],
         lats=[-41.5, -43.3, -44.8, 
               -46.0, -47.1, 
               -50.8,
@@ -73,7 +75,7 @@ class MDA_RBF_Model(object):
               -37.8, -35.8, -34.5, 
               -35.6, -36.8, -38.3,
               -43.9
-        ],
+        ][:1],
         min_dist_th=[110,100,100,
                      100,60,
                      110,
@@ -83,7 +85,7 @@ class MDA_RBF_Model(object):
                      100,120,110,
                      100,80,100,
                      110
-        ],
+        ][:1],
         extra_help=[ # this helps to stay in the wanted shore of NZ
             ('lat',0.9),('lat',0.9),('lat',0.9),
             ('lat',0.7),('lat',0.5),
@@ -94,7 +96,7 @@ class MDA_RBF_Model(object):
             ('lon',0.7),('lon',0.5),('lat',0.5),
             ('lon',0.8),('lon',0.8),('lat',0.8),
             ('lon',0.5)
-        ], # be careful when playing with this tool
+        ][:1], # be careful when playing with this tool
         time_resample: str = '1D',
         verbose: bool = True, plot: bool = True):
 
@@ -250,23 +252,23 @@ class MDA_RBF_Model(object):
              self.raw_ss_data.sel(site=sites_out_list)[self.ss_attrs[1]].values),
             min_dist_th=200, extra_help=('lon',3) # dont avoid any node
         )[0]
-        for site_out, shore in zip(sites_out_list, closest_shores):
-            # INFO: we avoid the shore with difficult structures
-            # for sh in [0,1,2,3,6,7,8,12,14,16,17]:
-            #     if sh in [0,1,2,3,6,7,8,12] and sh==shore[0]:
-            #         sites[sh].append(site_out)
-            #         pass
-            #     if sh in [14,16,17,19] and sh in shore:
-            #         sites[sh].append(site_out)
-            #         pass
-            if shore[0]==11:
-                sites[12].append(site_out)
-            else:
-                sites[shore[0]].append(site_out)
-        # check all lists are with unique elements
-        sites = [
-            list(np.unique(sites_in_shore)) for sites_in_shore in sites
-        ]
+        # for site_out, shore in zip(sites_out_list, closest_shores):
+        #     # INFO: we avoid the shore with difficult structures
+        #     # for sh in [0,1,2,3,6,7,8,12,14,16,17]:
+        #     #     if sh in [0,1,2,3,6,7,8,12] and sh==shore[0]:
+        #     #         sites[sh].append(site_out)
+        #     #         pass
+        #     #     if sh in [14,16,17,19] and sh in shore:
+        #     #         sites[sh].append(site_out)
+        #     #         pass
+        #     if shore[0]==11:
+        #         sites[12].append(site_out)
+        #     else:
+        #         sites[shore[0]].append(site_out)
+        # # check all lists are with unique elements
+        # sites = [
+        #     list(np.unique(sites_in_shore)) for sites_in_shore in sites
+        # ]
 
         # save as list with all the data for the pcs
         raw_ss_locs = [self.raw_ss_data.sel(
@@ -355,7 +357,7 @@ class MDA_RBF_Model(object):
                                 'Input locations and closest stations',
                                 fontsize=_fontsize_title
                             )
-                ax.set_facecolor('lightblue')
+                ax.set_facecolor('white')
             plot_ccrs_nz(axes,plot_labels=(False,5,5))
             plt.show() # debug results as calculated
         else:
@@ -427,7 +429,7 @@ class MDA_RBF_Model(object):
                 wind_vars = dict_to_pca.pop('wind_vars')
                 winds = (winds[0], winds[1].sel({
                     wind_vars[1]:slice(local_region[1][0],local_region[1][1]),
-                    wind_vars[2]:slice(local_region[1][2],local_region[1][3])
+                    wind_vars[2]:slice(local_region[1][3],local_region[1][2])
                 })) # crop to wanted area
                 # plot_winds(winds_to_pca,n_times=2,quiv_step=2,
                 #            plot_region=(True,default_region_reduced)) \
@@ -566,20 +568,19 @@ class MDA_RBF_Model(object):
                         # time regular plot
                         ax_time = fig.add_subplot(gs[:,:2])
                         self.ss_real_data[sel_loc].sel(site=site).plot(
-                            ax=ax_time,c=real_obs_col,label='Real SS measures'
+                            ax=ax_time,c='navy',label='Real SS measures',alpha=1.0,lw=2
                         )
                         ax_time.plot(
                             self.ss_real_data[sel_loc].sel(site=site).time.values,
                             self.real_ss_rbf.isel(site=isite,experiment=0)\
                                 .ss_interp.values.reshape(-1),
-                            c='grey',linestyle='--',alpha=0.8,
-                            label='Reconstructed SS -- MDA + RBF'
+                            c='royalblue',alpha=1.0,lw=2,label='Reconstructed SS -- MDA + RBF'
                         )
                         ax_time.set_xlim(
-                            self.ss_real_data[sel_loc].sel(site=site).time.values[0],
-                            self.ss_real_data[sel_loc].sel(site=site).time.values[-1]
+                            datetime(2010,1,1), # self.ss_real_data[sel_loc].sel(site=site).time.values[0],
+                            datetime(2011,1,1)  # self.ss_real_data[sel_loc].sel(site=site).time.values[-1]
                         ) # delete white spaces
-                        ax_time.legend(ncol=2,fontsize=_fontsize_legend)
+                        ax_time.legend(ncol=2,fontsize=20) # _fontsize_legend
                         # validation plot
                         ax_vali = fig.add_subplot(gs[:,2:])
                         ax_vali.set_xlabel('Observation')
@@ -758,8 +759,14 @@ def MDA_RBF_algorithm(
         # plot ss subset and predictor
         if plot:
             fig, ax = plt.subplots(figsize=_figsize)
-            target_dataset.plot(ax=ax,c='k',alpha=0.8) if ss_pcs==1 else \
-                target_dataset.plot(ax=ax,hue='n_components',alpha=0.7)
+            if ss_pcs==1:
+                target_dataset.plot(ax=ax,color='k',label='SS')
+            else:
+                for ss_pc in range(ss_pcs):
+                    colors = ['k','b','g','c','m','y','k'][:ss_pcs]
+                    target_dataset.sel(n_components=ss_pc).plot(
+                        ax=ax,color=colors[ss_pc],label='SS'+str(ss_pc+1),alpha=1.0
+                    ) # plot some ss pcs
             ax.plot(
                 target_dataset.time.values[subset_indexes],
                 target_subset.values.reshape(-1,ss_pcs)[:,0],'.',

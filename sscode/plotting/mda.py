@@ -16,7 +16,7 @@ def axplot_scatter_mda_vs_data(ax, x_mda, y_mda, x_data, y_data):
     ax.scatter(
         x_data, y_data,
         marker = '.',
-        c = 'lightblue',
+        c = 'gray',
         s = 2, label = 'dataset'
     )
 
@@ -24,8 +24,8 @@ def axplot_scatter_mda_vs_data(ax, x_mda, y_mda, x_data, y_data):
     ax.scatter(
         x_mda, y_mda,
         marker = '.',
-        c = 'k',
-        s = 6, label='subset'
+        c = 'red',
+        s = 8, label='subset'
     )
 
 def Plot_MDA_Data(pd_data, pd_mda, show=True):

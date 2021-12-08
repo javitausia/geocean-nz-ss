@@ -71,13 +71,13 @@ def PCA_DynamicPred(pres, pres_vars: tuple = ('SLP','longitude','latitude'),
     if region[0]:
         pres = pres.sel({
             pres_vars[1]:slice(region[1][0],region[1][1]),
-            pres_vars[2]:slice(region[1][2],region[1][3])
+            pres_vars[2]:slice(region[1][3],region[1][2])
         })
         if winds[0]:
             print('\n adding the wind to the predictor... \n') if verbose else None
             wind = winds[1].sel({
                 wind_vars[1]:slice(region[1][0],region[1][1]),
-                wind_vars[2]:slice(region[1][2],region[1][3])
+                wind_vars[2]:slice(region[1][3],region[1][2])
             }) # TODO: check lat order when cropping
 
     # check if data is resampled and dropna

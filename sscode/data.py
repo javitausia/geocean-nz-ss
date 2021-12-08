@@ -13,8 +13,8 @@ import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location # get config params
-#data_path = os.getenv('SSURGE_DATA_PATH', data_path)
-print("DATA PATH", data_path)
+# data_path = os.getenv('SSURGE_DATA_PATH', data_path)
+print('DATA PATH', data_path)
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
 from .utils import calculate_relative_winds
@@ -35,9 +35,10 @@ loader_dict_options = {
 }
 # dataset attrs
 datasets_attrs = {
-    'era5': ('longitude','latitude',None,'ERA 5 reanalysis','u10','v10'),
-    #'cfsr': ('lon','lat',None,'CFSR reanalysis','U_GRD_L103','V_GRD_L103'),
-    'cfsr': ('longitude','latitude',None,'CFSR reanalysis','ugrd10m','vgrd10m'),
+    'era_5': ('longitude','latitude',None,'ERA 5 reanalysis'),
+    'era_5_winds': ('longitude','latitude',None,'ERA 5 winds reanalysis','u10','v10'),
+    'cfsr': ('longitude','latitude',None,'CFSR reanalysis'),
+    'cfsr_winds': ('lon','lat',None,'CFSR winds reanalysis','U_GRD_L103','V_GRD_L103'),
     'dac': ('longitude','latitude',None,'DAC global reanalysis'),
     'moana': ('lon','lat','site','Moana v2 hindcast'),
     'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
@@ -55,19 +56,20 @@ class Loader(object):
     methods in the class can be easily used, specifying just the list with all
     the datasets in the correct order
 
-    TODO: add Experiment to Loader class??
-
     """
 
-    def __init__(self, data_to_load: list = ['cfsr','moana','uhslc'],
-                 time_resample: str = '1D', load_winds: bool = True,
-                 location: tuple = default_location, plot: bool = True):
+    def __init__(self, data_to_load: list = ('cfsr','moana','uhslc'),
+                 time_resample: str = '1D', 
+                 load_winds: bool = (True,None),
+                 plot: bool = (True,True,True),
+                 load_predictor_files: tuple = (False,None)):
         """
         Loader class constructor
 
         ** By default, the Loader loads / calculates the winds projected in
         default_location, but the loaded data can be re-projected using
-        the function calculate_relative_winds() in utils.py **
+        the function calculate_relative_winds() in utils.py **, or the winds
+        might not be loaded
 
         Most of the parameters in this Loader class refer to the predictor
         loading functions, as those are the ones that might inccur memory
@@ -83,47 +85,42 @@ class Loader(object):
                 do not occupy much memory. Defaults to '1D'.
             load_winds (bool, optional): Load or not the wind data. It is recommended
                 to be loaded, but be careful killing the kernel. Defaults to True.
-            location (tuple, optional): Location if required (to project the winds).
-                It is alsa saved in the class attributes. Defaults to default_location.
             plot (bool, optional): Whether to plot or not the loaded data.
                 Defaults to True.
         """
 
         # save location
-        self.location = location
+        self.location = load_winds[1]
 
         # load the predictor
         if data_to_load[0] in loader_dict_options['predictor']:
-            if data_to_load[0]=='era_5':
-                predictor = load_era_5(
-                    time=time_resample,
-                    load_winds=(load_winds,location),
-                    plot=plot
-                )
-            elif data_to_load[0]=='cfsr':
-                predictor = load_cfsr(
-                    time=time_resample,
-                    load_winds=(load_winds,location),
-                    plot=plot
-                )
+            predictor = load_predictor(
+                atmospheric_data=data_to_load[0],
+                time=time_resample,
+                load_winds=load_winds,
+                plot=plot[0],
+                load_files=load_predictor_files
+            )
             # check loaded slp / winds and save attributes
             if len(predictor)==1:
                 self.predictor_slp = predictor[0]
+                self.predictor_attrs = datasets_attrs[data_to_load[0]]
             else:
                 self.predictor_slp = predictor[0]
                 self.predictor_wind = predictor[1]
-            self.predictor_attrs = datasets_attrs[data_to_load[0]]
+                self.predictor_attrs = datasets_attrs[data_to_load[0]]
+                self.predictor_wind_attrs = datasets_attrs[data_to_load[0]+'_winds']
         else:
             print('\n data not available for this predictor!! \n')
 
         # load the predictand
         if data_to_load[1] in loader_dict_options['predictand']:
             if data_to_load[1]=='dac':
-                self.predictand = load_dac_hindcast(plot=plot)
+                self.predictand = load_dac_hindcast(plot=plot[1])
             elif data_to_load[1]=='moana':
-                self.predictand = load_moana_hindcast(plot=plot)
+                self.predictand = load_moana_hindcast(plot=plot[1])
             elif data_to_load[1]=='codec':
-                self.predictand = load_codec_hindcast(plot=plot)
+                self.predictand = load_codec_hindcast(plot=plot[1])
             self.predictand_attrs = datasets_attrs[data_to_load[1]]
         else:
             print('\n data not available for this predictand!! \n')
@@ -131,13 +128,13 @@ class Loader(object):
         # load the validator
         if data_to_load[2] in loader_dict_options['validator']:
             if data_to_load[2]=='uhslc':
-                self.validator = join_load_uhslc_tgs(plot=plot)
+                self.validator = join_load_uhslc_tgs(plot=plot[2])
             elif data_to_load[2]=='privtgs':
-                self.validator = load_private_tgs(plot=plot)
+                self.validator = load_private_tgs(plot=plot[2])
             elif data_to_load[2]=='linz':
-                self.validator = join_load_linz_tgs(plot=plot)
+                self.validator = join_load_linz_tgs(plot=plot[2])
             elif data_to_load[2]=='other':
-                self.validator = join_load_other_tgs(plot=plot)
+                self.validator = join_load_other_tgs(plot=plot[2])
             self.validator_attrs = datasets_attrs[data_to_load[2]]
         else:
             print('\n data not available for this validator!! \n')
@@ -166,146 +163,22 @@ class Loader(object):
         ) # compare datasets
 
 
-def load_era_5(data_path: str = data_path+'/era_5/',
-               time: str = '1997', # time cropping recommended
-               load_winds: tuple = (True,default_location),
-               plot: bool = True):
+def load_predictor(atmospheric_data: str = 'cfsr',
+                   time: str = '1D', # time cropping recommended
+                   load_winds: tuple = (False,default_location),
+                   plot: bool = True, load_files: tuple = (False,None)):
     """
-    This function loads the era5 data and crops it to a time frame
-    of a year, or resamples it daily, as it is very difficult to 
+    This function loads the atmospheric data and crops it to a time frame
+    of a year, or resamples it daily, 12hourly... as it is very difficult to 
     work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
     location if requested
 
     Args:
-        data_path (str, optional): Data path folder in repository. 
-            - Defaults to data_path.
+        atmospheric_data (str, optional): Dataset to load. 
+            - Defaults to cfsr.
         time (str, optional): Year to crop the data. It can also be a time
-            step to resample the data as 1H, 6H, 1D...
-            - Defaults to '1997'.
-        load_winds (tuple, optional): this indicates wether the winds are loaded or not, and
-            the location of the projected winds.
-            - Defaults to (True,default_location)
-        plot (bool, optional): Whether to plot or not the results.
-            - Defaults to True.
-            
-    Returns:
-        [list]: This is a list with the data loaded.
-    """
-
-    # load / calculate... xarray datasets
-    print('\n loading the sea-level-pressure fields... \n')
-    if time not in list(
-        np.arange(1988,2022,1).astype(str) # years of data + 2
-    ):
-        # resample to daily
-        if time=='1D' and os.path.isfile(os.path.join(data_path,
-                                                      'ERA5_MSLP_daily.nc')) and \
-            os.path.isfile(
-                os.path.join(data_path,'ERA_5_WINDs_daily.nc')
-            ): # check files existance
-            print('\n loading daily resampled data... \n')
-            # loading resampled data
-            mslp = xr.open_dataarray(os.path.join(data_path,
-                                                  'ERA5_MSLP_daily.nc'))
-            if load_winds[0]:
-                wind = xr.open_dataset(os.path.join(data_path,
-                                                    'ERA_5_WINDs_daily.nc'))
-                # plot the data
-                plot_pres_winds( # if plot, slp and winds must be loaded
-                    [mslp,wind],data_name=datasets_attrs['era_5'][3],
-                    lat_name=datasets_attrs['era_5'][1],
-                    lon_name=datasets_attrs['era_5'][0],
-                    u_name=datasets_attrs['era_5'][4],
-                    v_name=datasets_attrs['era_5'][5],
-                    wind_proj='wind_proj_mask'
-                ) if plot else None
-            # return data
-            return_data = [mslp] if not load_winds[0] else [mslp,wind]
-            return return_data
-        else:
-            print('\n resampling data to {}... \n'.format(time))
-            mslp = xr.open_dataset(os.path.join(data_path,
-                                                'ERA5_MSLP_1H_1979_2021.nc'))['msl']\
-                .resample(time=time).mean()
-        if load_winds[0]:
-            print('\n loading the winds... \n')
-            uw = xr.open_dataset(os.path.join(data_path,
-                                              'ERA5_10mu_1H_1979_2021.nc'))['u10']\
-                .resample(time=time).mean()
-            vw = xr.open_dataset(os.path.join(data_path,
-                                              'ERA5_10mv_1H_1979_2021.nc'))['v10']\
-                .resample(time=time).mean()
-            wind = calculate_relative_winds(
-                location=load_winds[1],uw=uw,vw=vw,
-                lat_name=datasets_attrs['era_5'][1],
-                lon_name=datasets_attrs['era_5'][0]
-            )
-            # plot the data
-            plot_pres_winds(
-                [mslp,wind],data_name=datasets_attrs['era_5'][3],
-                lat_name=datasets_attrs['era_5'][1],
-                lon_name=datasets_attrs['era_5'][0],
-                u_name=datasets_attrs['era_5'][4],
-                v_name=datasets_attrs['era_5'][5]
-            ) if plot else None
-        else:
-            print('\n projected winds will not be calculated... returning the SLP... \n')
-    else:
-        mslp = xr.open_dataset(os.path.join(data_path,
-                                            'ERA5_MSLP_1H_1979_2021.nc'))['msl']
-        # try year cropping
-        if time:
-            mslp = mslp.sel(time=time) # year cropping
-            print(' cropped data to {} \n'.format(int(time)))
-        else:
-            print('\n LOADING ALL THE MSLP DATA (be careful with memory) \n')
-        if load_winds[0]:
-            print('\n loading the winds... \n')
-            uw = xr.open_dataset(os.path.join(data_path,
-                                              'ERA5_10mu_1H_1979_2021.nc'))['u10']\
-                .sel(time=time)
-            vw = xr.open_dataset(os.path.join(data_path,
-                                              'ERA5_10mv_1H_1979_2021.nc'))['v10']\
-                .sel(time=time)
-            wind = calculate_relative_winds(
-                location=load_winds[1],uw=uw,vw=vw,
-                lat_name=datasets_attrs['era5'][1],
-                lon_name=datasets_attrs['era5'][0]
-            )
-            # plot the data
-            plot_pres_winds(
-                [mslp,wind],data_name=datasets_attrs['era5'][3],
-                lat_name=datasets_attrs['era5'][1],
-                lon_name=datasets_attrs['era5'][0],
-                u_name=datasets_attrs['era_5'][4],
-                v_name=datasets_attrs['era_5'][5]
-            ) if plot else None
-        else:
-            print('\n projected winds will not be calculated... returning the SLP... \n')
-
-    # return the loaded datasets
-    return_data = [mslp] if not load_winds[0] else [mslp,wind]
-
-    return return_data
-
-
-def load_cfsr(data_path: str = data_path+'/cfsr/',
-              time: str = '1997', # time cropping recommended
-              load_winds: tuple = (False,default_location),
-              plot: bool = True):
-    """
-    This function loads the cfsr data and crops it to a time frame
-    of a year, or resamples it daily, as it is very difficult to 
-    work with all the data at the same time. The winds can be easily
-    loaded, and also cropped and projected in the direction of a
-    location if requested
-
-    Args:
-        data_path (str, optional): Data path folder in repository. 
-            - Defaults to data_path.
-        time (str, optional): Year to crop the data. It can also be a time
-            step to resample the data as 1H, 6H, 1D...
+            step to resample the data as 1H, 6H, 12H, 1D...
             - Defaults to '1997'.
         load_winds (tuple, optional): this indicates wether the winds are loaded or not, and
             the location of the projected winds.
@@ -317,127 +190,87 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
         [list]: This is a list with the data loaded.
     """
 
+    # specify dataset names for the different datasets available
+    slp_data = os.path.join(data_path,atmospheric_data,'CFSR_MSLP_1H_1990_2021.nc') \
+        if atmospheric_data=='cfsr' else os.path.join(data_path,atmospheric_data,'ERA5_MSLP_1H_1990_2021.nc')
+    winds_data = (os.path.join(data_path,atmospheric_data,'CFSR_uwnd_6H_1990_2021.nc'),
+                  os.path.join(data_path,atmospheric_data,'CFSR_vwnd_6H_1990_2021.nc')) \
+        if atmospheric_data=='cfsr' else (os.path.join(data_path,atmospheric_data,'ERA5_10mu_1H_1979_2021.nc'),
+                                          os.path.join(data_path,atmospheric_data,'ERA5_10mv_1H_1979_2021.nc'))
+
+    # load previously calculated data if specified
+    if load_files[0]:
+        print('\n loading previously saved atmospheric data... \n')
+        return [
+            xr.open_dataset(file).sortby(
+                datasets_attrs[atmospheric_data][0],ascending=True).sortby(
+                datasets_attrs[atmospheric_data][1],ascending=True)
+            if 'WIND' not in file else xr.open_dataset(file).sortby(
+                datasets_attrs[atmospheric_data+'_winds'][0],ascending=True).sortby(
+                datasets_attrs[atmospheric_data+'_winds'][1],ascending=True)
+            for file in load_files[1]
+        ]
+
     # load / calculate... xarray datasets
-    print('\n loading the sea-level-pressure fields... \n')
+    print('\n loading and managing atmospheric data... \n')
     if time not in list(
-        np.arange(1988,2022,1).astype(str) # years of data + 2
+        np.arange(1988,2024,1).astype(str) # years of data + 2
     ):
-        # resample to daily
-        if time=='1D' and os.path.isfile(os.path.join(data_path,
-                                                      'CFSR_MSLP_daily.nc')):
-            # loading saved datasets
-            print('\n loading daily resampled data... \n')
-            # loading resampled data
-            mslp = xr.open_dataarray(os.path.join(data_path,
-                                                  'CFSR_MSLP_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
-#<<<<<<< HEAD
-#            mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-#                .sortby(datasets_attrs['cfsr'][1],ascending=True)
-#            if load_winds[0]:
-#=======
-            if load_winds[0] and os.path.isfile(os.path.join(data_path,
-                                                             'CFSR_WINDs_daily.nc')):
-#>>>>>>> b0a8047e35346e2a115f52728b2cc6b7feb50090
-                wind = xr.open_dataset(os.path.join(data_path,
-                                                    'CFSR_WINDs_daily.nc')).sel(time=slice(datetime(1990,1,1), None))
-                # plot the data
-                plot_pres_winds(
-                    [mslp,wind],data_name=datasets_attrs['cfsr'][3],
-                    lat_name=datasets_attrs['cfsr'][1],
-                    lon_name=datasets_attrs['cfsr'][0],
-                    u_name=datasets_attrs['cfsr'][4],
-                    v_name=datasets_attrs['cfsr'][5],
-                    wind_proj='wind_proj_mask'
-                ) if plot else None
-            # return data
-            return_data = [mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sortby(datasets_attrs['cfsr'][1],ascending=True)] if not load_winds[0] else [
-                    mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                        .sortby(datasets_attrs['cfsr'][1],ascending=True),
-                    wind.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                        .sortby(datasets_attrs['cfsr'][1],ascending=True)
-                ]
-            return return_data
-        else:
-            print('\n resampling data to {}... \n'.format(time))
-            mslp = xr.open_dataarray(os.path.join(data_path,
-                                                  'CFSR_MSLP_1H_1990_2021.nc'))\
-                .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
-#<<<<<<< HEAD
-#            mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-#                .sortby(datasets_attrs['cfsr'][1],ascending=True)
-#=======
-#>>>>>>> b0a8047e35346e2a115f52728b2cc6b7feb50090
+        print('\n resampling data to {}... \n'.format(time))
+        print('\n loading the sea-level-pressure fields... \n')
+        mslp = xr.open_dataarray(slp_data).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
         if load_winds[0]:
             print('\n loading and calculating the winds... \n')
-            uw = xr.open_dataset(os.path.join(data_path,
-                                              'CFSR_uwnd_6H_1990_2021.nc'))[datasets_attrs['cfsr'][4]]\
-                .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
-            vw = xr.open_dataset(os.path.join(data_path,
-                                              'CFSR_vwnd_6H_1990_2021.nc'))[datasets_attrs['cfsr'][5]]\
-                .sel(time=slice(datetime(1990,1,1), None)).resample(time=time).mean()
+            uw = xr.open_dataarray(winds_data[0]).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
+            vw = xr.open_dataarray(winds_data[1]).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
             wind = calculate_relative_winds(location=load_winds[1],
-                                            lat_name=datasets_attrs['cfsr'][1],
-                                            lon_name=datasets_attrs['cfsr'][0],
-                                            uw=uw,vw=vw)
+                                            lat_name=datasets_attrs[atmospheric_data+'_winds'][1],
+                                            lon_name=datasets_attrs[atmospheric_data+'_winds'][0],
+                                            uw=uw,vw=vw) \
+                if load_winds[1] else xr.merge([uw,vw]).dropna(dim='time',how='all')
             # plot the data
             plot_pres_winds(
-                [mslp,wind],data_name=datasets_attrs['cfsr'][3],
-                lat_name=datasets_attrs['cfsr'][1],
-                lon_name=datasets_attrs['cfsr'][0],
-                u_name=datasets_attrs['cfsr'][4],
-                v_name=datasets_attrs['cfsr'][5],
+                [mslp,wind],data_name=datasets_attrs[atmospheric_data+'_winds'][3],
+                lat_name=datasets_attrs[atmospheric_data+'_winds'][1],
+                lon_name=datasets_attrs[atmospheric_data+'_winds'][0],
+                u_name=datasets_attrs[atmospheric_data+'_winds'][4],
+                v_name=datasets_attrs[atmospheric_data+'_winds'][5],
                 wind_proj='wind_proj_mask'
-            )
+            ) if plot and load_winds[1] else None
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
-        mslp = xr.open_dataarray(os.path.join(data_path,
-                                              'CFSR_MSLP_1H_1990_2021.nc')).sel(time=slice(datetime(1990,1,1), None))
-#<<<<<<< HEAD
-#        mslp = mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-#            .sortby(datasets_attrs['cfsr'][1],ascending=True)
-#=======
-        # mslp = mslp.sorby(datasets_attrs['cfsr'][0],ascending=True)\
-        #     .sorby(datasets_attrs['cfsr'][1],ascending=True)
-#>>>>>>> b0a8047e35346e2a115f52728b2cc6b7feb50090
-        # try year cropping
-        if time:
-            mslp = mslp.sel(time=time)
-            print(' cropping the data to {} \n'.format(int(time)))
-        else:
-            print('\n LOADING ALL THE MSLP DATA (be careful with RAM memory) \n')
+        print('\n cropping data to {}... \n'.format(time))
+        print('\n loading the sea-level-pressure fields... \n')
+        mslp = xr.open_dataarray(slp_data).sel(time=time)
         if load_winds[0]:
-            print('\n loading the winds... \n')
-            uw = xr.open_dataarray(os.path.join(data_path,
-                                                'CFSR_uwnd_6H_1990_2021.nc'))\
-                .sel(time=slice(datetime(1990,1,1), None)).sel(time=time)
-            vw = xr.open_dataarray(os.path.join(data_path,
-                                                'CFSR_vwnd_6H_1990_2021.nc'))\
-                .sel(time=slice(datetime(1990,1,1), None)).sel(time=time)
-            wind = calculate_relative_winds(
-                location=load_winds[1],uw=uw,vw=vw,
-                lat_name=datasets_attrs['cfsr'][1],
-                lon_name=datasets_attrs['cfsr'][0]
-            )
+            print('\n loading and calculating the winds... \n')
+            uw = xr.open_dataset(winds_data[0]).sel(time=time)
+            vw = xr.open_dataset(winds_data[1]).sel(time=time)
+            wind = calculate_relative_winds(location=load_winds[1],
+                                            lat_name=datasets_attrs[atmospheric_data+'_winds'][1],
+                                            lon_name=datasets_attrs[atmospheric_data+'_winds'][0],
+                                            uw=uw,vw=vw) \
+                if load_winds[1] else xr.merge([uw,vw]).dropna(dim='time',how='all')
             # plot the data
             plot_pres_winds(
-                [mslp,wind],data_name=datasets_attrs['cfsr'][3],
-                lat_name=datasets_attrs['cfsr'][1],
-                lon_name=datasets_attrs['cfsr'][0],
-                u_name=datasets_attrs['cfsr'][4],
-                v_name=datasets_attrs['cfsr'][5],
-            )
+                [mslp,wind],data_name=datasets_attrs[atmospheric_data+'_winds'][3],
+                lat_name=datasets_attrs[atmospheric_data+'_winds'][1],
+                lon_name=datasets_attrs[atmospheric_data+'_winds'][0],
+                u_name=datasets_attrs[atmospheric_data+'_winds'][4],
+                v_name=datasets_attrs[atmospheric_data+'_winds'][5],
+                wind_proj='wind_proj_mask'
+            ) if plot and load_winds[1] else None
         else:
             print('\n projected winds will not be calculated... returning the SLP... \n')
 
     # return the loaded datasets
-    return_data = [mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-        .sortby(datasets_attrs['cfsr'][1],ascending=True)] if not load_winds[0] else [
-            mslp.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sortby(datasets_attrs['cfsr'][1],ascending=True),
-            wind.sortby(datasets_attrs['cfsr'][0],ascending=True)\
-                .sortby(datasets_attrs['cfsr'][1],ascending=True)
+    return_data = [mslp.sortby(datasets_attrs[atmospheric_data][0],ascending=True)\
+        .sortby(datasets_attrs[atmospheric_data][1],ascending=True)] if not load_winds[0] else [
+            mslp.sortby(datasets_attrs[atmospheric_data][0],ascending=True)\
+                .sortby(datasets_attrs[atmospheric_data][1],ascending=True),
+            wind.sortby(datasets_attrs[atmospheric_data+'_winds'][0],ascending=True)\
+                .sortby(datasets_attrs[atmospheric_data+'_winds'][1],ascending=True)
         ]
 
     return return_data
@@ -445,7 +278,7 @@ def load_cfsr(data_path: str = data_path+'/cfsr/',
 
 def join_load_uhslc_tgs(files_path: str = 
     data_path+'/storm_surge_data/nz_tidal_gauges/uhslc/processed/*.nc',
-    plot: bool = False):
+    plot: bool = True):
 
     """
     Join all the uhslc tgs in a single xarrray dataset to play with it

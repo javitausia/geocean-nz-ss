@@ -247,8 +247,7 @@ class Experiment(object):
                     ]
                 )
             )
-
-            print(model_params_for_site.shape)
+            # print(model_params_for_site.shape)
 
             # lets iterate over all the pca_attrs + model_attrs
             if self.model=='linear':
@@ -312,8 +311,8 @@ class Experiment(object):
                     for istat,stat in enumerate(stats):
                         model_params_for_site[
                             tuple(list(i_parameters)+[istat])
-                        ] = stats[stat] # append stat to each model / site
 
+                        ] = stats[stat] # append stat to each model / site
                     # sum 1 to counter
                     model_counter += 1
             

@@ -104,7 +104,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
                 fig.colorbar(eofp,cax=pos_colbar)
         # plot nz map
         plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
-                     plot_labels=(True,10,10))
+                     plot_labels=(False,10,10))
         # plot variance in title
         fig.suptitle('EOF {}: {:.1%} of explained variance'.format(
             i_comp+1, (variance/np.sum(variance))[i_comp]
@@ -119,7 +119,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
         ax.set_xlim(pca_data.time.values[0],pca_data.time.values[-1])
         ax.xaxis.set_major_locator(yloc1)
         ax.xaxis.set_major_formatter(yfmt)
-        ax.grid(True,which='both',axis='x',linestyle='--',color='grey')
+        # ax.grid(True,which='both',axis='x',linestyle='--',color='grey')
         ax.tick_params(axis='both',which='major',labelsize=8)
 
         # show plots
@@ -208,7 +208,7 @@ def plot_recon_pcs(pca_data, pcs_scaler,
             fig.colorbar(eofp,cax=pos_colbar)
     # plot nz map
     plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
-                 plot_labels=(True,10,10))
+                 plot_labels=(False,10,10))
     # plot variance in title
     fig.suptitle(
         'Reconstructed SLP with {} PCs in {}'.format(

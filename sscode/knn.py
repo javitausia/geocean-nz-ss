@@ -116,13 +116,22 @@ def KNN_Regression(
         random_state=88, shuffle=False
     )
 
+    # standarize the PCs (so the distance is correctly calculated)
+    # pcs_scaler = StandardScaler()
+    # X_train = pcs_scaler.fit_transform(X_train)
+    # X_train[np.isnan(X_train)] = 0.0 # check additional nans
+    # X_test = pcs_scaler.transform(X_test)
+    # X_test[np.isnan(X_test)] = 0.0 # check additional nans
+
     # individual knn regressor
     if k_neighbors:
         print('\n KNN regression with {} neighbors... \n'.format(
             k_neighbors
         )) if verbose else None
         # perform the linear regression
-        neigh = KNeighborsRegressor(n_neighbors=k_neighbors)
+        neigh = KNeighborsRegressor(
+            n_neighbors=k_neighbors,weights='distance'
+        ) # create the knn regressor
         neigh.fit(X_train,y_train)
         prediction = neigh.predict(X_test)
         # check model results

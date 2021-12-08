@@ -11,12 +11,13 @@ from xarray.backends.api import open_dataarray
 from .config import default_location, data_path
 data_path = os.getenv('SSURGE_DATA_PATH', data_path)
 
+
 def calculate_relative_winds(location: tuple = default_location,
                              uw = None, vw = None,
                              lat_name: str = 'lat',
                              lon_name: str = 'lon',
                              delete_direc: int = 180,
-                             chunk=False):
+                             chunk=True):
     """
     This function calculates the projected winds in the direction to
     the given location. Winds with an angle greater than delete_direc with 
@@ -65,6 +66,11 @@ def calculate_relative_winds(location: tuple = default_location,
     print('\n calculating winds with: \n\n {} \n'.format(
         wind # these are the wind merged components
     )) if True else None
+
+    # return not projected winds if location is not specified
+    if location is None:
+        return wind
+
     # calculate directions of winds (where they go)
     wind_direcs = np.arctan2(wind[uw.name].values,
                              wind[vw.name].values) * 180/np.pi
