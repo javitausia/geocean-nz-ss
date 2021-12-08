@@ -65,7 +65,7 @@ def calculate_relative_winds(location: tuple = default_location,
         }) # rechunk and drop unused variables
     print('\n calculating winds with: \n\n {} \n'.format(
         wind # these are the wind merged components
-    )) if True else None
+    )) if False else None
 
     # return not projected winds if location is not specified
     if location is None:
