@@ -31,10 +31,11 @@ class PCA_DynamicPred(object):
                  calculate_gradient: bool = False,
                  wind = None,
                  wind_vars: tuple = ('wind_proj_mask','lon','lat','U_GRD_L103','V_GRD_L103'),
+                 # here we could make use of datasets_attrs in config.py file
                  time_lapse: int = 1, # 1 equals to NO time delay                    
                  time_resample: str = '1D',
                  region: tuple = (True,default_region),
-                 #ss_site: tuple = (False, None),
+                 # ss_site: tuple = (False, None),
                  site_location = None,
                  pca_plot: tuple = (True,False,2),
                  verbose: bool = True,
@@ -66,7 +67,7 @@ class PCA_DynamicPred(object):
         
         self.args = locals()
         
-        print('Time resample', time_resample)
+        # print('Time resample', time_resample)
     
 
     def pca_assemble_matrix(self):
@@ -87,15 +88,21 @@ class PCA_DynamicPred(object):
         wind_vars = self.wind_vars
         time_lapse = self.time_lapse
         time_resample = self.time_resample
-        region = self.region 
+        region = self.region
 
         # if winds then calculate projected winds
         if self.wind:
             winds = (True,
                 calculate_relative_winds(
                     location=self.site_location, # this is the location of site
-                    uw=self.wind[self.wind_vars[3]],
-                    vw=self.wind[self.wind_vars[4]],
+                    uw=self.wind[self.wind_vars[3]].load().sel({
+                        wind_vars[1]:slice(region[1][0],region[1][1]),
+                        wind_vars[2]:slice(region[1][2],region[1][3])
+                    }),
+                    vw=self.wind[self.wind_vars[4]].load().sel({
+                        wind_vars[1]:slice(region[1][0],region[1][1]),
+                        wind_vars[2]:slice(region[1][2],region[1][3])
+                    }),
                     lat_name=self.wind_vars[2],
                     lon_name=self.wind_vars[1]
                 )
@@ -241,7 +248,6 @@ class PCA_DynamicPred(object):
            Assemble the PCA matrix, does the analysis and stored the
            result.
         """
-
         
         pcs_matrix, pcs_time = self.pca_assemble_matrix()
             
@@ -262,7 +268,6 @@ class PCA_DynamicPred(object):
            intended to be used to store the results of the PCA analsys and the
            scaler object used as part of the analysis.
         """
-
         
         name_attrs = []
 
@@ -386,11 +391,12 @@ class PCA_DynamicPred(object):
         
         return PCs, pca_fit.components_, pca_fit.explained_variance_
     
+
     def pca_calculate(self,
                       pcs_matrix,
                       pcs_time,
                       method='cpu',
-                      percent=None):
+                      percent=0.99):
         """
            Runs the PCA decomposition on a given matrix using the chosen method.
 

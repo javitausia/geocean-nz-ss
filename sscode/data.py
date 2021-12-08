@@ -66,6 +66,12 @@ class Loader(object):
         """
         Loader class constructor
 
+        This Loader function loads the data that will be used in future parts.
+
+        Specifying the data_to_load parameter, it is possible to load all the
+        datasets that are available in the data folder, the predictor, the predictand
+        and the tidal gauges, which are used to validate the storm surge hindcast.
+
         ** By default, the Loader loads / calculates the winds projected in
         default_location, but the loaded data can be re-projected using
         the function calculate_relative_winds() in utils.py **, or the winds
@@ -81,12 +87,18 @@ class Loader(object):
                 - Defaults to ['cfsr','moana','uhslc'].
             time_resample (str, optional): Time step to resample the data to, this might
                 also by a year / years to crop the data to. Notice that this time
-                resample is only made in the predictor, as the other datasets
+                resample is only used in the predictor, as the other datasets
                 do not occupy much memory. Defaults to '1D'.
-            load_winds (bool, optional): Load or not the wind data. It is recommended
-                to be loaded, but be careful killing the kernel. Defaults to True.
-            plot (bool, optional): Whether to plot or not the loaded data.
-                Defaults to True.
+            load_winds (tuple, optional): Load or not the wind data. It is recommended
+                to be loaded, but be careful killing the kernel. Defaults to (True,None).
+                The first value is to load or not the u and v components, and the second
+                one refers to the location to project the winds, and example could be:
+                    ex: (True,default_location)
+            plot (tuple, optional): Whether to plot or not the loaded data.
+                Defaults to (True,True,True).
+            load_predictor_files (tuple, optional): Load or not the saved predictor files.
+                This helps the Loader to load previously saved predictor files.
+                - Defaults to (False,None).
         """
 
         # save location
@@ -140,7 +152,7 @@ class Loader(object):
             print('\n data not available for this validator!! \n')
                 
                 
-    def validate_datasets(self, # this is prepared for UHSLC-Moana
+    def validate_datasets(self, # this is prepared for UHSLC-Moana validation
                           comparison_variables: list = [['ss','msea'],['ss','msea']],
                           time_resample = None):
         """
@@ -152,7 +164,10 @@ class Loader(object):
                 predictand, and the second list refer to the validator
             time_resample (str, optional): Time resample step in case the comparison
                 might be done in a reduced time step. Defaults to None.
-
+        
+        Returns:
+            [predictand and validator + stats]: This returns the predictand and the validator
+            in the locations specified, plus the comparison statistics
         """
 
         self.predictand_reduced, self.validator_reduced, self.ss_stats = compare_datasets(
@@ -165,8 +180,9 @@ class Loader(object):
 
 def load_predictor(atmospheric_data: str = 'cfsr',
                    time: str = '1D', # time cropping recommended
-                   load_winds: tuple = (False,default_location),
-                   plot: bool = True, load_files: tuple = (False,None)):
+                   load_winds: tuple = (True,default_location),
+                   plot: bool = True, 
+                   load_files: tuple = (False,None)):
     """
     This function loads the atmospheric data and crops it to a time frame
     of a year, or resamples it daily, 12hourly... as it is very difficult to 
@@ -177,14 +193,17 @@ def load_predictor(atmospheric_data: str = 'cfsr',
     Args:
         atmospheric_data (str, optional): Dataset to load. 
             - Defaults to cfsr.
-        time (str, optional): Year to crop the data. It can also be a time
+        time (str, optional): Year/s to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 12H, 1D...
-            - Defaults to '1997'.
-        load_winds (tuple, optional): this indicates wether the winds are loaded or not, and
+            - Defaults to '1D'.
+        load_winds (tuple, optional): This indicates wether the winds are loaded or not, and
             the location of the projected winds.
             - Defaults to (True,default_location)
         plot (bool, optional): Whether to plot or not the results.
             - Defaults to True.
+        load_files (tuple, optional): Load or not the saved predictor files.
+            This helps the function to load previously saved predictor files.
+            - Defaults to (False,None).
 
     Returns:
         [list]: This is a list with the data loaded.
@@ -288,7 +307,8 @@ def join_load_uhslc_tgs(files_path: str =
     """
 
     # join files assigning a name to each
-    print('\n loading and plotting the UHSLC tidal guages... \n')
+    print('\n loading and plotting the UHSLC tidal guages... \n') if plot else \
+        print('\n loading the UHSLC tidal guages... \n')
     uhslc_tgs_list = []
     for file in glob.glob(files_path):
         uhslc_tg = xr.open_dataset(file)
@@ -338,7 +358,8 @@ def join_load_linz_tgs(files_path: str =
     """
 
     # join files assigning a name to each
-    print('\n loading and plotting the LINZ tidal guages... \n')
+    print('\n loading and plotting the LINZ tidal guages... \n') if plot else \
+        print('\n loading the LINZ tidal guages... \n')
     linz_tgs_list = []
     for file in glob.glob(files_path):
         linz_tg = xr.open_dataset(file)
@@ -388,7 +409,8 @@ def join_load_other_tgs(files_path: str =
     """
 
     # join files assigning a name to each
-    print('\n loading and plotting the OTHER tidal guages... \n')
+    print('\n loading and plotting the OTHER tidal guages... \n') if plot else \
+        print('\n loading the OTHER tidal guages... \n')
     other_tgs_list = []
     for file in glob.glob(files_path):
         other_tg = xr.open_dataset(file)
@@ -427,7 +449,7 @@ def join_load_other_tgs(files_path: str =
 
 
 def load_private_tgs(file_path: str = 
-    data_path+'/storm_surge_data/nz_tidal_gauges/geocean/tgs_geocean_NZ.nc',
+    data_path+'/storm_surge_data/nz_tidal_gauges/private/tgs_private_NZ.nc',
     plot: bool = False):
 
     """
@@ -438,7 +460,8 @@ def load_private_tgs(file_path: str =
     """
 
     # load and plot all the geocean tgs
-    print('\n loading and plotting the private tidal guages... \n')
+    print('\n loading and plotting the private tidal guages... \n') if plot else \
+        print('\n loading the private tidal guages... \n')
     private_tgs = xr.open_dataset(file_path)
 
     if plot: # plot if specified
@@ -476,7 +499,7 @@ def load_moana_hindcast(file_path: str =
         moana_to_plot = moana.ss.load().groupby('time.season').quantile(0.99)
         # plot some stats
         fig, axes = plt.subplots(
-            ncols=2,nrows=2,figsize=(_figsize_width*3.8,_figsize_height*2.6),
+            ncols=2,nrows=2,figsize=(_figsize_width*3.5,_figsize_height*2.2),
             subplot_kw={
                 'projection':ccrs.PlateCarree(
                     central_longitude=180

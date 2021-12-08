@@ -11,11 +11,10 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 # custom
-from .config import data_path, default_location, default_region, \
+from .config import data_path, \
+    default_region, default_region_reduced, \
     default_evaluation_metrics, default_ext_quantile # get config params
 from .data import datasets_attrs
-from .plotting.config import _figsize, _figsize_width, _figsize_height, \
-    _fontsize_title, _fontsize_legend
 from .utils import calculate_relative_winds
 from .pca_new import PCA_DynamicPred
 from .linear import MultiLinear_Regression
@@ -23,45 +22,50 @@ from .knn import KNN_Regression
 from .xgboost import XGBoost_Regression
 
 
-# below some example dictionarys to use
-pca_attrs_default = {
-    'calculate_gradient': [False,True], 
+sites_to_analyze = np.unique( # closest Moana v2 Hindcast to tidal gauges
+    [ 689,328,393,1327,393,480,999,116,224,1124,949,708, # UHSLC
+      1296,378,1124,780,613,488,1442,1217,578,200,1177,1025,689,949,224,1146, # LINZ
+      1174,1260,1217,744,1064,1214,803,999 # OTHER (ports...)
+    ]
+) # these are the default sites to analyze
+pca_attrs_exp = {
+    'calculate_gradient': [False,True],
     'winds': [False,True],
     'time_lapse': [1,2,3], # 1 equals to NO time delay 
-    'time_resample': ['1D'],
-    'region': [(True,default_region)]
-}
-linear_attrs_default = {
-    'train_size': [0.8,0.9], 'percentage_PCs': [0.80,0.88,0.95]
-}
-knn_attrs_default = {
-    'train_size': [0.8,0.9], 'percentage_PCs': [0.80,0.88,0.95],
-    'k_neighbors': [4,8,12,16,None] # None calculates the optimum k-neighs
-}
-xgboost_attrs_default = {
-    'train_size': [0.8,0.9], 'percentage_PCs': [0.80,0.88,0.95],
-    'n_estimators': [40,50,60], 'max_depth': np.arange(7,11,2),
-    'min_samples_split': np.linspace(0.01,0.4,5),
+    'time_resample': ['6H','12H','1D'], # 6H and 12H available...
+    'region': [('local',(1.5,1.5)),('local',(2.5,2.5)),(True,default_region_reduced)]
+} # these are the pca attributes to analyze
+linear_attrs_exp = {
+    'train_size': [0.7], 'percentage_PCs': [0.98]
+} # these are the basic linear regression attributes to analyze
+knn_attrs_exp = {
+    'train_size': [0.7], 'percentage_PCs': [0.98],
+    'k_neighbors': np.arange(1,50,1) # None/0 calculates the optimum k-neighs
+} # these are the basic knn attributes to analyze
+xgboost_attrs_exp = {
+    'train_size': [0.7], 'percentage_PCs': [0.98],
+    'n_estimators': [50], 'max_depth': [6,12,18],
+    'min_samples_split': [0.02,0.06,0.1],
     'learning_rate': [0.1], 'loss': ['ls'] # more could be added
-}
+} # these are the basic xgboost attributes to analyze
 
 class Experiment(object):
     """
-    This class Experiment summarizes all the previous work done with the linear and the
-    knn models, as this class allows the user to perform a detailed analysis of one
+    This class Experiment summarizes all the previous work done with the linear, knn and the
+    xgboost models, as this class allows the user to perform a detailed analysis of one
     requested model given a set of parameters
-
     """
 
-    def __init__(self, slp_data, wind_data, ss_data, # this must have several stations
-                 sites_to_analyze: list = list(np.random.randint(10,1000,5)),
+    def __init__(self, slp_data, wind_data, # this is the predictor
+                 ss_data, # this must have several stations
+                 sites_to_analyze: list = sites_to_analyze,
                  model: str = 'linear', # this is the model to analyze
                  model_metrics: list = default_evaluation_metrics,
                  ext_quantile: tuple = default_ext_quantile,
-                 pca_attrs: dict = pca_attrs_default,
-                 model_attrs: dict = linear_attrs_default,
+                 pca_attrs: dict = pca_attrs_exp,
+                 model_attrs: dict = linear_attrs_exp,
                  pcs_folder: str = data_path+'/pcs',
-                 verbose=True):
+                 verbose: bool = True):
         """
         As the initializator, the __init__ function creates the instance of the class,
         given a set of parameters, which are described below
@@ -73,20 +77,23 @@ class Experiment(object):
                 loaded with the Loader class, loader.predictor_wind!!
             ss_data (xarray.Dataset): This is the storm surge from the moana hindcast, previously
                 loaded with the Loader class, loader.predictand!!
-            sites_to_analyze (list, optional): This is the list with all the moana v2
+            sites_to_analyze (list/array, optional): This is the list with all the moana v2
                 hindcast locations to analyze. Defaults to random locations.
             model (str, optional): Type of model to analyze. Defaults to 'linear'.
             model_metrics (list, optional): These are all the evaluation metrics that might
-                be used to evaluate the model performance. Defaults to simple list.
+                be used to evaluate the model performance. Defaults to default_evaluation_metrics.
             ext_quantile (tuple, optional): These are the exterior quantiles to be used
                 in the case extreme analysis will be performed when calculating the model
-                performance metrics.
+                performance metrics. Defaults to default_ext_quantile.
+                    - see the config.py file for more information**
             pca_attrs (dict, optional): PCA dictionary with all the parameters to use in pca.
-                Defaults to pca_attrs_default.
+                Defaults to pca_attrs_exp.
             model_attrs (dict, optional): Model dictionary with all the parameters to use. 
-                Defaults to linear_attrs_default.
+                Defaults to linear_attrs_exp.
             pcs_folder (str, optional): Folder where the PCs are stored.
-                Default to '/home/metocean/pcas'
+                Default to data_path+'/pcs'
+            verbose (bool, optional): If True, prints the progress of the analysis.
+                Defaults to True.
         """
 
         # lets build the experiment!! + with CFSR
@@ -159,45 +166,37 @@ class Experiment(object):
         # these are the pca arguments to calculate the matrix
         dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
         trash = dict_to_pca.pop('winds')
+
         # change region parameter if local area is required
-        if parameters[4][1]==default_region and parameters[0]==True \
-             and parameters[1]==False and parameters[2]==1 and parameters[3]=='1D':
-            # we load the daily pcs
-            pca_data = xr.open_dataset(
-                data_path+'/cfsr/cfsr_regional_daily_pcs.nc'
-            )
-            return pca_data, None
-        else:
-            # calculate the pca if they are not stored
-            if parameters[4][0]=='local':
-                local_region = (True,(
-                    site_location[0]-parameters[4][1][0], # new lon / lat region
-                    site_location[0]+parameters[4][1][0],
-                    site_location[1]-parameters[4][1][1],
-                    site_location[1]+parameters[4][1][1]
-                ))
-                dict_to_pca['region'] = local_region
-            if site_id:
-                dict_to_pca['site_id'] = site_id
+        if dict_to_pca['region'][0]=='local':
+            local_region = (True,(
+                site_location[0]-dict_to_pca['region'][1][0], # new lon / lat region
+                site_location[0]+dict_to_pca['region'][1][0],
+                site_location[1]-dict_to_pca['region'][1][1],
+                site_location[1]+dict_to_pca['region'][1][1]
+            ))
+            dict_to_pca['region'] = local_region
+        if site_id:
+            dict_to_pca['site_id'] = site_id
 
-            # lets first calculate the pcs
-            return PCA_DynamicPred(
-                self.slp_data,pres_vars=('SLP','longitude','latitude'),
-                wind=self.wind_data if parameters[1] else None,
-                wind_vars=('wind_proj_mask',
-                    datasets_attrs[self.predictor_data][0],
-                    datasets_attrs[self.predictor_data][1],
-                    datasets_attrs[self.predictor_data][4],
-                    datasets_attrs[self.predictor_data][5]),
-                pca_plot=(plot,False,1),verbose=self.verbose,
-                site_location=site_location,
-                pcs_folder=self.pcs_folder,
-                **dict_to_pca # extra arguments without the winds
-            ).pcs_get()
+        # lets first calculate the pcs
+        return PCA_DynamicPred(
+            self.slp_data,pres_vars=('SLP','longitude','latitude'),
+            wind=self.wind_data if trash else None,
+            wind_vars=('wind_proj_mask', # might change
+                datasets_attrs[self.predictor_data+'_winds'][0],
+                datasets_attrs[self.predictor_data+'_winds'][1],
+                datasets_attrs[self.predictor_data+'_winds'][4],
+                datasets_attrs[self.predictor_data+'_winds'][5]),
+            pca_plot=(plot,False,1),verbose=self.verbose,
+            site_location=site_location,
+            pcs_folder=self.pcs_folder,
+            **dict_to_pca # extra arguments without the winds
+        ).pcs_get()
 
 
-    def execute_cross_model_calculations(self, verbose: bool = False, 
-                                         plot: bool = False,
+    def execute_cross_model_calculations(self, verbose: bool = True, 
+                                         plot: bool = True,
                                          save_ind_sites: bool = False):
         """
         This function performs all the cross-models with the input
@@ -247,7 +246,6 @@ class Experiment(object):
                     ]
                 )
             )
-            # print(model_params_for_site.shape)
 
             # lets iterate over all the pca_attrs + model_attrs
             if self.model=='linear':
@@ -287,7 +285,8 @@ class Experiment(object):
                             i_parameters # this are the parameters indexes
                         ), end='\r'
                     ) if verbose else None
-
+                    
+                    # get the pca and pcs scaler for this site
                     pca_data, pca_scaler = self.get_pcs(parameters=parameters,
                                                         site_id=site,
                                                         site_location=site_location,
@@ -355,7 +354,7 @@ class Experiment(object):
                         ), end='\r'
                     ) if verbose else None
 
-                    # Get PCs
+                    # get the pca and pcs scaler for this site
                     pca_data, pca_scaler = self.get_pcs(parameters=parameters,
                                                         site_id=site,
                                                         site_location=site_location,
@@ -431,6 +430,7 @@ class Experiment(object):
                         ), end='\r'
                     ) if verbose else None
 
+                    # get the pca and pcs scaler for this site
                     pca_data, pca_scaler = self.get_pcs(parameters=parameters,
                                                         site_id=site,
                                                         site_location=site_location,

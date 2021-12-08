@@ -54,6 +54,7 @@ def calculate_relative_winds(location: tuple = default_location,
         'uw2': uw**2, 'vw2': vw**2,
         'wind_magnitude': np.sqrt(uw**2+vw**2)
     }) # add squared winds and wind module
+    chunk = False if len(wind.lon)<12 else True
     if chunk:
         print('\n re-chunking dataset to avoid memmory problems... \n')
         wind = wind.drop(
@@ -65,7 +66,7 @@ def calculate_relative_winds(location: tuple = default_location,
         }) # rechunk and drop unused variables
     print('\n calculating winds with: \n\n {} \n'.format(
         wind # these are the wind merged components
-    )) if False else None
+    )) if True else None
 
     # return not projected winds if location is not specified
     if location is None:
@@ -100,12 +101,6 @@ def calculate_relative_winds(location: tuple = default_location,
     return return_winds.assign({
         'wind_proj_mask': return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
     })
-
-# return return_winds.assign({
-#     'wind_proj_mask': (('time',lat_name,lon_name),
-#         return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
-#     ) # TODO: check file existance
-# })
 
 
 def calculate_bearings(latitudes, longitudes,
