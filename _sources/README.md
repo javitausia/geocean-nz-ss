@@ -126,8 +126,6 @@ An HTML file available [here](/data/bathymetry/) was created using this bathymet
 
 ![bathy](/media/images/nz_bathy.png)
 
-<!-- <iframe src="data/bathymetry/nz_bathy.html" width="1000" height="800"></iframe> -->
-
 -->
 
 ## Installation
