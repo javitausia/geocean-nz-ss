@@ -103,7 +103,7 @@ def plot_pcs(pca_data, pcs_scaler = None,
                 ])
                 fig.colorbar(eofp,cax=pos_colbar)
         # plot nz map
-        plot_ccrs_nz(axes,plot_land=False,plot_region=(True,region),
+        plot_ccrs_nz(axes,plot_land=True,plot_region=(True,region),
                      plot_labels=(False,10,10))
         # plot variance in title
         fig.suptitle('EOF {}: {:.1%} of explained variance'.format(

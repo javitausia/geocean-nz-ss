@@ -60,7 +60,7 @@ class Loader(object):
 
     def __init__(self, data_to_load: list = ('cfsr','moana','uhslc'),
                  time_resample: str = '1D', 
-                 load_winds: bool = (True,None),
+                 load_winds: bool = (True,default_location),
                  plot: bool = (True,True,True),
                  load_predictor_files: tuple = (False,None)):
         """
@@ -180,7 +180,7 @@ class Loader(object):
 
 def load_predictor(atmospheric_data: str = 'cfsr',
                    time: str = '1D', # time cropping recommended
-                   load_winds: tuple = (True,default_location),
+                   load_winds: tuple = (True,None),
                    plot: bool = True, 
                    load_files: tuple = (False,None)):
     """
@@ -219,7 +219,7 @@ def load_predictor(atmospheric_data: str = 'cfsr',
 
     # load previously calculated data if specified
     if load_files[0]:
-        print('\n loading previously saved atmospheric data... \n')
+        print(f'\n loading previously saved atmospheric data from {load_files} \n')
         return [
             xr.open_dataset(file).sortby(
                 datasets_attrs[atmospheric_data][0],ascending=True).sortby(
@@ -487,7 +487,7 @@ def load_moana_hindcast(file_path: str =
         [xarray.Dataset]: xarray dataset with all the moana data
     """
 
-    # print('\n loading the Moana v2 hindcast data... \n')
+    print('\n loading the Moana v2 hindcast data... \n')
 
     # load moana
     moana = xr.open_zarr(file_path)

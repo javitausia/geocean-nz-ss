@@ -34,7 +34,7 @@ class PCA_DynamicPred(object):
                  # here we could make use of datasets_attrs in config.py file
                  time_lapse: int = 1, # 1 equals to NO time delay                    
                  time_resample: str = '1D',
-                 region: tuple = (True,default_region),
+                 region: tuple = (True,default_region_reduced),
                  # ss_site: tuple = (False, None),
                  site_location = None,
                  pca_plot: tuple = (True,False,2),

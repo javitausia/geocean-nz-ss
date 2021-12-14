@@ -97,8 +97,8 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
 
     # Draw the q-q plot
     ax.plot([min_value,max_value],[min_value,max_value],
-            c='grey',lw=1,ls='--')
-    ax.scatter(x_quantiles, y_quantiles, c=qqplot_points_col, 
+            c='gray',lw=2,ls='--')
+    ax.scatter(x_quantiles,y_quantiles,c=qqplot_points_col,s=8,
                edgecolors=qqplot_edges_col,**kwargs)
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
@@ -131,7 +131,8 @@ def scatterplot(x, y, ax=None, density=True,
         # plot the density scatter
         ax.scatter(
             x[not_nan_idxs],y[not_nan_idxs],
-            c=z,cmap=scatter_cmap,**kwargs
+            c=z,cmap=scatter_cmap,
+            alpha=0.8,s=5,**kwargs
         )
     else:
         ax.scatter(x,y,**kwargs)

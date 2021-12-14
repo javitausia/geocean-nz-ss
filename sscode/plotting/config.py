@@ -14,8 +14,9 @@ _fontsize_title = 18
 _mbar_diff = 20
 _mbar100_diff = 2000
 
+import cmocean
 # scatter and qqplot colors
-scatter_cmap = 'plasma'
+scatter_cmap = cmocean.cm.haline #'plasma'
 qqplot_points_col = 'red'
 qqplot_edges_col = 'orange'
 

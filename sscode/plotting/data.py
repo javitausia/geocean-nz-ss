@@ -195,7 +195,7 @@ def plot_winds(wind_data, n_times: int = 1,
     
     times_to_plot = np.random.randint(0,len(wind_data.time.values),n_times)
     for time in times_to_plot:
-        fig, axes = plt.subplots(ncols=4,figsize=(35,5),
+        fig, axes = plt.subplots(ncols=2,figsize=(15,5),
             subplot_kw={
                 'projection':ccrs.PlateCarree(
                     central_longitude=default_location[0]
@@ -223,25 +223,25 @@ def plot_winds(wind_data, n_times: int = 1,
             transform=ccrs.PlateCarree()
         )
         axes[1].set_facecolor('lightblue')
-        axes[2].streamplot(
-            wind_data[wind_coords[0]].values[::quiv_step],
-            wind_data[wind_coords[1]].values[::quiv_step],
-            wind_data.isel(time=time)[wind_vars[0]].values[::quiv_step,::quiv_step],
-            wind_data.isel(time=time)[wind_vars[1]].values[::quiv_step,::quiv_step],
-            transform=ccrs.PlateCarree(),density=0.1
-        )
-        axes[3].quiver(
-            wind_data[wind_coords[0]].values[::quiv_step],
-            wind_data[wind_coords[1]].values[::quiv_step],
-            wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
-                np.cos(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
-            wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
-                np.sin(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
-            transform=ccrs.PlateCarree()
-        )
-        axes[3].set_facecolor('lightblue')
-        # axes[1].set_title('REAL stream-plot',fontsize=_fontsize_title)
-        axes[2].set_title('REAL stream-plot',fontsize=_fontsize_title)
+        # axes[2].streamplot(
+        #     wind_data[wind_coords[0]].values[::quiv_step],
+        #     wind_data[wind_coords[1]].values[::quiv_step],
+        #     wind_data.isel(time=time)[wind_vars[0]].values[::quiv_step,::quiv_step],
+        #     wind_data.isel(time=time)[wind_vars[1]].values[::quiv_step,::quiv_step],
+        #     transform=ccrs.PlateCarree() # ,density=0.1
+        # )
+        # axes[3].quiver(
+        #     wind_data[wind_coords[0]].values[::quiv_step],
+        #     wind_data[wind_coords[1]].values[::quiv_step],
+        #     wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
+        #         np.cos(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
+        #     wind_data['wind_proj'].isel(time=time).values[::quiv_step,::quiv_step]*\
+        #         np.sin(wind_data['direc_proj_math'].values[::quiv_step,::quiv_step]),
+        #     transform=ccrs.PlateCarree()
+        # )
+        # axes[3].set_facecolor('lightblue')
+        # # axes[1].set_title('REAL stream-plot',fontsize=_fontsize_title)
+        # axes[2].set_title('REAL stream-plot',fontsize=_fontsize_title)
         # plot map and show
         plot_ccrs_nz(
             axes,plot_land=True,plot_labels=(False,None,None),plot_region=plot_region
