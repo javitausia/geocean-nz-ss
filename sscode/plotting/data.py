@@ -352,7 +352,7 @@ def plot_uhslc_locations(uhslc_data):
         fuction join_load_uhslc_tgs() in data.py
     """
 
-    fig, ax = plt.subplots(figsize=(6,6),subplot_kw={
+    fig, ax = plt.subplots(figsize=(9,9),subplot_kw={
         'projection':ccrs.PlateCarree(central_longitude=180)
     })
     ax.set_facecolor('lightblue')

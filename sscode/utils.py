@@ -56,7 +56,7 @@ def calculate_relative_winds(location: tuple = default_location,
     }) # add squared winds and wind module
     chunk = False if len(wind.lon)<12 else True
     if chunk:
-        print('\n re-chunking dataset to avoid memmory problems... \n')
+        # print('\n re-chunking dataset to avoid memmory problems... \n')
         wind = wind.drop(
             ['uw2','vw2'] # str(uw.name), str(vw.name)
         ).chunk({
@@ -66,7 +66,7 @@ def calculate_relative_winds(location: tuple = default_location,
         }) # rechunk and drop unused variables
     print('\n calculating winds with: \n\n {} \n'.format(
         wind # these are the wind merged components
-    )) if True else None
+    )) if False else None
 
     # return not projected winds if location is not specified
     if location is None:

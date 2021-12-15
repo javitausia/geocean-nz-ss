@@ -13,8 +13,8 @@ __keywords__    = 'ocean data statistical analysis storm-surge'
 from . import config
 from . import utils
 from . import data
-from . import pca_new, pca
-from . import experiment_new, experiment
+from . import pca
+from . import experiment
 from . import mda_rbf
 
 # basic

@@ -16,16 +16,17 @@ _mbar100_diff = 2000
 
 import cmocean
 # scatter and qqplot colors
-scatter_cmap = cmocean.cm.haline #'plasma'
+scatter_cmap =  'rainbow' # cmocean.cm.haline
 qqplot_points_col = 'red'
 qqplot_edges_col = 'orange'
 
 # time plots colors
 real_obs_col = 'k'
-pred_val_col = 'red'
+pred_val_col = 'green'
 
 # DWTs colors list
 dwts_colors = [
     'white','cyan','cornflowerblue','darkseagreen','olivedrab','gold','darkorange',
     'orangered','red','deeppink','violet','darkorchid','purple','midnightblue'
 ]
+
