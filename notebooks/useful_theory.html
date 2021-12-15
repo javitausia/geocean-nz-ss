@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4. Useful theory!! &#8212; Storm Surge NZ - Summary</title>
+    <title>Useful theory!! &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -59,8 +59,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5. PC analysis" href="analysis_pca.html" />
-    <link rel="prev" title="3. Data visualization and validation" href="data_visualization.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -109,50 +107,40 @@
   Chapters
  </span>
 </p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   1. Repository workflow + THEORY
-  </a>
- </li>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   1. Data visualization and validation
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   4. Useful theory!!
+ <li class="toctree-l1">
+  <a class="reference internal" href="repo_workflow.html">
+   2. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   5. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   6. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   7. KNN regressor models
+   6. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   8. XGBoost regression models
+   7. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   9. MDA - RBF model
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="experiments.html">
-   10. RUN experiments
+   8. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -269,12 +257,12 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-metrics-for-regression">
-   4.1. Model metrics for Regression
+   Model metrics for Regression
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#gev-analysis-monthly">
-   4.2. GEV analysis (monthly)
+   GEV analysis (monthly)
   </a>
  </li>
 </ul>
@@ -289,9 +277,9 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="useful-theory">
-<h1><span class="section-number">4. </span>Useful theory!!<a class="headerlink" href="#useful-theory" title="Permalink to this headline">¶</a></h1>
+<h1>Useful theory!!<a class="headerlink" href="#useful-theory" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="model-metrics-for-regression">
-<h2><span class="section-number">4.1. </span>Model metrics for Regression<a class="headerlink" href="#model-metrics-for-regression" title="Permalink to this headline">¶</a></h2>
+<h2>Model metrics for Regression<a class="headerlink" href="#model-metrics-for-regression" title="Permalink to this headline">¶</a></h2>
 <p>Regarding one of the machine learning packages (scikit-learn), here is where all the interesting things happen, as all the algorithms and mathematics are hosted here. Different techniques are used, and they are briefly described in each notebook, but in the paragraph below, we will introduce the evaluation metrics that will be used in all the regression / interpolation models that will be used. This metrics can be found <a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html">here</a>.</p>
 <p>When measuring the goodness of a fit, we can calculate very different statistical metrics, such as the bias, the rmse or the pearson and spearman correlation coefficients. In this part, we will briefly describe how all of them work, and how they must be interpreted:</p>
 <ul class="simple">
@@ -375,7 +363,7 @@
 </div>
 </div>
 <div class="section" id="gev-analysis-monthly">
-<h2><span class="section-number">4.2. </span>GEV analysis (monthly)<a class="headerlink" href="#gev-analysis-monthly" title="Permalink to this headline">¶</a></h2>
+<h2>GEV analysis (monthly)<a class="headerlink" href="#gev-analysis-monthly" title="Permalink to this headline">¶</a></h2>
 <p>As we are still trying to understand the data we will be using, let’s plot some more data. In this case, let’s plot the results of the Generalized-Extreme-Value analysis performed over all the nodes of the Moana hindcast, for 2 different months in the year.</p>
 <p>To refresh our memories, this probability density function is usually used to statistically represent the distribution of extreme events (in this case, monthly maxima), where the equation can take the following aspects:</p>
 <div class="math notranslate nohighlight">
@@ -448,21 +436,7 @@ f(x)=\left\{\begin{matrix}
               
         
             <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3. </span>Data visualization and validation</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="analysis_pca.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>PC analysis</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
+<div class='prev-next-area'>
 </div>
         
         </div>

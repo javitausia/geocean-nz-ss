@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>7. KNN regressor models &#8212; Storm Surge NZ - Summary</title>
+    <title>6. KNN regression models &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -59,8 +59,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="8. XGBoost regression models" href="models_xgboost.html" />
-    <link rel="prev" title="6. MultiLinear regression models" href="models_linear.html" />
+    <link rel="next" title="7. XGBoost regression models" href="models_xgboost.html" />
+    <link rel="prev" title="5. MultiLinear regression models" href="models_linear.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -111,48 +111,38 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   1. Repository workflow + THEORY
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   1. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="useful_theory.html">
-   4. Useful theory!!
+  <a class="reference internal" href="repo_workflow.html">
+   2. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   5. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   6. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   7. KNN regressor models
+   6. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   8. XGBoost regression models
+   7. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   9. MDA - RBF model
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="experiments.html">
-   10. RUN experiments
+   8. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -269,45 +259,35 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-nearest-neighbors-theory">
-   7.1. K-nearest-neighbors theory
+   6.1. K-nearest-neighbors theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-the-data-main-pcs">
-   7.2. Load the data (main + PCs)
+  <a class="reference internal nav-link" href="#load-the-data">
+   6.2. Load the data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculate-regional-pca">
+   6.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#knn-regression-with-regional-predictor">
-   7.3. KNN regression with regional predictor
+   6.4. KNN regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#knn-regression-in-the-uhslc-tidal-gauges-validation">
-     7.3.1. KNN regression in the UHSLC tidal gauges + validation
+     6.4.1. KNN regression in the UHSLC tidal gauges + validation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#check-knn-reconstructions">
-     7.3.2. Check KNN reconstructions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#knn-regression-ana-s-paper">
-     7.3.3. knn regression - Ana’s paper
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#compare-wind-s-module-with-projected-winds">
-     7.3.4. Compare wind’s module with projected winds!!
+     6.4.2. Check KNN reconstructions
     </a>
    </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#knn-regression-with-local-predictor">
-   7.4. KNN regression with local predictor
-  </a>
  </li>
 </ul>
 
@@ -320,10 +300,10 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="knn-regressor-models">
-<h1><span class="section-number">7. </span>KNN regressor models<a class="headerlink" href="#knn-regressor-models" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="knn-regression-models">
+<h1><span class="section-number">6. </span>KNN regression models<a class="headerlink" href="#knn-regression-models" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="k-nearest-neighbors-theory">
-<h2><span class="section-number">7.1. </span>K-nearest-neighbors theory<a class="headerlink" href="#k-nearest-neighbors-theory" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1. </span>K-nearest-neighbors theory<a class="headerlink" href="#k-nearest-neighbors-theory" title="Permalink to this headline">¶</a></h2>
 <p>The k-nearest neighbors algorithm, commonly known as <span class="math notranslate nohighlight">\(k-NN\)</span>, is a non-parametric approach where the response of a data point is determined by the nature of its k-neighbors from the training set. It can be used in both classification and regression settings.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -331,7 +311,7 @@
 </div>
 <div class="figure align-default" id="k-nn">
 <a class="reference internal image-reference" href="../_images/k-nearest-neighbors.png"><img alt="../_images/k-nearest-neighbors.png" src="../_images/k-nearest-neighbors.png" style="width: 550px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 7.1 </span><span class="caption-text">This picture shows the bias-variance trad-off with the knn regressor (<a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/illustrations/k-nearest-neighbors.png?02f80a524bb11e2b7a70b58c9ed3b0f4">image reference</a>)</span><a class="headerlink" href="#k-nn" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">This picture shows the bias-variance trad-off with the knn regressor (<a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/illustrations/k-nearest-neighbors.png?02f80a524bb11e2b7a70b58c9ed3b0f4">image reference</a>)</span><a class="headerlink" href="#k-nn" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -341,7 +321,6 @@
 
 <span class="c1"># arrays</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="c1"># plotting</span>
@@ -352,12 +331,15 @@
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># custom</span>
-<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_evaluation_metrics</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_region_reduced</span><span class="p">,</span> \
+    <span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">default_location</span><span class="p">,</span> <span class="n">default_region</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_private_tgs</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.knn</span> <span class="kn">import</span> <span class="n">KNN_Regression</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_uhslc_locations</span>
 <span class="kn">from</span> <span class="nn">sscode.utils</span> <span class="kn">import</span> <span class="n">calculate_relative_winds</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.config</span> <span class="kn">import</span> <span class="n">_figsize</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
 
 <span class="c1"># warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -378,6 +360,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+</pre></div>
+</div>
 <div class="output text_html">
 <style>
 .output_png {
@@ -389,14 +374,14 @@
 </div></div>
 </div>
 </div>
-<div class="section" id="load-the-data-main-pcs">
-<h2><span class="section-number">7.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
-<p>loading data to use…</p>
+<div class="section" id="load-the-data">
+<h2><span class="section-number">6.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
     <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
     <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
@@ -405,48 +390,52 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
+
+
+ loading the Moana v2 hindcast data... 
+
+
+ loading the UHSLC tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/models_knn_4_1.png" src="../_images/models_knn_4_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
-</pre></div>
-</div>
-<img alt="../_images/models_knn_4_3.png" src="../_images/models_knn_4_3.png" />
-<img alt="../_images/models_knn_4_4.png" src="../_images/models_knn_4_4.png" />
 </div>
 </div>
+</div>
+<div class="section" id="calculate-regional-pca">
+<h2><span class="section-number">6.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">¶</a></h2>
+<p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
-<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;../data/cfsr/cfsr_regional_gradient_tl3_daily_pcs.nc&#39;</span><span class="p">):</span>
-    <span class="n">pcs_cfsr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="s1">&#39;../data/cfsr/cfsr_regional_gradient_tl3_daily_pcs.nc&#39;</span>
-    <span class="p">)</span>
-    <span class="c1"># from sscode.plotting.pca import plot_pcs</span>
-    <span class="c1"># plot_pcs(pcs_cfsr,n_plot=1)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># calculate the pcs</span>
-    <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the regional pcs</span>
+<span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">pcs_scaler_regional</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
+    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/models_knn_6_0.png" src="../_images/models_knn_6_0.png" />
+<img alt="../_images/models_knn_6_1.png" src="../_images/models_knn_6_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="knn-regression-with-regional-predictor">
-<h2><span class="section-number">7.3. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
-<p>In the following cell, a knn regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_knn_regional_daily.nc</span></code>.</p>
+<h2><span class="section-number">6.4. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<p>In the following cell, a knn regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics/knn</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_knn_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As it can be seen in the results plot, the different shores in New Zealand show very different results</p>
 </div>
 <p>This is a snippet of the model outlook:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
-    <span class="c1"># perform the knn regression</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># perform the knn regression</span>
     <span class="n">neigh</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">()</span> <span class="c1"># TODO: add params</span>
     <span class="c1"># specify parameters to test</span>
     <span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
@@ -465,8 +454,6 @@
     <span class="c1"># fit model to data</span>
     <span class="n">knn_gscv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># input total data</span>
     <span class="n">prediction</span> <span class="o">=</span> <span class="n">knn_gscv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    
-    
 </pre></div>
 </div>
 <p>where the best number of neighbors is selected, cross-validating the training and testing sizes!!</p>
@@ -474,38 +461,42 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
-    <span class="c1"># perform the KNN-regression (regional)</span>
-    <span class="n">stats_regional</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># perform the KNN-Regression (regional)</span>
+    <span class="n">metrics_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save regional metrics</span>
     <span class="n">sites_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
         <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-    <span class="p">)</span>
-    <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_regional</span><span class="p">):</span>
-        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
+    <span class="p">)[::</span><span class="mi">300</span><span class="p">]</span>
+    <span class="c1"># perform the KNN regression over all the sites</span>
+    <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_regional</span><span class="p">):</span>
+        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">)</span>\
             <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-        <span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-            <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span>
-        <span class="p">)</span> <span class="c1"># pre-loaded pcs</span>
-        <span class="n">stats_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">stats_stat</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="n">station_metrics_regional</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats_stat</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">station_metrics_regional</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
-    <span class="n">station_metrics_regional</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
+            <span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="c1"># use default attributes</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span> <span class="c1"># using the regional-pre-loaded pcs</span>
+        <span class="n">metrics_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="c1"># save site metrics</span>
+    <span class="c1"># now, save all in xarray.Dataset</span>
+    <span class="n">sites_metrics_regional</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metrics_regional</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
+    <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
     <span class="p">)</span>
-    <span class="n">station_metrics_regional</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
     <span class="p">)</span>
-    <span class="c1"># save the statistics</span>
-    <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="n">station_metrics_regional</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sites_regional</span><span class="p">}</span>
+    <span class="c1"># save the metrics</span>
+    <span class="n">metrics_dataset_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">sites_metrics_regional</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:</span><span class="n">sites_regional</span><span class="p">}</span>
     <span class="p">)</span>
-    <span class="c1"># local copy</span>
-    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">stats_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
-            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_knn_regional_daily_new.nc&#39;</span><span class="p">)</span>
+    <span class="c1"># local copys</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">metrics_dataset_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_knn_regional_daily.nc&#39;</span>
+        <span class="p">)</span> <span class="c1"># save metrics in all the stations</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">stats_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_knn_regional_daily.nc&#39;</span>
+    <span class="n">metrics_dataset_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_knn_regional_daily.nc&#39;</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -516,17 +507,20 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
 <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_regional</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rel_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;ext_pearson&#39;</span><span class="p">])</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_regional</span><span class="p">,</span>
+               <span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">],</span>
+               <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;rainbow&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_knn_9_0.png" src="../_images/models_knn_9_0.png" />
+<img alt="../_images/models_knn_10_0.png" src="../_images/models_knn_10_0.png" />
 </div>
 </div>
 <div class="section" id="knn-regression-in-the-uhslc-tidal-gauges-validation">
-<h3><span class="section-number">7.3.1. </span>KNN regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#knn-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">6.4.1. </span>KNN regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#knn-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
 <p>This part explanation is similar to the one available at <strong>MultiLinear regression models (models_linear.ipynb)</strong>!!</p>
+<p>But in this case, we could also use the trained agent to see what are the best parameters for our KNN model, in all the locations of the tidal gauges, but training the model with the Moana v2 hindcast.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the uhslc tidal-gauges locations</span>
@@ -535,7 +529,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_knn_11_0.png" src="../_images/models_knn_11_0.png" />
+<img alt="../_images/models_knn_12_0.png" src="../_images/models_knn_12_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -549,1050 +543,212 @@
       <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
       <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
     <span class="p">]</span>
-<span class="p">)</span>
+<span class="p">)[::</span><span class="mi">20</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">):</span>
     <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
         <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="c1"># stats_stat, model, pcs_to_use = MultiLinear_Regression(</span>
-    <span class="c1">#     pcs_cfsr, ss_moana, plot_results=True, verbose=True,</span>
-    <span class="c1">#     validator=(</span>
-    <span class="c1">#         True,load_cfsr_moana_uhslc.validator.isel(name=istat),&#39;ss&#39;</span>
-    <span class="c1">#     )</span>
-    <span class="c1"># )</span>
-    <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
+    <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
         <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
+            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
             <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+            <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
                 <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
                 <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">,</span>
                 <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
                 <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span>
-            <span class="p">)),</span> <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">calculate_relative_winds</span><span class="p">(</span>
-                <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                <span class="n">uw</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">U_GRD_L103</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">({</span>
-                    <span class="s1">&#39;lon&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">),</span>
-                    <span class="s1">&#39;lat&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">)</span>
-                <span class="p">}),</span>
-                <span class="n">vw</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">V_GRD_L103</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">({</span>
-                    <span class="s1">&#39;lon&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">),</span>
-                    <span class="s1">&#39;lat&#39;</span><span class="p">:</span><span class="nb">slice</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">)</span>
-                <span class="p">})</span>
-            <span class="p">)),</span> <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)),</span>
+            <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-2&#39;</span><span class="p">]</span>
-            <span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">2</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
+            <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
         <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
+Start 0
 
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 900) 
+
+Computing using CPU
+matrix (11351, 900)
+PCs (11351, 900)
+comp (900, 900)
+var (900,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([166. , 166.5, 167. , 167.5, 168. , 168.5, 169. , 169.5, 170. , 170.5],
+      dtype=float32)
 Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -48.86 -48.55 -48.24 ... -44.8 -44.49 -44.18
-  * lon              (lon) float64 165.9 166.2 166.6 166.9 ... 170.0 170.3 170.6
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -5.6 -5.944 ... -0.4466 -0.03221
-    bearings         (lat, lon) float64 36.77 32.96 28.83 ... 204.8 208.8 212.4
-    direc_proj_math  (lat, lon) float64 0.929 0.9955 1.068 ... -2.073 -2.136
-    wind_proj_mask   (time, lat, lon) float64 -5.6 -5.944 -6.154 ... nan nan nan
+  * longitude  (longitude) float32 166.0 166.5 167.0 167.5 ... 169.5 170.0 170.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-49. , -48.5, -48. , -47.5, -47. , -46.5, -46. , -45.5, -45. , -44.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -49.0 -48.5 -48.0 -47.5 ... -45.5 -45.0 -44.5
+time (11351,)
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
 <img alt="../_images/models_knn_13_1.png" src="../_images/models_knn_13_1.png" />
 <img alt="../_images/models_knn_13_2.png" src="../_images/models_knn_13_2.png" />
-<img alt="../_images/models_knn_13_3.png" src="../_images/models_knn_13_3.png" />
-<img alt="../_images/models_knn_13_4.png" src="../_images/models_knn_13_4.png" />
-<img alt="../_images/models_knn_13_5.png" src="../_images/models_knn_13_5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 21 PCs (0.98 expl. variance) will be used to train the model!! 
 
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -48.55 -48.24 -47.93 ... -44.49 -44.18 -43.87
-  * lon              (lon) float64 164.1 164.4 164.7 165.0 ... 168.1 168.4 168.8
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -5.696 -6.028 ... -1.927 -1.111
-    bearings         (lat, lon) float64 35.01 31.39 27.5 ... 206.5 210.7 214.6
-    direc_proj_math  (lat, lon) float64 0.9598 1.023 1.091 ... -2.107 -2.175
-    wind_proj_mask   (time, lat, lon) float64 -5.696 -6.028 ... -1.927 -1.111
+
+ KNN regression with 30-max neighbors... 
+
+Fitting 5 folds for each of 29 candidates, totalling 145 fits
+
+ best model fitted with 21 neighbors!! 
 </pre></div>
 </div>
-<img alt="../_images/models_knn_13_7.png" src="../_images/models_knn_13_7.png" />
+<img alt="../_images/models_knn_13_4.png" src="../_images/models_knn_13_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.52, Relative - RMSE: 0.27
+ and Correlations (Pearson, Rscore): (0.84, 0.69)
+ NSE = [0.68960664], KGE = [0.66251222] and KGE_PRIME = [0.69857531]
+ R score: 0.69 -- in TEST data
+</pre></div>
+</div>
+<img alt="../_images/models_knn_13_6.png" src="../_images/models_knn_13_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
+Start 0
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 900) 
+
+Computing using CPU
+matrix (11351, 900)
+PCs (11351, 900)
+comp (900, 900)
+var (900,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([176. , 176.5, 177. , 177.5, 178. , 178.5, 179. , 179.5, 180. , 180.5],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 176.0 176.5 177.0 177.5 ... 179.5 180.0 180.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -40.0 -39.5 -39.0 -38.5 ... -36.5 -36.0 -35.5
+time (11351,)
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
 <img alt="../_images/models_knn_13_8.png" src="../_images/models_knn_13_8.png" />
 <img alt="../_images/models_knn_13_9.png" src="../_images/models_knn_13_9.png" />
-<img alt="../_images/models_knn_13_10.png" src="../_images/models_knn_13_10.png" />
-<img alt="../_images/models_knn_13_11.png" src="../_images/models_knn_13_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 24 PCs (0.98 expl. variance) will be used to train the model!! 
 
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -48.24 -47.93 -47.61 ... -44.18 -43.87 -43.56
-  * lon              (lon) float64 168.4 168.8 169.1 169.4 ... 172.5 172.8 173.1
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -3.221 -3.024 ... -1.608 -3.347
-    bearings         (lat, lon) float64 34.14 30.35 26.27 ... 208.0 212.0 215.7
-    direc_proj_math  (lat, lon) float64 0.975 1.041 1.112 ... -2.129 -2.194
-    wind_proj_mask   (time, lat, lon) float64 -3.221 -3.024 -2.89 ... nan -3.347
+
+ KNN regression with 30-max neighbors... 
+
+Fitting 5 folds for each of 29 candidates, totalling 145 fits
+
+ best model fitted with 19 neighbors!! 
+</pre></div>
+</div>
+<img alt="../_images/models_knn_13_11.png" src="../_images/models_knn_13_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.58, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.81, 0.63)
+ NSE = [0.63057252], KGE = [0.59578942] and KGE_PRIME = [0.6593953]
+ R score: 0.63 -- in TEST data
 </pre></div>
 </div>
 <img alt="../_images/models_knn_13_13.png" src="../_images/models_knn_13_13.png" />
-<img alt="../_images/models_knn_13_14.png" src="../_images/models_knn_13_14.png" />
-<img alt="../_images/models_knn_13_15.png" src="../_images/models_knn_13_15.png" />
-<img alt="../_images/models_knn_13_16.png" src="../_images/models_knn_13_16.png" />
-<img alt="../_images/models_knn_13_17.png" src="../_images/models_knn_13_17.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -46.68 -46.37 -46.05 ... -42.62 -42.31 -41.99
-  * lon              (lon) float64 169.1 169.4 169.7 170.0 ... 173.1 173.4 173.8
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -0.8931 -0.8115 ... -1.857 -2.992
-    bearings         (lat, lon) float64 34.99 31.0 26.69 ... 208.6 212.5 216.1
-    direc_proj_math  (lat, lon) float64 0.9602 1.03 1.105 ... -2.139 -2.201
-    wind_proj_mask   (time, lat, lon) float64 -0.8931 -0.8115 -1.003 ... nan nan
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_19.png" src="../_images/models_knn_13_19.png" />
-<img alt="../_images/models_knn_13_20.png" src="../_images/models_knn_13_20.png" />
-<img alt="../_images/models_knn_13_21.png" src="../_images/models_knn_13_21.png" />
-<img alt="../_images/models_knn_13_22.png" src="../_images/models_knn_13_22.png" />
-<img alt="../_images/models_knn_13_23.png" src="../_images/models_knn_13_23.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -46.37 -46.05 -45.74 ... -42.31 -41.99 -41.68
-  * lon              (lon) float64 181.2 181.6 181.9 182.2 ... 185.3 185.6 185.9
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 6.871 6.809 6.649 ... -12.74 -12.6
-    bearings         (lat, lon) float64 36.44 32.63 28.49 ... 207.2 211.3 215.1
-    direc_proj_math  (lat, lon) float64 0.9347 1.001 1.074 ... -2.117 -2.183
-    wind_proj_mask   (time, lat, lon) float64 6.871 6.809 6.649 ... -12.74 -12.6
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_25.png" src="../_images/models_knn_13_25.png" />
-<img alt="../_images/models_knn_13_26.png" src="../_images/models_knn_13_26.png" />
-<img alt="../_images/models_knn_13_27.png" src="../_images/models_knn_13_27.png" />
-<img alt="../_images/models_knn_13_28.png" src="../_images/models_knn_13_28.png" />
-<img alt="../_images/models_knn_13_29.png" src="../_images/models_knn_13_29.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -46.37 -46.05 -45.74 ... -42.31 -41.99 -41.68
-  * lon              (lon) float64 166.2 166.6 166.9 167.2 ... 170.3 170.6 170.9
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -6.362 -5.094 ... -3.004 -2.215
-    bearings         (lat, lon) float64 34.86 31.05 26.93 ... 208.9 213.0 216.8
-    direc_proj_math  (lat, lon) float64 0.9624 1.029 1.101 ... -2.147 -2.213
-    wind_proj_mask   (time, lat, lon) float64 -6.362 -5.094 ... -3.004 -2.215
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_31.png" src="../_images/models_knn_13_31.png" />
-<img alt="../_images/models_knn_13_32.png" src="../_images/models_knn_13_32.png" />
-<img alt="../_images/models_knn_13_33.png" src="../_images/models_knn_13_33.png" />
-<img alt="../_images/models_knn_13_34.png" src="../_images/models_knn_13_34.png" />
-<img alt="../_images/models_knn_13_35.png" src="../_images/models_knn_13_35.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -46.05 -45.74 -45.43 ... -41.99 -41.68 -41.37
-  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -3.571 -4.578 ... -6.387 -5.656
-    bearings         (lat, lon) float64 32.88 28.94 24.71 ... 211.4 215.4 219.0
-    direc_proj_math  (lat, lon) float64 0.997 1.066 1.139 ... -2.189 -2.252
-    wind_proj_mask   (time, lat, lon) float64 -3.571 -4.578 ... -6.387 -5.656
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_37.png" src="../_images/models_knn_13_37.png" />
-<img alt="../_images/models_knn_13_38.png" src="../_images/models_knn_13_38.png" />
-<img alt="../_images/models_knn_13_39.png" src="../_images/models_knn_13_39.png" />
-<img alt="../_images/models_knn_13_40.png" src="../_images/models_knn_13_40.png" />
-<img alt="../_images/models_knn_13_41.png" src="../_images/models_knn_13_41.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -45.74 -45.43 -45.12 ... -41.68 -41.37 -41.06
-  * lon              (lon) float64 170.3 170.6 170.9 171.2 ... 174.4 174.7 175.0
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -2.063 -3.21 ... -5.095 -4.455
-    bearings         (lat, lon) float64 38.51 34.69 30.51 ... 205.7 209.8 213.6
-    direc_proj_math  (lat, lon) float64 0.8987 0.9654 1.038 ... -2.091 -2.157
-    wind_proj_mask   (time, lat, lon) float64 -2.063 -3.21 ... -5.095 -4.455
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_43.png" src="../_images/models_knn_13_43.png" />
-<img alt="../_images/models_knn_13_44.png" src="../_images/models_knn_13_44.png" />
-<img alt="../_images/models_knn_13_45.png" src="../_images/models_knn_13_45.png" />
-<img alt="../_images/models_knn_13_46.png" src="../_images/models_knn_13_46.png" />
-<img alt="../_images/models_knn_13_47.png" src="../_images/models_knn_13_47.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -44.8 -44.49 -44.18 ... -40.75 -40.43 -40.12
-  * lon              (lon) float64 171.2 171.6 171.9 172.2 ... 175.3 175.6 175.9
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -3.051 -3.587 ... -1.833 -2.122
-    bearings         (lat, lon) float64 37.72 33.98 29.91 ... 207.0 211.3 215.2
-    direc_proj_math  (lat, lon) float64 0.9124 0.9777 1.049 ... -2.117 -2.186
-    wind_proj_mask   (time, lat, lon) float64 -3.051 -3.587 -3.789 ... nan nan
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_49.png" src="../_images/models_knn_13_49.png" />
-<img alt="../_images/models_knn_13_50.png" src="../_images/models_knn_13_50.png" />
-<img alt="../_images/models_knn_13_51.png" src="../_images/models_knn_13_51.png" />
-<img alt="../_images/models_knn_13_52.png" src="../_images/models_knn_13_52.png" />
-<img alt="../_images/models_knn_13_53.png" src="../_images/models_knn_13_53.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -44.18 -43.87 -43.56 ... -40.12 -39.81 -39.5
-  * lon              (lon) float64 169.1 169.4 169.7 170.0 ... 173.1 173.4 173.8
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -1.991 -2.158 ... 0.4473 -0.06424
-    bearings         (lat, lon) float64 37.65 33.74 29.46 ... 207.9 212.0 215.8
-    direc_proj_math  (lat, lon) float64 0.9136 0.9819 1.057 ... -2.13 -2.196
-    wind_proj_mask   (time, lat, lon) float64 nan nan nan ... 0.4473 -0.06424
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_55.png" src="../_images/models_knn_13_55.png" />
-<img alt="../_images/models_knn_13_56.png" src="../_images/models_knn_13_56.png" />
-<img alt="../_images/models_knn_13_57.png" src="../_images/models_knn_13_57.png" />
-<img alt="../_images/models_knn_13_58.png" src="../_images/models_knn_13_58.png" />
-<img alt="../_images/models_knn_13_59.png" src="../_images/models_knn_13_59.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 17, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -43.87 -43.56 -43.24 ... -39.5 -39.18 -38.87
-  * lon              (lon) float64 172.5 172.8 173.1 173.4 ... 176.6 176.9 177.2
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -2.448 -2.89 ... -4.059 -5.185
-    bearings         (lat, lon) float64 34.35 30.43 26.19 ... 208.4 212.3 215.9
-    direc_proj_math  (lat, lon) float64 0.9712 1.04 1.114 ... -2.135 -2.198
-    wind_proj_mask   (time, lat, lon) float64 -2.448 -2.89 -3.299 ... nan -5.185
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_61.png" src="../_images/models_knn_13_61.png" />
-<img alt="../_images/models_knn_13_62.png" src="../_images/models_knn_13_62.png" />
-<img alt="../_images/models_knn_13_63.png" src="../_images/models_knn_13_63.png" />
-<img alt="../_images/models_knn_13_64.png" src="../_images/models_knn_13_64.png" />
-<img alt="../_images/models_knn_13_65.png" src="../_images/models_knn_13_65.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -43.56 -43.24 -42.93 ... -39.5 -39.18 -38.87
-  * lon              (lon) float64 170.9 171.2 171.6 171.9 ... 175.0 175.3 175.6
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -1.23 -1.52 ... -2.528 -2.011
-    bearings         (lat, lon) float64 37.02 33.03 28.67 ... 209.1 213.2 216.9
-    direc_proj_math  (lat, lon) float64 0.9247 0.9943 1.07 ... -2.15 -2.215
-    wind_proj_mask   (time, lat, lon) float64 nan nan nan nan ... nan nan nan
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_67.png" src="../_images/models_knn_13_67.png" />
-<img alt="../_images/models_knn_13_68.png" src="../_images/models_knn_13_68.png" />
-<img alt="../_images/models_knn_13_69.png" src="../_images/models_knn_13_69.png" />
-<img alt="../_images/models_knn_13_70.png" src="../_images/models_knn_13_70.png" />
-<img alt="../_images/models_knn_13_71.png" src="../_images/models_knn_13_71.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -43.24 -42.93 -42.62 ... -39.18 -38.87 -38.56
-  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -0.6124 -0.8636 ... -2.835 -2.351
-    bearings         (lat, lon) float64 40.28 36.38 32.08 ... 206.1 210.3 214.1
-    direc_proj_math  (lat, lon) float64 0.8677 0.9359 1.011 ... -2.099 -2.166
-    wind_proj_mask   (time, lat, lon) float64 nan nan nan nan ... -3.288 nan nan
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_73.png" src="../_images/models_knn_13_73.png" />
-<img alt="../_images/models_knn_13_74.png" src="../_images/models_knn_13_74.png" />
-<img alt="../_images/models_knn_13_75.png" src="../_images/models_knn_13_75.png" />
-<img alt="../_images/models_knn_13_76.png" src="../_images/models_knn_13_76.png" />
-<img alt="../_images/models_knn_13_77.png" src="../_images/models_knn_13_77.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -43.24 -42.93 -42.62 ... -39.18 -38.87 -38.56
-  * lon              (lon) float64 174.1 174.4 174.7 175.0 ... 178.1 178.4 178.8
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -3.964 -3.948 ... -10.41 -11.35
-    bearings         (lat, lon) float64 35.77 31.67 27.19 ... 210.7 214.7 218.3
-    direc_proj_math  (lat, lon) float64 0.9464 1.018 1.096 ... -2.177 -2.239
-    wind_proj_mask   (time, lat, lon) float64 -3.964 -3.948 ... -10.41 -11.35
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_79.png" src="../_images/models_knn_13_79.png" />
-<img alt="../_images/models_knn_13_80.png" src="../_images/models_knn_13_80.png" />
-<img alt="../_images/models_knn_13_81.png" src="../_images/models_knn_13_81.png" />
-<img alt="../_images/models_knn_13_82.png" src="../_images/models_knn_13_82.png" />
-<img alt="../_images/models_knn_13_83.png" src="../_images/models_knn_13_83.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -43.24 -42.93 -42.62 ... -39.18 -38.87 -38.56
-  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -0.8756 -1.19 ... -2.632 -2.198
-    bearings         (lat, lon) float64 34.9 30.95 26.66 ... 211.6 215.7 219.5
-    direc_proj_math  (lat, lon) float64 0.9616 1.031 1.106 ... -2.195 -2.26
-    wind_proj_mask   (time, lat, lon) float64 nan nan nan nan ... -3.006 nan nan
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_85.png" src="../_images/models_knn_13_85.png" />
-<img alt="../_images/models_knn_13_86.png" src="../_images/models_knn_13_86.png" />
-<img alt="../_images/models_knn_13_87.png" src="../_images/models_knn_13_87.png" />
-<img alt="../_images/models_knn_13_88.png" src="../_images/models_knn_13_88.png" />
-<img alt="../_images/models_knn_13_89.png" src="../_images/models_knn_13_89.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -41.68 -41.37 -41.06 ... -37.62 -37.31 -37.0
-  * lon              (lon) float64 174.7 175.0 175.3 175.6 ... 178.8 179.1 179.4
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -1.281 -1.196 ... -11.94 -11.61
-    bearings         (lat, lon) float64 38.31 34.15 29.56 ... 209.5 213.5 217.1
-    direc_proj_math  (lat, lon) float64 0.9021 0.9748 1.055 ... -2.155 -2.219
-    wind_proj_mask   (time, lat, lon) float64 -1.281 -1.196 ... -11.94 -11.61
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_91.png" src="../_images/models_knn_13_91.png" />
-<img alt="../_images/models_knn_13_92.png" src="../_images/models_knn_13_92.png" />
-<img alt="../_images/models_knn_13_93.png" src="../_images/models_knn_13_93.png" />
-<img alt="../_images/models_knn_13_94.png" src="../_images/models_knn_13_94.png" />
-<img alt="../_images/models_knn_13_95.png" src="../_images/models_knn_13_95.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -41.37 -41.06 -40.75 ... -37.31 -37.0 -36.69
-  * lon              (lon) float64 171.6 171.9 172.2 172.5 ... 175.6 175.9 176.2
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 1.688 1.392 ... -2.833 -3.629
-    bearings         (lat, lon) float64 39.8 35.96 31.75 ... 207.6 212.0 216.0
-    direc_proj_math  (lat, lon) float64 0.8762 0.9432 1.017 ... -2.13 -2.199
-    wind_proj_mask   (time, lat, lon) float64 1.688 1.392 ... -2.833 -3.629
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_97.png" src="../_images/models_knn_13_97.png" />
-<img alt="../_images/models_knn_13_98.png" src="../_images/models_knn_13_98.png" />
-<img alt="../_images/models_knn_13_99.png" src="../_images/models_knn_13_99.png" />
-<img alt="../_images/models_knn_13_100.png" src="../_images/models_knn_13_100.png" />
-<img alt="../_images/models_knn_13_101.png" src="../_images/models_knn_13_101.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -41.06 -40.75 -40.43 ... -37.0 -36.69 -36.37
-  * lon              (lon) float64 175.6 175.9 176.2 176.6 ... 179.7 180.0 180.3
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -1.099 -1.467 ... -10.42 -10.07
-    bearings         (lat, lon) float64 38.83 34.91 30.61 ... 209.0 213.3 217.2
-    direc_proj_math  (lat, lon) float64 0.8931 0.9615 1.036 ... -2.152 -2.22
-    wind_proj_mask   (time, lat, lon) float64 nan -1.467 ... -10.42 -10.07
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_103.png" src="../_images/models_knn_13_103.png" />
-<img alt="../_images/models_knn_13_104.png" src="../_images/models_knn_13_104.png" />
-<img alt="../_images/models_knn_13_105.png" src="../_images/models_knn_13_105.png" />
-<img alt="../_images/models_knn_13_106.png" src="../_images/models_knn_13_106.png" />
-<img alt="../_images/models_knn_13_107.png" src="../_images/models_knn_13_107.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -40.43 -40.12 -39.81 ... -36.37 -36.06 -35.75
-  * lon              (lon) float64 172.5 172.8 173.1 173.4 ... 176.6 176.9 177.2
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 2.774 1.355 ... -2.19 -0.7578
-    bearings         (lat, lon) float64 36.86 32.79 28.34 ... 211.7 215.9 219.6
-    direc_proj_math  (lat, lon) float64 0.9274 0.9985 1.076 ... -2.197 -2.262
-    wind_proj_mask   (time, lat, lon) float64 2.774 1.355 ... -2.19 -0.7578
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_109.png" src="../_images/models_knn_13_109.png" />
-<img alt="../_images/models_knn_13_110.png" src="../_images/models_knn_13_110.png" />
-<img alt="../_images/models_knn_13_111.png" src="../_images/models_knn_13_111.png" />
-<img alt="../_images/models_knn_13_112.png" src="../_images/models_knn_13_112.png" />
-<img alt="../_images/models_knn_13_113.png" src="../_images/models_knn_13_113.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -39.81 -39.5 -39.18 ... -35.75 -35.44 -35.13
-  * lon              (lon) float64 173.8 174.1 174.4 174.7 ... 177.8 178.1 178.4
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 2.262 1.914 ... -4.106 -4.527
-    bearings         (lat, lon) float64 41.84 37.92 33.57 ... 207.1 211.3 215.2
-    direc_proj_math  (lat, lon) float64 0.8406 0.909 0.9849 ... -2.118 -2.186
-    wind_proj_mask   (time, lat, lon) float64 2.262 1.914 ... -4.106 -4.527
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_115.png" src="../_images/models_knn_13_115.png" />
-<img alt="../_images/models_knn_13_116.png" src="../_images/models_knn_13_116.png" />
-<img alt="../_images/models_knn_13_117.png" src="../_images/models_knn_13_117.png" />
-<img alt="../_images/models_knn_13_118.png" src="../_images/models_knn_13_118.png" />
-<img alt="../_images/models_knn_13_119.png" src="../_images/models_knn_13_119.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -39.81 -39.5 -39.18 ... -35.75 -35.44 -35.13
-  * lon              (lon) float64 175.9 176.2 176.6 176.9 ... 180.0 180.3 180.6
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -0.3179 -0.9219 ... -7.121 -6.871
-    bearings         (lat, lon) float64 37.53 33.32 28.7 ... 211.6 215.6 219.3
-    direc_proj_math  (lat, lon) float64 0.9159 0.9892 1.07 ... -2.192 -2.256
-    wind_proj_mask   (time, lat, lon) float64 nan nan nan ... -7.121 -6.871
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_121.png" src="../_images/models_knn_13_121.png" />
-<img alt="../_images/models_knn_13_122.png" src="../_images/models_knn_13_122.png" />
-<img alt="../_images/models_knn_13_123.png" src="../_images/models_knn_13_123.png" />
-<img alt="../_images/models_knn_13_124.png" src="../_images/models_knn_13_124.png" />
-<img alt="../_images/models_knn_13_125.png" src="../_images/models_knn_13_125.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -39.5 -39.18 -38.87 ... -35.44 -35.13 -34.81
-  * lon              (lon) float64 173.1 173.4 173.8 174.1 ... 177.2 177.5 177.8
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 2.97 2.649 2.095 ... -5.504 -4.625
-    bearings         (lat, lon) float64 38.66 34.69 30.32 ... 210.4 214.7 218.6
-    direc_proj_math  (lat, lon) float64 0.896 0.9654 1.042 ... -2.176 -2.244
-    wind_proj_mask   (time, lat, lon) float64 2.97 2.649 2.095 ... -5.504 -4.625
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_127.png" src="../_images/models_knn_13_127.png" />
-<img alt="../_images/models_knn_13_128.png" src="../_images/models_knn_13_128.png" />
-<img alt="../_images/models_knn_13_129.png" src="../_images/models_knn_13_129.png" />
-<img alt="../_images/models_knn_13_130.png" src="../_images/models_knn_13_130.png" />
-<img alt="../_images/models_knn_13_131.png" src="../_images/models_knn_13_131.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -39.5 -39.18 -38.87 ... -35.44 -35.13 -34.81
-  * lon              (lon) float64 172.2 172.5 172.8 173.1 ... 176.2 176.6 176.9
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 2.035 2.629 2.761 ... -7.07 -6.455
-    bearings         (lat, lon) float64 37.75 33.76 29.4 ... 211.4 215.7 219.5
-    direc_proj_math  (lat, lon) float64 0.912 0.9815 1.058 ... -2.193 -2.26
-    wind_proj_mask   (time, lat, lon) float64 2.035 2.629 2.761 ... -7.07 -6.455
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_133.png" src="../_images/models_knn_13_133.png" />
-<img alt="../_images/models_knn_13_134.png" src="../_images/models_knn_13_134.png" />
-<img alt="../_images/models_knn_13_135.png" src="../_images/models_knn_13_135.png" />
-<img alt="../_images/models_knn_13_136.png" src="../_images/models_knn_13_136.png" />
-<img alt="../_images/models_knn_13_137.png" src="../_images/models_knn_13_137.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -39.18 -38.87 -38.56 ... -35.13 -34.81 -34.5
-  * lon              (lon) float64 173.4 173.8 174.1 174.4 ... 177.5 177.8 178.1
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 3.009 2.603 ... -6.764 -6.151
-    bearings         (lat, lon) float64 39.62 35.69 31.37 ... 209.5 213.9 217.8
-    direc_proj_math  (lat, lon) float64 0.8794 0.9479 1.023 ... -2.162 -2.231
-    wind_proj_mask   (time, lat, lon) float64 3.009 2.603 nan ... -6.764 -6.151
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_139.png" src="../_images/models_knn_13_139.png" />
-<img alt="../_images/models_knn_13_140.png" src="../_images/models_knn_13_140.png" />
-<img alt="../_images/models_knn_13_141.png" src="../_images/models_knn_13_141.png" />
-<img alt="../_images/models_knn_13_142.png" src="../_images/models_knn_13_142.png" />
-<img alt="../_images/models_knn_13_143.png" src="../_images/models_knn_13_143.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -39.18 -38.87 -38.56 ... -35.13 -34.81 -34.5
-  * lon              (lon) float64 172.5 172.8 173.1 173.4 ... 176.6 176.9 177.2
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 2.033 2.63 2.963 ... -7.564 -7.118
-    bearings         (lat, lon) float64 37.96 33.95 29.55 ... 211.4 215.7 219.5
-    direc_proj_math  (lat, lon) float64 0.9082 0.9783 1.055 ... -2.193 -2.26
-    wind_proj_mask   (time, lat, lon) float64 2.033 2.63 2.963 ... -7.564 -7.118
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_145.png" src="../_images/models_knn_13_145.png" />
-<img alt="../_images/models_knn_13_146.png" src="../_images/models_knn_13_146.png" />
-<img alt="../_images/models_knn_13_147.png" src="../_images/models_knn_13_147.png" />
-<img alt="../_images/models_knn_13_148.png" src="../_images/models_knn_13_148.png" />
-<img alt="../_images/models_knn_13_149.png" src="../_images/models_knn_13_149.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -38.87 -38.56 -38.25 ... -34.81 -34.5 -34.19
-  * lon              (lon) float64 171.9 172.2 172.5 172.8 ... 175.9 176.2 176.6
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 0.2199 0.9384 ... -7.121 -7.174
-    bearings         (lat, lon) float64 36.49 32.36 27.86 ... 213.3 217.4 221.1
-    direc_proj_math  (lat, lon) float64 0.934 1.006 1.085 ... -2.224 -2.289
-    wind_proj_mask   (time, lat, lon) float64 0.2199 0.9384 ... -7.121 -7.174
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_151.png" src="../_images/models_knn_13_151.png" />
-<img alt="../_images/models_knn_13_152.png" src="../_images/models_knn_13_152.png" />
-<img alt="../_images/models_knn_13_153.png" src="../_images/models_knn_13_153.png" />
-<img alt="../_images/models_knn_13_154.png" src="../_images/models_knn_13_154.png" />
-<img alt="../_images/models_knn_13_155.png" src="../_images/models_knn_13_155.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -38.56 -38.25 -37.94 ... -34.5 -34.19 -33.88
-  * lon              (lon) float64 173.1 173.4 173.8 174.1 ... 177.2 177.5 177.8
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 2.993 3.647 ... -7.708 -7.707
-    bearings         (lat, lon) float64 39.82 35.9 31.59 ... 209.7 214.1 218.1
-    direc_proj_math  (lat, lon) float64 0.8758 0.9442 1.019 ... -2.166 -2.235
-    wind_proj_mask   (time, lat, lon) float64 2.993 3.647 ... -7.708 -7.707
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_157.png" src="../_images/models_knn_13_157.png" />
-<img alt="../_images/models_knn_13_158.png" src="../_images/models_knn_13_158.png" />
-<img alt="../_images/models_knn_13_159.png" src="../_images/models_knn_13_159.png" />
-<img alt="../_images/models_knn_13_160.png" src="../_images/models_knn_13_160.png" />
-<img alt="../_images/models_knn_13_161.png" src="../_images/models_knn_13_161.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -38.25 -37.94 -37.62 ... -34.19 -33.88 -33.56
-  * lon              (lon) float64 172.2 172.5 172.8 173.1 ... 176.2 176.6 176.9
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 0.5839 1.389 ... -6.384 -6.314
-    bearings         (lat, lon) float64 39.03 34.99 30.54 ... 210.9 215.2 219.1
-    direc_proj_math  (lat, lon) float64 0.8895 0.9601 1.038 ... -2.185 -2.252
-    wind_proj_mask   (time, lat, lon) float64 0.5839 1.389 ... -6.384 -6.314
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_163.png" src="../_images/models_knn_13_163.png" />
-<img alt="../_images/models_knn_13_164.png" src="../_images/models_knn_13_164.png" />
-<img alt="../_images/models_knn_13_165.png" src="../_images/models_knn_13_165.png" />
-<img alt="../_images/models_knn_13_166.png" src="../_images/models_knn_13_166.png" />
-<img alt="../_images/models_knn_13_167.png" src="../_images/models_knn_13_167.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-&lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 16, lon: 16)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float64 -36.69 -36.37 -36.06 ... -32.63 -32.32 -32.0
-  * lon              (lon) float64 170.6 170.9 171.2 171.6 ... 174.7 175.0 175.3
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103       (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude   (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_proj        (time, lat, lon) float64 -1.569 -1.169 ... -4.493 -4.347
-    bearings         (lat, lon) float64 41.73 37.79 33.41 ... 209.1 213.5 217.5
-    direc_proj_math  (lat, lon) float64 0.8425 0.9113 0.9876 ... -2.155 -2.225
-    wind_proj_mask   (time, lat, lon) float64 -1.569 -1.169 ... -4.493 -4.347
-</pre></div>
-</div>
-<img alt="../_images/models_knn_13_169.png" src="../_images/models_knn_13_169.png" />
-<img alt="../_images/models_knn_13_170.png" src="../_images/models_knn_13_170.png" />
-<img alt="../_images/models_knn_13_171.png" src="../_images/models_knn_13_171.png" />
-<img alt="../_images/models_knn_13_172.png" src="../_images/models_knn_13_172.png" />
-<img alt="../_images/models_knn_13_173.png" src="../_images/models_knn_13_173.png" />
 </div>
 </div>
 </div>
 <div class="section" id="check-knn-reconstructions">
-<h3><span class="section-number">7.3.2. </span>Check KNN reconstructions<a class="headerlink" href="#check-knn-reconstructions" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">6.4.2. </span>Check KNN reconstructions<a class="headerlink" href="#check-knn-reconstructions" title="Permalink to this headline">¶</a></h3>
 <p>Now, we visualize how the knn algorithm works in the prediction task…</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>TODO: add explanations!!</p>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import custom plotting variables</span>
-<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_location</span><span class="p">,</span> <span class="n">default_region</span>
-<span class="kn">from</span> <span class="nn">sscode.plotting.config</span> <span class="kn">import</span> <span class="n">_figsize</span>
-<span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
-
-<span class="c1"># find similarities between real and kneighbors</span>
-<span class="n">n_times</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of validations/plots</span>
-<span class="n">k_neighbors</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># number of neighbors to search</span>
-<span class="c1"># plotting fig and axes</span>
-<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">train_times</span><span class="p">),</span><span class="n">n_times</span><span class="p">):</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
-        <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="n">_figsize</span><span class="p">,</span>
-        <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;projection&#39;</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span>
-                <span class="n">central_longitude</span><span class="o">=</span><span class="n">default_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
-    <span class="n">real</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
-    <span class="n">real</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">101300</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">101300</span><span class="o">+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
-    <span class="p">)</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
-        <span class="n">time</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span>
-            <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">PCs</span><span class="p">[:</span><span class="mi">388</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-            <span class="c1"># TODO: edit pcs limit above if error is raised!!</span>
-            <span class="n">k_neighbors</span>
-        <span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-    <span class="n">predicted</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">101300</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">101300</span><span class="o">+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
-    <span class="p">)</span>
-    <span class="p">(</span><span class="n">real</span><span class="o">-</span><span class="n">predicted</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
-    <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Predicted SLP - k_neigh = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k_neighbors</span><span class="p">))</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;SLP difference in [mbar·100]&#39;</span><span class="p">)</span>
-    <span class="n">plot_ccrs_nz</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span><span class="n">plot_region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region</span><span class="p">),</span><span class="n">plot_land</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">plot_labels</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">5</span><span class="n">ae14d6412ea</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">predicted</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
-<span class="ne">---&gt; </span><span class="mi">25</span>         <span class="n">time</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">26</span>             <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">PCs</span><span class="p">[:</span><span class="mi">388</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="c1"># TODO: edit pcs limit above if error is raised!!</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/neighbors/_base.py</span> in <span class="ni">kneighbors</span><span class="nt">(self, X, n_neighbors, return_distance)</span>
-<span class="g g-Whitespace">    </span><span class="mi">703</span>                 <span class="n">kwds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_metric_params_</span>
-<span class="g g-Whitespace">    </span><span class="mi">704</span> 
-<span class="ne">--&gt; </span><span class="mi">705</span>             <span class="n">chunked_results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pairwise_distances_chunked</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">706</span>                 <span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_X</span><span class="p">,</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">reduce_func</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">707</span>                 <span class="n">metric</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_metric_</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">pairwise_distances_chunked</span><span class="nt">(X, Y, reduce_func, metric, n_jobs, working_memory, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1621</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1622</span>             <span class="n">X_chunk</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
-<span class="ne">-&gt; </span><span class="mi">1623</span>         <span class="n">D_chunk</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">X_chunk</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1624</span>                                      <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1625</span>         <span class="k">if</span> <span class="p">((</span><span class="n">X</span> <span class="ow">is</span> <span class="n">Y</span> <span class="ow">or</span> <span class="n">Y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/utils/validation.py</span> in <span class="ni">inner_f</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span>             <span class="n">extra_args</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_args</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">62</span>             <span class="k">if</span> <span class="n">extra_args</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">63</span>                 <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span> 
-<span class="g g-Whitespace">     </span><span class="mi">65</span>             <span class="c1"># extra_args &gt; 0</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">pairwise_distances</span><span class="nt">(X, Y, metric, n_jobs, force_all_finite, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1788</span>         <span class="n">func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1789</span> 
-<span class="ne">-&gt; </span><span class="mi">1790</span>     <span class="k">return</span> <span class="n">_parallel_pairwise</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1791</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1792</span> 
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">_parallel_pairwise</span><span class="nt">(X, Y, func, n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1357</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1358</span>     <span class="k">if</span> <span class="n">effective_n_jobs</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1359</span>         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1360</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1361</span>     <span class="c1"># enforce a threading backend to prevent data communication overhead</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/utils/validation.py</span> in <span class="ni">inner_f</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span>             <span class="n">extra_args</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_args</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">62</span>             <span class="k">if</span> <span class="n">extra_args</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">63</span>                 <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span> 
-<span class="g g-Whitespace">     </span><span class="mi">65</span>             <span class="c1"># extra_args &gt; 0</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">euclidean_distances</span><span class="nt">(X, Y, Y_norm_squared, squared, X_norm_squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">270</span>            <span class="p">[</span><span class="mf">1.41421356</span><span class="p">]])</span>
-<span class="g g-Whitespace">    </span><span class="mi">271</span>     <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">272</span><span class="s2">     X, Y = check_pairwise_arrays(X, Y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">273</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">274</span><span class="s2">     # If norms are passed as float32, they are unused. If arrays are passed as</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/utils/validation.py</span> in <span class="ni">inner_f</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span><span class="s2">             extra_args = len(args) - len(all_args)</span>
-<span class="g g-Whitespace">     </span><span class="mi">62</span><span class="s2">             if extra_args &lt;= 0:</span>
-<span class="ne">---&gt; </span><span class="mi">63</span><span class="s2">                 return f(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span><span class="s2"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span><span class="s2">             # extra_args &gt; 0</span>
-
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/sklearn/metrics/pairwise.py</span> in <span class="ni">check_pairwise_arrays</span><span class="nt">(X, Y, precomputed, dtype, accept_sparse, force_all_finite, copy)</span>
-<span class="g g-Whitespace">    </span><span class="mi">158</span><span class="s2">                              (X.shape[0], X.shape[1], Y.shape[0]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">159</span><span class="s2">     elif X.shape[1] != Y.shape[1]:</span>
-<span class="ne">--&gt; </span><span class="mi">160</span><span class="s2">         raise ValueError(&quot;Incompatible dimension for X and Y matrices: &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">161</span><span class="s2">                          &quot;X.shape[1] == </span><span class="si">%d</span><span class="s2"> while Y.shape[1] == </span><span class="si">%d</span><span class="s2">&quot; % (</span>
-<span class="g g-Whitespace">    </span><span class="mi">162</span><span class="s2">                              X.shape[1], Y.shape[1]))</span>
-
-<span class="ne">ValueError</span>: Incompatible dimension for X and Y matrices: X.shape[1] == 388 while Y.shape[1] == 89
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="knn-regression-ana-s-paper">
-<h3><span class="section-number">7.3.3. </span>knn regression - Ana’s paper<a class="headerlink" href="#knn-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
-<p>In the two following cells, we try to replicate the same analysis that we made with the linear regression, but this time with the knn regressor…</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># knn regression in kapiti island</span>
-<span class="n">ss_kapiti</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Kapiti_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">stats_kapiti</span><span class="p">,</span> <span class="n">kapiti_model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-    <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_kapiti</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">50</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_kapiti</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">kapiti_model</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># knn regression in green island</span>
-<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">stats_green</span><span class="p">,</span> <span class="n">green_model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-    <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_green</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">50</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_green</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">green_model</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># knn regression in green island (local predictor)</span>
-<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">stats_green_local</span><span class="p">,</span> <span class="n">green_model_local</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-    <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
-            <span class="n">ss_green</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mf">2.2</span><span class="p">,</span>
-            <span class="n">ss_green</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span>
-            <span class="n">ss_green</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span>
-            <span class="n">ss_green</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mf">2.2</span>
-        <span class="p">)),</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)[</span><span class="mi">0</span><span class="p">],</span> 
-    <span class="n">ss_green</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">max_neighbors</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_green_local</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">green_model_local</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="compare-wind-s-module-with-projected-winds">
-<h3><span class="section-number">7.3.4. </span>Compare wind’s module with projected winds!!<a class="headerlink" href="#compare-wind-s-module-with-projected-winds" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we first re-project the winds in JacksonBay</span>
-<span class="kn">from</span> <span class="nn">sscode.utils</span> <span class="kn">import</span> <span class="n">calculate_relative_winds</span>
-<span class="n">jbay_ss</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;a_JacksonBay&#39;</span><span class="p">)</span>\
-    <span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-<span class="n">jbay_lon</span><span class="p">,</span> <span class="n">jbay_lat</span> <span class="o">=</span> <span class="n">jbay_ss</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">jbay_ss</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span>
-<span class="n">jbay_wind</span> <span class="o">=</span> <span class="n">calculate_relative_winds</span><span class="p">(</span>
-    <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="n">jbay_lon</span><span class="p">,</span><span class="n">jbay_lat</span><span class="p">),</span> <span class="c1"># JacksonBay location</span>
-    <span class="n">uw</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">U_GRD_L103</span><span class="p">,</span>
-    <span class="n">vw</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">V_GRD_L103</span>
-<span class="p">)</span> <span class="c1"># jbay_wind</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">delta_lon</span><span class="p">,</span> <span class="n">delta_lat</span> <span class="o">=</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span>
-<span class="n">time_lapse</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="c1"># knn model with wind&#39;s module</span>
-<span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-    <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># no gradient is calculated</span>
-        <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">jbay_wind</span><span class="p">),</span><span class="n">time_lapse</span><span class="o">=</span><span class="n">time_lapse</span><span class="p">,</span>
-        <span class="n">wind_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;wind_magnitude&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-        <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
-            <span class="n">jbay_lon</span><span class="o">-</span><span class="n">delta_lon</span><span class="p">,</span><span class="n">jbay_lon</span><span class="o">+</span><span class="n">delta_lon</span><span class="p">,</span>
-            <span class="n">jbay_lat</span><span class="o">+</span><span class="n">delta_lat</span><span class="p">,</span><span class="n">jbay_lat</span><span class="o">-</span><span class="n">delta_lat</span>
-        <span class="p">)),</span>
-        <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-1&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-2&#39;</span><span class="p">],</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-    <span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">jbay_ss</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-<span class="c1"># knn model with projected winds</span>
-<span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-    <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># no gradient is calculated</span>
-        <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">jbay_wind</span><span class="p">),</span><span class="n">time_lapse</span><span class="o">=</span><span class="n">time_lapse</span><span class="p">,</span>
-        <span class="n">wind_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;wind_proj&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-        <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
-            <span class="n">jbay_lon</span><span class="o">-</span><span class="n">delta_lon</span><span class="p">,</span><span class="n">jbay_lon</span><span class="o">+</span><span class="n">delta_lon</span><span class="p">,</span>
-            <span class="n">jbay_lat</span><span class="o">+</span><span class="n">delta_lat</span><span class="p">,</span><span class="n">jbay_lat</span><span class="o">-</span><span class="n">delta_lat</span>
-        <span class="p">)),</span>
-        <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-1&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-2&#39;</span><span class="p">],</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-    <span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">jbay_ss</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-<span class="c1"># knn model with masked projected winds</span>
-<span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-    <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># no gradient is calculated</span>
-        <span class="n">winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">jbay_wind</span><span class="p">),</span><span class="n">time_lapse</span><span class="o">=</span><span class="n">time_lapse</span><span class="p">,</span>
-        <span class="n">wind_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-        <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span>
-            <span class="n">jbay_lon</span><span class="o">-</span><span class="n">delta_lon</span><span class="p">,</span><span class="n">jbay_lon</span><span class="o">+</span><span class="n">delta_lon</span><span class="p">,</span>
-            <span class="n">jbay_lat</span><span class="o">+</span><span class="n">delta_lat</span><span class="p">,</span><span class="n">jbay_lat</span><span class="o">-</span><span class="n">delta_lat</span>
-        <span class="p">)),</span>
-        <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-1&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;WINDs in t-2&#39;</span><span class="p">],</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-    <span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">jbay_ss</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">3</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="knn-regression-with-local-predictor">
-<h2><span class="section-number">7.4. </span>KNN regression with local predictor<a class="headerlink" href="#knn-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
-<p>In the following cell, a knn regression is performed over all the domain of the Moana v2 hindcast nearshore, having the local pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_knn_local_daily.nc</span></code>. Notice that, with the regional predictor, which involves an area of 4 <span class="math notranslate nohighlight">\(\cdot\)</span> 4 degrees, we are able to cover just a smaller area, but centered at the location of the virtual moana node.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>As it can be seen in the results plot, the different shores in New Zealand show very different results, as it could be seen with the regional predictor</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="k">if</span> <span class="n">run</span><span class="p">:</span>
-    <span class="c1"># perform the KNN-Regression (local)</span>
-    <span class="n">stats_local</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">sites_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-        <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-    <span class="p">)</span>
-    <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_local</span><span class="p">):</span>
-        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-        <span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_times</span> <span class="o">=</span> <span class="n">KNN_Regression</span><span class="p">(</span>
-            <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
-                <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.2</span><span class="p">,</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.2</span>
-                <span class="p">)),</span>
-                <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
-            <span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">ss_moana</span> <span class="c1"># search with grid-search-cv</span>
+<p>Below, the code used to plot KNN predictions, comparing this prediction with the real data, can be seen:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># find similarities between real and kneighbors</span>
+    <span class="n">n_times</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of validations/plots</span>
+    <span class="n">k_neighbors</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># number of neighbors to search</span>
+    <span class="c1"># plotting fig and axes</span>
+    <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">train_times</span><span class="p">),</span><span class="n">n_times</span><span class="p">):</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="n">_figsize</span><span class="p">,</span>
+            <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;projection&#39;</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span>
+                    <span class="n">central_longitude</span><span class="o">=</span><span class="n">default_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
         <span class="p">)</span>
-        <span class="n">stats_local</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">stats_stat</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="n">station_metrics_local</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats_stat</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">station_metrics_local</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stats_local</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
-    <span class="n">station_metrics_local</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_local</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
-    <span class="p">)</span>
-    <span class="n">station_metrics_local</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_local</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
-    <span class="p">)</span>
-    <span class="c1"># save the statistics</span>
-    <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="n">station_metrics_local</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sites_local</span><span class="p">}</span>
-    <span class="p">)</span>
-    <span class="c1"># local copy</span>
-    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">stats_local</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
-            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_knn_local_daily_new.nc&#39;</span>
+        <span class="n">real</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">real</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">101300</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">101300</span><span class="o">+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
         <span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_knn_local_daily.nc&#39;</span>
-    <span class="p">)</span>
+        <span class="n">predicted</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span>
+                <span class="n">pcs_cfsr</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">PCs</span><span class="p">[:</span><span class="mi">388</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                <span class="c1"># TODO: edit pcs limit above if error is raised!!</span>
+                <span class="n">k_neighbors</span>
+            <span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+        <span class="n">predicted</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">101300</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">101300</span><span class="o">+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="n">real</span><span class="o">-</span><span class="n">predicted</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span><span class="n">vmax</span><span class="o">=+</span><span class="mi">2000</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Predicted SLP - k_neigh = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k_neighbors</span><span class="p">))</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;SLP difference in [mbar·100]&#39;</span><span class="p">)</span>
+        <span class="n">plot_ccrs_nz</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span><span class="n">plot_region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region</span><span class="p">),</span><span class="n">plot_land</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">plot_labels</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">))</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
-<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rel_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;ext_pearson&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -1627,13 +783,13 @@ Data variables:
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">6. </span>MultiLinear regression models</p>
+            <p class="prev-next-title"><span class="section-number">5. </span>MultiLinear regression models</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_xgboost.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>XGBoost regression models</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>XGBoost regression models</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

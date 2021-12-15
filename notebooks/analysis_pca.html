@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. PC analysis &#8212; Storm Surge NZ - Summary</title>
+    <title>4. PC analysis &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -59,8 +59,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. MultiLinear regression models" href="models_linear.html" />
-    <link rel="prev" title="4. Useful theory!!" href="useful_theory.html" />
+    <link rel="next" title="5. MultiLinear regression models" href="models_linear.html" />
+    <link rel="prev" title="2. Repository workflow + THEORY" href="repo_workflow.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -111,48 +111,38 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   1. Repository workflow + THEORY
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   1. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="useful_theory.html">
-   4. Useful theory!!
+  <a class="reference internal" href="repo_workflow.html">
+   2. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   5. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   6. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   7. KNN regressor models
+   6. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   8. XGBoost regression models
+   7. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   9. MDA - RBF model
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="experiments.html">
-   10. RUN experiments
+   8. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -269,32 +259,44 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#principal-components-analysis-theory">
-   5.1. Principal components analysis theory
+   4.1. Principal Components Analysis theory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-python-libraries">
+   4.2. Import python libraries
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-without-plotting">
-   5.2. Load the data without plotting
+   4.3. Load the data without plotting
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca-usage-explanation">
-   5.3. PCA usage explanation
+   4.4. PCA usage explanation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pca-code">
+     4.4.1. PCA code
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca-examples">
-   5.4. PCA examples:
+   4.5. PCA examples:
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#regional-pcs-analysis">
-     5.4.1. Regional PCs analysis
+     4.5.1. Regional PCs analysis
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#local-pcs-analysis">
-     5.4.2. Local PCs analysis
+     4.5.2. Local PCs analysis
     </a>
    </li>
   </ul>
@@ -311,11 +313,11 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="pc-analysis">
-<h1><span class="section-number">5. </span>PC analysis<a class="headerlink" href="#pc-analysis" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4. </span>PC analysis<a class="headerlink" href="#pc-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="principal-components-analysis-theory">
-<h2><span class="section-number">5.1. </span>Principal components analysis theory<a class="headerlink" href="#principal-components-analysis-theory" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1. </span>Principal Components Analysis theory<a class="headerlink" href="#principal-components-analysis-theory" title="Permalink to this headline">¶</a></h2>
 <p>In this notebook, the Principal Component Analysis (PCA) is performed. With this dimensionality reduction technique we are able to reduce the dimension of the data, which in the case of a regional predictor for the sea-level-pressure fields, exceeds the thousands of variables… All the python code is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/pca.py</span></code>, where we use the scikit-learn package available <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">here</a>.</p>
-<p>Regarding the maths, an explanation of what PCA is can be found at <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis">wikipedia</a>, but it will be briefly explained here:</p>
+<p>Regarding the maths, an explanation of what PCA is can be found at <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis">wikipedia</a> (many other sources explain this technique in detail), but it will be briefly explained here too.</p>
 <p>The PCA reduces the dimension of the data by means of a projection in a lower dimensional space that preserves the maximum variance of the sample data. The new vectors are formed by the ones where the projected data have the higher variance. Given the spatiotemporal variable <span class="math notranslate nohighlight">\(X_i (x, t_i)\)</span>, where <span class="math notranslate nohighlight">\(x\)</span> is the spatial data position of dimension <span class="math notranslate nohighlight">\(3n1 + 2n2\)</span> and <span class="math notranslate nohighlight">\(t_i\)</span> is the time, we apply PCA to obtain a new <span class="math notranslate nohighlight">\(d\)</span>-dimensional space. The eigenvectors [empirical orthogonal functions (EOFs)] of the covariance matrix of the data define the vectors of the new space. The idea of PCA is to find the minimum <span class="math notranslate nohighlight">\(d\)</span> linearly EOFs, so that the transformed components of the original data [principal components (PCs)] explain the maximum variance necessary in the problem at hand. The original data can be expressed as a linear combination of EOFs and PCs,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -323,11 +325,15 @@
 X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)\times PC_d(t_i)
 }
 \]</div>
-<p>Once we apply PCA, our data are defined by the principal components <span class="math notranslate nohighlight">\(X_i^{EOF}={PC_1,PC_2,...,PC_d}, i=1,...,P \)</span>. A better explanation can be also found <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-unsupervised-learning">here</a>!!</p>
+<p>Once we apply PCA, our data are defined by the principal components <span class="math notranslate nohighlight">\(X_i^{EOF}={PC_1,PC_2,...,PC_d}, i=1,...,P \)</span>. A better online explanation can be also found <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-unsupervised-learning">here</a>!!</p>
 <div class="figure align-default" id="pca">
 <a class="reference internal image-reference" href="../_images/pca-analysis.png"><img alt="../_images/pca-analysis.png" src="../_images/pca-analysis.png" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">This picture shows how the dimensionality reduction that performs PCA might help when identifying patterns in data (<a class="reference external" href="https://programmerclick.com/images/486/0351bfe3610a3ba89bea599ee9d054ae.png">image reference</a>)</span><a class="headerlink" href="#pca" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">This picture shows how the dimensionality reduction that performs PCA might help when identifying patterns in data (<a class="reference external" href="https://programmerclick.com/images/486/0351bfe3610a3ba89bea599ee9d054ae.png">image reference</a>)</span><a class="headerlink" href="#pca" title="Permalink to this image">¶</a></p>
 </div>
+</div>
+<div class="section" id="import-python-libraries">
+<h2><span class="section-number">4.2. </span>Import python libraries<a class="headerlink" href="#import-python-libraries" title="Permalink to this headline">¶</a></h2>
+<p>The very first step in all the notebooks we are using consists in importing all the necessary libraries.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
@@ -338,8 +344,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 
 <span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
-<span class="c1"># from sscode.pca import PCA_DynamicPred</span>
-<span class="kn">from</span> <span class="nn">sscode.pca_new</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
+<span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span><span class="p">,</span> <span class="n">default_location</span>
 
 <span class="c1"># warnings</span>
@@ -356,22 +361,16 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="load-the-data-without-plotting">
-<h2><span class="section-number">5.2. </span>Load the data without plotting<a class="headerlink" href="#load-the-data-without-plotting" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3. </span>Load the data without plotting<a class="headerlink" href="#load-the-data-without-plotting" title="Permalink to this headline">¶</a></h2>
 <p>As always, we first load the data using our <code class="docutils literal notranslate"><span class="pre">Loader</span></code> python class, so then we can easily use all the datasets. Notice that here, we set the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameters to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data from pre-saved files</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
     <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span>
         <span class="kc">True</span><span class="p">,[</span><span class="s1">&#39;../data/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="s1">&#39;../data/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
     <span class="p">),</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="c1"># # load the data from original files</span>
-<span class="c1"># load_cfsr_moana_uhslc = Loader(</span>
-<span class="c1">#     data_to_load=(&#39;cfsr&#39;,&#39;moana&#39;,&#39;uhslc&#39;),</span>
-<span class="c1">#     time_resample=&#39;1D&#39;, load_winds=(True,default_location),</span>
-<span class="c1">#     plot=(False,False,False)</span>
-<span class="c1"># )</span>
 </pre></div>
 </div>
 </div>
@@ -389,23 +388,65 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="section" id="pca-usage-explanation">
-<h2><span class="section-number">5.3. </span>PCA usage explanation<a class="headerlink" href="#pca-usage-explanation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4. </span>PCA usage explanation<a class="headerlink" href="#pca-usage-explanation" title="Permalink to this headline">¶</a></h2>
 <p>To use the pre-build PCA functions, the user must get familiar with the datasets and the way everything is programmed.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>For this reason, have always in mind that <a class="reference external" href="http://xarray.pydata.org/en/stable/getting-started-guide/why-xarray.html">xarray</a> will be the main python data analysis library used in the project, and then, python functions will usually depend on these <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html">Datasets</a> / <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html">DataArrays</a>, which are very useful when working with multiple dimensions and variables</p>
 </div>
-<p>regarding the PCA usage, have a look at the class in <code class="docutils literal notranslate"><span class="pre">sscode/pca.py</span></code> as this is the aspect of all the functions that are used. For this particular case, we must give the function the previouly loaded slp fields, which are stored at <code class="docutils literal notranslate"><span class="pre">load_cfsr_moana_uhslc.predictor_slp</span></code>, and then specify the actions that we want to perform over this raw dataset. Here some examples of the available actions:</p>
+<p>Regarding the PCA usage, have a look at the class in <code class="docutils literal notranslate"><span class="pre">sscode/pca.py</span></code> as this is the aspect of all the functions that are used. For this particular case, we must give the function the previouly loaded slp fields, which are stored at <code class="docutils literal notranslate"><span class="pre">load_cfsr_moana_uhslc.predictor_slp</span></code>, and then specify the actions that we want to perform over this raw dataset.</p>
+<div class="section" id="pca-code">
+<h3><span class="section-number">4.4.1. </span>PCA code<a class="headerlink" href="#pca-code" title="Permalink to this headline">¶</a></h3>
+<p>Below, the attributes of the PCA class are shown, so its use is easier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">PCA_DynamicPred</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">pres</span><span class="p">,</span> 
+                     <span class="n">pres_vars</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
+                     <span class="n">calculate_gradient</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="n">wind</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">wind_vars</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;U_GRD_L103&#39;</span><span class="p">,</span><span class="s1">&#39;V_GRD_L103&#39;</span><span class="p">),</span>
+                     <span class="c1"># here we could make use of datasets_attrs in config.py file</span>
+                     <span class="n">time_lapse</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
+                     <span class="n">time_resample</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span>
+                     <span class="n">region</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
+                     <span class="c1"># ss_site: tuple = (False, None),</span>
+                     <span class="n">site_location</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">pca_plot</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+                     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                     <span class="n">pca_ttls</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">pca_borders</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">pcs_folder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">site_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">pca_percent</span> <span class="o">=</span> <span class="mf">0.99</span><span class="p">,</span>
+                     <span class="n">pca_method</span> <span class="o">=</span> <span class="s1">&#39;cpu&#39;</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>so a use case might be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">pca_example</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> <span class="c1"># make sure we use the dataarray, NOT dataset</span>
+        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+        <span class="n">time_lapse</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># frame in t and t-1</span>
+        <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
+        <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="mi">150</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">)),</span>
+        <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="mi">155</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">),</span>
+        <span class="c1"># ...</span>
+        <span class="c1"># ...</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="pca-examples">
-<h2><span class="section-number">5.4. </span>PCA examples:<a class="headerlink" href="#pca-examples" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.5. </span>PCA examples:<a class="headerlink" href="#pca-examples" title="Permalink to this headline">¶</a></h2>
 <p>Below, different PCA analysis with different inputs are shown:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Be careful when trying to perform the PC Analysis over large amounts of data, as it works inversing the matrices of the data, and depending on the computer features, the kernel might die!!</p>
 </div>
 <div class="section" id="regional-pcs-analysis">
-<h3><span class="section-number">5.4.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.5.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
@@ -423,23 +464,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-
- calculating winds with: 
-
- &lt;xarray.Dataset&gt;
-Dimensions:         (time: 11444, lat: 71, lon: 81)
-Coordinates:
-  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat             (lat) float32 -51.99 -51.67 -51.36 ... -30.75 -30.44 -30.13
-  * lon             (lon) float32 160.0 160.3 160.6 160.9 ... 184.4 184.7 185.0
-Data variables:
-    U_GRD_L103      (time, lat, lon) float32 dask.array&lt;chunksize=(572, 7, 8), meta=np.ndarray&gt;
-    V_GRD_L103      (time, lat, lon) float32 dask.array&lt;chunksize=(572, 7, 8), meta=np.ndarray&gt;
-    wind_magnitude  (time, lat, lon) float32 dask.array&lt;chunksize=(572, 7, 8), meta=np.ndarray&gt; 
-
-Assembling matrix
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
 Start 0
 
  adding the wind to the predictor... 
@@ -482,15 +507,15 @@ time (11353,)
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_8_1.png" src="../_images/analysis_pca_8_1.png" />
-<img alt="../_images/analysis_pca_8_2.png" src="../_images/analysis_pca_8_2.png" />
-<img alt="../_images/analysis_pca_8_3.png" src="../_images/analysis_pca_8_3.png" />
-<img alt="../_images/analysis_pca_8_4.png" src="../_images/analysis_pca_8_4.png" />
+<img alt="../_images/analysis_pca_9_1.png" src="../_images/analysis_pca_9_1.png" />
+<img alt="../_images/analysis_pca_9_2.png" src="../_images/analysis_pca_9_2.png" />
+<img alt="../_images/analysis_pca_9_3.png" src="../_images/analysis_pca_9_3.png" />
+<img alt="../_images/analysis_pca_9_4.png" src="../_images/analysis_pca_9_4.png" />
 </div>
 </div>
 </div>
 <div class="section" id="local-pcs-analysis">
-<h3><span class="section-number">5.4.2. </span>Local PCs analysis<a class="headerlink" href="#local-pcs-analysis" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.5.2. </span>Local PCs analysis<a class="headerlink" href="#local-pcs-analysis" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
@@ -508,23 +533,7 @@ time (11353,)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> re-chunking dataset to avoid memmory problems... 
-
-
- calculating winds with: 
-
- &lt;xarray.Dataset&gt;
-Dimensions:         (time: 11444, lat: 16, lon: 17)
-Coordinates:
-  * time            (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat             (lat) float32 -39.81 -39.5 -39.18 ... -35.75 -35.44 -35.13
-  * lon             (lon) float32 175.0 175.3 175.6 175.9 ... 179.4 179.7 180.0
-Data variables:
-    U_GRD_L103      (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    V_GRD_L103      (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt;
-    wind_magnitude  (time, lat, lon) float32 dask.array&lt;chunksize=(572, 1, 1), meta=np.ndarray&gt; 
-
-Assembling matrix
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
 Start 0
 
  adding the wind to the predictor... 
@@ -567,10 +576,10 @@ time (11353,)
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/analysis_pca_10_1.png" src="../_images/analysis_pca_10_1.png" />
-<img alt="../_images/analysis_pca_10_2.png" src="../_images/analysis_pca_10_2.png" />
-<img alt="../_images/analysis_pca_10_3.png" src="../_images/analysis_pca_10_3.png" />
-<img alt="../_images/analysis_pca_10_4.png" src="../_images/analysis_pca_10_4.png" />
+<img alt="../_images/analysis_pca_11_1.png" src="../_images/analysis_pca_11_1.png" />
+<img alt="../_images/analysis_pca_11_2.png" src="../_images/analysis_pca_11_2.png" />
+<img alt="../_images/analysis_pca_11_3.png" src="../_images/analysis_pca_11_3.png" />
+<img alt="../_images/analysis_pca_11_4.png" src="../_images/analysis_pca_11_4.png" />
 </div>
 </div>
 </div>
@@ -602,17 +611,17 @@ time (11353,)
         
             <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="useful_theory.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="repo_workflow.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">4. </span>Useful theory!!</p>
+            <p class="prev-next-title"><span class="section-number">2. </span>Repository workflow + THEORY</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_linear.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>MultiLinear regression models</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>MultiLinear regression models</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

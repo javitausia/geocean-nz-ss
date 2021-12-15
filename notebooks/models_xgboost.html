@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. XGBoost regression models &#8212; Storm Surge NZ - Summary</title>
+    <title>7. XGBoost regression models &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -47,8 +47,6 @@
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe,.cell"
@@ -59,8 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="9. MDA - RBF model" href="models_mda_rbf.html" />
-    <link rel="prev" title="7. KNN regressor models" href="models_knn.html" />
+    <link rel="next" title="8. MDA - RBF model" href="models_mda_rbf.html" />
+    <link rel="prev" title="6. KNN regression models" href="models_knn.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -111,48 +109,38 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   1. Repository workflow + THEORY
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   1. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="useful_theory.html">
-   4. Useful theory!!
+  <a class="reference internal" href="repo_workflow.html">
+   2. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   5. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   6. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   7. KNN regressor models
+   6. KNN regression models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   8. XGBoost regression models
+   7. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_mda_rbf.html">
-   9. MDA - RBF model
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="experiments.html">
-   10. RUN experiments
+   8. MDA - RBF model
   </a>
  </li>
 </ul>
@@ -269,35 +257,30 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xgboost-regression-theory">
-   8.1. XGBoost regression theory
+   7.1. XGBoost regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-the-data-main-pcs">
-   8.2. Load the data (main + PCs)
+  <a class="reference internal nav-link" href="#load-the-data">
+   7.2. Load the data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculate-regional-pca">
+   7.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xgboost-regression-with-regional-predictor">
-   8.3. XGBoost regression with regional predictor
+   7.4. XGBoost regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation">
-     8.3.1. XGBoost regression in the UHSLC tidal gauges + validation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#xgboost-regression-ana-s-paper">
-     8.3.2. XGBoost regression - Ana’s paper
+     7.4.1. XGBoost regression in the UHSLC tidal gauges + validation
     </a>
    </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#xgboost-regression-with-local-predictor">
-   8.4. XGBoost regression with local predictor
-  </a>
  </li>
 </ul>
 
@@ -311,11 +294,15 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="xgboost-regression-models">
-<h1><span class="section-number">8. </span>XGBoost regression models<a class="headerlink" href="#xgboost-regression-models" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">7. </span>XGBoost regression models<a class="headerlink" href="#xgboost-regression-models" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="xgboost-regression-theory">
-<h2><span class="section-number">8.1. </span>XGBoost regression theory<a class="headerlink" href="#xgboost-regression-theory" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.1. </span>XGBoost regression theory<a class="headerlink" href="#xgboost-regression-theory" title="Permalink to this headline">¶</a></h2>
 <p>In machine learning, ensemble models perform better than individual models with high probability. An ensemble model combines different machine learning models into one. The Random Forest is a popular ensemble that takes the average of many Decision Trees via bagging. Bagging is short for “bootstrap aggregation”, meaning that samples are chosen with replacement (bootstrapping), and combined (aggregated) by taking their average.
 Boosting is a strong alternative to bagging. Instead of aggregating predictions, boosters turn weak learners into strong learners by focusing on where the individual models (usually Decision Trees) went wrong. In Gradient Boosting, individual models train upon the residuals, the difference between the prediction and the actual results.</p>
+<div class="figure align-default" id="treeexpl">
+<a class="reference internal image-reference" href="../_images/treesexpl.png"><img alt="../_images/treesexpl.png" src="../_images/treesexpl.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 7.1 </span><span class="caption-text">This picture displays the final surface/f(x) a individual tree might generate</span><a class="headerlink" href="#treeexpl" title="Permalink to this image">¶</a></p>
+</div>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Gradient_boosting">Gradient boosting</a> is a machine learning technique for regression, classification and other tasks, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees When a decision tree is the weak learner, the resulting algorithm is called gradient boosted trees, which usually outperforms random forest. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function.</p>
 <p>Instead of aggregating trees, gradient boosted trees learns from errors during each boosting round.
 <a class="reference external" href="https://en.wikipedia.org/wiki/XGBoost">XGBoost</a> is short for “eXtreme Gradient Boosting”. The “eXtreme” refers to speed enhancements such as parallel computing and cache awareness that makes XGBoost approximately 10 times faster than traditional Gradient Boosting.</p>
@@ -324,7 +311,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <p>Below, an example of a tree obtained in this notebook is shown:</p>
 <div class="figure align-default" id="tree">
 <a class="reference internal image-reference" href="../_images/tree-example.png"><img alt="../_images/tree-example.png" src="../_images/tree-example.png" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8.1 </span><span class="caption-text">This picture displays some leaves of a regression tree, where the input variables are the PCs of a regional predictor</span><a class="headerlink" href="#tree" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 7.2 </span><span class="caption-text">This picture displays some leaves of a regression tree, where the input variables are the PCs of a regional predictor</span><a class="headerlink" href="#tree" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -346,7 +333,8 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># custom</span>
-<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_region_reduced</span><span class="p">,</span> \
+    <span class="n">default_location</span><span class="p">,</span> <span class="n">default_evaluation_metrics</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_private_tgs</span>
 <span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
 <span class="kn">from</span> <span class="nn">sscode.xgboost</span> <span class="kn">import</span> <span class="n">XGBoost_Regression</span>
@@ -372,9 +360,6 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
-</pre></div>
-</div>
 <div class="output text_html">
 <style>
 .output_png {
@@ -386,55 +371,62 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </div></div>
 </div>
 </div>
-<div class="section" id="load-the-data-main-pcs">
-<h2><span class="section-number">8.2. </span>Load the data (main + PCs)<a class="headerlink" href="#load-the-data-main-pcs" title="Permalink to this headline">¶</a></h2>
-<p>As usual, we load the data that is going to be used, which are the predictor, the predictand, the validators in case we want to “validate” some results with the closest tidal gauges available, and the previously calculated regional pcs + gradient and time lapse=3, which means 2 days before the day at each time step.</p>
+<div class="section" id="load-the-data">
+<h2><span class="section-number">7.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
 
 
- loading daily resampled data... 
+ loading the Moana v2 hindcast data... 
 
 
- loading and plotting the UHSLC tidal guages... 
+ loading the UHSLC tidal guages... 
 </pre></div>
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="calculate-regional-pca">
+<h2><span class="section-number">7.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">¶</a></h2>
+<p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the pcs</span>
-<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;../data/cfsr/cfsr_regional_gradient_tl3_daily_pcs.nc&#39;</span><span class="p">):</span>
-    <span class="n">pcs_cfsr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="s1">&#39;../data/cfsr/cfsr_regional_gradient_tl3_daily_pcs.nc&#39;</span>
-    <span class="p">)</span>
-    <span class="c1"># from sscode.plotting.pca import plot_pcs</span>
-    <span class="c1"># plot_pcs(pcs_cfsr,n_plot=1)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># calculate the pcs</span>
-    <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
-        <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span>
-        <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the regional pcs</span>
+<span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">pcs_scaler_regional</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
+    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/models_xgboost_6_0.png" src="../_images/models_xgboost_6_0.png" />
+<img alt="../_images/models_xgboost_6_1.png" src="../_images/models_xgboost_6_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="xgboost-regression-with-regional-predictor">
-<h2><span class="section-number">8.3. </span>XGBoost regression with regional predictor<a class="headerlink" href="#xgboost-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
-<p>In the following cell, a XGBoost regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_xgboost_regional_daily.nc</span></code>.</p>
+<h2><span class="section-number">7.4. </span>XGBoost regression with regional predictor<a class="headerlink" href="#xgboost-regression-with-regional-predictor" title="Permalink to this headline">¶</a></h2>
+<p>In the following cell, a XGBoost regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics/regional_models</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_xgboost_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As it can be seen in the results plot, the different shores in New Zealand show very different results</p>
@@ -445,45 +437,46 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
     <span class="c1"># perform the XGBoost-Regression (regional)</span>
     <span class="n">metrics_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save regional metrics</span>
-    <span class="n">pcs_to_use_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save used pcs </span>
+    <span class="n">pcs_to_use_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save used pcs (f-regression)</span>
     <span class="n">sites_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
         <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-    <span class="p">)</span> <span class="c1"># select here the desired sites to apply linreg</span>
+    <span class="p">)[::</span><span class="mi">300</span><span class="p">]</span>
     <span class="c1"># perform the XGBoost regression over all the sites</span>
     <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_regional</span><span class="p">):</span>
         <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">)</span>\
             <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
-            <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span>
+            <span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="c1"># use default attributes</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span> <span class="c1"># using the regional-pre-loaded pcs</span>
         <span class="n">metrics_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="c1"># save site metrics</span>
         <span class="n">pcs_to_use_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pcs_to_use</span><span class="p">)</span> <span class="c1"># save used pcs</span>
     <span class="c1"># now, save all in xarray.Dataset</span>
     <span class="n">sites_metrics_regional</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metrics_regional</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
+        <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metrics_regional</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
     <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">(</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
     <span class="p">)</span>
     <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">(</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
     <span class="p">)</span>
     <span class="c1"># save the metrics</span>
     <span class="n">metrics_dataset_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="n">sites_metrics_regional</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sites_regional</span><span class="p">}</span>
+        <span class="n">sites_metrics_regional</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:</span><span class="n">sites_regional</span><span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># local copys</span>
-    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">metrics_dataset_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
-            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_xgboost_regional_daily_new.nc&#39;</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_xgboost_regional_daily.nc&#39;</span>
         <span class="p">)</span> <span class="c1"># save metrics in all the stations</span>
         <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
-            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/pcs_xgboost_regional_daily_new.npy&#39;</span><span class="p">,</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/pcs_xgboost_regional_daily.npy&#39;</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">)</span>
-        <span class="p">)</span> <span class="c1"># save pcs used in the linear regressions</span>
+        <span class="p">)</span> <span class="c1"># save pcs used in the xgboost regressions</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">metrics_dataset_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_xgboost_regional_daily.nc&#39;</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_xgboost_regional_daily.nc&#39;</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -494,39 +487,9 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
 <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_regional</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rel_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/models_xgboost_8_0.png" src="../_images/models_xgboost_8_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_to_use_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-    <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/pcs_xgboost_regional_daily.npy&#39;</span><span class="p">,</span>
-    <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-<span class="n">max_pcs</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">pcs_to_use_regional</span><span class="p">])</span>
-<span class="n">pcs_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">),</span><span class="n">max_pcs</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">array</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_pcs</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">pcs_importance</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">pc</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_pcs</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">pc</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">max_pcs</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">continue</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
-<span class="n">pcol</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">pcs_importance</span><span class="o">.</span><span class="n">T</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:],</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral&#39;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pcol</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">))[::</span><span class="mi">50</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-    <span class="mi">20</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-<span class="p">)[::</span><span class="mi">50</span><span class="p">],</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_regional</span><span class="p">,</span>
+               <span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">],</span>
+               <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;rainbow&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -534,10 +497,36 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <img alt="../_images/models_xgboost_9_0.png" src="../_images/models_xgboost_9_0.png" />
 </div>
 </div>
+<p>with the code below, we can plot the PCs used with the linear regression:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">pcs_to_use_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/pcs_xgboost_regional_daily.npy&#39;</span><span class="p">,</span>
+        <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">max_pcs</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">pcs_to_use_regional</span><span class="p">])</span>
+    <span class="n">pcs_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">),</span><span class="n">max_pcs</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">array</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_pcs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pcs_importance</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">pc</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_pcs</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span><span class="o">==</span><span class="n">pc</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">max_pcs</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">continue</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">pcol</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">pcs_importance</span><span class="o">.</span><span class="n">T</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:],</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pcol</span><span class="p">)</span>
+    <span class="c1"># ax.set_yticks(np.arange(0,50,5)+0.5)</span>
+    <span class="c1"># ax.set_yticklabels(np.arange(0,50,5)+1,fontsize=16)</span>
+    <span class="c1"># ax.set_xticks(np.arange(20,len(pcs_to_use_regional))[::50]+0.5)</span>
+    <span class="c1"># ax.set_xticklabels(np.arange(</span>
+    <span class="c1">#     20,len(load_cfsr_moana_uhslc.predictand.site.values),1</span>
+    <span class="c1"># )[::50],fontsize=16)</span>
+    <span class="c1"># plt.setp(ax.get_xticklabels(),rotation=45,ha=&#39;right&#39;)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
 <div class="section" id="xgboost-regression-in-the-uhslc-tidal-gauges-validation">
-<h3><span class="section-number">8.3.1. </span>XGBoost regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">7.4.1. </span>XGBoost regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">¶</a></h3>
 <p>This part explanation is similar to the one available at <strong>MultiLinear regression models (models_linear.ipynb)</strong> and <strong>KNN regressor models (models_knn.ipynb)</strong>!!</p>
-<p>But in this case, we will also use the trained agent to see what are the best parameters for our XGBoost model, in all the locations of the tidal gauges, but training the model with the Moana v2 hindcast.</p>
+<p>But in this case, we could also use the trained agent to see what are the best parameters for our XGBoost model, in all the locations of the tidal gauges, but training the model with the Moana v2 hindcast.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the uhslc tidal-gauges locations</span>
@@ -546,496 +535,172 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_xgboost_11_0.png" src="../_images/models_xgboost_11_0.png" />
+<img alt="../_images/models_xgboost_12_0.png" src="../_images/models_xgboost_12_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># validate model with tgs</span>
 <span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="c1"># select sites and append closest to UHSLC tgs</span>
 <span class="n">clos_to_uhslc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">689</span><span class="p">,</span> <span class="mi">328</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">949</span><span class="p">,</span> <span class="mi">708</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clos_to_uhslc</span><span class="p">):</span>
+<span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span> <span class="c1"># closest Moana v2 Hindcast to tidal gauges</span>
+    <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
+      <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
+      <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
+    <span class="p">]</span>
+<span class="p">)[::</span><span class="mi">20</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">):</span>
     <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
         <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">stats_stat</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
-        <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="c1"># pcs and ss data</span>
-        <span class="n">xgboost_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># will perform CV</span>
-        <span class="n">xgboost_gscv_parameters</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span>
-            <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
-            <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.12</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
-            <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span>
-            <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ls&#39;</span><span class="p">]</span> <span class="c1"># more could be added</span>
-        <span class="p">},</span>
+    <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
+        <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
+            <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+            <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span>
+            <span class="p">)),</span>
+            <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-2&#39;</span><span class="p">]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
         <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
             <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
-        <span class="p">),</span> 
-        <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> 
-        <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
-    <span class="n">stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_stat</span><span class="p">)</span>
-    <span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 9, &#39;min_samples_split&#39;: 0.06444444444444444, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_1.png" src="../_images/models_xgboost_12_1.png" />
-<img alt="../_images/models_xgboost_12_2.png" src="../_images/models_xgboost_12_2.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_4.png" src="../_images/models_xgboost_12_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_6.png" src="../_images/models_xgboost_12_6.png" />
-<img alt="../_images/models_xgboost_12_7.png" src="../_images/models_xgboost_12_7.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.61, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.77, 0.58)
- R score: 0.58 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_9.png" src="../_images/models_xgboost_12_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.05333333333333333, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_11.png" src="../_images/models_xgboost_12_11.png" />
-<img alt="../_images/models_xgboost_12_12.png" src="../_images/models_xgboost_12_12.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.26
- and Correlations (Pearson, Rscore): (0.82, 0.67)
- R score: 0.67 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_14.png" src="../_images/models_xgboost_12_14.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 8, &#39;min_samples_split&#39;: 0.04222222222222222, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_16.png" src="../_images/models_xgboost_12_16.png" />
-<img alt="../_images/models_xgboost_12_17.png" src="../_images/models_xgboost_12_17.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.71, Relative - RMSE: 0.38
- and Correlations (Pearson, Rscore): (0.68, 0.45)
- R score: 0.45 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_19.png" src="../_images/models_xgboost_12_19.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.05333333333333333, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_21.png" src="../_images/models_xgboost_12_21.png" />
-<img alt="../_images/models_xgboost_12_22.png" src="../_images/models_xgboost_12_22.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.26
- and Correlations (Pearson, Rscore): (0.82, 0.67)
- R score: 0.67 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_24.png" src="../_images/models_xgboost_12_24.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_26.png" src="../_images/models_xgboost_12_26.png" />
-<img alt="../_images/models_xgboost_12_27.png" src="../_images/models_xgboost_12_27.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.64, Relative - RMSE: 0.32
- and Correlations (Pearson, Rscore): (0.75, 0.55)
- R score: 0.55 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_29.png" src="../_images/models_xgboost_12_29.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_31.png" src="../_images/models_xgboost_12_31.png" />
-<img alt="../_images/models_xgboost_12_32.png" src="../_images/models_xgboost_12_32.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.57, Relative - RMSE: 0.28
- and Correlations (Pearson, Rscore): (0.81, 0.64)
- R score: 0.64 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_34.png" src="../_images/models_xgboost_12_34.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.06444444444444444, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_36.png" src="../_images/models_xgboost_12_36.png" />
-<img alt="../_images/models_xgboost_12_37.png" src="../_images/models_xgboost_12_37.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.57, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_39.png" src="../_images/models_xgboost_12_39.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.10888888888888888, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_41.png" src="../_images/models_xgboost_12_41.png" />
-<img alt="../_images/models_xgboost_12_42.png" src="../_images/models_xgboost_12_42.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.59, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_44.png" src="../_images/models_xgboost_12_44.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 12, &#39;min_samples_split&#39;: 0.08666666666666666, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_46.png" src="../_images/models_xgboost_12_46.png" />
-<img alt="../_images/models_xgboost_12_47.png" src="../_images/models_xgboost_12_47.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.67, Relative - RMSE: 0.33
- and Correlations (Pearson, Rscore): (0.71, 0.50)
- R score: 0.5 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_49.png" src="../_images/models_xgboost_12_49.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.05333333333333333, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_51.png" src="../_images/models_xgboost_12_51.png" />
-<img alt="../_images/models_xgboost_12_52.png" src="../_images/models_xgboost_12_52.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.61, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.77, 0.58)
- R score: 0.58 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_54.png" src="../_images/models_xgboost_12_54.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [50], &#39;max_depth&#39;: array([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14]), &#39;min_samples_split&#39;: array([0.02      , 0.03111111, 0.04222222, 0.05333333, 0.06444444,
-       0.07555556, 0.08666667, 0.09777778, 0.10888889, 0.12      ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 100 candidates, totalling 200 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 11, &#39;min_samples_split&#39;: 0.07555555555555556, &#39;n_estimators&#39;: 50} parameters!! 
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_56.png" src="../_images/models_xgboost_12_56.png" />
-<img alt="../_images/models_xgboost_12_57.png" src="../_images/models_xgboost_12_57.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.68, Relative - RMSE: 0.35
- and Correlations (Pearson, Rscore): (0.70, 0.48)
- R score: 0.48 -- in TEST data
-</pre></div>
-</div>
-<img alt="../_images/models_xgboost_12_59.png" src="../_images/models_xgboost_12_59.png" />
-</div>
-</div>
-</div>
-<div class="section" id="xgboost-regression-ana-s-paper">
-<h3><span class="section-number">8.3.2. </span>XGBoost regression - Ana’s paper<a class="headerlink" href="#xgboost-regression-ana-s-paper" title="Permalink to this headline">¶</a></h3>
-<p>In the two following cells, we try to replicate the same analysis that we made with the linear and KNN regression, but this time with the XGBoost regressor…</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># xgboost regression in kapiti island</span>
-<span class="n">ss_kapiti</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Kapiti_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">stats_kapiti</span><span class="p">,</span> <span class="n">kapiti_model</span><span class="p">,</span> <span class="n">pcs_to_use_kapiti</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
-    <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_kapiti</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xgboost_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">xgboost_gscv_parameters</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">],</span>
-        <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
-        <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
-        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span>
-        <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ls&#39;</span><span class="p">]</span> <span class="c1"># more could be added</span>
-    <span class="p">}</span>
+        <span class="p">)</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_kapiti</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">kapiti_model</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the private tidal guages... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
+Start 0
+
+ adding the wind to the predictor... 
 
 
- 333 PCs (0.94 expl. variance) will be used to train the model!! 
+ winds predictor with shape: 
+ (11354, 10, 10) 
 
 
- XGBoost regression with {&#39;n_estimators&#39;: [40], &#39;max_depth&#39;: array([7, 9]), &#39;min_samples_split&#39;: array([0.01  , 0.1075, 0.205 , 0.3025, 0.4   ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
+ calculating the gradient of the sea-level-pressure fields... 
 
-Fitting 2 folds for each of 10 candidates, totalling 20 fits
 
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.1075, &#39;n_estimators&#39;: 40} parameters!! 
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 900) 
+
+Computing using CPU
+matrix (11351, 900)
+PCs (11351, 900)
+comp (900, 900)
+var (900,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([166. , 166.5, 167. , 167.5, 168. , 168.5, 169. , 169.5, 170. , 170.5],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 166.0 166.5 167.0 167.5 ... 169.5 170.0 170.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-49. , -48.5, -48. , -47.5, -47. , -46.5, -46. , -45.5, -45. , -44.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -49.0 -48.5 -48.0 -47.5 ... -45.5 -45.0 -44.5
+time (11351,)
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/models_xgboost_14_1.png" src="../_images/models_xgboost_14_1.png" />
-<img alt="../_images/models_xgboost_14_2.png" src="../_images/models_xgboost_14_2.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.63, Relative - RMSE: 0.32
- and Correlations (Pearson, Rscore): (0.76, 0.56)
- R score: 0.56 -- in TEST data
+<img alt="../_images/models_xgboost_13_1.png" src="../_images/models_xgboost_13_1.png" />
+<img alt="../_images/models_xgboost_13_2.png" src="../_images/models_xgboost_13_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 22 PCs (0.98 expl. variance) will be used to train the model!! 
 
 
- -- METRICS -- 
-
- {&#39;bias&#39;: -0.00885766759445529, &#39;si&#39;: 0.6273676899942839, &#39;rmse&#39;: 0.07697954681160739, &#39;rel_rmse&#39;: 0.32267588974581435, &#39;pearson&#39;: 0.7621879228373294, &#39;rscore&#39;: 0.5616776822571815, &#39;ext_rmse&#39;: 0.10924264078968221, &#39;ext_pearson&#39;: 0.45188133211395437} 
-
- obtained with GradientBoostingRegressor(max_depth=7, min_samples_split=0.1075,
-                          n_estimators=40) !!
+ XGBoost regression with {&#39;n_estimators&#39;: 50, &#39;max_depth&#39;: 8, &#39;min_samples_split&#39;: 0.07, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">plot_tree</span><span class="p">(</span><span class="n">kapiti_model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-          <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Example of RegressionTree&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<img alt="../_images/models_xgboost_13_4.png" src="../_images/models_xgboost_13_4.png" />
+<img alt="../_images/models_xgboost_13_5.png" src="../_images/models_xgboost_13_5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.48, Relative - RMSE: 0.25
+ and Correlations (Pearson, Rscore): (0.85, 0.73)
+ NSE = [0.72880709], KGE = [0.76643679] and KGE_PRIME = [0.7145355]
+ R score: 0.73 -- in TEST data
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/models_xgboost_15_0.png" src="../_images/models_xgboost_15_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># xgboost regression in green island</span>
-<span class="n">ss_green</span> <span class="o">=</span> <span class="n">load_private_tgs</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Green_Is&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">stats_green</span><span class="p">,</span> <span class="n">green_model</span><span class="p">,</span> <span class="n">pcs_to_use_green</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
-    <span class="n">pcs_cfsr</span><span class="p">,</span> <span class="n">ss_green</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xgboost_parameters</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"> -- METRICS -- </span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">stats_green</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> obtained with </span><span class="si">{</span><span class="n">green_model</span><span class="si">}</span><span class="s1"> !!&#39;</span><span class="p">)</span>
+<img alt="../_images/models_xgboost_13_7.png" src="../_images/models_xgboost_13_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
+Start 0
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11351, 900) 
+
+Computing using CPU
+matrix (11351, 900)
+PCs (11351, 900)
+comp (900, 900)
+var (900,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([176. , 176.5, 177. , 177.5, 178. , 178.5, 179. , 179.5, 180. , 180.5],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 176.0 176.5 177.0 177.5 ... 179.5 180.0 180.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -40.0 -39.5 -39.0 -38.5 ... -36.5 -36.0 -35.5
+time (11351,)
+
+ plotting 1 components with 9 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the private tidal guages... 
+<img alt="../_images/models_xgboost_13_9.png" src="../_images/models_xgboost_13_9.png" />
+<img alt="../_images/models_xgboost_13_10.png" src="../_images/models_xgboost_13_10.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 25 PCs (0.98 expl. variance) will be used to train the model!! 
 
 
- 90 PCs (0.8 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: [40], &#39;max_depth&#39;: array([ 3,  5,  7,  9, 11]), &#39;min_samples_split&#39;: array([0.01   , 0.02125, 0.0325 , 0.04375, 0.055  , 0.06625, 0.0775 ,
-       0.08875, 0.1    ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]} grid parameters... 
-
-Fitting 2 folds for each of 45 candidates, totalling 90 fits
-
- best model fitted with {&#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.08875000000000001, &#39;n_estimators&#39;: 40} parameters!! 
+ XGBoost regression with {&#39;n_estimators&#39;: 50, &#39;max_depth&#39;: 8, &#39;min_samples_split&#39;: 0.07, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
 </pre></div>
 </div>
-<img alt="../_images/models_xgboost_16_1.png" src="../_images/models_xgboost_16_1.png" />
-<img alt="../_images/models_xgboost_16_2.png" src="../_images/models_xgboost_16_2.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.57, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.80, 0.63)
- R score: 0.63 -- in TEST data
-
-
- -- METRICS -- 
-
- {&#39;bias&#39;: -0.008002527943401424, &#39;si&#39;: 0.5688119728522942, &#39;rmse&#39;: 0.071512099349321, &#39;rel_rmse&#39;: 0.3066062817299005, &#39;pearson&#39;: 0.7970019001321746, &#39;rscore&#39;: 0.6250330604928123, &#39;ext_rmse&#39;: 0.0955808787235876, &#39;ext_pearson&#39;: 0.38476507644777747} 
-
- obtained with GradientBoostingRegressor(max_depth=7, min_samples_split=0.08875000000000001,
-                          n_estimators=40) !!
+<img alt="../_images/models_xgboost_13_12.png" src="../_images/models_xgboost_13_12.png" />
+<img alt="../_images/models_xgboost_13_13.png" src="../_images/models_xgboost_13_13.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.53, Relative - RMSE: 0.27
+ and Correlations (Pearson, Rscore): (0.83, 0.69)
+ NSE = [0.69029524], KGE = [0.74530728] and KGE_PRIME = [0.73928946]
+ R score: 0.69 -- in TEST data
 </pre></div>
 </div>
+<img alt="../_images/models_xgboost_13_15.png" src="../_images/models_xgboost_13_15.png" />
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="xgboost-regression-with-local-predictor">
-<h2><span class="section-number">8.4. </span>XGBoost regression with local predictor<a class="headerlink" href="#xgboost-regression-with-local-predictor" title="Permalink to this headline">¶</a></h2>
-<p>In the following cell, a xgboost regression is performed over all the domain of the Moana v2 hindcast nearshore, having the local pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_xgboost_local_daily.nc</span></code>. Notice that, with the regional predictor, which involves an area of 4 <span class="math notranslate nohighlight">\(\cdot\)</span> 4 degrees, we are able to cover just a smaller area, but centered at the location of the virtual moana node.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>As it can be seen in the results plot, the different shores in New Zealand show very different results, as it could be seen with the regional predictor</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="k">if</span> <span class="n">run</span><span class="p">:</span>
-    <span class="c1"># perform the XGBoost-Regression (local)</span>
-    <span class="n">metrics_local</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save local metrics</span>
-    <span class="n">pcs_to_use_local</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save used pcs </span>
-    <span class="n">sites_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-        <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-    <span class="p">)</span> <span class="c1"># select here the desired sites to apply xgboost reg</span>
-    <span class="c1"># perform the XGBoost regression over all the sites</span>
-    <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_local</span><span class="p">):</span>
-        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-        <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
-            <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-                <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
-                <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.2</span><span class="p">,</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span>
-                    <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.2</span>
-                <span class="p">)),</span>
-                <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
-            <span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.999</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span> <span class="c1"># using the local-pre-loaded pcs</span>
-        <span class="n">metrics_local</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="c1"># save site metrics</span>
-        <span class="n">pcs_to_use_local</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pcs_to_use</span><span class="p">)</span> <span class="c1"># save used pcs</span>
-    <span class="c1"># now, save all in xarray.Dataset</span>
-    <span class="n">sites_metrics_local</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">sites_metrics_local</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metrics_local</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
-    <span class="n">sites_metrics_local</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_local</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
-    <span class="p">)</span>
-    <span class="n">sites_metrics_local</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_local</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
-    <span class="p">)</span>
-    <span class="c1"># save the metrics</span>
-    <span class="n">metrics_dataset_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="n">sites_metrics_local</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sites_local</span><span class="p">}</span>
-    <span class="p">)</span>
-    <span class="c1"># local copys</span>
-    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">metrics_dataset_local</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
-            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_xgboost_local_daily_new.nc&#39;</span>
-        <span class="p">)</span> <span class="c1"># save metrics in all the stations</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
-            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/pcs_xgboost_local_daily_new.npy&#39;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pcs_to_use_local</span><span class="p">)</span>
-        <span class="p">)</span> <span class="c1"># save pcs used in the linear regressions</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">metrics_dataset_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/stats_xgboost_local_daily.nc&#39;</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
-<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/models_xgboost_19_0.png" src="../_images/models_xgboost_19_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_to_use_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-    <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/models/pcs_xgboost_local_daily.npy&#39;</span><span class="p">,</span>
-    <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-<span class="n">max_pcs</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">pcs_to_use_local</span><span class="p">])</span>
-<span class="n">pcs_importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">pcs_to_use_local</span><span class="p">),</span><span class="n">max_pcs</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">array</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pcs_to_use_local</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_pcs</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">pcs_importance</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">pc</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_pcs</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">pc</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">max_pcs</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">continue</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
-<span class="n">pcol</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">pcs_importance</span><span class="o">.</span><span class="n">T</span><span class="p">[:</span><span class="mi">30</span><span class="p">,:],</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral&#39;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pcol</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">))[::</span><span class="mi">50</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-    <span class="mi">20</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-<span class="p">)[::</span><span class="mi">50</span><span class="p">],</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/models_xgboost_20_0.png" src="../_images/models_xgboost_20_0.png" />
 </div>
 </div>
 </div>
@@ -1070,13 +735,13 @@ Fitting 2 folds for each of 45 candidates, totalling 90 fits
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">7. </span>KNN regressor models</p>
+            <p class="prev-next-title"><span class="section-number">6. </span>KNN regression models</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_mda_rbf.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">9. </span>MDA - RBF model</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>MDA - RBF model</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
