@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. Repository workflow + THEORY &#8212; Storm Surge NZ - Summary</title>
+    <title>1. Repository workflow + THEORY &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -44,7 +44,7 @@
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -57,8 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. PC analysis" href="analysis_pca.html" />
-    <link rel="prev" title="1. Data visualization and validation" href="data_visualization.html" />
+    <link rel="next" title="2. Useful theory" href="useful_theory.html" />
+    <link rel="prev" title="geoocean-nz-ss" href="../README.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -108,14 +108,19 @@
  </span>
 </p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="data_visualization.html">
-   1. Data visualization and validation
-  </a>
- </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2. Repository workflow + THEORY
+   1. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="useful_theory.html">
+   2. Useful theory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   3. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
@@ -139,8 +144,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+  <a class="reference internal" href="experiments.html">
+   8. RUN experiments
   </a>
  </li>
 </ul>
@@ -189,7 +194,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -248,33 +253,26 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   2. Repository workflow + THEORY
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#repository-global-aspect">
+   1.1. Repository GLOBAL aspect
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#repository-global-aspect">
-     2.1. Repository GLOBAL aspect
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#main-python-packages">
-     2.2. Main Python packages
-    </a>
-   </li>
-  </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#main-python-packages">
+   1.2. Main Python packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#most-important-notebooks">
-   3. Most important notebooks
+   1.3. Most important notebooks
   </a>
  </li>
 </ul>
@@ -285,27 +283,60 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Repository workflow + THEORY</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#repository-global-aspect">
+   1.1. Repository GLOBAL aspect
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#main-python-packages">
+   1.2. Main Python packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#most-important-notebooks">
+   1.3. Most important notebooks
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="repository-workflow-theory">
-<h1><span class="section-number">2. </span>Repository workflow + THEORY<a class="headerlink" href="#repository-workflow-theory" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">1. </span>Repository workflow + THEORY<a class="headerlink" href="#repository-workflow-theory" title="Permalink to this headline">¶</a></h1>
 <p>Before start running all the notebooks, it might be interesting to understand the whole repository as a single piece. In the README file, accesible <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/README.html">here</a>, the project organigram can be seen, but here we will focus in how all the notebooks / python scripts / datasets … are used / run.</p>
 <div class="section" id="repository-global-aspect">
-<h2><span class="section-number">2.1. </span>Repository GLOBAL aspect<a class="headerlink" href="#repository-global-aspect" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1. </span>Repository GLOBAL aspect<a class="headerlink" href="#repository-global-aspect" title="Permalink to this headline">¶</a></h2>
 <p>The way this repository is thought is based on running notebooks, and this means that all the results obtained in the project are extracted using the notebooks, which internally import the corresponfing python scripts. For this purpose, we created a modular code with different classes and functions, that correctly behaves offering a statistical / numerical tool to be applied over atmospheric and oceanographic data. Below a summary of the global picture:</p>
 <div class="figure align-default" id="repo-sketch">
 <a class="reference internal image-reference" href="../_images/repo-sketch.png"><img alt="../_images/repo-sketch.png" src="../_images/repo-sketch.png" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">Global picture of the geocean-nz-ss repository. As it can be seen, everything is hosted in GitHub, and all the code might be run correctly using the anaconda/miniconda interface</span><a class="headerlink" href="#repo-sketch" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">Global picture of the geocean-nz-ss repository. As it can be seen, everything is hosted in GitHub, and all the code might be run correctly using the anaconda/miniconda interface</span><a class="headerlink" href="#repo-sketch" title="Permalink to this image">¶</a></p>
 </div>
-<p>In the <strong>data_visualization</strong> notebook we already used the <strong>Loader</strong> class, which internally uses more basic python libraries, so this is the basic idea in this project, we build python classes and functions that already use all the possible pre-built python packages, so the effort is optimized.</p>
+<p>As an example, in the <strong>data_visualization</strong> notebook we use the <strong>Loader</strong> class, which internally uses more basic python libraries, so this is the basic idea in this project, we build python classes and functions that already use all the possible pre-built python packages, so the effort is optimized.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The jupyter notebook choice was prefered based on the level of difficulty these notebooks offer, which is very basic, and also because of the popularity of them. Have a look at <a class="reference external" href="https://www.nature.com/articles/d41586-018-07196-1#:~:text=Jupyter%20is%20a%20free%2C%20open,resources%20in%20a%20single%20document.">this article</a> and <a class="reference external" href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1956s">this video</a> for more important reasons of why notebooks are helpful !!</p>
+<p>The jupyter notebook choice was prefered based on the level of difficulty these notebooks offer, which is very basic, and also because of the popularity of them. Have a look at <a class="reference external" href="https://www.nature.com/articles/d41586-018-07196-1#:~:text=Jupyter%20is%20a%20free%2C%20open,resources%20in%20a%20single%20document.">this article</a> and <a class="reference external" href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1956s">this video</a> for more important reasons of why notebooks are helpful!!</p>
 </div>
 </div>
 <div class="section" id="main-python-packages">
-<h2><span class="section-number">2.2. </span>Main Python packages<a class="headerlink" href="#main-python-packages" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.2. </span>Main Python packages<a class="headerlink" href="#main-python-packages" title="Permalink to this headline">¶</a></h2>
 <p>Regarding the pre-built python libraries that are mainly used in the project, we will briefly explain some of them:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://numpy.org/">NumPy</a>: NumPy is the fundamental package for scientific computing in Python. It is a Python library that provides a multidimensional array object, various derived objects (such as masked arrays and matrices), and an assortment of routines for fast operations on arrays, including mathematical, logical, shape manipulation, sorting, selecting, I/O, discrete Fourier transforms, basic linear algebra, basic statistical operations, random simulation and much more.</p></li>
@@ -316,10 +347,15 @@
 <li><p><a class="reference external" href="https://georgebv.github.io/pyextremes/">pyextremes</a>: pyextremes is a Python library aimed at performing univariate Extreme Value Analysis (EVA).</p></li>
 </ul>
 </div>
+<div class="section" id="most-important-notebooks">
+<h2><span class="section-number">1.3. </span>Most important notebooks<a class="headerlink" href="#most-important-notebooks" title="Permalink to this headline">¶</a></h2>
+<p>To correctly understand the worflow in the project, please check the following notebooks in order:</p>
+<ul class="simple">
+<li><p>Data visualization and validation</p></li>
+<li><p>PC analysis</p></li>
+<li><p>Experiments</p></li>
+</ul>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="most-important-notebooks">
-<h1><span class="section-number">3. </span>Most important notebooks<a class="headerlink" href="#most-important-notebooks" title="Permalink to this headline">¶</a></h1>
-<p>…</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -344,37 +380,35 @@
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../README.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1. </span>Data visualization and validation</p>
+            <p class="prev-next-title">geoocean-nz-ss</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="analysis_pca.html" title="next page">
+    <a class='right-next' id="next-link" href="useful_theory.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>PC analysis</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Useful theory</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Javier Tausía Hoyal<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Javier Tausía Hoyal<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 

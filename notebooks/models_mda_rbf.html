@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
+    <title>MDA - RBF model &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -44,7 +44,7 @@
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -59,7 +59,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="7. XGBoost regression models" href="models_xgboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -108,15 +107,20 @@
   Chapters
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="data_visualization.html">
-   1. Data visualization and validation
+  <a class="reference internal" href="repo_workflow.html">
+   1. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   2. Repository workflow + THEORY
+  <a class="reference internal" href="useful_theory.html">
+   2. Useful theory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   3. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
@@ -139,9 +143,9 @@
    7. XGBoost regression models
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   8. MDA - RBF model
+ <li class="toctree-l1">
+  <a class="reference internal" href="experiments.html">
+   8. RUN experiments
   </a>
  </li>
 </ul>
@@ -190,7 +194,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -249,7 +253,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -258,22 +262,22 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#maximum-dissimilarity-algorithm-mda">
-   8.1. Maximum Dissimilarity Algorithm (MDA)
+   Maximum Dissimilarity Algorithm (MDA)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruction-of-the-coastal-wave-climate-with-rbf">
-   8.2. Reconstruction of the coastal wave climate with RBF
+   Reconstruction of the coastal wave climate with RBF
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-data-and-linear-model-stats">
-   8.3. Load data and linear model stats
+   Load data and linear model stats
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-the-mda-rbf-model">
-   8.4. Create the MDA+RBF model
+   Create the MDA+RBF model
   </a>
  </li>
 </ul>
@@ -284,11 +288,49 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>MDA - RBF model</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#maximum-dissimilarity-algorithm-mda">
+   Maximum Dissimilarity Algorithm (MDA)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reconstruction-of-the-coastal-wave-climate-with-rbf">
+   Reconstruction of the coastal wave climate with RBF
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-data-and-linear-model-stats">
+   Load data and linear model stats
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-the-mda-rbf-model">
+   Create the MDA+RBF model
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="mda-rbf-model">
-<h1><span class="section-number">8. </span>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
+<h1>MDA - RBF model<a class="headerlink" href="#mda-rbf-model" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will perform a analysis using one of our most used methods, which involves MDA + RBF algorithms. The process will be the next:</p>
 <ul class="simple">
 <li><p>First, the areas where the study is wanted to be performed are selected.</p></li>
@@ -297,11 +339,11 @@
 <li><p>Finally, we use RBF to interpolate the final storm-surge surface in all the areas / locations!!</p></li>
 </ul>
 <div class="section" id="maximum-dissimilarity-algorithm-mda">
-<h2><span class="section-number">8.1. </span>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
+<h2>Maximum Dissimilarity Algorithm (MDA)<a class="headerlink" href="#maximum-dissimilarity-algorithm-mda" title="Permalink to this headline">¶</a></h2>
 <p>In this way, the first important step to carry out this method is the selection of the maximum dissimilar cases, so the posterior reconstruction of all the cases can be performed correctly:</p>
 <div class="figure align-default" id="mdacroquis">
 <a class="reference internal image-reference" href="../_images/mdacroquis.png"><img alt="../_images/mdacroquis.png" src="../_images/mdacroquis.png" style="height: 300px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8.1 </span><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">This is a sketch representation of how the MDA algorithm works</span><a class="headerlink" href="#mdacroquis" title="Permalink to this image">¶</a></p>
 </div>
 <p>This sketch shows the workflow followed in the selection step. The data is firstly normalized for the correct performance of the algorithm, then the euclidean distance is used for the calculation of the distance between the different vectors in the dataset. Finally, the selected data is de-normalized so it can be used and plotted together with the original information.</p>
 <p>As it can be seen, the variables used are:</p>
@@ -314,7 +356,7 @@
 <p>where <span class="math notranslate nohighlight">\(PCn\)</span> refers to the principal components of the sea-level-pressure fields and the <span class="math notranslate nohighlight">\(SSn\)</span> variables belongs to the principal components of the <span class="math notranslate nohighlight">\(n\)</span> locations of the selected area.</p>
 </div>
 <div class="section" id="reconstruction-of-the-coastal-wave-climate-with-rbf">
-<h2><span class="section-number">8.2. </span>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
+<h2>Reconstruction of the coastal wave climate with RBF<a class="headerlink" href="#reconstruction-of-the-coastal-wave-climate-with-rbf" title="Permalink to this headline">¶</a></h2>
 <p>Once we have the selected cases, we now have a lot of different situations with
 different characteristics all along the coast so the reconstruction of the storm surge climate can be done.</p>
 <p>The reconstruction of the storm surge in shallow waters is carried out by
@@ -342,7 +384,7 @@ basic radial function, <span class="math notranslate nohighlight">\(||\cdot||\)<
 the RBF interpolation.</p>
 <div class="figure align-default" id="rbf-color">
 <a class="reference internal image-reference" href="../_images/rbf-color.png"><img alt="../_images/rbf-color.png" src="../_images/rbf-color.png" style="width: 350px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 8.2 </span><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">This is the interpolation surface of the RBF technique</span><a class="headerlink" href="#rbf-color" title="Permalink to this image">¶</a></p>
 </div>
 <p>The polynomial <span class="math notranslate nohighlight">\(p(x)\)</span> in the expression of the RBF interpolation function is defined as a
 monomial base <span class="math notranslate nohighlight">\({p_0, p_1 ,..., p_d}\)</span>. The first is a monomial, consisting of a number of grade one monomials equal to the dimensionality of the data, where <span class="math notranslate nohighlight">\(b = {b_0 , b_1 ,..., b_d}\)</span> are the coefficients of these monomials.</p>
@@ -368,7 +410,8 @@ in the precision of the technique. In the methodology of propagation of the mari
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 
 <span class="c1"># custom</span>
-<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span><span class="p">,</span> <span class="n">default_evaluation_metrics</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span><span class="p">,</span> \
+    <span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">data_path</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
 <span class="kn">from</span> <span class="nn">sscode.mda_rbf</span> <span class="kn">import</span> <span class="n">MDA_RBF_Model</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
@@ -403,14 +446,16 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 </div>
 <div class="section" id="load-data-and-linear-model-stats">
-<h2><span class="section-number">8.3. </span>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
+<h2>Load data and linear model stats<a class="headerlink" href="#load-data-and-linear-model-stats" title="Permalink to this headline">¶</a></h2>
 <p>We first load the data, and plot some multilinear regression statistics to compare…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-    <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
 <span class="p">)</span>
 
 <span class="c1"># load the moana v2 hindcast (more ss and mask)</span>
@@ -435,43 +480,28 @@ in the precision of the technique. In the methodology of propagation of the mari
 <span class="n">lm_stats</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">if</span> <span class="n">lm_stats</span><span class="p">:</span>
     <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="s1">&#39;../data/statistics/models/stats_lm_local_daily.nc&#39;</span>
+        <span class="s1">&#39;../data/statistics/regional_models/stats_lm_regional_daily.nc&#39;</span>
     <span class="p">)</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rel_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">])</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
 
 
- resampling data to 12H... 
+ loading the Moana v2 hindcast data... 
 
 
- loading and calculating the winds... 
-
-
- calculating winds with: 
-
- &lt;xarray.Dataset&gt;
-Dimensions:         (time: 22887, lat: 160, lon: 161)
-Coordinates:
-  * time            (time) datetime64[ns] 1990-01-01 ... 2021-05-01
-  * lat             (lat) float32 -20.14 -20.45 -20.76 ... -69.16 -69.47 -69.78
-  * lon             (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
-Data variables:
-    U_GRD_L103      (time, lat, lon) float32 2.7 2.279 2.133 ... -2.449 nan
-    V_GRD_L103      (time, lat, lon) float32 1.71 1.691 1.512 ... -3.73 nan
-    uw2             (time, lat, lon) float32 7.29 5.193 4.551 ... 5.997 nan
-    vw2             (time, lat, lon) float32 2.924 2.861 2.285 ... 13.91 nan
-    wind_magnitude  (time, lat, lon) float32 3.196 2.838 2.615 ... 4.462 nan 
+ loading the UHSLC tidal guages... 
 </pre></div>
 </div>
+<img alt="../_images/models_mda_rbf_4_1.png" src="../_images/models_mda_rbf_4_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="create-the-mda-rbf-model">
-<h2><span class="section-number">8.4. </span>Create the MDA+RBF model<a class="headerlink" href="#create-the-mda-rbf-model" title="Permalink to this headline">¶</a></h2>
+<h2>Create the MDA+RBF model<a class="headerlink" href="#create-the-mda-rbf-model" title="Permalink to this headline">¶</a></h2>
 <p>In the cell below, we create the instance of the class <code class="docutils literal notranslate"><span class="pre">MDA_RBF_Model</span></code>, that is located at <code class="docutils literal notranslate"><span class="pre">sscode/mda_rbf.py</span></code>, and shown below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">MDA_RBF_Model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -587,10 +617,10 @@ Data variables:
 <span class="n">pca_attrs_default</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;pres_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
     <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">),</span> 
-    <span class="s1">&#39;wind_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
-    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;12H&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),</span>
+    <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span> 
+    <span class="s1">&#39;wind_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;U_GRD_L103&#39;</span><span class="p">,</span><span class="s1">&#39;V_GRD_L103&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),</span>
     <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="c1"># &#39;pca_ttls&#39;: [</span>
     <span class="c1">#     &#39;SLP in t&#39;,&#39;Grad in t&#39;,&#39;Winds in t&#39;,</span>
@@ -609,10 +639,10 @@ Data variables:
 <span class="c1"># construct the MDA + RBF object</span>
 <span class="n">mda_rbf_model</span> <span class="o">=</span> <span class="n">MDA_RBF_Model</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># this is the storm surge </span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span>
     <span class="n">pca_attrs_default</span><span class="p">,</span> <span class="c1"># all params to calculate the pcs</span>
     <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span>
     <span class="c1"># -------------------------------------------------------- #</span>
     <span class="c1"># set sites_to_analyze to None to shore analysis</span>
     <span class="n">sites_to_analyze</span><span class="o">=</span><span class="kc">None</span> <span class="c1"># list(sites_to_analyze)</span>
@@ -620,6 +650,96 @@ Data variables:
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Initializing the MDA + RBF constructor... 
+
+
+ with longitudes = [171.2] 
+ 
+ and 
+ 
+ latitudes = [-41.5] !!                 
+
+ for the specified middle locations / shores !!
+
+ lets calculate the storm surge pcs... 
+
+
+ All the SS pcs have been calculated, lets plot what we got!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_1.png" src="../_images/models_mda_rbf_6_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> data will be resampled to 1D 
+
+ and the PC analysis             will be calculated using the parameters 
+
+ {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: True, &#39;wind&#39;: &lt;xarray.Dataset&gt;
+Dimensions:          (time: 11444, lat: 160, lon: 161)
+Coordinates:
+  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+  * lat              (lat) float32 -69.78 -69.47 -69.16 ... -20.76 -20.45 -20.14
+  * lon              (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+Data variables:
+    U_GRD_L103       (time, lat, lon) float32 ...
+    V_GRD_L103       (time, lat, lon) float32 ...
+    wind_proj        (time, lat, lon) float64 ...
+    bearings         (lat, lon) float64 ...
+    direc_proj_math  (lat, lon) float64 ...
+    wind_proj_mask   (time, lat, lon) float64 ..., &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;, &#39;U_GRD_L103&#39;, &#39;V_GRD_L103&#39;), &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: True, &#39;pca_borders&#39;: None} 
+
+
+ lets calculate the slp pcs... 
+
+ 
+
+             The slp pcs will be calculated for all the locations / shores...             
+
+Assembling matrix
+Start 0
+
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 11, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 11, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 330) 
+
+Computing using CPU
+matrix (11353, 330)
+PCs (11353, 330)
+comp (330, 330)
+var (330,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([169. , 169.5, 170. , 170.5, 171. , 171.5, 172. , 172.5, 173. , 173.5],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 169.0 169.5 170.0 170.5 ... 172.5 173.0 173.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 11)&gt;
+array([-44. , -43.5, -43. , -42.5, -42. , -41.5, -41. , -40.5, -40. , -39.5,
+       -39. ], dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -44.0 -43.5 -43.0 -42.5 ... -40.0 -39.5 -39.0
+time (11353,)
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_3.png" src="../_images/models_mda_rbf_6_3.png" />
+<img alt="../_images/models_mda_rbf_6_4.png" src="../_images/models_mda_rbf_6_4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -650,6 +770,201 @@ Data variables:
     <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">try_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span>
     <span class="c1"># the ss_pcs parameter is very important, set to 1 when working with single locations</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets interpolate the SS using all the calculated             pcs (slp + ss) and the MDA+RBF technique!!             This interpolation will be performed in all the locations!! 
+
+
+ Lets reconstruct the SS for location 1!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.92 per of pcs and 250 samples!! 
+
+ which means 4 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_1.png" src="../_images/models_mda_rbf_9_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 259 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 7.01 | interpolation: 0.38 | sigma: 0.3781
+ix_scalar: 1,  optimization: 7.23 | interpolation: 0.32 | sigma: 0.3235
+ix_scalar: 2,  optimization: 8.73 | interpolation: 0.34 | sigma: 0.3415
+ix_scalar: 3,  optimization: 6.54 | interpolation: 0.34 | sigma: 0.3354
+ix_scalar: 4,  optimization: 5.78 | interpolation: 0.44 | sigma: 0.4438
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_3.png" src="../_images/models_mda_rbf_9_3.png" />
+<img alt="../_images/models_mda_rbf_9_4.png" src="../_images/models_mda_rbf_9_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 1!! 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_6.png" src="../_images/models_mda_rbf_9_6.png" />
+<img alt="../_images/models_mda_rbf_9_7.png" src="../_images/models_mda_rbf_9_7.png" />
+<img alt="../_images/models_mda_rbf_9_8.png" src="../_images/models_mda_rbf_9_8.png" />
+<img alt="../_images/models_mda_rbf_9_9.png" src="../_images/models_mda_rbf_9_9.png" />
+<img alt="../_images/models_mda_rbf_9_10.png" src="../_images/models_mda_rbf_9_10.png" />
+<img alt="../_images/models_mda_rbf_9_11.png" src="../_images/models_mda_rbf_9_11.png" />
+<img alt="../_images/models_mda_rbf_9_12.png" src="../_images/models_mda_rbf_9_12.png" />
+<img alt="../_images/models_mda_rbf_9_13.png" src="../_images/models_mda_rbf_9_13.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">6</span><span class="n">a326aa181b1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># calculate the MDA + RBF adjustments</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">interpolated_ss_by_rbf</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">selected_shores</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">)),</span> <span class="c1"># indexes in python counter</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="c1"># len(sites_to_analyze[::8])</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.92</span><span class="p">],</span> <span class="c1">#[0.92,0.95,0.98], # this is for the SLP</span>
+
+<span class="nn">~/Documentos/geocean-nz-ss/notebooks/../sscode/mda_rbf.py</span> in <span class="ni">calc_MDA_RBF</span><span class="nt">(self, selected_shores, percentage_pcs_ini, num_samples_ini, ss_pcs, try_all, append_extremes, plot, verbose)</span>
+<span class="g g-Whitespace">    </span><span class="mi">590</span>                         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">591</span>                         <span class="c1"># show the results</span>
+<span class="ne">--&gt; </span><span class="mi">592</span>                         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">593</span> 
+<span class="g g-Whitespace">    </span><span class="mi">594</span>                 <span class="n">final_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/pyplot.py</span> in <span class="ni">show</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span>     <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">377</span><span class="sd">     _warn_if_gui_out_of_main_thread()</span>
+<span class="ne">--&gt; </span><span class="mi">378</span><span class="sd">     return _backend_mod.show(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">379</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">380</span><span class="sd"> </span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/ipykernel/pylab/backend_inline.py</span> in <span class="ni">show</span><span class="nt">(close, block)</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span><span class="sd">     try:</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span><span class="sd">         for figure_manager in Gcf.get_all_fig_managers():</span>
+<span class="ne">---&gt; </span><span class="mi">41</span><span class="sd">             display(</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span><span class="sd">                 figure_manager.canvas.figure,</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span><span class="sd">                 metadata=_fetch_figure_metadata(figure_manager.canvas.figure)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/display.py</span> in <span class="ni">display</span><span class="nt">(include, exclude, metadata, transient, display_id, *objs, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">318</span><span class="sd">             publish_display_data(data=obj, metadata=metadata, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span><span class="sd">         else:</span>
+<span class="ne">--&gt; </span><span class="mi">320</span><span class="sd">             format_dict, md_dict = format(obj, include=include, exclude=exclude)</span>
+<span class="g g-Whitespace">    </span><span class="mi">321</span><span class="sd">             if not format_dict:</span>
+<span class="g g-Whitespace">    </span><span class="mi">322</span><span class="sd">                 # nothing to display (e.g. _ipython_display_ took over)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/formatters.py</span> in <span class="ni">format</span><span class="nt">(self, obj, include, exclude)</span>
+<span class="g g-Whitespace">    </span><span class="mi">178</span><span class="sd">             md = None</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span><span class="sd">             try:</span>
+<span class="ne">--&gt; </span><span class="mi">180</span><span class="sd">                 data = formatter(obj)</span>
+<span class="g g-Whitespace">    </span><span class="mi">181</span><span class="sd">             except:</span>
+<span class="g g-Whitespace">    </span><span class="mi">182</span><span class="sd">                 # FIXME: log the exception</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/decorator.py</span> in <span class="ni">fun</span><span class="nt">(*args, **kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span><span class="sd">             if not kwsyntax:</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span><span class="sd">                 args, kw = fix(args, kw, sig)</span>
+<span class="ne">--&gt; </span><span class="mi">232</span><span class="sd">             return caller(func, *(extras + args), **kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">233</span><span class="sd">     fun.__name__ = func.__name__</span>
+<span class="g g-Whitespace">    </span><span class="mi">234</span><span class="sd">     fun.__doc__ = func.__doc__</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/formatters.py</span> in <span class="ni">catch_format_error</span><span class="nt">(method, self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span><span class="sd">     &quot;&quot;&quot;</span><span class="n">show</span> <span class="n">traceback</span> <span class="n">on</span> <span class="n">failed</span> <span class="nb">format</span> <span class="n">call</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span><span class="s2">     try:</span>
+<span class="ne">--&gt; </span><span class="mi">224</span><span class="s2">         r = method(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span><span class="s2">     except NotImplementedError:</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span><span class="s2">         # don&#39;t warn on NotImplementedErrors</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/formatters.py</span> in <span class="ni">__call__</span><span class="nt">(self, obj)</span>
+<span class="g g-Whitespace">    </span><span class="mi">339</span><span class="s2">                 pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span><span class="s2">             else:</span>
+<span class="ne">--&gt; </span><span class="mi">341</span><span class="s2">                 return printer(obj)</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span><span class="s2">             # Finally look for special method names</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span><span class="s2">             method = get_real_method(obj, self.print_method)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(fig)</span>
+<span class="g g-Whitespace">    </span><span class="mi">248</span><span class="s2"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">249</span><span class="s2">     if &#39;png&#39; in formats:</span>
+<span class="ne">--&gt; </span><span class="mi">250</span><span class="s2">         png_formatter.for_type(Figure, lambda fig: print_figure(fig, &#39;png&#39;, **kwargs))</span>
+<span class="g g-Whitespace">    </span><span class="mi">251</span><span class="s2">     if &#39;retina&#39; in formats or &#39;png2x&#39; in formats:</span>
+<span class="g g-Whitespace">    </span><span class="mi">252</span><span class="s2">         png_formatter.for_type(Figure, lambda fig: retina_figure(fig, **kwargs))</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">print_figure</span><span class="nt">(fig, fmt, bbox_inches, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">132</span><span class="s2">         FigureCanvasBase(fig)</span>
+<span class="g g-Whitespace">    </span><span class="mi">133</span><span class="s2"> </span>
+<span class="ne">--&gt; </span><span class="mi">134</span><span class="s2">     fig.canvas.print_figure(bytes_io, **kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">135</span><span class="s2">     data = bytes_io.getvalue()</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span><span class="s2">     if fmt == &#39;svg&#39;:</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/backend_bases.py</span> in <span class="ni">print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2232</span><span class="s2">             if bbox_inches:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2233</span><span class="s2">                 if bbox_inches == &quot;tight&quot;:</span>
+<span class="ne">-&gt; </span><span class="mi">2234</span><span class="s2">                     bbox_inches = self.figure.get_tightbbox(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2235</span><span class="s2">                         renderer, bbox_extra_artists=bbox_extra_artists)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2236</span><span class="s2">                     if pad_inches is None:</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/figure.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer, bbox_extra_artists)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1634</span><span class="s2"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1635</span><span class="s2">         for a in artists:</span>
+<span class="ne">-&gt; </span><span class="mi">1636</span><span class="s2">             bbox = a.get_tightbbox(renderer)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1637</span><span class="s2">             if bbox is not None and (bbox.width != 0 or bbox.height != 0):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1638</span><span class="s2">                 bb.append(bbox)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">906</span><span class="s2">             The bounding box in figure pixel coordinates.</span>
+<span class="g g-Whitespace">    </span><span class="mi">907</span><span class="s2">         &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">908</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_box</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">909</span> 
+<span class="g g-Whitespace">    </span><span class="mi">910</span>     <span class="k">def</span> <span class="nf">get_frame_on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/offsetbox.py</span> in <span class="ni">get_window_extent</span><span class="nt">(self, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">351</span>         <span class="sd">&quot;&quot;&quot;Return the bounding box (`.Bbox`) in display space.&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">352</span>         <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">xd</span><span class="p">,</span> <span class="n">yd</span><span class="p">,</span> <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_extent_offsets</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">353</span>         <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">xd</span><span class="p">,</span> <span class="n">yd</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">354</span>         <span class="k">return</span> <span class="n">mtransforms</span><span class="o">.</span><span class="n">Bbox</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="n">px</span> <span class="o">-</span> <span class="n">xd</span><span class="p">,</span> <span class="n">py</span> <span class="o">-</span> <span class="n">yd</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">355</span> 
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/offsetbox.py</span> in <span class="ni">get_offset</span><span class="nt">(self, width, height, xdescent, ydescent, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span> 
+<span class="g g-Whitespace">    </span><span class="mi">291</span>         <span class="sd">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">292</span><span class="sd">         return (self._offset(width, height, xdescent, ydescent, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span><span class="sd">                 if callable(self._offset)</span>
+<span class="g g-Whitespace">    </span><span class="mi">294</span><span class="sd">                 else self._offset)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">_findoffset</span><span class="nt">(self, width, height, xdescent, ydescent, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">573</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">574</span><span class="sd">         if self._loc == 0:  # &quot;best&quot;.</span>
+<span class="ne">--&gt; </span><span class="mi">575</span><span class="sd">             x, y = self._find_best_position(width, height, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">576</span><span class="sd">         elif self._loc in Legend.codes.values():  # Fixed location.</span>
+<span class="g g-Whitespace">    </span><span class="mi">577</span><span class="sd">             bbox = Bbox.from_bounds(0, 0, width, height)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">_find_best_position</span><span class="nt">(self, width, height, renderer, consider)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1040</span><span class="sd">             # XXX TODO: If markers are present, it would be good to take them</span>
+<span class="g g-Whitespace">   </span><span class="mi">1041</span><span class="sd">             # into account when checking vertex overlaps in the next line.</span>
+<span class="ne">-&gt; </span><span class="mi">1042</span><span class="sd">             badness = (sum(legendBox.count_contains(line.vertices)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1043</span><span class="sd">                            for line in lines)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1044</span><span class="sd">                        + legendBox.count_contains(offsets)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">&lt;genexpr&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1040</span><span class="sd">             # XXX TODO: If markers are present, it would be good to take them</span>
+<span class="g g-Whitespace">   </span><span class="mi">1041</span><span class="sd">             # into account when checking vertex overlaps in the next line.</span>
+<span class="ne">-&gt; </span><span class="mi">1042</span><span class="sd">             badness = (sum(legendBox.count_contains(line.vertices)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1043</span><span class="sd">                            for line in lines)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1044</span><span class="sd">                        + legendBox.count_contains(offsets)</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/transforms.py</span> in <span class="ni">count_contains</span><span class="nt">(self, vertices)</span>
+<span class="g g-Whitespace">    </span><span class="mi">616</span><span class="sd">             return 0</span>
+<span class="g g-Whitespace">    </span><span class="mi">617</span><span class="sd">         vertices = np.asarray(vertices)</span>
+<span class="ne">--&gt; </span><span class="mi">618</span><span class="sd">         with np.errstate(invalid=&#39;ignore&#39;):</span>
+<span class="g g-Whitespace">    </span><span class="mi">619</span><span class="sd">             return (((self.min &lt; vertices) &amp;</span>
+<span class="g g-Whitespace">    </span><span class="mi">620</span><span class="sd">                      (vertices &lt; self.max)).all(axis=1).sum())</span>
+
+<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/numpy/core/_ufunc_config.py</span> in <span class="ni">__init__</span><span class="nt">(self, call, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">423</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">424</span> 
+<span class="ne">--&gt; </span><span class="mi">425</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">call</span><span class="o">=</span><span class="n">_Unspecified</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">426</span>         <span class="bp">self</span><span class="o">.</span><span class="n">call</span> <span class="o">=</span> <span class="n">call</span>
+<span class="g g-Whitespace">    </span><span class="mi">427</span>         <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -702,30 +1017,21 @@ Data variables:
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="models_xgboost.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">7. </span>XGBoost regression models</p>
-        </div>
-    </a>
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Javier Tausía Hoyal<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Javier Tausía Hoyal<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 

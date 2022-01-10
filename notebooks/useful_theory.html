@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Useful theory!! &#8212; Storm Surge NZ - Summary</title>
+    <title>2. Useful theory &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -44,7 +44,7 @@
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -59,6 +59,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Data visualization and validation" href="data_visualization.html" />
+    <link rel="prev" title="1. Repository workflow + THEORY" href="repo_workflow.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -107,15 +109,20 @@
   Chapters
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="data_visualization.html">
-   1. Data visualization and validation
+  <a class="reference internal" href="repo_workflow.html">
+   1. Repository workflow + THEORY
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. Useful theory
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   2. Repository workflow + THEORY
+  <a class="reference internal" href="data_visualization.html">
+   3. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
@@ -139,8 +146,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+  <a class="reference internal" href="experiments.html">
+   8. RUN experiments
   </a>
  </li>
 </ul>
@@ -189,7 +196,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -248,7 +255,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -257,12 +264,12 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-metrics-for-regression">
-   Model metrics for Regression
+   2.1. Model metrics for Regression
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#gev-analysis-monthly">
-   GEV analysis (monthly)
+   2.2. GEV analysis (monthly)
   </a>
  </li>
 </ul>
@@ -273,13 +280,42 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Useful theory</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-metrics-for-regression">
+   2.1. Model metrics for Regression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gev-analysis-monthly">
+   2.2. GEV analysis (monthly)
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="useful-theory">
-<h1>Useful theory!!<a class="headerlink" href="#useful-theory" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2. </span>Useful theory<a class="headerlink" href="#useful-theory" title="Permalink to this headline">¶</a></h1>
+<p>Below some useful theory to help project details…</p>
 <div class="section" id="model-metrics-for-regression">
-<h2>Model metrics for Regression<a class="headerlink" href="#model-metrics-for-regression" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1. </span>Model metrics for Regression<a class="headerlink" href="#model-metrics-for-regression" title="Permalink to this headline">¶</a></h2>
 <p>Regarding one of the machine learning packages (scikit-learn), here is where all the interesting things happen, as all the algorithms and mathematics are hosted here. Different techniques are used, and they are briefly described in each notebook, but in the paragraph below, we will introduce the evaluation metrics that will be used in all the regression / interpolation models that will be used. This metrics can be found <a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html">here</a>.</p>
 <p>When measuring the goodness of a fit, we can calculate very different statistical metrics, such as the bias, the rmse or the pearson and spearman correlation coefficients. In this part, we will briefly describe how all of them work, and how they must be interpreted:</p>
 <ul class="simple">
@@ -363,7 +399,7 @@
 </div>
 </div>
 <div class="section" id="gev-analysis-monthly">
-<h2>GEV analysis (monthly)<a class="headerlink" href="#gev-analysis-monthly" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.2. </span>GEV analysis (monthly)<a class="headerlink" href="#gev-analysis-monthly" title="Permalink to this headline">¶</a></h2>
 <p>As we are still trying to understand the data we will be using, let’s plot some more data. In this case, let’s plot the results of the Generalized-Extreme-Value analysis performed over all the nodes of the Moana hindcast, for 2 different months in the year.</p>
 <p>To refresh our memories, this probability density function is usually used to statistically represent the distribution of extreme events (in this case, monthly maxima), where the equation can take the following aspects:</p>
 <div class="math notranslate nohighlight">
@@ -434,23 +470,35 @@ f(x)=\left\{\begin{matrix}
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="repo_workflow.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">1. </span>Repository workflow + THEORY</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="data_visualization.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Data visualization and validation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Javier Tausía Hoyal<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Javier Tausía Hoyal<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 

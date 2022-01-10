@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RUN experiments &#8212; Storm Surge NZ - Summary</title>
+    <title>8. RUN experiments &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -44,7 +44,7 @@
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -57,6 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="7. XGBoost regression models" href="models_xgboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -105,15 +106,20 @@
   Chapters
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="data_visualization.html">
-   1. Data visualization and validation
+  <a class="reference internal" href="repo_workflow.html">
+   1. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   2. Repository workflow + THEORY
+  <a class="reference internal" href="useful_theory.html">
+   2. Useful theory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   3. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
@@ -136,9 +142,9 @@
    7. XGBoost regression models
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   8. RUN experiments
   </a>
  </li>
 </ul>
@@ -187,7 +193,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -246,7 +252,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -255,12 +261,12 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   Load the data, SLP and SS
+   8.1. Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   Create / Run – Experiment object
+   8.2. Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -271,11 +277,39 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>RUN experiments</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
+   8.1. Load the data, SLP and SS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-run-experiment-object">
+   8.2. Create / Run – Experiment object
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="run-experiments">
-<h1>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">8. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will run all the required experiments using the <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class, which can be found at <code class="docutils literal notranslate"><span class="pre">sscode/experiment.py</span></code>, and can be seen below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -381,7 +415,7 @@
 </div>
 </div>
 <div class="section" id="load-the-data-slp-and-ss">
-<h2>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">8.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
 <p>Below, we load the slp fields and the Moana v2 hindcast data nearshore. Have three things in mind:</p>
 <ul class="simple">
 <li><p>First, the winds are <strong>NOT</strong> loaded, as we prefer to calculate the gradient of the slp fields. Having in mind that winds have more resolution (more computation is required) and the fact that we are playing around with projected winds, adds this new calculation to each step (and the Loader class is calculated outside the class Experiment, so the projedted winds are calculated just to one location).</p></li>
@@ -454,7 +488,7 @@ Data variables:
 </div>
 </div>
 <div class="section" id="create-run-experiment-object">
-<h2>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">8.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
 <p>In the two cells below, we first choose all the values that will have the different parameters for the model that will be used, and then we create the instance of the class <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>, where different logs will appear before running all the models.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -545,629 +579,6 @@ Data variables:
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ---------------------------------------------------------                         
-
- Experiment 1 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11353, 512) 
-
-
- 9 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.01, SI: 0.59, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.78, 0.60)
- R score: 0.6 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 2 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11353, 512) 
-
-
- 9 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.01, SI: 0.58, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.78, 0.61)
- R score: 0.61 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 3 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11353, 512) 
-
-
- 9 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.01, SI: 0.60, Relative - RMSE: 0.31
- and Correlations (Pearson, Rscore): (0.77, 0.58)
- R score: 0.58 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 4 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11353, 512) 
-
-
- 9 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.01, SI: 0.58, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.78, 0.61)
- R score: 0.61 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 5 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1024) 
-
-
- 17 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.01, SI: 0.55, Relative - RMSE: 0.29
- and Correlations (Pearson, Rscore): (0.81, 0.65)
- R score: 0.65 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 6 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1024) 
-
-
- 17 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.79, 0.61)
- R score: 0.61 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 7 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1024) 
-
-
- 17 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.55, Relative - RMSE: 0.29
- and Correlations (Pearson, Rscore): (0.80, 0.64)
- R score: 0.64 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 8 in site 116 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 16, 16) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1024) 
-
-
- 17 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 1 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11353, 578) 
-
-
- 10 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.29
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 2 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11353, 578) 
-
-
- 10 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.29
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 3 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11353, 578) 
-
-
- 10 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.01, SI: 0.59, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.78, 0.61)
- R score: 0.61 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 4 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11353, 578) 
-
-
- 10 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.29
- and Correlations (Pearson, Rscore): (0.79, 0.62)
- R score: 0.62 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 5 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1156) 
-
-
- 20 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.52, Relative - RMSE: 0.26
- and Correlations (Pearson, Rscore): (0.83, 0.69)
- R score: 0.69 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 6 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1156) 
-
-
- 20 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 7, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
- and Correlations (Pearson, Rscore): (0.82, 0.66)
- R score: 0.66 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 7 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1156) 
-
-
- 20 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.01, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.53, Relative - RMSE: 0.27
- and Correlations (Pearson, Rscore): (0.83, 0.68)
- R score: 0.68 -- in TEST data
-
- ---------------------------------------------------------                         
-
- Experiment 8 in site 200 ......                         
-
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: False, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (4.1, 4.1))} 
-
- knn_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98, &#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;}                         
-
- and iteration with indexes = (0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0)                         
-
- ---------------------------------------------------------
- lets calculate the PCs... 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 17, 17) 
-
-
- calculating PCs matrix with shape: 
- (11352, 1156) 
-
-
- 20 PCs (0.98 expl. variance) will be used to train the model!! 
-
-
- XGBoost regression with {&#39;n_estimators&#39;: 40, &#39;max_depth&#39;: 10, &#39;min_samples_split&#39;: 0.4, &#39;learning_rate&#39;: 0.1, &#39;loss&#39;: &#39;ls&#39;} parameters... 
-
-Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
- and Correlations (Pearson, Rscore): (0.82, 0.66)
- R score: 0.66 -- in TEST data
-
- -------------------------------------------------------------------             
-
- All the models and in all the sites have been correctly calculated!!             
-
- with a final mean stats (in the sites) with the following shape...             
-
- BIAS, SI, RMSE, Pearson ans Spearman coorelations and the R2 score 
-
- [[[[[[[[[[[[[ 0.61366716  0.05071353  0.00411067  0.23603194
-              0.04248401  0.00411067  0.06826482  0.00689451
-              0.0827405   0.48087294 -0.00572612  0.58022585
-              0.06390955  0.78429473  0.77497137  0.61054919
-              0.29768081]]]
-
-
-          [[[ 0.61641439  0.05048382  0.00406179  0.22913699
-              0.04179314  0.00406179  0.07183554  0.00731162
-              0.08524565  0.46250181 -0.00475761  0.57822403
-              0.0635719   0.78520672  0.77569279  0.61424818
-              0.29625955]]]]
-
-
-
-         [[[[ 0.59873419  0.05162084  0.00427213  0.25433156
-              0.0433896   0.00427213  0.06811542  0.00691814
-              0.08290695  0.47593161 -0.00603288  0.59133228
-              0.06515159  0.77635733  0.76617967  0.59527261
-              0.30346288]]]
-
-
-          [[[ 0.61592175  0.05049194  0.00406728  0.22974321
-              0.04173215  0.00406728  0.07164014  0.00727449
-              0.08504262  0.46601345 -0.00477782  0.57859471
-              0.06361436  0.78491705  0.77531952  0.61373794
-              0.29645562]]]]]]]]]]
-
-
-
-
-
-
-
-
-
-   [[[[[[[[[[ 0.66945354  0.0466709   0.00353082  0.25398374
-              0.03837859  0.00353082  0.0663736   0.00640114
-              0.07936416  0.47163644 -0.00500175  0.53644026
-              0.05913669  0.81812643  0.80988561  0.66707466
-              0.27517126]]]
-
-
-          [[[ 0.64019066  0.04837407  0.00383196  0.23198252
-              0.03987991  0.00383196  0.08218618  0.00907139
-              0.09448045  0.41671927 -0.00371106  0.55962938
-              0.06159539  0.8068303   0.80426053  0.63886238
-              0.28658112]]]]
-
-
-
-         [[[[ 0.66296334  0.0472415   0.00360025  0.24214957
-              0.03891538  0.00360025  0.06479121  0.00610313
-              0.07767623  0.4716589  -0.00537565  0.54174961
-              0.05973522  0.81429286  0.80467197  0.66021399
-              0.27801104]]]
-
-
-          [[[ 0.64060717  0.04834205  0.00382677  0.23282491
-              0.03969871  0.00382677  0.08209971  0.00905722
-              0.09441385  0.41263069 -0.00368024  0.55931689
-              0.06155706  0.80694651  0.80447907  0.6392982
-              0.28641182]]]]]]]]]]]]]             
-
- -------------------------------------------------------------------
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1246,23 +657,28 @@ Data comparison is   --   BIAS: -0.00, SI: 0.54, Relative - RMSE: 0.27
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="models_xgboost.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">7. </span>XGBoost regression models</p>
+        </div>
+    </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Javier Tausía Hoyal<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Javier Tausía Hoyal<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 

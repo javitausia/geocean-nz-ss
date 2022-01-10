@@ -44,7 +44,7 @@
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="5. MultiLinear regression models" href="models_linear.html" />
-    <link rel="prev" title="2. Repository workflow + THEORY" href="repo_workflow.html" />
+    <link rel="prev" title="3. Data visualization and validation" href="data_visualization.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -111,13 +111,18 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="data_visualization.html">
-   1. Data visualization and validation
+  <a class="reference internal" href="repo_workflow.html">
+   1. Repository workflow + THEORY
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="repo_workflow.html">
-   2. Repository workflow + THEORY
+  <a class="reference internal" href="useful_theory.html">
+   2. Useful theory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_visualization.html">
+   3. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -141,8 +146,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="models_mda_rbf.html">
-   8. MDA - RBF model
+  <a class="reference internal" href="experiments.html">
+   8. RUN experiments
   </a>
  </li>
 </ul>
@@ -191,7 +196,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -250,7 +255,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -309,7 +314,69 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>PC analysis</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#principal-components-analysis-theory">
+   4.1. Principal Components Analysis theory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-python-libraries">
+   4.2. Import python libraries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-data-without-plotting">
+   4.3. Load the data without plotting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pca-usage-explanation">
+   4.4. PCA usage explanation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pca-code">
+     4.4.1. PCA code
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pca-examples">
+   4.5. PCA examples:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#regional-pcs-analysis">
+     4.5.1. Regional PCs analysis
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-pcs-analysis">
+     4.5.2. Local PCs analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="pc-analysis">
@@ -608,14 +675,14 @@ time (11353,)
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="repo_workflow.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">2. </span>Repository workflow + THEORY</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>Data visualization and validation</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_linear.html" title="next page">
@@ -626,19 +693,17 @@ time (11353,)
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Javier Tausía Hoyal<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Javier Tausía Hoyal<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 
