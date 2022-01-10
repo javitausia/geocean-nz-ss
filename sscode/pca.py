@@ -95,11 +95,11 @@ class PCA_DynamicPred(object):
             winds = (True,
                 calculate_relative_winds(
                     location=self.site_location, # this is the location of site
-                    uw=self.wind[self.wind_vars[3]].load().sel({
+                    uw=self.wind[self.wind_vars[3]].sel({
                         wind_vars[1]:slice(region[1][0],region[1][1]),
                         wind_vars[2]:slice(region[1][2],region[1][3])
                     }),
-                    vw=self.wind[self.wind_vars[4]].load().sel({
+                    vw=self.wind[self.wind_vars[4]].sel({
                         wind_vars[1]:slice(region[1][0],region[1][1]),
                         wind_vars[2]:slice(region[1][2],region[1][3])
                     }),

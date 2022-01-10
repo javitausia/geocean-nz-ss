@@ -368,7 +368,7 @@ class MDA_RBF_Model(object):
 
 
     def generate_slp_data(self, pres_vars: tuple = ('SLP','longitude','latitude'),
-        calculate_gradient: bool = False, winds: tuple = (False,None),
+        calculate_gradient: bool = False, wind = None,
         wind_vars: tuple = ('wind_proj_mask','lon','lat'),
         time_lapse: int = 1, # 1 equals to NO time delay 
         time_resample: str = '1D', region: tuple = (True,default_region),
@@ -403,7 +403,7 @@ class MDA_RBF_Model(object):
             return [PCA_DynamicPred(
                         self.raw_slp_data, # this is always the same
                         **self.dict_to_pca # extra arguments without the winds
-                    )[0]
+                    ).pcs_get()[0]
                 ] * self.num_locs # same PCs in all sites
 
         for ipc in range(self.num_locs):
@@ -411,6 +411,9 @@ class MDA_RBF_Model(object):
             print('pcs matrix calculation for site / shore {}'.format(
                 ipc+1 # number of shore / site
             ), end='\r') if self.verbose else None
+
+            # save site_location attribute
+            site_location = (self.lons[ipc],self.lats[ipc])
 
             # save the dict in a local copy
             dict_to_pca = self.dict_to_pca.copy()
@@ -421,38 +424,22 @@ class MDA_RBF_Model(object):
                 local_region = (True,(
                     self.lons[ipc]-region_coords[0], # new lon / lat region
                     self.lons[ipc]+region_coords[0],
-                    self.lats[ipc]+region_coords[1],
                     self.lats[ipc]-region_coords[1],
+                    self.lats[ipc]+region_coords[1],
                 ))
-                # save winds to perform calculations if needed
-                winds = dict_to_pca.pop('winds')
-                wind_vars = dict_to_pca.pop('wind_vars')
-                winds = (winds[0], winds[1].sel({
-                    wind_vars[1]:slice(local_region[1][0],local_region[1][1]),
-                    wind_vars[2]:slice(local_region[1][3],local_region[1][2])
-                })) # crop to wanted area
-                # plot_winds(winds_to_pca,n_times=2,quiv_step=2,
-                #            plot_region=(True,default_region_reduced)) \
-                #     if ipc%5==0 else None # comment if needed
-                # lets first calculate the pcs
                 pca_data, pca_scaler = PCA_DynamicPred(
                     self.raw_slp_data, # this is always the same
                     region=local_region, # pass the calculated local region
-                    winds=(winds[0],calculate_relative_winds(
-                        location=(self.lons[ipc],self.lats[ipc]),
-                        uw=winds[1].U_GRD_L103,
-                        vw=winds[1].V_GRD_L103,
-                        lon_name=wind_vars[1],
-                        lat_name=wind_vars[2]
-                    )), wind_vars=wind_vars,
+                    site_location=site_location, # pass the site location
                     **dict_to_pca # extra arguments without the winds
-                )
+                ).pcs_get()
             else:
-                # lets first calculate the pcs
                 pca_data, pca_scaler = PCA_DynamicPred(
                     self.raw_slp_data, # this is always the same
+                    site_location=site_location, # pass the site location
                     **dict_to_pca # extra arguments without the winds
-                )
+                ).pcs_get()
+
             # append calculated pcs to list
             pcs_for_each_shore.append(pca_data)
 

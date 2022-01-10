@@ -96,10 +96,11 @@ def calculate_relative_winds(location: tuple = default_location,
             )),
         'bearings': ((lat_name,lon_name),bearings),
         'direc_proj_math': ((lat_name,lon_name),trans_geosdeg2mathdeg(bearings)*np.pi/180)
-    }) # final dataset
+    }).load() # final dataset
 
     return return_winds.assign({
-        'wind_proj_mask': return_winds.wind_proj * xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
+        'wind_proj_mask': return_winds.wind_proj * \
+            xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
     })
 
 
