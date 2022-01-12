@@ -492,13 +492,9 @@
     <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
     <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">),</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span>
+<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># not needed now</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/models_linear_6_0.png" src="../_images/models_linear_6_0.png" />
-<img alt="../_images/models_linear_6_1.png" src="../_images/models_linear_6_1.png" />
 </div>
 </div>
 </div>
@@ -641,7 +637,7 @@
       <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
       <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
     <span class="p">]</span>
-<span class="p">)[::</span><span class="mi">20</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">):</span>
     <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
         <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -657,6 +653,8 @@
                 <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
                 <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span>
             <span class="p">)),</span>
+            <span class="n">site_id</span><span class="o">=</span><span class="n">stat</span><span class="p">,</span>
+            <span class="n">pcs_folder</span><span class="o">=</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/pcs_to_seb/&#39;</span><span class="p">,</span>
             <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span>
@@ -664,22 +662,246 @@
             <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
         <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-        <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
-            <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
-        <span class="p">)</span>
+        <span class="c1"># validator=(</span>
+        <span class="c1">#     True,load_cfsr_moana_uhslc.validator.isel(name=istat),&#39;ss&#39;</span>
+        <span class="c1"># )</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/models_linear_15_0.png" src="../_images/models_linear_15_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_116_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_1.png" src="../_images/models_linear_15_1.png" />
 <img alt="../_images/models_linear_15_2.png" src="../_images/models_linear_15_2.png" />
 <img alt="../_images/models_linear_15_3.png" src="../_images/models_linear_15_3.png" />
-<img alt="../_images/models_linear_15_4.png" src="../_images/models_linear_15_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;200&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_200_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_5.png" src="../_images/models_linear_15_5.png" />
 <img alt="../_images/models_linear_15_6.png" src="../_images/models_linear_15_6.png" />
 <img alt="../_images/models_linear_15_7.png" src="../_images/models_linear_15_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;224&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_224_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_9.png" src="../_images/models_linear_15_9.png" />
+<img alt="../_images/models_linear_15_10.png" src="../_images/models_linear_15_10.png" />
+<img alt="../_images/models_linear_15_11.png" src="../_images/models_linear_15_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;328&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_328_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_13.png" src="../_images/models_linear_15_13.png" />
+<img alt="../_images/models_linear_15_14.png" src="../_images/models_linear_15_14.png" />
+<img alt="../_images/models_linear_15_15.png" src="../_images/models_linear_15_15.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;378&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_378_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_17.png" src="../_images/models_linear_15_17.png" />
+<img alt="../_images/models_linear_15_18.png" src="../_images/models_linear_15_18.png" />
+<img alt="../_images/models_linear_15_19.png" src="../_images/models_linear_15_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;393&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_393_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_21.png" src="../_images/models_linear_15_21.png" />
+<img alt="../_images/models_linear_15_22.png" src="../_images/models_linear_15_22.png" />
+<img alt="../_images/models_linear_15_23.png" src="../_images/models_linear_15_23.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;480&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_480_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_25.png" src="../_images/models_linear_15_25.png" />
+<img alt="../_images/models_linear_15_26.png" src="../_images/models_linear_15_26.png" />
+<img alt="../_images/models_linear_15_27.png" src="../_images/models_linear_15_27.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;488&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_488_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_29.png" src="../_images/models_linear_15_29.png" />
+<img alt="../_images/models_linear_15_30.png" src="../_images/models_linear_15_30.png" />
+<img alt="../_images/models_linear_15_31.png" src="../_images/models_linear_15_31.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;578&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_578_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_33.png" src="../_images/models_linear_15_33.png" />
+<img alt="../_images/models_linear_15_34.png" src="../_images/models_linear_15_34.png" />
+<img alt="../_images/models_linear_15_35.png" src="../_images/models_linear_15_35.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;613&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_613_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_37.png" src="../_images/models_linear_15_37.png" />
+<img alt="../_images/models_linear_15_38.png" src="../_images/models_linear_15_38.png" />
+<img alt="../_images/models_linear_15_39.png" src="../_images/models_linear_15_39.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;689&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_689_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_41.png" src="../_images/models_linear_15_41.png" />
+<img alt="../_images/models_linear_15_42.png" src="../_images/models_linear_15_42.png" />
+<img alt="../_images/models_linear_15_43.png" src="../_images/models_linear_15_43.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;708&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_708_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_45.png" src="../_images/models_linear_15_45.png" />
+<img alt="../_images/models_linear_15_46.png" src="../_images/models_linear_15_46.png" />
+<img alt="../_images/models_linear_15_47.png" src="../_images/models_linear_15_47.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;744&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_744_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_49.png" src="../_images/models_linear_15_49.png" />
+<img alt="../_images/models_linear_15_50.png" src="../_images/models_linear_15_50.png" />
+<img alt="../_images/models_linear_15_51.png" src="../_images/models_linear_15_51.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;780&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_780_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_53.png" src="../_images/models_linear_15_53.png" />
+<img alt="../_images/models_linear_15_54.png" src="../_images/models_linear_15_54.png" />
+<img alt="../_images/models_linear_15_55.png" src="../_images/models_linear_15_55.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;803&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_803_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_57.png" src="../_images/models_linear_15_57.png" />
+<img alt="../_images/models_linear_15_58.png" src="../_images/models_linear_15_58.png" />
+<img alt="../_images/models_linear_15_59.png" src="../_images/models_linear_15_59.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;949&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_949_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_61.png" src="../_images/models_linear_15_61.png" />
+<img alt="../_images/models_linear_15_62.png" src="../_images/models_linear_15_62.png" />
+<img alt="../_images/models_linear_15_63.png" src="../_images/models_linear_15_63.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;999&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_999_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_65.png" src="../_images/models_linear_15_65.png" />
+<img alt="../_images/models_linear_15_66.png" src="../_images/models_linear_15_66.png" />
+<img alt="../_images/models_linear_15_67.png" src="../_images/models_linear_15_67.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1025&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1025_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_69.png" src="../_images/models_linear_15_69.png" />
+<img alt="../_images/models_linear_15_70.png" src="../_images/models_linear_15_70.png" />
+<img alt="../_images/models_linear_15_71.png" src="../_images/models_linear_15_71.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1064&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1064_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_73.png" src="../_images/models_linear_15_73.png" />
+<img alt="../_images/models_linear_15_74.png" src="../_images/models_linear_15_74.png" />
+<img alt="../_images/models_linear_15_75.png" src="../_images/models_linear_15_75.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1124&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1124_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_77.png" src="../_images/models_linear_15_77.png" />
+<img alt="../_images/models_linear_15_78.png" src="../_images/models_linear_15_78.png" />
+<img alt="../_images/models_linear_15_79.png" src="../_images/models_linear_15_79.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1146_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_81.png" src="../_images/models_linear_15_81.png" />
+<img alt="../_images/models_linear_15_82.png" src="../_images/models_linear_15_82.png" />
+<img alt="../_images/models_linear_15_83.png" src="../_images/models_linear_15_83.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1174&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1174_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_85.png" src="../_images/models_linear_15_85.png" />
+<img alt="../_images/models_linear_15_86.png" src="../_images/models_linear_15_86.png" />
+<img alt="../_images/models_linear_15_87.png" src="../_images/models_linear_15_87.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1177&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1177_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_89.png" src="../_images/models_linear_15_89.png" />
+<img alt="../_images/models_linear_15_90.png" src="../_images/models_linear_15_90.png" />
+<img alt="../_images/models_linear_15_91.png" src="../_images/models_linear_15_91.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1214&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1214_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_93.png" src="../_images/models_linear_15_93.png" />
+<img alt="../_images/models_linear_15_94.png" src="../_images/models_linear_15_94.png" />
+<img alt="../_images/models_linear_15_95.png" src="../_images/models_linear_15_95.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1217&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1217_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_97.png" src="../_images/models_linear_15_97.png" />
+<img alt="../_images/models_linear_15_98.png" src="../_images/models_linear_15_98.png" />
+<img alt="../_images/models_linear_15_99.png" src="../_images/models_linear_15_99.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1260&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1260_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_101.png" src="../_images/models_linear_15_101.png" />
+<img alt="../_images/models_linear_15_102.png" src="../_images/models_linear_15_102.png" />
+<img alt="../_images/models_linear_15_103.png" src="../_images/models_linear_15_103.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1296&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1296_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_105.png" src="../_images/models_linear_15_105.png" />
+<img alt="../_images/models_linear_15_106.png" src="../_images/models_linear_15_106.png" />
+<img alt="../_images/models_linear_15_107.png" src="../_images/models_linear_15_107.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1327&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1327_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_109.png" src="../_images/models_linear_15_109.png" />
+<img alt="../_images/models_linear_15_110.png" src="../_images/models_linear_15_110.png" />
+<img alt="../_images/models_linear_15_111.png" src="../_images/models_linear_15_111.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1442&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
+FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1442_winds_gradients_1D_tl3.nc
+PCs loaded from file
+</pre></div>
+</div>
+<img alt="../_images/models_linear_15_113.png" src="../_images/models_linear_15_113.png" />
+<img alt="../_images/models_linear_15_114.png" src="../_images/models_linear_15_114.png" />
+<img alt="../_images/models_linear_15_115.png" src="../_images/models_linear_15_115.png" />
 </div>
 </div>
 </div>
