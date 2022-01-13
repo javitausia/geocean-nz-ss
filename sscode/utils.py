@@ -54,7 +54,7 @@ def calculate_relative_winds(location: tuple = default_location,
         'uw2': uw**2, 'vw2': vw**2,
         'wind_magnitude': np.sqrt(uw**2+vw**2)
     }) # add squared winds and wind module
-    chunk = False if len(wind.lon)<12 else True
+    chunk = False if len(wind[lon_name])<12 else True
     if chunk:
         # print('\n re-chunking dataset to avoid memmory problems... \n')
         wind = wind.drop(
