@@ -295,6 +295,7 @@ class MDA_RBF_Model(object):
                         'PCs': (('time','n_components'), PCs),
                         'EOFs': (('n_components','n_features'), pca_fit.components_),
                         'variance': (('n_components'), pca_fit.explained_variance_),
+                        'total_variance', ((), np.sum(pca_fit.explained_variance_)),
                         'site': (('site'), raw_ss_locs[loc][self.ss_attrs[2]].values)
                     },
                     coords = {
@@ -669,7 +670,7 @@ def MDA_RBF_algorithm(
         )) if verbose else None
         # number of pcs to use
         num_pcs = len(np.where(
-            ((np.cumsum(pcs_data.variance)/np.sum(pcs_data.variance)) < per_pcs).values==True
+            ((np.cumsum(pcs_data.variance)/float(pcs_data.total_variance)) < per_pcs).values==True
         )[0])
         print(' which means {} PCs... \n'.format(num_pcs)) if verbose else None
         print('\n ------------------------------------------------------------- \n') \
