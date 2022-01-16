@@ -295,7 +295,7 @@ class MDA_RBF_Model(object):
                         'PCs': (('time','n_components'), PCs),
                         'EOFs': (('n_components','n_features'), pca_fit.components_),
                         'variance': (('n_components'), pca_fit.explained_variance_),
-                        'total_variance', ((), np.sum(pca_fit.explained_variance_)),
+                        'total_variance': ((), np.sum(pca_fit.explained_variance_)),
                         'site': (('site'), raw_ss_locs[loc][self.ss_attrs[2]].values)
                     },
                     coords = {
