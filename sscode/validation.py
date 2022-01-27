@@ -442,21 +442,20 @@ def calc_closest_data2_in_data1(data1, data2, # data 1 is bigger than data2
         closest_sites = []
         closets_dists = []
         d2lon = d2lon if d2lon<=180 else d2lon-360 # for geopy
-        for d1lon,d1lat in zip(*data1):
-            d1lon = d1lon if d1lon<=180 else d1lon-360 # for geopy
+        for site_counter, [d1lon,d1lat] in enumerate(zip(*data1)):
+            d1lon = d1lon if d1lon<=180 else d1lon-360
+            # If condition applied check if point is in longitude band
+            if extra_help[i_station][0]=='lon' and abs(d1lon-d2lon)>extra_help[i_station][1]:
+                continue
+            # If condition applied check if point is in latitude band
+            if extra_help[i_station][0]=='lat' and abs(d1lat-d2lat)>extra_help[i_station][1]:
+                continue
+            # Check if distance to point is less than min_dist_th
+            # if so, save
             dist = geodesic((d1lat,d1lon),(d2lat,d2lon)).km
-            if extra_help[i_station][0]=='lon':
-                cond = True if abs(d1lon-d2lon)<extra_help[i_station][1] else False
-            elif extra_help[i_station][0]=='lat':
-                cond = True if abs(d1lat-d2lat)<extra_help[i_station][1] else False
-            else:
-                cond = False # if no extra help is provided
-            if dist<min_dist_th[i_station] and cond:
-                # site = site_counter
-                # min_dist = dist
+            if dist<min_dist_th[i_station]:
                 closest_sites.append(site_counter)
                 closets_dists.append(dist)
-            site_counter += 1 # add 1 to counter
         # save results
         sites_list.append(closest_sites), sites_dist.append(closets_dists)
         i_station += 1
