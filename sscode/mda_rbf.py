@@ -217,6 +217,14 @@ class MDA_RBF_Model(object):
         interpolation can be performed over all the different indicated
         shores, ex: west, south...
 
+        For each site defined by self.lon/self.lat, the function finds all
+        nodes in the raw storm surge data points that are located withing
+        min_dist_th km and fullfill the extra_help condition (narrow node search
+        to a band around the site's longitude or latitude). The node define
+        the shore corresponding to the site. For each site, the storm surge data
+        for all shore nodes associated to the site are subject to PCA which
+        gives the storm surge PCs associated with the site.
+
         Args:
             min_dist_th (list): Distances in km to find the nearest points to
                 the lons/lats specified
@@ -230,6 +238,10 @@ class MDA_RBF_Model(object):
         """
 
         # calculate closets points and select ss maximums
+        # for each site (self.lat, self.lon), find all the sites in self.raw_ss_data
+        # located within min_dist_th distance of them and which also fullfill the extra_help
+        # condition
+        # sites is a list that contains a lists of nodes (shores_ for each prediction point)
         sites, dists = calc_closest_data2_in_data1(
             (self.raw_ss_data[self.ss_attrs[0]].values,
              self.raw_ss_data[self.ss_attrs[1]].values),

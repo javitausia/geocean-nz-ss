@@ -142,10 +142,11 @@ def maxdiss_simplified_no_threshold(data, num_centers, ix_scalar,
         data, ix_scalar, ix_directional, [], []
     )
 
-    # mda seed
+    # mda seed: Choose vector with the largest norm as first centroid
     seed = np.where(data_norm[:,0] == np.amax(data_norm[:,0]))[0][0]
 
     # initialize centroids subset
+    # Store first centroid vector and index and remove from pool
     subset = np.array([data_norm[seed]])
     indexes_subset = []
     indexes_subset.append(seed)
@@ -157,18 +158,25 @@ def maxdiss_simplified_no_threshold(data, num_centers, ix_scalar,
         m = np.ones((train.shape[0],1))
         m2 = subset.shape[0]
 
-        if m2 == 1:
+        if m2 == 1: # If only the first centroid is know initiate calculation of distance
+                    # between selected centroids and pool of vectors (d_last)
             xx2 = np.repeat(subset, train.shape[0], axis=0)
             d_last = normalized_distance(train, xx2, ix_scalar, ix_directional)
 
-        else:
+        else: # If more than one centroid is knows. Distance between selected centroids
+              # and pool of vectors is updated
+            # First the distance between the latest identified centroid is calculated
             xx = np.array([subset[-1,:]])
             xx2 = np.repeat(xx, train.shape[0], axis=0)
             d_prev = normalized_distance(train, xx2, ix_scalar, ix_directional)
+            # Then the distance between all centroids and the pool of vectors is updated
             d_last = np.minimum(d_prev, d_last)
 
+        # Pick the next centroid as that corresponding to the max distance with
+        # existing centroids.
         qerr, bmu = np.amax(d_last), np.argmax(d_last)
 
+        # Remove new centroid from pool and distance matrix
         if not np.isnan(qerr):
             subset = np.append(subset, np.array([train[bmu,:]]), axis=0)
             indexes_subset.append(bmu)
@@ -184,8 +192,9 @@ def maxdiss_simplified_no_threshold(data, num_centers, ix_scalar,
         n_c = subset.shape[0]
     print('\n')
 
-    # normalize scalar and directional data
+    # denormalize scalar and directional data
     centroids = denormalize(subset, ix_scalar, ix_directional, minis, maxis)
 
+    # Return centroids and their index
     return centroids, indexes_subset
 
