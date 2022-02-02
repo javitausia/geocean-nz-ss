@@ -62,12 +62,12 @@ def CCA_Analysis(pres, ss, # pressure and ss datasets
     # num of pcs to use
     num_pcs_pres = int(
         np.where(np.cumsum(pcs_pres.variance.values/\
-            np.sum(pcs_pres.variance.values))>percentage_PCs
+            float(pcs_pres.total_variance))>percentage_PCs
             )[0][0]
     ) + 4
     num_pcs_ss = int(
         np.where(np.cumsum(pcs_ss.variance.values/\
-            np.sum(pcs_ss.variance.values))>percentage_PCs
+            float(pcs_ss.total_variance))>percentage_PCs
             )[0][0]
     ) + 4
     print('\n we will use {} PCs from the pressure and {} from the ss \n'.format(

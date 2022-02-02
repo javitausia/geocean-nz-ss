@@ -100,7 +100,7 @@ def MultiLinear_Regression(
     if percentage_PCs:
         num_pcs = int(
             np.where(np.cumsum(X_set.variance.values/\
-                np.sum(X_set.variance.values))>percentage_PCs
+                float(X_set.total_variance))>percentage_PCs
                 )[0][0]
         ) +1 # number of Pcs to use
         num_pcs = num_pcs if num_pcs>2 else 3

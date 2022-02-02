@@ -455,6 +455,7 @@ class PCA_DynamicPred(object):
                 'PCs': (('time','n_components'), PCs),
                 'EOFs': (('n_components','n_features'), components_),
                 'variance': (('n_components'), explained_variance_),
+                'total_variance': ((), np.sum(explained_variance_)),
                 'pcs_lon': (('n_lon'), self.pres[self.pres_vars[1]].values),
                 'pcs_lat': (('n_lat'), self.pres[self.pres_vars[2]].values)
             },
