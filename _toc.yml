@@ -13,6 +13,6 @@ chapters:
 - file: notebooks/models_linear
 - file: notebooks/models_knn
 - file: notebooks/models_xgboost
-- file: notebooks/experiments
+- file: notebooks/models_results
 # - file: notebooks/models_mda_rbf
 # - file: notebooks/models_results
