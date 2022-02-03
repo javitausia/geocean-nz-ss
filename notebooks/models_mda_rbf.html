@@ -47,8 +47,8 @@
     <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe,.cell"
@@ -92,7 +92,7 @@
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
@@ -144,8 +144,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="experiments.html">
-   8. RUN experiments
+  <a class="reference internal" href="models_results.html">
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -173,8 +173,8 @@
             
             <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
                 data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
                 <i class="fas fa-bars"></i>
                 <i class="fas fa-arrow-left"></i>
                 <i class="fas fa-arrow-up"></i>
@@ -182,7 +182,7 @@
             
             
 <div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
             class="fas fa-download"></i></button>
 
     <div class="dropdown-buttons">
@@ -190,10 +190,10 @@
         
         <!-- Download raw file -->
         <a class="dropdown-buttons" href="../_sources/notebooks/models_mda_rbf.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
                 onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
@@ -206,12 +206,12 @@
     <div class="dropdown-buttons sourcebuttons">
         <a class="repository-button"
             href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
+                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
+                    class="fab fa-github"></i>repositorio</button></a>
         <a class="issues-button"
             href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/models_mda_rbf.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
         
     </div>
 </div>
@@ -219,8 +219,8 @@
             <!-- Full screen (wrap in <a> to have style consistency -->
 
 <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
             class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
@@ -231,7 +231,7 @@
     <div class="dropdown-buttons">
         
         <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/models_mda_rbf.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../_static/images/logo_binder.svg"
                     alt="Interact on binder">Binder</button></a>
@@ -239,12 +239,12 @@
         
         
         <a class="colab-button" href="https://colab.research.google.com/github/javitausia/geocean-nz-ss/blob/master/notebooks/models_mda_rbf.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
-                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                title="Lanzamiento Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
                     src="../_static/images/logo_colab.png"
                     alt="Interact on Colab">Colab</button></a>
         
         <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+            onclick="initThebeSBT()" title="Lanzamiento Thebe" data-toggle="tooltip" data-placement="left"><i
                 class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
@@ -256,7 +256,7 @@
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+                <i class="fas fa-list"></i> Contenido
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
@@ -296,7 +296,7 @@
                     <div id="jb-print-toc">
                         
                         <div>
-                            <h2> Contents </h2>
+                            <h2> Contenido </h2>
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
@@ -393,10 +393,7 @@ radial functions contain a shape parameter that plays a very important role
 in the precision of the technique. In the methodology of propagation of the maritime climate, it has been considered the Gaussian radial function that depend on a shape parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># common</span>
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="c1"># pip</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># arrays</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -406,8 +403,10 @@ in the precision of the technique. In the methodology of propagation of the mari
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 
 <span class="c1"># append sscode to path</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span><span class="p">,</span> \
@@ -431,7 +430,7 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /Volumes/ToshibaJT/geocean-nz-ss/data
 </pre></div>
 </div>
 <div class="output text_html">
@@ -476,18 +475,11 @@ in the precision of the technique. In the methodology of propagation of the mari
 <span class="c1">#     }</span>
 <span class="c1"># ).dropna(dim=&#39;site&#39;,how=&#39;all&#39;)</span>
 <span class="c1"># plot results</span>
-
-<span class="n">lm_stats</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="k">if</span> <span class="n">lm_stats</span><span class="p">:</span>
-    <span class="n">stats_local</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="s1">&#39;../data/statistics/regional_models/stats_lm_regional_daily.nc&#39;</span>
-    <span class="p">)</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">stats_local</span><span class="p">,</span><span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
 
 
  loading the Moana v2 hindcast data... 
@@ -496,7 +488,6 @@ in the precision of the technique. In the methodology of propagation of the mari
  loading the UHSLC tidal guages... 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_4_1.png" src="../_images/models_mda_rbf_4_1.png" />
 </div>
 </div>
 </div>
@@ -622,12 +613,12 @@ in the precision of the technique. In the methodology of propagation of the mari
     <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
     <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),</span>
     <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="c1"># &#39;pca_ttls&#39;: [</span>
-    <span class="c1">#     &#39;SLP in t&#39;,&#39;Grad in t&#39;,&#39;Winds in t&#39;,</span>
-    <span class="c1">#     &#39;SLP in t-1&#39;,&#39;Grad in t-1&#39;,&#39;Winds in t-1&#39;,</span>
-    <span class="c1">#     &#39;SLP in t-2&#39;,&#39;Grad in t-2&#39;,&#39;Winds in t-2&#39;</span>
-    <span class="c1"># ], </span>
-    <span class="s1">&#39;pca_borders&#39;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="s1">&#39;pca_ttls&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;SLP in t-1&#39;,&#39;Grad in t-1&#39;,&#39;Winds in t-1&#39;,</span>
+        <span class="c1"># &#39;SLP in t-2&#39;,&#39;Grad in t-2&#39;,&#39;Winds in t-2&#39;</span>
+    <span class="p">],</span> 
+    <span class="c1"># &#39;pca_borders&#39;: None</span>
 <span class="p">}</span>
 <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
     <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
@@ -642,7 +633,6 @@ in the precision of the technique. In the methodology of propagation of the mari
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span>
     <span class="n">pca_attrs_default</span><span class="p">,</span> <span class="c1"># all params to calculate the pcs</span>
     <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span>
     <span class="c1"># -------------------------------------------------------- #</span>
     <span class="c1"># set sites_to_analyze to None to shore analysis</span>
     <span class="n">sites_to_analyze</span><span class="o">=</span><span class="kc">None</span> <span class="c1"># list(sites_to_analyze)</span>
@@ -655,11 +645,11 @@ in the precision of the technique. In the methodology of propagation of the mari
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Initializing the MDA + RBF constructor... 
 
 
- with longitudes = [171.2] 
+ with longitudes = [171.2, 166.0, 174.5, 176.6, 174.9] 
  
  and 
  
- latitudes = [-41.5] !!                 
+ latitudes = [-41.5, -50.8, -39.9, -37.8, -38.3] !!                 
 
  for the specified middle locations / shores !!
 
@@ -686,7 +676,7 @@ Data variables:
     wind_proj        (time, lat, lon) float64 ...
     bearings         (lat, lon) float64 ...
     direc_proj_math  (lat, lon) float64 ...
-    wind_proj_mask   (time, lat, lon) float64 ..., &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;, &#39;U_GRD_L103&#39;, &#39;V_GRD_L103&#39;), &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: True, &#39;pca_borders&#39;: None} 
+    wind_proj_mask   (time, lat, lon) float64 ..., &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;, &#39;U_GRD_L103&#39;, &#39;V_GRD_L103&#39;), &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: True, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;Grad in t&#39;, &#39;Winds in t&#39;]} 
 
 
  lets calculate the slp pcs... 
@@ -695,13 +685,16 @@ Data variables:
 
              The slp pcs will be calculated for all the locations / shores...             
 
-Assembling matrix
-Start 0
+Assembling matrixation for site / shore 1
+Start 32512
 
  adding the wind to the predictor... 
-
-
- winds predictor with shape: 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
  (11354, 11, 10) 
 
 
@@ -738,8 +731,200 @@ time (11353,)
  being the EOFs the slp, the gradient, in steps t, t-1 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_6_3.png" src="../_images/models_mda_rbf_6_3.png" />
-<img alt="../_images/models_mda_rbf_6_4.png" src="../_images/models_mda_rbf_6_4.png" />
+<img alt="../_images/models_mda_rbf_6_5.png" src="../_images/models_mda_rbf_6_5.png" />
+<img alt="../_images/models_mda_rbf_6_6.png" src="../_images/models_mda_rbf_6_6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 2
+Start 32512
+
+ adding the wind to the predictor... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
+ (11354, 10, 11) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 11) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 330) 
+
+Computing using CPU
+matrix (11353, 330)
+PCs (11353, 330)
+comp (330, 330)
+var (330,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 11)&gt;
+array([163.5, 164. , 164.5, 165. , 165.5, 166. , 166.5, 167. , 167.5, 168. ,
+       168.5], dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 163.5 164.0 164.5 165.0 ... 167.5 168.0 168.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-53. , -52.5, -52. , -51.5, -51. , -50.5, -50. , -49.5, -49. , -48.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -53.0 -52.5 -52.0 -51.5 ... -49.5 -49.0 -48.5
+time (11353,)
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_10.png" src="../_images/models_mda_rbf_6_10.png" />
+<img alt="../_images/models_mda_rbf_6_11.png" src="../_images/models_mda_rbf_6_11.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 3
+Start 32512
+
+ adding the wind to the predictor... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
+ (11354, 10, 11) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 11) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 330) 
+
+Computing using CPU
+matrix (11353, 330)
+PCs (11353, 330)
+comp (330, 330)
+var (330,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 11)&gt;
+array([172. , 172.5, 173. , 173.5, 174. , 174.5, 175. , 175.5, 176. , 176.5,
+       177. ], dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 172.0 172.5 173.0 173.5 ... 176.0 176.5 177.0
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-42. , -41.5, -41. , -40.5, -40. , -39.5, -39. , -38.5, -38. , -37.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -42.0 -41.5 -41.0 -40.5 ... -38.5 -38.0 -37.5
+time (11353,)
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_15.png" src="../_images/models_mda_rbf_6_15.png" />
+<img alt="../_images/models_mda_rbf_6_16.png" src="../_images/models_mda_rbf_6_16.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 4
+Start 32512
+
+ adding the wind to the predictor... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 300) 
+
+Computing using CPU
+matrix (11353, 300)
+PCs (11353, 300)
+comp (300, 300)
+var (300,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([174.5, 175. , 175.5, 176. , 176.5, 177. , 177.5, 178. , 178.5, 179. ],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 174.5 175.0 175.5 176.0 ... 178.0 178.5 179.0
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -40.0 -39.5 -39.0 -38.5 ... -36.5 -36.0 -35.5
+time (11353,)
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_20.png" src="../_images/models_mda_rbf_6_20.png" />
+<img alt="../_images/models_mda_rbf_6_21.png" src="../_images/models_mda_rbf_6_21.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 5
+Start 32512
+
+ adding the wind to the predictor... 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 300) 
+
+Computing using CPU
+matrix (11353, 300)
+PCs (11353, 300)
+comp (300, 300)
+var (300,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([172.5, 173. , 173.5, 174. , 174.5, 175. , 175.5, 176. , 176.5, 177. ],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 172.5 173.0 173.5 174.0 ... 176.0 176.5 177.0
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-40.5, -40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. ],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -40.5 -40.0 -39.5 -39.0 ... -37.0 -36.5 -36.0
+time (11353,)
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_6_25.png" src="../_images/models_mda_rbf_6_25.png" />
+<img alt="../_images/models_mda_rbf_6_26.png" src="../_images/models_mda_rbf_6_26.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -747,6 +932,16 @@ time (11353,)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+[]
+[]
+[]
+[]
+[]
 </pre></div>
 </div>
 </div>
@@ -765,8 +960,8 @@ time (11353,)
 <span class="n">interpolated_ss_by_rbf</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
     <span class="n">selected_shores</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">)),</span> <span class="c1"># indexes in python counter</span>
     <span class="c1"># len(sites_to_analyze[::8])</span>
-    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.92</span><span class="p">],</span> <span class="c1">#[0.92,0.95,0.98], # this is for the SLP</span>
-    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">250</span><span class="p">],</span> <span class="c1">#[10,25,50,100,250,500,1000,1500],</span>
+    <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.95</span><span class="p">,</span><span class="mf">0.99</span><span class="p">],</span> <span class="c1">#[0.92,0.95,0.98], # this is for the SLP</span>
+    <span class="n">num_samples_ini</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="c1">#[10,25,50,100,250,500,1000,1500],</span>
     <span class="n">ss_pcs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">append_extremes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">try_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span>
     <span class="c1"># the ss_pcs parameter is very important, set to 1 when working with single locations</span>
 <span class="p">)</span>
@@ -783,188 +978,508 @@ time (11353,)
  ------------------------------------------------------------- 
 
 
- MDA + RBF with 0.92 per of pcs and 250 samples!! 
+ MDA + RBF with 0.95 per of pcs and 50 samples!! 
 
- which means 4 PCs... 
+ which means 5 PCs... 
 
 
  ------------------------------------------------------------- 
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_9_1.png" src="../_images/models_mda_rbf_9_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 259 points to interpolate with RBF!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
 
 
-ix_scalar: 0,  optimization: 7.01 | interpolation: 0.38 | sigma: 0.3781
-ix_scalar: 1,  optimization: 7.23 | interpolation: 0.32 | sigma: 0.3235
-ix_scalar: 2,  optimization: 8.73 | interpolation: 0.34 | sigma: 0.3415
-ix_scalar: 3,  optimization: 6.54 | interpolation: 0.34 | sigma: 0.3354
-ix_scalar: 4,  optimization: 5.78 | interpolation: 0.44 | sigma: 0.4438
+ix_scalar: 0,  optimization: 0.52 | interpolation: 0.49 | sigma: 0.4936
+ix_scalar: 1,  optimization: 0.61 | interpolation: 0.37 | sigma: 0.3711
+ix_scalar: 2,  optimization: 0.46 | interpolation: 0.35 | sigma: 0.3462
+ix_scalar: 3,  optimization: 0.67 | interpolation: 0.68 | sigma: 0.6833
+ix_scalar: 4,  optimization: 0.49 | interpolation: 0.38 | sigma: 0.3847
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_9_3.png" src="../_images/models_mda_rbf_9_3.png" />
 <img alt="../_images/models_mda_rbf_9_4.png" src="../_images/models_mda_rbf_9_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 1!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 50 samples!! 
+
+ which means 14 PCs... 
+
+
+ ------------------------------------------------------------- 
 </pre></div>
 </div>
 <img alt="../_images/models_mda_rbf_9_6.png" src="../_images/models_mda_rbf_9_6.png" />
-<img alt="../_images/models_mda_rbf_9_7.png" src="../_images/models_mda_rbf_9_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 58 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.39 | interpolation: 0.39 | sigma: 0.3913
+ix_scalar: 1,  optimization: 0.38 | interpolation: 0.39 | sigma: 0.3902
+ix_scalar: 2,  optimization: 1.04 | interpolation: 0.45 | sigma: 0.4494
+ix_scalar: 3,  optimization: 0.38 | interpolation: 0.45 | sigma: 0.4540
+ix_scalar: 4,  optimization: 0.45 | interpolation: 0.67 | sigma: 0.6670
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_9_8.png" src="../_images/models_mda_rbf_9_8.png" />
 <img alt="../_images/models_mda_rbf_9_9.png" src="../_images/models_mda_rbf_9_9.png" />
-<img alt="../_images/models_mda_rbf_9_10.png" src="../_images/models_mda_rbf_9_10.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 5 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_9_11.png" src="../_images/models_mda_rbf_9_11.png" />
-<img alt="../_images/models_mda_rbf_9_12.png" src="../_images/models_mda_rbf_9_12.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.69 | interpolation: 0.39 | sigma: 0.3910
+ix_scalar: 1,  optimization: 2.89 | interpolation: 0.43 | sigma: 0.4276
+ix_scalar: 2,  optimization: 1.45 | interpolation: 0.49 | sigma: 0.4863
+ix_scalar: 3,  optimization: 2.37 | interpolation: 0.38 | sigma: 0.3798
+ix_scalar: 4,  optimization: 3.03 | interpolation: 0.53 | sigma: 0.5294
+</pre></div>
+</div>
 <img alt="../_images/models_mda_rbf_9_13.png" src="../_images/models_mda_rbf_9_13.png" />
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">6</span><span class="n">a326aa181b1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># calculate the MDA + RBF adjustments</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">interpolated_ss_by_rbf</span> <span class="o">=</span> <span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">calc_MDA_RBF</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">selected_shores</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">)),</span> <span class="c1"># indexes in python counter</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="c1"># len(sites_to_analyze[::8])</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">percentage_pcs_ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.92</span><span class="p">],</span> <span class="c1">#[0.92,0.95,0.98], # this is for the SLP</span>
+<img alt="../_images/models_mda_rbf_9_14.png" src="../_images/models_mda_rbf_9_14.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
 
-<span class="nn">~/Documentos/geocean-nz-ss/notebooks/../sscode/mda_rbf.py</span> in <span class="ni">calc_MDA_RBF</span><span class="nt">(self, selected_shores, percentage_pcs_ini, num_samples_ini, ss_pcs, try_all, append_extremes, plot, verbose)</span>
-<span class="g g-Whitespace">    </span><span class="mi">590</span>                         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">591</span>                         <span class="c1"># show the results</span>
-<span class="ne">--&gt; </span><span class="mi">592</span>                         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">593</span> 
-<span class="g g-Whitespace">    </span><span class="mi">594</span>                 <span class="n">final_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/pyplot.py</span> in <span class="ni">show</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">376</span>     <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">377</span><span class="sd">     _warn_if_gui_out_of_main_thread()</span>
-<span class="ne">--&gt; </span><span class="mi">378</span><span class="sd">     return _backend_mod.show(*args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">379</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">380</span><span class="sd"> </span>
+ MDA + RBF with 0.99 per of pcs and 100 samples!! 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/ipykernel/pylab/backend_inline.py</span> in <span class="ni">show</span><span class="nt">(close, block)</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span><span class="sd">     try:</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span><span class="sd">         for figure_manager in Gcf.get_all_fig_managers():</span>
-<span class="ne">---&gt; </span><span class="mi">41</span><span class="sd">             display(</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span><span class="sd">                 figure_manager.canvas.figure,</span>
-<span class="g g-Whitespace">     </span><span class="mi">43</span><span class="sd">                 metadata=_fetch_figure_metadata(figure_manager.canvas.figure)</span>
+ which means 14 PCs... 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/display.py</span> in <span class="ni">display</span><span class="nt">(include, exclude, metadata, transient, display_id, *objs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">318</span><span class="sd">             publish_display_data(data=obj, metadata=metadata, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">319</span><span class="sd">         else:</span>
-<span class="ne">--&gt; </span><span class="mi">320</span><span class="sd">             format_dict, md_dict = format(obj, include=include, exclude=exclude)</span>
-<span class="g g-Whitespace">    </span><span class="mi">321</span><span class="sd">             if not format_dict:</span>
-<span class="g g-Whitespace">    </span><span class="mi">322</span><span class="sd">                 # nothing to display (e.g. _ipython_display_ took over)</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/formatters.py</span> in <span class="ni">format</span><span class="nt">(self, obj, include, exclude)</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span><span class="sd">             md = None</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span><span class="sd">             try:</span>
-<span class="ne">--&gt; </span><span class="mi">180</span><span class="sd">                 data = formatter(obj)</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span><span class="sd">             except:</span>
-<span class="g g-Whitespace">    </span><span class="mi">182</span><span class="sd">                 # FIXME: log the exception</span>
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_16.png" src="../_images/models_mda_rbf_9_16.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 108 points to interpolate with RBF!! 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/decorator.py</span> in <span class="ni">fun</span><span class="nt">(*args, **kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">230</span><span class="sd">             if not kwsyntax:</span>
-<span class="g g-Whitespace">    </span><span class="mi">231</span><span class="sd">                 args, kw = fix(args, kw, sig)</span>
-<span class="ne">--&gt; </span><span class="mi">232</span><span class="sd">             return caller(func, *(extras + args), **kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">233</span><span class="sd">     fun.__name__ = func.__name__</span>
-<span class="g g-Whitespace">    </span><span class="mi">234</span><span class="sd">     fun.__doc__ = func.__doc__</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/formatters.py</span> in <span class="ni">catch_format_error</span><span class="nt">(method, self, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span><span class="sd">     &quot;&quot;&quot;</span><span class="n">show</span> <span class="n">traceback</span> <span class="n">on</span> <span class="n">failed</span> <span class="nb">format</span> <span class="n">call</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span><span class="s2">     try:</span>
-<span class="ne">--&gt; </span><span class="mi">224</span><span class="s2">         r = method(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span><span class="s2">     except NotImplementedError:</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span><span class="s2">         # don&#39;t warn on NotImplementedErrors</span>
+ix_scalar: 0,  optimization: 1.57 | interpolation: 0.52 | sigma: 0.5204
+ix_scalar: 1,  optimization: 1.28 | interpolation: 0.67 | sigma: 0.6693
+ix_scalar: 2,  optimization: 4.02 | interpolation: 0.43 | sigma: 0.4334
+ix_scalar: 3,  optimization: 1.38 | interpolation: 0.54 | sigma: 0.5361
+ix_scalar: 4,  optimization: 1.34 | interpolation: 0.43 | sigma: 0.4307
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_18.png" src="../_images/models_mda_rbf_9_18.png" />
+<img alt="../_images/models_mda_rbf_9_19.png" src="../_images/models_mda_rbf_9_19.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 1!! 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/formatters.py</span> in <span class="ni">__call__</span><span class="nt">(self, obj)</span>
-<span class="g g-Whitespace">    </span><span class="mi">339</span><span class="s2">                 pass</span>
-<span class="g g-Whitespace">    </span><span class="mi">340</span><span class="s2">             else:</span>
-<span class="ne">--&gt; </span><span class="mi">341</span><span class="s2">                 return printer(obj)</span>
-<span class="g g-Whitespace">    </span><span class="mi">342</span><span class="s2">             # Finally look for special method names</span>
-<span class="g g-Whitespace">    </span><span class="mi">343</span><span class="s2">             method = get_real_method(obj, self.print_method)</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(fig)</span>
-<span class="g g-Whitespace">    </span><span class="mi">248</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">249</span><span class="s2">     if &#39;png&#39; in formats:</span>
-<span class="ne">--&gt; </span><span class="mi">250</span><span class="s2">         png_formatter.for_type(Figure, lambda fig: print_figure(fig, &#39;png&#39;, **kwargs))</span>
-<span class="g g-Whitespace">    </span><span class="mi">251</span><span class="s2">     if &#39;retina&#39; in formats or &#39;png2x&#39; in formats:</span>
-<span class="g g-Whitespace">    </span><span class="mi">252</span><span class="s2">         png_formatter.for_type(Figure, lambda fig: retina_figure(fig, **kwargs))</span>
+ Lets reconstruct the SS for location 2!! 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">print_figure</span><span class="nt">(fig, fmt, bbox_inches, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">132</span><span class="s2">         FigureCanvasBase(fig)</span>
-<span class="g g-Whitespace">    </span><span class="mi">133</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">134</span><span class="s2">     fig.canvas.print_figure(bytes_io, **kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">135</span><span class="s2">     data = bytes_io.getvalue()</span>
-<span class="g g-Whitespace">    </span><span class="mi">136</span><span class="s2">     if fmt == &#39;svg&#39;:</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/backend_bases.py</span> in <span class="ni">print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2232</span><span class="s2">             if bbox_inches:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2233</span><span class="s2">                 if bbox_inches == &quot;tight&quot;:</span>
-<span class="ne">-&gt; </span><span class="mi">2234</span><span class="s2">                     bbox_inches = self.figure.get_tightbbox(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2235</span><span class="s2">                         renderer, bbox_extra_artists=bbox_extra_artists)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2236</span><span class="s2">                     if pad_inches is None:</span>
+ ------------------------------------------------------------- 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/figure.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer, bbox_extra_artists)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1634</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1635</span><span class="s2">         for a in artists:</span>
-<span class="ne">-&gt; </span><span class="mi">1636</span><span class="s2">             bbox = a.get_tightbbox(renderer)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1637</span><span class="s2">             if bbox is not None and (bbox.width != 0 or bbox.height != 0):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1638</span><span class="s2">                 bb.append(bbox)</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">906</span><span class="s2">             The bounding box in figure pixel coordinates.</span>
-<span class="g g-Whitespace">    </span><span class="mi">907</span><span class="s2">         &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">908</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_box</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">909</span> 
-<span class="g g-Whitespace">    </span><span class="mi">910</span>     <span class="k">def</span> <span class="nf">get_frame_on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+ MDA + RBF with 0.95 per of pcs and 50 samples!! 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/offsetbox.py</span> in <span class="ni">get_window_extent</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">351</span>         <span class="sd">&quot;&quot;&quot;Return the bounding box (`.Bbox`) in display space.&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">352</span>         <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">xd</span><span class="p">,</span> <span class="n">yd</span><span class="p">,</span> <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_extent_offsets</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">353</span>         <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">xd</span><span class="p">,</span> <span class="n">yd</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">354</span>         <span class="k">return</span> <span class="n">mtransforms</span><span class="o">.</span><span class="n">Bbox</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="n">px</span> <span class="o">-</span> <span class="n">xd</span><span class="p">,</span> <span class="n">py</span> <span class="o">-</span> <span class="n">yd</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">355</span> 
+ which means 3 PCs... 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/offsetbox.py</span> in <span class="ni">get_offset</span><span class="nt">(self, width, height, xdescent, ydescent, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">290</span> 
-<span class="g g-Whitespace">    </span><span class="mi">291</span>         <span class="sd">&quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">292</span><span class="sd">         return (self._offset(width, height, xdescent, ydescent, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">293</span><span class="sd">                 if callable(self._offset)</span>
-<span class="g g-Whitespace">    </span><span class="mi">294</span><span class="sd">                 else self._offset)</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">_findoffset</span><span class="nt">(self, width, height, xdescent, ydescent, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">573</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">574</span><span class="sd">         if self._loc == 0:  # &quot;best&quot;.</span>
-<span class="ne">--&gt; </span><span class="mi">575</span><span class="sd">             x, y = self._find_best_position(width, height, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">576</span><span class="sd">         elif self._loc in Legend.codes.values():  # Fixed location.</span>
-<span class="g g-Whitespace">    </span><span class="mi">577</span><span class="sd">             bbox = Bbox.from_bounds(0, 0, width, height)</span>
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_21.png" src="../_images/models_mda_rbf_9_21.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">_find_best_position</span><span class="nt">(self, width, height, renderer, consider)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1040</span><span class="sd">             # XXX TODO: If markers are present, it would be good to take them</span>
-<span class="g g-Whitespace">   </span><span class="mi">1041</span><span class="sd">             # into account when checking vertex overlaps in the next line.</span>
-<span class="ne">-&gt; </span><span class="mi">1042</span><span class="sd">             badness = (sum(legendBox.count_contains(line.vertices)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1043</span><span class="sd">                            for line in lines)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1044</span><span class="sd">                        + legendBox.count_contains(offsets)</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/legend.py</span> in <span class="ni">&lt;genexpr&gt;</span><span class="nt">(.0)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1040</span><span class="sd">             # XXX TODO: If markers are present, it would be good to take them</span>
-<span class="g g-Whitespace">   </span><span class="mi">1041</span><span class="sd">             # into account when checking vertex overlaps in the next line.</span>
-<span class="ne">-&gt; </span><span class="mi">1042</span><span class="sd">             badness = (sum(legendBox.count_contains(line.vertices)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1043</span><span class="sd">                            for line in lines)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1044</span><span class="sd">                        + legendBox.count_contains(offsets)</span>
+ix_scalar: 0,  optimization: 0.42 | interpolation: 0.34 | sigma: 0.3429
+ix_scalar: 1,  optimization: 0.82 | interpolation: 0.35 | sigma: 0.3456
+ix_scalar: 2,  optimization: 0.56 | interpolation: 0.34 | sigma: 0.3357
+ix_scalar: 3,  optimization: 0.75 | interpolation: 0.35 | sigma: 0.3495
+ix_scalar: 4,  optimization: 0.79 | interpolation: 0.38 | sigma: 0.3806
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_23.png" src="../_images/models_mda_rbf_9_23.png" />
+<img alt="../_images/models_mda_rbf_9_24.png" src="../_images/models_mda_rbf_9_24.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/matplotlib/transforms.py</span> in <span class="ni">count_contains</span><span class="nt">(self, vertices)</span>
-<span class="g g-Whitespace">    </span><span class="mi">616</span><span class="sd">             return 0</span>
-<span class="g g-Whitespace">    </span><span class="mi">617</span><span class="sd">         vertices = np.asarray(vertices)</span>
-<span class="ne">--&gt; </span><span class="mi">618</span><span class="sd">         with np.errstate(invalid=&#39;ignore&#39;):</span>
-<span class="g g-Whitespace">    </span><span class="mi">619</span><span class="sd">             return (((self.min &lt; vertices) &amp;</span>
-<span class="g g-Whitespace">    </span><span class="mi">620</span><span class="sd">                      (vertices &lt; self.max)).all(axis=1).sum())</span>
 
-<span class="nn">~/miniconda3/envs/ssnz/lib/python3.8/site-packages/numpy/core/_ufunc_config.py</span> in <span class="ni">__init__</span><span class="nt">(self, call, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">423</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">424</span> 
-<span class="ne">--&gt; </span><span class="mi">425</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">call</span><span class="o">=</span><span class="n">_Unspecified</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">426</span>         <span class="bp">self</span><span class="o">.</span><span class="n">call</span> <span class="o">=</span> <span class="n">call</span>
-<span class="g g-Whitespace">    </span><span class="mi">427</span>         <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+ MDA + RBF with 0.99 per of pcs and 50 samples!! 
 
-<span class="ne">KeyboardInterrupt</span>: 
+ which means 7 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_26.png" src="../_images/models_mda_rbf_9_26.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.89 | interpolation: 0.36 | sigma: 0.3569
+ix_scalar: 1,  optimization: 0.88 | interpolation: 0.36 | sigma: 0.3560
+ix_scalar: 2,  optimization: 0.37 | interpolation: 0.38 | sigma: 0.3777
+ix_scalar: 3,  optimization: 1.06 | interpolation: 0.40 | sigma: 0.4013
+ix_scalar: 4,  optimization: 0.98 | interpolation: 0.40 | sigma: 0.3998
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_28.png" src="../_images/models_mda_rbf_9_28.png" />
+<img alt="../_images/models_mda_rbf_9_29.png" src="../_images/models_mda_rbf_9_29.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 3 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_31.png" src="../_images/models_mda_rbf_9_31.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.36 | interpolation: 0.37 | sigma: 0.3659
+ix_scalar: 1,  optimization: 2.55 | interpolation: 0.39 | sigma: 0.3883
+ix_scalar: 2,  optimization: 3.05 | interpolation: 0.36 | sigma: 0.3624
+ix_scalar: 3,  optimization: 2.93 | interpolation: 0.36 | sigma: 0.3649
+ix_scalar: 4,  optimization: 2.83 | interpolation: 0.37 | sigma: 0.3672
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_33.png" src="../_images/models_mda_rbf_9_33.png" />
+<img alt="../_images/models_mda_rbf_9_34.png" src="../_images/models_mda_rbf_9_34.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 100 samples!! 
+
+ which means 7 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_36.png" src="../_images/models_mda_rbf_9_36.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.89 | interpolation: 0.39 | sigma: 0.3897
+ix_scalar: 1,  optimization: 2.77 | interpolation: 0.39 | sigma: 0.3905
+ix_scalar: 2,  optimization: 1.41 | interpolation: 0.46 | sigma: 0.4592
+ix_scalar: 3,  optimization: 1.53 | interpolation: 0.38 | sigma: 0.3807
+ix_scalar: 4,  optimization: 1.60 | interpolation: 0.38 | sigma: 0.3808
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_38.png" src="../_images/models_mda_rbf_9_38.png" />
+<img alt="../_images/models_mda_rbf_9_39.png" src="../_images/models_mda_rbf_9_39.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 2!! 
+
+
+ Lets reconstruct the SS for location 3!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 50 samples!! 
+
+ which means 6 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_41.png" src="../_images/models_mda_rbf_9_41.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.53 | interpolation: 0.35 | sigma: 0.3491
+ix_scalar: 1,  optimization: 0.52 | interpolation: 0.37 | sigma: 0.3655
+ix_scalar: 2,  optimization: 0.77 | interpolation: 0.36 | sigma: 0.3650
+ix_scalar: 3,  optimization: 0.32 | interpolation: 0.36 | sigma: 0.3588
+ix_scalar: 4,  optimization: 0.91 | interpolation: 0.37 | sigma: 0.3655
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_43.png" src="../_images/models_mda_rbf_9_43.png" />
+<img alt="../_images/models_mda_rbf_9_44.png" src="../_images/models_mda_rbf_9_44.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 50 samples!! 
+
+ which means 14 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_46.png" src="../_images/models_mda_rbf_9_46.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.94 | interpolation: 0.42 | sigma: 0.4197
+ix_scalar: 1,  optimization: 0.89 | interpolation: 0.39 | sigma: 0.3914
+ix_scalar: 2,  optimization: 0.91 | interpolation: 0.39 | sigma: 0.3897
+ix_scalar: 3,  optimization: 0.37 | interpolation: 0.39 | sigma: 0.3931
+ix_scalar: 4,  optimization: 1.03 | interpolation: 0.43 | sigma: 0.4271
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_48.png" src="../_images/models_mda_rbf_9_48.png" />
+<img alt="../_images/models_mda_rbf_9_49.png" src="../_images/models_mda_rbf_9_49.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 6 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_51.png" src="../_images/models_mda_rbf_9_51.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.02 | interpolation: 0.39 | sigma: 0.3876
+ix_scalar: 1,  optimization: 1.27 | interpolation: 0.39 | sigma: 0.3920
+ix_scalar: 2,  optimization: 1.25 | interpolation: 0.38 | sigma: 0.3823
+ix_scalar: 3,  optimization: 1.19 | interpolation: 0.39 | sigma: 0.3899
+ix_scalar: 4,  optimization: 1.89 | interpolation: 0.40 | sigma: 0.4017
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_53.png" src="../_images/models_mda_rbf_9_53.png" />
+<img alt="../_images/models_mda_rbf_9_54.png" src="../_images/models_mda_rbf_9_54.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 100 samples!! 
+
+ which means 14 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_56.png" src="../_images/models_mda_rbf_9_56.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.73 | interpolation: 0.47 | sigma: 0.4654
+ix_scalar: 1,  optimization: 3.48 | interpolation: 0.48 | sigma: 0.4752
+ix_scalar: 2,  optimization: 4.51 | interpolation: 0.49 | sigma: 0.4856
+ix_scalar: 3,  optimization: 1.37 | interpolation: 0.48 | sigma: 0.4773
+ix_scalar: 4,  optimization: 3.76 | interpolation: 0.42 | sigma: 0.4233
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_58.png" src="../_images/models_mda_rbf_9_58.png" />
+<img alt="../_images/models_mda_rbf_9_59.png" src="../_images/models_mda_rbf_9_59.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 3!! 
+
+
+ Lets reconstruct the SS for location 4!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 50 samples!! 
+
+ which means 6 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_61.png" src="../_images/models_mda_rbf_9_61.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.59 | interpolation: 0.48 | sigma: 0.4758
+ix_scalar: 1,  optimization: 0.58 | interpolation: 0.48 | sigma: 0.4805
+ix_scalar: 2,  optimization: 0.41 | interpolation: 0.43 | sigma: 0.4278
+ix_scalar: 3,  optimization: 1.11 | interpolation: 0.45 | sigma: 0.4508
+ix_scalar: 4,  optimization: 0.94 | interpolation: 0.37 | sigma: 0.3700
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_63.png" src="../_images/models_mda_rbf_9_63.png" />
+<img alt="../_images/models_mda_rbf_9_64.png" src="../_images/models_mda_rbf_9_64.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 50 samples!! 
+
+ which means 15 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_66.png" src="../_images/models_mda_rbf_9_66.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 1.18 | interpolation: 0.46 | sigma: 0.4618
+ix_scalar: 1,  optimization: 0.44 | interpolation: 0.65 | sigma: 0.6550
+ix_scalar: 2,  optimization: 0.88 | interpolation: 0.81 | sigma: 0.8067
+ix_scalar: 3,  optimization: 0.57 | interpolation: 0.50 | sigma: 0.4986
+ix_scalar: 4,  optimization: 0.64 | interpolation: 0.62 | sigma: 0.6219
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_68.png" src="../_images/models_mda_rbf_9_68.png" />
+<img alt="../_images/models_mda_rbf_9_69.png" src="../_images/models_mda_rbf_9_69.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 6 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_71.png" src="../_images/models_mda_rbf_9_71.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.76 | interpolation: 0.47 | sigma: 0.4741
+ix_scalar: 1,  optimization: 2.33 | interpolation: 0.46 | sigma: 0.4616
+ix_scalar: 2,  optimization: 1.88 | interpolation: 0.53 | sigma: 0.5322
+ix_scalar: 3,  optimization: 3.18 | interpolation: 0.53 | sigma: 0.5256
+ix_scalar: 4,  optimization: 1.86 | interpolation: 1.53 | sigma: 1.5324
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_73.png" src="../_images/models_mda_rbf_9_73.png" />
+<img alt="../_images/models_mda_rbf_9_74.png" src="../_images/models_mda_rbf_9_74.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 100 samples!! 
+
+ which means 15 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_76.png" src="../_images/models_mda_rbf_9_76.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.18 | interpolation: 0.56 | sigma: 0.5579
+ix_scalar: 1,  optimization: 1.48 | interpolation: 0.50 | sigma: 0.5034
+ix_scalar: 2,  optimization: 3.08 | interpolation: 0.54 | sigma: 0.5358
+ix_scalar: 3,  optimization: 1.48 | interpolation: 0.51 | sigma: 0.5052
+ix_scalar: 4,  optimization: 1.15 | interpolation: 0.51 | sigma: 0.5150
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_78.png" src="../_images/models_mda_rbf_9_78.png" />
+<img alt="../_images/models_mda_rbf_9_79.png" src="../_images/models_mda_rbf_9_79.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 4!! 
+
+
+ Lets reconstruct the SS for location 5!! 
+
+
+ ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 50 samples!! 
+
+ which means 6 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_81.png" src="../_images/models_mda_rbf_9_81.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.36 | interpolation: 0.37 | sigma: 0.3731
+ix_scalar: 1,  optimization: 0.30 | interpolation: 0.36 | sigma: 0.3572
+ix_scalar: 2,  optimization: 0.41 | interpolation: 0.37 | sigma: 0.3728
+ix_scalar: 3,  optimization: 0.47 | interpolation: 0.38 | sigma: 0.3812
+ix_scalar: 4,  optimization: 0.86 | interpolation: 0.35 | sigma: 0.3524
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_83.png" src="../_images/models_mda_rbf_9_83.png" />
+<img alt="../_images/models_mda_rbf_9_84.png" src="../_images/models_mda_rbf_9_84.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 50 samples!! 
+
+ which means 14 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_86.png" src="../_images/models_mda_rbf_9_86.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 0.84 | interpolation: 0.45 | sigma: 0.4519
+ix_scalar: 1,  optimization: 1.14 | interpolation: 0.61 | sigma: 0.6144
+ix_scalar: 2,  optimization: 0.59 | interpolation: 0.42 | sigma: 0.4153
+ix_scalar: 3,  optimization: 0.42 | interpolation: 0.47 | sigma: 0.4714
+ix_scalar: 4,  optimization: 0.32 | interpolation: 0.39 | sigma: 0.3948
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_88.png" src="../_images/models_mda_rbf_9_88.png" />
+<img alt="../_images/models_mda_rbf_9_89.png" src="../_images/models_mda_rbf_9_89.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.95 per of pcs and 100 samples!! 
+
+ which means 6 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_91.png" src="../_images/models_mda_rbf_9_91.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 2.43 | interpolation: 0.46 | sigma: 0.4585
+ix_scalar: 1,  optimization: 1.78 | interpolation: 0.39 | sigma: 0.3870
+ix_scalar: 2,  optimization: 1.64 | interpolation: 0.44 | sigma: 0.4356
+ix_scalar: 3,  optimization: 2.27 | interpolation: 0.38 | sigma: 0.3793
+ix_scalar: 4,  optimization: 1.86 | interpolation: 0.43 | sigma: 0.4262
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_93.png" src="../_images/models_mda_rbf_9_93.png" />
+<img alt="../_images/models_mda_rbf_9_94.png" src="../_images/models_mda_rbf_9_94.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
+
+
+ MDA + RBF with 0.99 per of pcs and 100 samples!! 
+
+ which means 14 PCs... 
+
+
+ ------------------------------------------------------------- 
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_96.png" src="../_images/models_mda_rbf_9_96.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 110 points to interpolate with RBF!! 
+
+
+ix_scalar: 0,  optimization: 3.34 | interpolation: 0.43 | sigma: 0.4324
+ix_scalar: 1,  optimization: 1.18 | interpolation: 0.43 | sigma: 0.4252
+ix_scalar: 2,  optimization: 1.20 | interpolation: 0.65 | sigma: 0.6473
+ix_scalar: 3,  optimization: 1.21 | interpolation: 0.50 | sigma: 0.5041
+ix_scalar: 4,  optimization: 0.83 | interpolation: 0.42 | sigma: 0.4187
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_9_98.png" src="../_images/models_mda_rbf_9_98.png" />
+<img alt="../_images/models_mda_rbf_9_99.png" src="../_images/models_mda_rbf_9_99.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 5!! 
 </pre></div>
 </div>
 </div>
@@ -990,6 +1505,24 @@ ix_scalar: 4,  optimization: 5.78 | interpolation: 0.44 | sigma: 0.4438
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_12_1.png" src="../_images/models_mda_rbf_12_1.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_12_3.png" src="../_images/models_mda_rbf_12_3.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_12_5.png" src="../_images/models_mda_rbf_12_5.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+</pre></div>
+</div>
+<img alt="../_images/models_mda_rbf_12_7.png" src="../_images/models_mda_rbf_12_7.png" />
 </div>
 </div>
 </div>
@@ -1027,9 +1560,9 @@ ix_scalar: 4,  optimization: 5.78 | interpolation: 0.44 | sigma: 0.4438
     <footer class="footer">
   <p>
     
-      By Javier Tausía Hoyal<br/>
+      Por Javier Tausía Hoyal<br/>
     
-        &copy; Copyright 2021.<br/>
+        &copy; Derechos de autor 2021.<br/>
   </p>
 </footer>
 </main>

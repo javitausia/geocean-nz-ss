@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. RUN experiments &#8212; Storm Surge NZ - Summary</title>
+    <title>RUN experiments &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,7 +57,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="7. XGBoost regression models" href="models_xgboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -91,7 +90,7 @@
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
@@ -106,7 +105,7 @@
   Chapters
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="repo_workflow.html">
    1. Repository workflow + THEORY
@@ -142,9 +141,9 @@
    7. XGBoost regression models
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   8. RUN experiments
+ <li class="toctree-l1">
+  <a class="reference internal" href="models_results.html">
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -172,8 +171,8 @@
             
             <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
                 data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
                 <i class="fas fa-bars"></i>
                 <i class="fas fa-arrow-left"></i>
                 <i class="fas fa-arrow-up"></i>
@@ -181,7 +180,7 @@
             
             
 <div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
             class="fas fa-download"></i></button>
 
     <div class="dropdown-buttons">
@@ -189,10 +188,10 @@
         
         <!-- Download raw file -->
         <a class="dropdown-buttons" href="../_sources/notebooks/experiments.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
                 onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
@@ -205,12 +204,12 @@
     <div class="dropdown-buttons sourcebuttons">
         <a class="repository-button"
             href="https://github.com/javitausia/geocean-nz-ss"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
+                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
+                    class="fab fa-github"></i>repositorio</button></a>
         <a class="issues-button"
             href="https://github.com/javitausia/geocean-nz-ss/issues/new?title=Issue%20on%20page%20%2Fnotebooks/experiments.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
         
     </div>
 </div>
@@ -218,8 +217,8 @@
             <!-- Full screen (wrap in <a> to have style consistency -->
 
 <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
             class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
@@ -230,7 +229,7 @@
     <div class="dropdown-buttons">
         
         <a class="binder-button" href="https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/master?urlpath=tree/notebooks/experiments.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../_static/images/logo_binder.svg"
                     alt="Interact on binder">Binder</button></a>
@@ -238,12 +237,12 @@
         
         
         <a class="colab-button" href="https://colab.research.google.com/github/javitausia/geocean-nz-ss/blob/master/notebooks/experiments.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
-                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                title="Lanzamiento Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
                     src="../_static/images/logo_colab.png"
                     alt="Interact on Colab">Colab</button></a>
         
         <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+            onclick="initThebeSBT()" title="Lanzamiento Thebe" data-toggle="tooltip" data-placement="left"><i
                 class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
@@ -255,18 +254,18 @@
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+                <i class="fas fa-list"></i> Contenido
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   8.1. Load the data, SLP and SS
+   Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   8.2. Create / Run – Experiment object
+   Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -285,18 +284,18 @@
                     <div id="jb-print-toc">
                         
                         <div>
-                            <h2> Contents </h2>
+                            <h2> Contenido </h2>
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   8.1. Load the data, SLP and SS
+   Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   8.2. Create / Run – Experiment object
+   Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -309,7 +308,7 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="run-experiments">
-<h1><span class="section-number">8. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
+<h1>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will run all the required experiments using the <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class, which can be found at <code class="docutils literal notranslate"><span class="pre">sscode/experiment.py</span></code>, and can be seen below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -415,7 +414,7 @@
 </div>
 </div>
 <div class="section" id="load-the-data-slp-and-ss">
-<h2><span class="section-number">8.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
+<h2>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
 <p>Below, we load the slp fields and the Moana v2 hindcast data nearshore. Have three things in mind:</p>
 <ul class="simple">
 <li><p>First, the winds are <strong>NOT</strong> loaded, as we prefer to calculate the gradient of the slp fields. Having in mind that winds have more resolution (more computation is required) and the fact that we are playing around with projected winds, adds this new calculation to each step (and the Loader class is calculated outside the class Experiment, so the projedted winds are calculated just to one location).</p></li>
@@ -488,7 +487,7 @@ Data variables:
 </div>
 </div>
 <div class="section" id="create-run-experiment-object">
-<h2><span class="section-number">8.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
+<h2>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
 <p>In the two cells below, we first choose all the values that will have the different parameters for the model that will be used, and then we create the instance of the class <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>, where different logs will appear before running all the models.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -659,14 +658,7 @@ Data variables:
               
             
                 <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="models_xgboost.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">7. </span>XGBoost regression models</p>
-        </div>
-    </a>
+<div class='prev-next-area'>
 </div>
             
         </div>
@@ -674,9 +666,9 @@ Data variables:
     <footer class="footer">
   <p>
     
-      By Javier Tausía Hoyal<br/>
+      Por Javier Tausía Hoyal<br/>
     
-        &copy; Copyright 2021.<br/>
+        &copy; Derechos de autor 2021.<br/>
   </p>
 </footer>
 </main>
