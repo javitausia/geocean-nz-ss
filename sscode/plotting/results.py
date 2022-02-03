@@ -244,6 +244,7 @@ class ResultsPlotter:
             ), axis=1)[:,-1][i]+1) for i in range(num_sites)],fontweight='bold',fontsize=18)
         for ytick,color in zip(ax.get_yticklabels(),locations_colors):
             ytick.set_color(color)
+        ax.set_xticks([]) # leave x labels empty
         divider = make_axes_locatable(ax)
         ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
         cbar = fig.colorbar(best,cax=ax_cbar) # colorbar definition
