@@ -65,7 +65,7 @@ class MDA_RBF_Model(object):
               176.6, 175.5, 173.7,  # north-north
               172.8, 173.9, 174.9,  # west-north
               183.5                 # east island
-        ][:1],
+        ][::5],
         lats=[-41.5, -43.3, -44.8, 
               -46.0, -47.1, 
               -50.8,
@@ -75,7 +75,7 @@ class MDA_RBF_Model(object):
               -37.8, -35.8, -34.5, 
               -35.6, -36.8, -38.3,
               -43.9
-        ][:1],
+        ][::5],
         min_dist_th=[110,100,100,
                      100,60,
                      110,
@@ -85,7 +85,7 @@ class MDA_RBF_Model(object):
                      100,120,110,
                      100,80,100,
                      110
-        ][:1],
+        ][::5],
         extra_help=[ # this helps to stay in the wanted shore of NZ
             ('lat',0.9),('lat',0.9),('lat',0.9),
             ('lat',0.7),('lat',0.5),
@@ -96,7 +96,7 @@ class MDA_RBF_Model(object):
             ('lon',0.7),('lon',0.5),('lat',0.5),
             ('lon',0.8),('lon',0.8),('lat',0.8),
             ('lon',0.5)
-        ][:1], # be careful when playing with this tool
+        ][::5], # be careful when playing with this tool
         time_resample: str = '1D',
         verbose: bool = True, plot: bool = True):
 
@@ -335,7 +335,7 @@ class MDA_RBF_Model(object):
                 'navy','blue','royalblue','darkorange','orange','gold','indianred','red','darkred',
                 'purple','blueviolet','mediumslateblue','pink','palevioletred','mediumorchid',
                 'yellowgreen','limegreen','darkgreen','darkolivegreen','greenyellow','lightgreen','yellow'
-            ] # set shore colors manually
+            ][::5] # set shore colors manually
             for axi,ax in enumerate(axes):
                 if axi==0:
                     xr.plot.scatter(
@@ -382,7 +382,7 @@ class MDA_RBF_Model(object):
 
     def generate_slp_data(self, pres_vars: tuple = ('SLP','longitude','latitude'),
         calculate_gradient: bool = False, wind = None,
-        wind_vars: tuple = ('wind_proj_mask','lon','lat'),
+        wind_vars: tuple = ('wind_proj_mask','lon','lat','U_GRD_L103','V_GRD_L103'),
         time_lapse: int = 1, # 1 equals to NO time delay 
         time_resample: str = '1D', region: tuple = (True,default_region),
         pca_plot: tuple = (True,False,1), verbose: bool = True,
@@ -561,7 +561,7 @@ class MDA_RBF_Model(object):
                         experiment_dataset # TODO: drop ss, .drop_vars('ss_interp')
                     )
 
-                    if plot:
+                    if False:
                         # figure spec-grid
                         fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
                         gs = gridspec.GridSpec(nrows=1,ncols=3)
@@ -704,14 +704,15 @@ def MDA_RBF_algorithm(
         target_dataset = ss_data.sel(time=common_times) if ss_pcs==1 else \
             ss_data.PCs.sel(time=common_times).isel(n_components=slice(0,ss_pcs))
         # use MDA to generate a demo dataset and subset for RBF interpolation
-        pcs_to_mda = 4
+        pcs_to_mda = num_pcs # used SLP pcs...
         ix_scalar_pred_mda = list(np.arange(pcs_to_mda+ss_pcs))
         ix_directional_pred = []
         # perform the mda analysis (this is the mda input data)
         mda_dataset = np.concatenate(
-            [predictor_dataset[:,:pcs_to_mda].values,
-            target_dataset.values.reshape(-1,ss_pcs)
-            ],axis=1
+            [
+                predictor_dataset[:,:pcs_to_mda].values,
+                target_dataset.values.reshape(-1,ss_pcs)
+            ], axis=1
         )
         # MDA algorithm
         predictor_subset_red, subset_indexes = maxdiss_simplified_no_threshold(

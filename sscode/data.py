@@ -13,7 +13,7 @@ import cartopy.crs as ccrs
 
 # custom
 from .config import data_path, default_location # get config params
-# data_path = os.getenv('SSURGE_DATA_PATH', data_path)
+data_path = os.getenv('SSURGE_DATA_PATH', data_path)
 print('DATA PATH', data_path)
 from .plotting.config import _figsize, _figsize_width, _figsize_height, \
     _fontsize_title, _fontsize_legend
