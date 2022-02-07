@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # arrays
 import numpy as np
 from math import sqrt
@@ -55,7 +56,7 @@ def plot_ccrs_nz(axes, # all axes to plot the map
             gl.xlocator = mticker.FixedLocator(list(xlabels))
             gl.ylocator = mticker.FixedLocator(list(ylabels))  
             # gl.xlabel_style = {'size':16} # ,'weight':'bold'
-            # gl.ylabel_style = {'size':16}
+            # gl.ylabel_style = {'size':16}
             gl.xlabels_top = False
             gl.ylabels_right = False
 

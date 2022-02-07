@@ -153,7 +153,7 @@ def plot_all_data(private_tgs = None,
                 pres_cfsr.latitude.values
             )[1].reshape(-1),
             transform=ccrs.PlateCarree(),s=5,
-            label='CFSR (slp-wind) fields - 0.5 º',
+            label='CFSR (slp-wind) fields - 0.4 º',
             c='darkblue',alpha=0.5,zorder=2
         )
     except:
@@ -162,7 +162,7 @@ def plot_all_data(private_tgs = None,
     ax.legend(
         loc='lower right', # bbox_to_anchor=(-0.1,1.05),
         ncol=1,fancybox=True,shadow=True,
-        fontsize=_fontsize_legend
+        fontsize=_fontsize_legend+4
     ).set_zorder(20)
     # plot the map
     plot_ccrs_nz([ax],plot_region=(True,default_region),

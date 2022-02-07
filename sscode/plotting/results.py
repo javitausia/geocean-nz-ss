@@ -127,7 +127,8 @@ class ResultsPlotter:
 
     def plot_allmodels_stats(self, 
                              stats_plot='linear', 
-                             metrics_to_plot=['kgeprime']):
+                             metrics_to_plot=['kgeprime'],
+                             show_cbar=False):
 
         # plot stuff!!
         stats_plot = self.linear_stats_red if stats_plot=='linear' else \
@@ -167,20 +168,21 @@ class ResultsPlotter:
             ax.scatter(
                 np.argsort(metric_values)[:,:3].reshape(-1) + 0.5, # first-worst values in array
                 np.repeat(np.arange(num_sites),3).reshape(num_sites,3) + 0.5, # y_positons
-                marker='v',facecolors='pink',edgecolors='black',linewidth=1,s=100,zorder=10
+                marker='v',facecolors='pink',edgecolors='black',linewidth=1,s=150,zorder=10
             )
             ax.scatter(
                 np.argsort(metric_values)[:,-3:].reshape(-1) + 0.5, # last-best values in array
                 np.repeat(np.arange(num_sites),3).reshape(num_sites,3) + 0.5, # y_positons
-                marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=100,zorder=10
+                marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=150,zorder=10
             )
-            divider = make_axes_locatable(ax)
-            ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
-            cbar = fig.colorbar(pc,cax=ax_cbar) # colorbar definition
-            cbar.set_label(metric_to_plot,size=28)
-            cbar.set_ticks([0.2,0.4,0.6,0.8]) if metric_to_plot=='kgeprime' else None
-            cbar.ax.set_yticklabels([' < 0.2',' 0.4',' 0.6',' > 0.8'],fontsize=24,fontweight='bold') \
-                if metric_to_plot=='kgeprime' else None
+            if show_cbar:
+                #divider = make_axes_locatable(ax)
+                #ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
+                cbar = fig.colorbar(pc,ax=ax) # colorbar definition
+                cbar.set_label(metric_to_plot,size=28)
+                cbar.set_ticks([0.2,0.4,0.6,0.8]) if metric_to_plot=='kgeprime' else None
+                cbar.ax.set_yticklabels([' < 0.2',' 0.4',' 0.6',' > 0.8'],fontsize=24,fontweight='bold') \
+                    if metric_to_plot=='kgeprime' else None
             ax.set_yticks(np.arange(num_sites)+0.5) # these are the positions, and below the labels = sites
             ax.set_yticklabels(stats_plot.site.values[:],fontweight='bold',fontsize=18)
             for ytick,color in zip(ax.get_yticklabels(),locations_colors):
@@ -199,7 +201,7 @@ class ResultsPlotter:
             plt.show()
 
 
-    def plot_best_stat(self, stat='kgeprime'):
+    def plot_best_stat(self, stat='kgeprime', show_cbar=False):
 
         # extract len sites
         num_sites = len(self.linear_stats.site.values)
@@ -226,7 +228,7 @@ class ResultsPlotter:
                 ), axis=1
             )[:,-1].reshape(-1) + 0.5, # last-best value in array
             np.repeat(np.arange(num_sites),1).reshape(num_sites,1) + 0.5, # y_positons
-            marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=200,zorder=10
+            marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=250,zorder=10
         )
         ax.scatter(
             np.arange(108)+0.5, # x positions
@@ -245,11 +247,12 @@ class ResultsPlotter:
         for ytick,color in zip(ax.get_yticklabels(),locations_colors):
             ytick.set_color(color)
         ax.set_xticks([]) # leave x labels empty
-        divider = make_axes_locatable(ax)
-        ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
-        cbar = fig.colorbar(best,cax=ax_cbar) # colorbar definition
-        cbar.set_ticks([0.5,1.5,2.5])
-        cbar.ax.set_yticklabels([' linear',' KNN',' XGBoost'],fontsize=24,fontweight='bold')
+        if show_cbar:
+            #divider = make_axes_locatable(ax)
+            #ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
+            cbar = fig.colorbar(best,ax=ax) # colorbar definition
+            cbar.set_ticks([0.5,1.5,2.5])
+            cbar.ax.set_yticklabels([' Linear',' KNN',' XGBoost'],fontsize=30,fontweight='bold')
         for xline,vs,lws in zip( # add lines to better visualization
             [np.arange(0,108,54)[1:],np.arange(0,108,27)[1:],np.arange(0,108,9)[1:],np.arange(0,108,3)[1:]],
             [29,24,18,10],[8,6,4,2]
@@ -274,7 +277,7 @@ class ResultsPlotter:
                 ), axis=1
             )[:,-1].reshape(-1) + 0.5, # last-best value in array
             np.repeat(np.arange(num_sites),1).reshape(num_sites,1) + 0.5, # y_positons
-            marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=200,zorder=10
+            marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=250,zorder=10
         )
         ax.scatter(
             np.arange(108)+0.5, # x positions
@@ -292,23 +295,15 @@ class ResultsPlotter:
             ), axis=1)[:,-1][i]+1) for i in range(num_sites)],fontweight='bold',fontsize=18)
         for ytick,color in zip(ax.get_yticklabels(),locations_colors):
             ytick.set_color(color)
-        divider = make_axes_locatable(ax)
-        ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
-        cbar = fig.colorbar(best,cax=ax_cbar) # colorbar definition
-        cbar.set_label(stat,size=28)
-        cbar.set_ticks([0.2,0.4,0.6,0.8]) if stat=='kgeprime' else None
-        cbar.ax.set_yticklabels([' < 0.2',' 0.4',' 0.6',' > 0.8'],fontsize=24,fontweight='bold') \
-            if stat=='kgeprime' else None
-        ax.set_yticks(np.arange(num_sites)+0.5) # these are the positions, and below the labels = sites
-        ax.set_yticklabels(self.linear_stats.site.values[:],fontweight='bold',fontsize=18)
-        for ytick,color in zip(ax.get_yticklabels(),locations_colors):
-            ytick.set_color(color)
         ax.set_xticks([]) # leave x labels empty
-        # ax.set_xticks(np.arange(0,metric_values.shape[1],3)+0.5)
-        # ax.set_xticklabels(x_labels[::3],fontsize=14)
-        # plt.setp(ax.get_xticklabels(),rotation=45,ha='right')
-        # ax.set_xticks([]) if metric_to_plot=='kgeprime' else None
-        # ax.set_title(metric_to_plot.upper(),fontsize=20) if metric_to_plot!='kgeprime' else None
+        if show_cbar:
+            #divider = make_axes_locatable(ax)
+            #ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
+            cbar = fig.colorbar(best,ax=ax) # colorbar definition
+            cbar.set_label(stat,size=28)
+            cbar.set_ticks([0.2,0.4,0.6,0.8]) if stat=='kgeprime' else None
+            cbar.ax.set_yticklabels([' < 0.2',' 0.4',' 0.6',' > 0.8'],fontsize=24,fontweight='bold') \
+                if stat=='kgeprime' else None
         for xline,vs,lws in zip( # add lines to better visualization
             [np.arange(0,108,54)[1:],np.arange(0,108,27)[1:],np.arange(0,108,9)[1:],np.arange(0,108,3)[1:]],
             [29,24,18,10],[8,6,4,2]
@@ -331,9 +326,9 @@ class ResultsPlotter:
         ax.set_yticklabels(self.knn_stats_red.site.values,fontweight='bold',fontsize=18)
         for ytick,color in zip(ax.get_yticklabels(),locations_colors):
             ytick.set_color(color)
-        divider = make_axes_locatable(ax)
-        ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
-        cbar = fig.colorbar(best,cax=ax_cbar) # colorbar definition
+        #divider = make_axes_locatable(ax)
+        #ax_cbar = divider.append_axes("right",size="1%",pad=0.15) 
+        cbar = fig.colorbar(best,ax=ax) # colorbar definition
         cbar.set_ticks([10,20,30,40])
         cbar.ax.set_yticklabels(
                 [' < 10',' < 20',' < 30',' < 40'],fontsize=34,fontweight='bold')
@@ -348,7 +343,7 @@ class ResultsPlotter:
                 len(self.knn_stats_red.site.values),-1))[:,-3:].reshape(-1) + 0.5, # last values in array
             np.repeat(np.arange(len(self.knn_stats_red.site.values)),3).reshape(
                 len(self.knn_stats_red.site.values),3) + 0.5, # y_positons
-            marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=100,
+            marker='^',facecolors='pink',edgecolors='black',linewidth=1,s=250,
             zorder=10
         )
         plt.show()
@@ -434,6 +429,8 @@ class ResultsPlotter:
         sns.kdeplot(knn_values[:,np.arange(2,knn_values.shape[1],3),:].reshape(-1), 
             color="blue", shade=True, clip=(0,50), label='regional - NZ', ax=axes[3])
         axes[3].legend(fontsize=16)
+        for ax in axes:
+            ax.axis('off')
         plt.show()
 
 

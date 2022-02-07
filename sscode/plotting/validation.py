@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # arrays
 import numpy as np
 import pandas as pd
@@ -103,7 +104,7 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
     ax.axis('square')
-    
+
 
 def scatterplot(x, y, ax=None, density=True,
                 min_value=-0.3, max_value=0.6,
@@ -168,10 +169,16 @@ def plot_stats(statistics_data, plot_stats, **kwargs):
             statistics_data, # this is the data
             x='longitude',y='latitude',hue=var, #cmap='jet',
             ax=ax,transform=ccrs.PlateCarree(),zorder=40,
+            add_guide=False,
             **kwargs
         ) # TODO: add kwargs
         ax.set_facecolor('lightblue')
         ax.set_title(var,fontsize=20)
+        cbar = fig.colorbar(p,ax=ax) # colorbar definition
+        cbar.set_label('KGE',size=20)
+        cbar.set_ticks([0.60,0.65,0.70,0.75,0.80]) if var=='kgeprime' else None
+        cbar.ax.set_yticklabels(['0.60','0.65','0.70','0.75','0.80'],fontsize=16,fontweight='bold') \
+            if var=='kgeprime' else None
     # plot map
     plot_ccrs_nz(axes.flatten(),plot_labels=(False,5,5),
                  plot_coastline=(False,None,None))
