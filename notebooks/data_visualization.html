@@ -57,7 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. PC analysis" href="analysis_pca.html" />
+    <link rel="next" title="4. LINZ and OTHER data analysis" href="more_validations.html" />
     <link rel="prev" title="2. Useful theory" href="useful_theory.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -124,28 +124,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="more_validations.html">
+   4. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   5. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   7. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost regression models
+   8. XGBoost regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="experiments.html">
+   9. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   8. VISUALIZE experiments results
+   10. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -337,11 +347,15 @@
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="c1"># append sscode to path</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast</span><span class="p">,</span> <span class="n">load_predictor</span><span class="p">,</span> \
     <span class="n">join_load_uhslc_tgs</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_all_data</span>
 
 <span class="c1"># warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -350,7 +364,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /Volumes/ToshibaJT/geocean-nz-ss/data
 </pre></div>
 </div>
 </div>
@@ -359,8 +373,8 @@
 <h2><span class="section-number">3.1. </span>Plot all available data<a class="headerlink" href="#plot-all-available-data" title="Permalink to this headline">¶</a></h2>
 <p>After a lot of preprocessing and data analysis work, the datasets that are going to be primary used for convenience reasons are:</p>
 <ul class="simple">
-<li><p>The Moana v2 hindcast as the storm surge hindcast predictand</p></li>
 <li><p>The CFSR sea-level-pressure fields and u10 and v10 wind components as the predictors (notice here that we also calculated the projected winds to a determined location in the islands, go to the end of this notebook to see results)</p></li>
+<li><p>The Moana v2 hindcast as the storm surge hindcast predictand</p></li>
 <li><p>Some <a class="reference external" href="https://uhslc.soest.hawaii.edu/">UHSLC</a> tidal gauges as the “validators”, although more tidal gauges from different resources / organizations might be also helpful</p></li>
 </ul>
 <p>data format is available in the figure below:</p>
@@ -372,22 +386,23 @@
 </div>
 <div class="section" id="load-and-validate-the-data">
 <h2><span class="section-number">3.2. </span>Load and validate the data<a class="headerlink" href="#load-and-validate-the-data" title="Permalink to this headline">¶</a></h2>
-<p>Below we use the <strong>class Loader</strong> to simultaneously load the three datasets that will be commonly used in all the notebooks. Notice that here, we say <code class="docutils literal notranslate"><span class="pre">plot=(False,True,True)</span></code>, but this parameter can be changed to save time and space in our running notebooks. This class uses different loading funtions, and is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/data.py</span></code>, where the <code class="docutils literal notranslate"><span class="pre">data_to_load</span></code> parameter accepts the following inputs:</p>
+<p>Below we use the <strong>class Loader</strong> to simultaneously load the three datasets that will be commonly used in all the notebooks. Notice that here, we say <code class="docutils literal notranslate"><span class="pre">plot=(False,False,False)</span></code>, but this parameter can be changed to save time and space in our running notebooks. This class uses different loading funtions, and is hosted at <code class="docutils literal notranslate"><span class="pre">sscode/data.py</span></code>, where the <code class="docutils literal notranslate"><span class="pre">data_to_load</span></code> parameter accepts the following inputs:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">loader_dict_options</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;predictor&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;era_5&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;predictand&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;codec&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;validator&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;uhslc&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">,</span><span class="s1">&#39;privtgs&#39;</span><span class="p">]</span>
+        <span class="s1">&#39;predictor&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;era_5&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;predictand&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;dac&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;codec&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;validator&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="s1">&#39;uhslc&#39;</span><span class="p">,</span><span class="s1">&#39;linz&#39;</span><span class="p">,</span><span class="s1">&#39;other&#39;</span><span class="p">,</span><span class="s1">&#39;privtgs&#39;</span><span class="p">)</span>
     <span class="p">}</span>
 </pre></div>
 </div>
 <p>Once the data is loaded, we validate the Moana v2 hindcast data (“moana”) with the University of Hawaii tidal guages (“uhslc”), for the specified variables, in this case, the storm surge, obtaining very good results!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># but predictor files, if saved, can be easily loaded like this</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
     <span class="n">data_to_load</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">),</span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span>
+    <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1"># validate the data</span>
 <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
@@ -406,37 +421,38 @@
  loading the sea-level-pressure fields... 
 
 
- loading and calculating the winds... 
+ winds will not be loaded... returning the SLP... 
 
 
  loading the Moana v2 hindcast data... 
-</pre></div>
-</div>
-<img alt="../_images/data_visualization_5_1.png" src="../_images/data_visualization_5_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading and plotting the UHSLC tidal guages... 
-</pre></div>
-</div>
-<img alt="../_images/data_visualization_5_3.png" src="../_images/data_visualization_5_3.png" />
-<img alt="../_images/data_visualization_5_4.png" src="../_images/data_visualization_5_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets compare data in Moana v2 hindcast with UHSLC tgs!! 
+
+
+ loading the UHSLC tidal guages... 
+
+
+ Lets compare data in Moana v2 hindcast with UHSLC tgs!! 
 
 
  
  TGs to analyze are: 
- [&#39;a_Wellington&#39; &#39;a_Timaru&#39; &#39;b_JacksonBay&#39; &#39;a_MarsdenPoint&#39; &#39;a_JacksonBay&#39;
- &#39;a_Lyttelton&#39; &#39;a_Taranaki&#39; &#39;a_Bluff&#39; &#39;a_PortChalmers&#39; &#39;a_Tauranga&#39;
- &#39;a_Napier&#39; &#39;a_Nelson&#39;] 
+ [&#39;Tauranga&#39; &#39;Taranaki&#39; &#39;Nelson&#39; &#39;MarsdenPoint&#39; &#39;JacksonBay&#39; &#39;JacksonBay&#39;
+ &#39;Timaru&#39; &#39;Lyttelton&#39; &#39;Napier&#39; &#39;PortChalmers&#39; &#39;Wellington&#39; &#39;Bluff&#39;] 
 
 
  which correspond to 
- [689, 328, 393, 1327, 393, 480, 999, 116, 224, 1124, 949, 708] 
+ [1124, 999, 708, 1327, 393, 393, 328, 480, 949, 224, 689, 116] 
  in Moana v2 hindcast 
 
 
  calculated min distances (km) in Moana v2 hindcast to UHSLC tgs: 
- [10.091858550595918, 5.125532152668501, 6.897621081071355, 7.807937095794992, 6.897621081071355, 8.749086655427975, 0.7284939428839287, 2.827544577707935, 8.837335750916106, 4.69880874581877, 1.8441234559361162, 4.255617965385927] 
+ [4.69880874581877, 0.7284939428835765, 4.255617965385927, 7.80793709579464, 6.897621081071355, 6.897621081071355, 5.125532152668501, 8.749086655428682, 1.8441234559361162, 8.837335750916106, 10.091858550595918, 2.8275445777089936] 
 </pre></div>
 </div>
+<img alt="../_images/data_visualization_5_1.png" src="../_images/data_visualization_5_1.png" />
+<img alt="../_images/data_visualization_5_2.png" src="../_images/data_visualization_5_2.png" />
+<img alt="../_images/data_visualization_5_3.png" src="../_images/data_visualization_5_3.png" />
+<img alt="../_images/data_visualization_5_4.png" src="../_images/data_visualization_5_4.png" />
+<img alt="../_images/data_visualization_5_5.png" src="../_images/data_visualization_5_5.png" />
 <img alt="../_images/data_visualization_5_6.png" src="../_images/data_visualization_5_6.png" />
 <img alt="../_images/data_visualization_5_7.png" src="../_images/data_visualization_5_7.png" />
 <img alt="../_images/data_visualization_5_8.png" src="../_images/data_visualization_5_8.png" />
@@ -444,11 +460,6 @@
 <img alt="../_images/data_visualization_5_10.png" src="../_images/data_visualization_5_10.png" />
 <img alt="../_images/data_visualization_5_11.png" src="../_images/data_visualization_5_11.png" />
 <img alt="../_images/data_visualization_5_12.png" src="../_images/data_visualization_5_12.png" />
-<img alt="../_images/data_visualization_5_13.png" src="../_images/data_visualization_5_13.png" />
-<img alt="../_images/data_visualization_5_14.png" src="../_images/data_visualization_5_14.png" />
-<img alt="../_images/data_visualization_5_15.png" src="../_images/data_visualization_5_15.png" />
-<img alt="../_images/data_visualization_5_16.png" src="../_images/data_visualization_5_16.png" />
-<img alt="../_images/data_visualization_5_17.png" src="../_images/data_visualization_5_17.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -459,30 +470,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sscode.data.Loader at 0x7fcfb5197e20&gt;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># but predictor files, if saved, can be easily loaded like this</span>
-<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span>
-        <span class="kc">True</span><span class="p">,[</span><span class="s1">&#39;../data/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="s1">&#39;../data/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
-    <span class="p">),</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;../data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;../data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
-
-
- loading the Moana v2 hindcast data... 
-
-
- loading the UHSLC tidal guages... 
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sscode.data.Loader at 0x7fa91fdf6c10&gt;
 </pre></div>
 </div>
 </div>
@@ -490,17 +478,19 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lets plot the atmospheric data</span>
+<span class="c1"># WINDS must me loaded!!</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_pres_winds</span>
 <span class="n">plot_pres_winds</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span>
-     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span>
+    <span class="p">[</span>
+        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span>
+        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span>
     <span class="p">]</span> <span class="c1"># pass list with SLP dataarray and winds dataset</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/data_visualization_8_0.png" src="../_images/data_visualization_8_0.png" />
+<img alt="../_images/data_visualization_7_0.png" src="../_images/data_visualization_7_0.png" />
 </div>
 </div>
 </div>
@@ -524,17 +514,17 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> plotting the projected winds!! 
 </pre></div>
 </div>
-<img alt="../_images/data_visualization_10_1.png" src="../_images/data_visualization_10_1.png" />
-<img alt="../_images/data_visualization_10_2.png" src="../_images/data_visualization_10_2.png" />
+<img alt="../_images/data_visualization_9_1.png" src="../_images/data_visualization_9_1.png" />
+<img alt="../_images/data_visualization_9_2.png" src="../_images/data_visualization_9_2.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data (ss)... 
 
 
  plotting the inverse barometer!! 
 </pre></div>
 </div>
-<img alt="../_images/data_visualization_10_4.png" src="../_images/data_visualization_10_4.png" />
-<img alt="../_images/data_visualization_10_5.png" src="../_images/data_visualization_10_5.png" />
-<img alt="../_images/data_visualization_10_6.png" src="../_images/data_visualization_10_6.png" />
+<img alt="../_images/data_visualization_9_4.png" src="../_images/data_visualization_9_4.png" />
+<img alt="../_images/data_visualization_9_5.png" src="../_images/data_visualization_9_5.png" />
+<img alt="../_images/data_visualization_9_6.png" src="../_images/data_visualization_9_6.png" />
 </div>
 </div>
 </div>
@@ -572,10 +562,10 @@
             <p class="prev-next-title"><span class="section-number">2. </span>Useful theory</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="analysis_pca.html" title="next page">
+    <a class='right-next' id="next-link" href="more_validations.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>PC analysis</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>LINZ and OTHER data analysis</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

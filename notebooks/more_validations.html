@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LINZ and OTHER data analysis &#8212; Storm Surge NZ - Summary</title>
+    <title>4. LINZ and OTHER data analysis &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,6 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. PC analysis" href="analysis_pca.html" />
+    <link rel="prev" title="3. Data visualization and validation" href="data_visualization.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -105,7 +107,7 @@
   Chapters
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="repo_workflow.html">
    1. Repository workflow + THEORY
@@ -121,29 +123,39 @@
    3. Data visualization and validation
   </a>
  </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4. LINZ and OTHER data analysis
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   5. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   7. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost regression models
+   8. XGBoost regression models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="experiments.html">
+   9. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   8. VISUALIZE experiments results
+   10. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -272,11 +284,11 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="linz-and-other-data-analysis">
-<h1>LINZ and OTHER data analysis<a class="headerlink" href="#linz-and-other-data-analysis" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4. </span>LINZ and OTHER data analysis<a class="headerlink" href="#linz-and-other-data-analysis" title="Permalink to this headline">¶</a></h1>
 <p>Here we will see the behaviour of the “extra” tidal gauges real observations measurements. Below we can see an image where the tgs locations are plotted:</p>
 <div class="figure align-default" id="linz-other-locs">
 <a class="reference internal image-reference" href="../_images/linz-other-locations.png"><img alt="../_images/linz-other-locations.png" src="../_images/linz-other-locations.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-text">These are the locations of both the LINZ and the OTHER tidal gauges</span><a class="headerlink" href="#linz-other-locs" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">These are the locations of both the LINZ and the OTHER tidal gauges</span><a class="headerlink" href="#linz-other-locs" title="Permalink to this image">¶</a></p>
 </div>
 <p>all the LINZ and OTHER datasets are hosted in the <a class="reference external" href="https://github.com/metocean/storm_surge_data">storm_surge_data</a> GitHub repository!!</p>
 <div class="cell docutils container">
@@ -291,9 +303,11 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 
-<span class="c1"># bluemath toolkit library</span>
+<span class="c1"># append sscode to path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span>
 <span class="kn">from</span> <span class="nn">sscode.plotting.utils</span> <span class="kn">import</span> <span class="n">plot_ccrs_nz</span>
@@ -526,7 +540,21 @@
               
             
                 <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="data_visualization.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>Data visualization and validation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="analysis_pca.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>PC analysis</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
             
         </div>

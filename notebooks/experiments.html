@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RUN experiments &#8212; Storm Surge NZ - Summary</title>
+    <title>9. RUN experiments &#8212; Storm Surge NZ - Summary</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,6 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. VISUALIZE experiments results" href="models_results.html" />
+    <link rel="prev" title="8. XGBoost regression models" href="models_xgboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -105,7 +107,7 @@
   Chapters
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="repo_workflow.html">
    1. Repository workflow + THEORY
@@ -122,28 +124,38 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="more_validations.html">
+   4. LINZ and OTHER data analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   5. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   6. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   7. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost regression models
+   8. XGBoost regression models
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   9. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   8. VISUALIZE experiments results
+   10. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -260,12 +272,12 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   Load the data, SLP and SS
+   9.1. Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   Create / Run – Experiment object
+   9.2. Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -290,12 +302,12 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   Load the data, SLP and SS
+   9.1. Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   Create / Run – Experiment object
+   9.2. Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -308,74 +320,44 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="run-experiments">
-<h1>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">9. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook, we will run all the required experiments using the <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class, which can be found at <code class="docutils literal notranslate"><span class="pre">sscode/experiment.py</span></code>, and can be seen below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This class Experiment summarizes all the previous work done with the linear and the</span>
-<span class="sd">        knn models, as this class allows the user to perform a detailed analysis of one</span>
+<span class="sd">        This class Experiment summarizes all the previous work done with the linear, knn and the</span>
+<span class="sd">        xgboost models, as this class allows the user to perform a detailed analysis of one</span>
 <span class="sd">        requested model given a set of parameters</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slp_data</span><span class="p">,</span> <span class="n">wind_data</span><span class="p">,</span> <span class="n">ss_data</span><span class="p">,</span> <span class="c1"># this must have several stations</span>
-                     <span class="n">sites_to_analyze</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">5</span><span class="p">)),</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slp_data</span><span class="p">,</span> <span class="n">wind_data</span><span class="p">,</span> <span class="c1"># this is the predictor</span>
+                     <span class="n">ss_data</span><span class="p">,</span> <span class="c1"># this must have several stations</span>
+                     <span class="n">sites_to_analyze</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">sites_to_analyze</span><span class="p">,</span>
                      <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="c1"># this is the model to analyze</span>
-                     <span class="n">model_metrics</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span>
-                         <span class="s1">&#39;bias&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;spearman&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span><span class="p">,</span>
-                         <span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="s1">&#39;me&#39;</span><span class="p">,</span> <span class="s1">&#39;expl_var&#39;</span><span class="p">,</span> <span class="c1"># ...</span>
-                     <span class="p">],</span> <span class="c1"># these are the metrics to evaluate</span>
-                     <span class="n">pca_attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">pca_attrs_default</span><span class="p">,</span>
-                     <span class="n">model_attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">linear_attrs_default</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            As the initializator, the __init__ funciton creates the instance of the class,</span>
-<span class="sd">            given a set of parameters, which are described below</span>
+                     <span class="n">model_metrics</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">default_evaluation_metrics</span><span class="p">,</span>
+                     <span class="n">ext_quantile</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="n">default_ext_quantile</span><span class="p">,</span>
+                     <span class="n">pca_attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">pca_attrs_exp</span><span class="p">,</span>
+                     <span class="n">model_attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">linear_attrs_exp</span><span class="p">,</span>
+                     <span class="n">pcs_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/pcs&#39;</span><span class="p">,</span>
+                     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            As the initializator, the __init__ function creates the instance of the class,</span>
+<span class="s2">            given a set of parameters, which are described below</span>
+<span class="s2">            </span>
+<span class="s2">            ...</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                slp_data (xarray.Dataset): These are the sea-level-pressure fields, previously</span>
-<span class="sd">                    loaded with the Loader class, loader.predictor_slp!!</span>
-<span class="sd">                wind_data (xarray.Dataset): These are the wind fields, previously</span>
-<span class="sd">                    loaded with the Loader class, loader.predictor_wind!!</span>
-<span class="sd">                ss_data (xarray.Dataset): This is the storm surge from the moana hindcast, previously</span>
-<span class="sd">                    loaded with the Loader class, loader.predictand!!</span>
-<span class="sd">                sites_to_analyze (list, optional): This is the list with all the moana v2</span>
-<span class="sd">                    hindcast locations to analyze. Defaults to random locations.</span>
-<span class="sd">                model (str, optional): Type of model to analyze. Defaults to &#39;linear&#39;.</span>
-<span class="sd">                model_metrics (list, optional): These are all the evaluation metrics that might</span>
-<span class="sd">                    be used to evaluate the model performance. Defaults to simple list.</span>
-<span class="sd">                pca_attrs (dict, optional): PCA dictionary with all the parameters to use.</span>
-<span class="sd">                    Defaults to pca_attrs_default.</span>
-<span class="sd">                model_attrs (dict, optional): Model dictionary with all the parameters to use. </span>
-<span class="sd">                    Defaults to linear_attrs_default.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-
-            <span class="c1"># lets build the experiment!!</span>
+<span class="s2">            # lets build the experiment!!</span>
 </pre></div>
 </div>
-<p>where it can be seen how, given the sea-level-pressure / wind data, the storm surge (it is preferable to use the Moana v2 hindcast nearshore), all the individual sites to analyze, the type of model that will be used (with its evaluation metrics), and the PCA attributes and the MODEL attributes that will be used to calculate the model.</p>
-<p>Given these parameters, we construct the object of the class, and then running <code class="docutils literal notranslate"><span class="pre">execute_cross_model_calculations</span></code>, we can perform all the experiments given the possible combinations!!</p>
+<p>where it can be seen how, given the sea-level-pressure / wind data, the storm surge (it is preferable to use the Moana v2 hindcast nearshore), all the individual sites to analyze, the type of model that will be used (with its evaluation metrics), and the PCA attributes and the MODEL attributes that will be used to calculate the model, the EXPERIMENTs can be run.</p>
+<p>Given these parameters, we construct the object of the class, and then running <code class="docutils literal notranslate"><span class="pre">execute_cross_model_calculations</span></code>, we can calculate all the experiments given the possible combinations!!</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Be careful with the <a class="reference external" href="https://en.wikipedia.org/wiki/Curse_of_dimensionality">“curse of dimensionality”</a>, as it seems very easy to add more options for the parameters of the models, but once we have more than 3-4 parameters with 2-3 different values, the number of models that will be performed can increase to hundreds!!</p>
 </div>
-<p>Below, different code cells with imports, loading functions, visualizations… will appear, but thw worflow is similar to all the notebooks in the repository. Once we load the data, we use the pre-built python classes to generate results!!</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">debugpy</span>
-<span class="n">debugpy</span><span class="o">.</span><span class="n">listen</span><span class="p">((</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="mi">5678</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;0.0.0.0&#39;, 5678)
-</pre></div>
-</div>
-</div>
-</div>
+<p>Below, different code cells with imports, loading functions, visualizations… will appear, but the workflow is similar to all the notebooks in the repository. Once we load the data, we use the pre-built python classes to generate results!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">progressbar</span>
 
 <span class="c1"># arrays</span>
@@ -388,13 +370,14 @@
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 
 <span class="c1"># append sscode to path</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/metocean/geocean-nz-ss&#39;</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/data&#39;</span> <span class="c1">#&#39;/data/storm_surge_data/&#39;</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="c1"># custom</span>
 <span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_location</span><span class="p">,</span> \
-    <span class="n">default_region</span><span class="p">,</span> <span class="n">default_region_reduced</span>
+    <span class="n">default_region</span><span class="p">,</span> <span class="n">default_region_reduced</span><span class="p">,</span> <span class="n">default_evaluation_metrics</span>
 <span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span>
 <span class="kn">from</span> <span class="nn">sscode.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
 
@@ -408,86 +391,39 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /Volumes/ToshibaJT/geocean-nz-ss/data
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="load-the-data-slp-and-ss">
-<h2>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
-<p>Below, we load the slp fields and the Moana v2 hindcast data nearshore. Have three things in mind:</p>
-<ul class="simple">
-<li><p>First, the winds are <strong>NOT</strong> loaded, as we prefer to calculate the gradient of the slp fields. Having in mind that winds have more resolution (more computation is required) and the fact that we are playing around with projected winds, adds this new calculation to each step (and the Loader class is calculated outside the class Experiment, so the projedted winds are calculated just to one location).</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, but can be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if all the plots are wanted to be seen.</p></li>
-<li><p>The Moana v2 hindcast nearshore is used, and although the gridded netCDF data can be used, which includes ss data all over the New Zealand region, the data might be transformed to <code class="docutils literal notranslate"><span class="pre">dim=site</span></code> inside the dataset, as we did in previous notebooks.</p></li>
-</ul>
+<h2><span class="section-number">9.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data from pre-saved files</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span> <span class="n">load_winds</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
+    <span class="p">),</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">)</span>
-
-<span class="c1"># ---- maybe DAC reanalysis wants to be used ----</span>
-<span class="c1"># dataset1 = load_cfsr_moana_uhslc.predictand</span>
-<span class="c1"># dataset1_coords = (&#39;longitude&#39;,&#39;latitude&#39;,None,&#39;DAC ...&#39;)</span>
-<span class="c1"># dataset1 = xr.Dataset(</span>
-<span class="c1">#     {</span>
-<span class="c1">#         &#39;ss&#39;: ((&#39;time&#39;,&#39;site&#39;), dataset1.values.reshape(</span>
-<span class="c1">#             -1,len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))),</span>
-<span class="c1">#         dataset1_coords[0]: ((&#39;site&#39;), list(dataset1[dataset1_coords[0]].values)*int(</span>
-<span class="c1">#             (len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))\</span>
-<span class="c1">#                 /len(dataset1[dataset1_coords[0]]))),</span>
-<span class="c1">#         dataset1_coords[1]: ((&#39;site&#39;), np.repeat(dataset1[dataset1_coords[1]].values,</span>
-<span class="c1">#             (len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]]))\</span>
-<span class="c1">#                 /len(dataset1[dataset1_coords[1]])))</span>
-<span class="c1">#     }, coords={</span>
-<span class="c1">#         &#39;site&#39;: np.arange(len(dataset1[dataset1_coords[0]])*len(dataset1[dataset1_coords[1]])),</span>
-<span class="c1">#         &#39;time&#39;: dataset1.time.values</span>
-<span class="c1">#     }</span>
-<span class="c1"># ).dropna(dim=&#39;site&#39;,how=&#39;all&#39;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the sea-level-pressure fields... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from [&#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;] 
 
 
- resampling data to 6H... 
+ loading the Moana v2 hindcast data... 
 
 
- loading and calculating the winds... 
-
-
- calculating winds with: 
-
- &lt;xarray.Dataset&gt;
-Dimensions:         (time: 46141, latitude: 160, longitude: 161)
-Coordinates:
-  * time            (time) datetime64[ns] 1990-01-01 ... 2021-08-01
-  * latitude        (latitude) float32 -69.78 -69.47 -69.16 ... -20.45 -20.14
-  * longitude       (longitude) float32 140.0 140.3 140.6 ... 189.4 189.7 190.0
-Data variables:
-    ugrd10m         (time, latitude, longitude) float32 -1.25 -1.408 ... -10.53
-    vgrd10m         (time, latitude, longitude) float32 -8.33 -8.559 ... 10.06
-    uw2             (time, latitude, longitude) float32 1.562 1.982 ... 110.8
-    vw2             (time, latitude, longitude) float32 69.39 73.25 ... 101.2
-    wind_magnitude  (time, latitude, longitude) float32 8.423 8.674 ... 14.56 
-</pre></div>
-</div>
-<img alt="../_images/experiments_5_1.png" src="../_images/experiments_5_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading the Moana v2 hindcast data... 
-
-
- loading and plotting the UHSLC tidal guages... 
+ loading the UHSLC tidal guages... 
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="create-run-experiment-object">
-<h2>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">¶</a></h2>
 <p>In the two cells below, we first choose all the values that will have the different parameters for the model that will be used, and then we create the instance of the class <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>, where different logs will appear before running all the models.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -499,13 +435,13 @@ Data variables:
       <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
       <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
     <span class="p">]</span>
-<span class="p">)</span>
+<span class="p">)[::</span><span class="mi">20</span><span class="p">]</span>
 <span class="n">pca_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span><span class="c1">#[False,True],</span>
-    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span><span class="c1">#[False,True],</span>
-    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># 1 equals to NO time delay </span>
-    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;6H&#39;</span><span class="p">,</span><span class="s1">&#39;12H&#39;</span><span class="p">,</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
-    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)),(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">)]</span>
+    <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">))]</span>
 <span class="p">}</span>
 <span class="n">linear_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;train_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">],</span> <span class="s1">&#39;percentage_PCs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.98</span><span class="p">]</span>
@@ -532,33 +468,31 @@ Data variables:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the experiment</span>
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> 
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># all the sites are passed to exp at first</span>
     <span class="n">sites_to_analyze</span><span class="o">=</span><span class="n">sites_to_analyze</span><span class="p">,</span> 
-    <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xgboost&#39;</span><span class="p">,</span> <span class="c1"># model that will be used to predict</span>
-    <span class="n">model_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;expl_var&#39;</span><span class="p">,</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="s1">&#39;me&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;medae&#39;</span><span class="p">,</span><span class="s1">&#39;tweedie&#39;</span><span class="p">,</span> <span class="c1"># check theory</span>
-        <span class="s1">&#39;ext_mae&#39;</span><span class="p">,</span><span class="s1">&#39;ext_mse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_rmse&#39;</span><span class="p">,</span><span class="s1">&#39;ext_pearson&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;bias&#39;</span><span class="p">,</span><span class="s1">&#39;si&#39;</span><span class="p">,</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;spearman&#39;</span><span class="p">,</span><span class="s1">&#39;rscore&#39;</span>
-    <span class="p">],</span>
+    <span class="n">model</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="c1"># model that will be used to predict</span>
+    <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span>
     <span class="n">pca_attrs</span><span class="o">=</span><span class="n">pca_attrs_exp</span><span class="p">,</span>
-    <span class="n">model_attrs</span><span class="o">=</span><span class="n">xgboost_attrs_exp</span>
+    <span class="n">model_attrs</span><span class="o">=</span><span class="n">linear_attrs_exp</span><span class="p">,</span>
+    <span class="n">pcs_folder</span><span class="o">=</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/pcs_to_seb&#39;</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> The model has been correctly initialized with || model = xgboost ||             
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> The model has been correctly initialized with || model = linear ||             
 
- and model evaluation metrics = [&#39;expl_var&#39;, &#39;mae&#39;, &#39;mse&#39;, &#39;me&#39;, &#39;medae&#39;, &#39;tweedie&#39;, &#39;ext_mae&#39;, &#39;ext_mse&#39;, &#39;ext_rmse&#39;, &#39;ext_pearson&#39;, &#39;bias&#39;, &#39;si&#39;, &#39;rmse&#39;, &#39;pearson&#39;, &#39;spearman&#39;, &#39;rscore&#39;, &#39;rel_rmse&#39;]             
+ and model evaluation metrics = [&#39;bias&#39;, &#39;si&#39;, &#39;rmse&#39;, &#39;rel_rmse&#39;, &#39;ext_rmse&#39;, &#39;ext_rel_rmse&#39;, &#39;pearson&#39;, &#39;rscore&#39;, &#39;spearman&#39;, &#39;ext_pearson&#39;, &#39;ext_rscore&#39;, &#39;ext_spearman&#39;, &#39;pocid&#39;, &#39;tu_test&#39;, &#39;expl_var&#39;, &#39;nse&#39;, &#39;kge&#39;, &#39;kgeprime&#39;, &#39;ext_nse&#39;, &#39;ext_kge&#39;, &#39;ext_kgeprime&#39;]             
 
- pca_params = {&#39;calculate_gradient&#39;: [True], &#39;winds&#39;: [False], &#39;time_lapse&#39;: [1, 2], &#39;time_resample&#39;: [&#39;1D&#39;], &#39;region&#39;: [(&#39;local&#39;, (4.1, 4.1))]} 
+ pca_params = {&#39;calculate_gradient&#39;: [True], &#39;winds&#39;: [True], &#39;time_lapse&#39;: [1], &#39;time_resample&#39;: [&#39;1D&#39;], &#39;region&#39;: [(&#39;local&#39;, (2.5, 2.5))]} 
 
- model_params = {&#39;train_size&#39;: [0.7], &#39;percentage_PCs&#39;: [0.98], &#39;n_estimators&#39;: [40], &#39;max_depth&#39;: array([ 7, 10]), &#39;min_samples_split&#39;: array([0.01, 0.4 ]), &#39;learning_rate&#39;: [0.1], &#39;loss&#39;: [&#39;ls&#39;]}             
+ model_params = {&#39;train_size&#39;: [0.7], &#39;percentage_PCs&#39;: [0.98]}             
 
- which makes a total of 8 iterations as there are (1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1) values for each parameter             
+ which makes a total of 1 iterations as there are (1, 1, 1, 1, 1, 1, 1) values for each parameter             
 
- the experiment will be performed in sites = [116 200]             
+ the experiment will be performed in sites = [ 116 1146]             
 
  RUN CELL BELOW if this information is correct!!
 </pre></div>
@@ -572,9 +506,120 @@ Data variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run all the models</span>
-<span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># plot logs when computing the models</span>
+<span class="n">exp_parameters</span><span class="p">,</span> <span class="n">exp_mean_parameters</span><span class="p">,</span> <span class="n">stats_keys</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">execute_cross_model_calculations</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># plot logs when computing the models</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ---------------------------------------------------------                         
+
+ Experiment 1 in site 116, coords = (array(168.34508816), array(-46.62520765)) ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
+FILE /Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_116_winds_gradients_1D_tl1.nc
+PCs loaded from file
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_10_1.png" src="../_images/experiments_10_1.png" />
+<img alt="../_images/experiments_10_2.png" src="../_images/experiments_10_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 8 PCs (0.98 expl. variance) will be used to train the model!! 
+
+
+ A forward selection will be performed... 
+
+ where 6 PCs : [0 1 7 3 6 5], 
+ will be finally used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_10_4.png" src="../_images/experiments_10_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.57, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.79, 0.61)
+ NSE = [0.61390877], KGE = [0.68524777] and KGE_PRIME = [0.6128871]
+ R score: 0.61 -- in TEST data
+
+ ---------------------------------------------------------                         
+
+ Experiment 1 in site 1146, coords = (array(178.13853904), array(-37.51451809)) ......                         
+
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5))} 
+
+ linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98}                         
+
+ and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
+
+ ---------------------------------------------------------
+/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
+FILE /Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1146_winds_gradients_1D_tl1.nc
+PCs loaded from file
+
+ plotting 1 components with 3 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/experiments_10_6.png" src="../_images/experiments_10_6.png" />
+<img alt="../_images/experiments_10_7.png" src="../_images/experiments_10_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 9 PCs (0.98 expl. variance) will be used to train the model!! 
+
+
+ A forward selection will be performed... 
+
+ where 9 PCs : [0 3 2 1 4 8 6 7 5], 
+ will be finally used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/experiments_10_9.png" src="../_images/experiments_10_9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.57, Relative - RMSE: 0.29
+ and Correlations (Pearson, Rscore): (0.80, 0.64)
+ NSE = [0.64490337], KGE = [0.69575669] and KGE_PRIME = [0.66505665]
+ R score: 0.64 -- in TEST data
+
+ -------------------------------------------------------------------             
+
+ All the models and in all the sites have been correctly calculated!!             
+
+ with a final mean stats (in the sites) with the following shape...             
+
+ BIAS, SI, RMSE, Pearson and Spearman coorelations and the R2 score... 
+
+ [[[[[[[[-3.90393524e-03  5.70287981e-01  5.17494338e-02
+         2.94826566e-01  6.84160693e-02  7.41985200e-02
+         9.63573774e-02  2.52609446e-01  2.42168504e-01
+         2.61686325e-01  7.95426665e-01  6.29406072e-01
+         7.81209890e-01  5.96144851e-01  5.89535668e-01
+         5.29216120e-01 -1.27260318e+00 -2.17865038e+00
+        -1.00114135e+01  4.66843660e-01  4.63927614e-01
+         5.26137734e-01  8.25863487e+01  6.23700381e-01
+         6.31471224e-01  6.29406072e-01  6.90502234e-01
+         7.95426666e-01  8.01143118e-01  1.10505313e+00
+         6.38971875e-01  7.95426666e-01  7.25378088e-01
+         1.10505313e+00 -1.27260318e+00 -2.17865038e+00
+        -1.00114135e+01  4.54879172e-01  5.96144852e-01
+         1.23798912e+00  7.30425456e-01  4.03111188e-01
+         5.89535666e-01  1.31981424e+00  7.28630429e-01
+        -1.82694906e-01  5.29216121e-01  2.03216536e+00
+         7.26867102e-01  1.42408669e-01  5.96144852e-01
+         1.69979723e+00  7.30425456e-01  4.36878830e-02
+         5.89535666e-01  1.81022604e+00  7.28630429e-01
+        -8.89774578e-01  5.29216121e-01  2.80345621e+00
+         7.26867102e-01]]]]]]]]             
+
+ -------------------------------------------------------------------
 </pre></div>
 </div>
 </div>
@@ -583,53 +628,411 @@ Data variables:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># finally, we can save the results, using the following function</span>
 <span class="k">def</span> <span class="nf">save_final_results</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> 
-    <span class="s1">&#39;../data/statistics/experiments/experiment_linear_final.nc&#39;</span><span class="p">):</span>
+    <span class="s1">&#39;../data/statistics/experiments/experiment_linear_final_PLAY.nc&#39;</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function saves the results in netCDF4 format</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
+    <span class="n">region_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;local_2.5_2.5&#39;</span><span class="p">]</span>
+    <span class="n">coords_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;grad&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;calculate_gradient&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;winds&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;tlapse&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;time_lapse&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;tresample&#39;</span><span class="p">:</span> <span class="n">pca_attrs_exp</span><span class="p">[</span><span class="s1">&#39;time_resample&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="n">region_labels</span><span class="p">,</span>
+                   <span class="s1">&#39;tsize&#39;</span><span class="p">:</span> <span class="n">linear_attrs_exp</span><span class="p">[</span><span class="s1">&#39;train_size&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;perpcs&#39;</span><span class="p">:</span> <span class="n">linear_attrs_exp</span><span class="p">[</span><span class="s1">&#39;percentage_PCs&#39;</span><span class="p">]}</span>
+    
     <span class="n">sites_datasets</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save all xarray.Dataset&#39;s in sites</span>
     <span class="k">for</span> <span class="n">site</span><span class="p">,</span><span class="n">exp_metrics_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">,</span><span class="n">exp_parameters</span><span class="p">):</span>
         <span class="n">site_metrics</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">model_metrics</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats_keys</span><span class="p">):</span>
             <span class="n">site_metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">(</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">,</span><span class="s1">&#39;tlapse&#39;</span><span class="p">,</span><span class="s1">&#39;tresample&#39;</span><span class="p">,</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">),</span>
-                <span class="n">exp_metrics_site</span><span class="p">[:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span>
-        <span class="n">sites_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
-            <span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">site</span><span class="p">]}</span>
-        <span class="p">))</span>
+                <span class="c1"># TODO: add here : depending on the MODEL in the experiments</span>
+                <span class="c1"># ----------------------------------------------------------</span>
+                 <span class="n">exp_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span>
+                <span class="c1"># ----------------------------------------------------------</span>
+        <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">coords_dict</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">[</span><span class="mi">0</span><span class="p">]]})</span>
+        <span class="n">sites_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">experiment_metrics</span><span class="p">)</span>
     <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sites_datasets</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">)</span>
-    <span class="n">experiment_metrics</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">)</span>
+    <span class="c1"># experiment_metrics.to_netcdf(to_save_name)</span>
+    
+    <span class="k">return</span> <span class="n">experiment_metrics</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># finally, we can save the results, using the following function</span>
-<span class="k">def</span> <span class="nf">save_final_results_knn</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> 
-    <span class="s1">&#39;../data/statistics/experiments/experiment_linear_final.nc&#39;</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This function saves the results in netCDF4 format</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="n">sites_datasets</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save all xarray.Dataset&#39;s in sites</span>
-    <span class="k">for</span> <span class="n">site</span><span class="p">,</span><span class="n">exp_metrics_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">ss_sites</span><span class="p">,</span><span class="n">exp_parameters</span><span class="p">):</span>
-        <span class="n">site_metrics</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">model_metrics</span><span class="p">):</span>
-            <span class="n">site_metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="p">(</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">,</span><span class="s1">&#39;tlapse&#39;</span><span class="p">,</span><span class="s1">&#39;tresample&#39;</span><span class="p">,</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">,</span> <span class="s1">&#39;k_neighbors&#39;</span><span class="p">),</span>
-                <span class="n">exp_metrics_site</span><span class="p">[:,:,:,:,:,:,:,:,</span><span class="n">im</span><span class="p">])</span> 
-        <span class="n">sites_datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">site_metrics</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
-            <span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:[</span><span class="n">site</span><span class="p">]}</span>
-        <span class="p">))</span>
-    <span class="n">experiment_metrics</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sites_datasets</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">)</span>
-    <span class="n">experiment_metrics</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">to_save_name</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">save_final_results</span><span class="p">()</span><span class="o">.</span><span class="n">kgeprime</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray &#x27;kgeprime&#x27; (site: 2)&gt;
+array([0.6128871, 0.6128871])
+Coordinates:
+  * site       (site) int64 116 116
+    grad       bool True
+    winds      bool True
+    tlapse     int64 1
+    tresample  &lt;U2 &#x27;1D&#x27;
+    region     &lt;U13 &#x27;local_2.5_2.5&#x27;
+    tsize      float64 0.7
+    perpcs     float64 0.98</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'kgeprime'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>site</span>: 2</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-33fe368d-7d53-45a1-9432-b14467806bd8' class='xr-array-in' type='checkbox' checked><label for='section-33fe368d-7d53-45a1-9432-b14467806bd8' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>0.6129 0.6129</span></div><div class='xr-array-data'><pre>array([0.6128871, 0.6128871])</pre></div></div></li><li class='xr-section-item'><input id='section-6c075361-df25-471c-ad2a-5bda5d573d37' class='xr-section-summary-in' type='checkbox'  checked><label for='section-6c075361-df25-471c-ad2a-5bda5d573d37' class='xr-section-summary' >Coordinates: <span>(8)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>116 116</div><input id='attrs-4d359c5c-1614-4cdf-82a1-0a2769cea4b5' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4d359c5c-1614-4cdf-82a1-0a2769cea4b5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0a0af9ab-cd7b-4150-b15f-7f4c9c5d0fb1' class='xr-var-data-in' type='checkbox'><label for='data-0a0af9ab-cd7b-4150-b15f-7f4c9c5d0fb1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([116, 116])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>grad</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>bool</div><div class='xr-var-preview xr-preview'>True</div><input id='attrs-185f0aec-b182-44ba-b736-319bd8d3285d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-185f0aec-b182-44ba-b736-319bd8d3285d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-859941c0-1040-4589-b746-bdea289726cf' class='xr-var-data-in' type='checkbox'><label for='data-859941c0-1040-4589-b746-bdea289726cf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(True)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>winds</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>bool</div><div class='xr-var-preview xr-preview'>True</div><input id='attrs-10d8e0b5-5bc8-43ad-9f33-596e8e9409ad' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-10d8e0b5-5bc8-43ad-9f33-596e8e9409ad' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c7d249d3-f48a-4009-b52e-1d8ddb7c17cd' class='xr-var-data-in' type='checkbox'><label for='data-c7d249d3-f48a-4009-b52e-1d8ddb7c17cd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(True)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tlapse</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-092385d3-03e3-41a9-b277-19244a918d8a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-092385d3-03e3-41a9-b277-19244a918d8a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bc3a683f-5105-4fc3-90b0-fb0942f3cbb2' class='xr-var-data-in' type='checkbox'><label for='data-bc3a683f-5105-4fc3-90b0-fb0942f3cbb2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tresample</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U2</div><div class='xr-var-preview xr-preview'>&#x27;1D&#x27;</div><input id='attrs-c626bbdc-97ce-4f2c-b46c-8f29fc56347f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c626bbdc-97ce-4f2c-b46c-8f29fc56347f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9fd3f058-bd59-4e05-a17d-8a9daab4cd0d' class='xr-var-data-in' type='checkbox'><label for='data-9fd3f058-bd59-4e05-a17d-8a9daab4cd0d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;1D&#x27;, dtype=&#x27;&lt;U2&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>region</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U13</div><div class='xr-var-preview xr-preview'>&#x27;local_2.5_2.5&#x27;</div><input id='attrs-9e5726dc-d569-43ab-a681-ac534a37e5bf' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9e5726dc-d569-43ab-a681-ac534a37e5bf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e95e3324-c6a9-4dfb-a0ef-dd48f8cb9b20' class='xr-var-data-in' type='checkbox'><label for='data-e95e3324-c6a9-4dfb-a0ef-dd48f8cb9b20' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;local_2.5_2.5&#x27;, dtype=&#x27;&lt;U13&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tsize</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.7</div><input id='attrs-884787a4-074b-42a7-a443-086bd162f22a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-884787a4-074b-42a7-a443-086bd162f22a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8959aebe-6509-4604-8973-6723befd5831' class='xr-var-data-in' type='checkbox'><label for='data-8959aebe-6509-4604-8973-6723befd5831' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(0.7)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>perpcs</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.98</div><input id='attrs-cd248b0b-9aea-42ba-b586-0fbc7512ac5d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-cd248b0b-9aea-42ba-b586-0fbc7512ac5d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-aec0e613-10c1-4ff7-8d6e-629f73a5c838' class='xr-var-data-in' type='checkbox'><label for='data-aec0e613-10c1-4ff7-8d6e-629f73a5c838' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(0.98)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-994789bc-d872-4138-b824-4cfbf633c90b' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-994789bc-d872-4138-b824-4cfbf633c90b' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
 </div>
 </div>
@@ -658,7 +1061,21 @@ Data variables:
               
             
                 <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="models_xgboost.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">8. </span>XGBoost regression models</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="models_results.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>VISUALIZE experiments results</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
             
         </div>
