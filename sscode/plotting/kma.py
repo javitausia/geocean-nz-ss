@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # arrays
 import numpy as np
 from numpy.core.fromnumeric import size
@@ -30,9 +31,9 @@ from .utils import colors_dwt, custom_cmap, get_n_colors, plot_ccrs_nz
 # from ..kma import cluster_probabilities
 
 
-def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom', 
+def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom', var='slp',
                         scale_: bool = True,
-                        press_diff = _mbar_diff,
+                        var_diff = _mbar_diff,
                         cmap = dwts_colors, gev_data = None,
                         plot_gev_uhslc: tuple = (False,None,None)):
     '''
@@ -70,44 +71,50 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     fig.subplots_adjust(hspace=0.02,wspace=0.02)
     for i,ax in enumerate(axes.flatten()):
         if kind=='anom':
-            # p = ((xds_var.isel(time=np.where(xds_KMA.bmus.values==i)[0])\
-            #     .mean(dim='time') - (
-            #     xds_var.mean(dim='time')
-            # )) / scale).plot(
-            #         cmap='RdBu_r',vmin=-press_diff,vmax=press_diff,
-            #         ax=ax,transform=ccrs.PlateCarree(),
-            #         add_colorbar=False
-            #     )
-            pslp = ((xds_KMA.slp_clusters.isel(n_clusters=i) - \
+            p = ((xds_KMA.slp_clusters.isel(n_clusters=i) - \
                 xds_KMA.slp_clusters.mean(dim='n_clusters')) / scale).plot(
-                    cmap='RdBu_r',vmin=-press_diff,vmax=press_diff,
+                    cmap='RdBu_r',vmin=-var_diff,vmax=var_diff,
                     ax=ax,transform=ccrs.PlateCarree(),
                     add_colorbar=False
-                )
+                ) if var=='slp' else \
+                    ((xds_KMA.ss_clusters.isel(n_clusters=i) - \
+                        xds_KMA.ss_clusters.mean(dim='n_clusters'))).plot(
+                            cmap='RdBu_r',vmin=-var_diff,vmax=var_diff,
+                            ax=ax,transform=ccrs.PlateCarree(),
+                            add_colorbar=False
+                        )
         else:
-            # p = ((xds_var.isel(time=np.where(xds_KMA.bmus.values==i)[0])\
-            #     .mean(dim='time')) / scale).plot(
-            #         cmap='RdBu_r',vmin=1013-press_diff,vmax=1013+press_diff,
-            #         ax=ax,transform=ccrs.PlateCarree(),
-            #         add_colorbar=False
-            #     )
-            pslp = (xds_KMA.slp_clusters.isel(n_clusters=i) / scale).plot(
-                    cmap='RdBu_r',vmin=1013-press_diff,vmax=1013+press_diff,
+            p = (xds_KMA.slp_clusters.isel(n_clusters=i) / scale).plot(
+                    cmap='RdBu_r',vmin=1013-var_diff,vmax=1013+var_diff,
                     ax=ax,transform=ccrs.PlateCarree(),
                     add_colorbar=False
-                )
+                ) if var=='slp' else \
+                    xds_KMA.ss_clusters.isel(n_clusters=i).plot(
+                        cmap='RdBu_r',vmin=-var_diff,vmax=var_diff,
+                        ax=ax,transform=ccrs.PlateCarree(),
+                        add_colorbar=False
+                    )
         # axis customization
         ax.coastlines(linewidth=2)
         ax.set_title('')
         ax.text(
-            184.5,-24,str(i), # add better text?
+            184.5,-24,str(i+1), # add better text?
             transform=ccrs.PlateCarree(),
             zorder=100,size=12,
             bbox=dict(boxstyle='round',
                 ec=(1.,0.5,0.5),
                 fc=(1.,0.8,0.8),
             )
-        )
+        ) if False else \
+            ax.text(
+                182,-33.3,str(i+1), # add better text?
+                transform=ccrs.PlateCarree(),
+                zorder=100,size=12,
+                bbox=dict(boxstyle='round',
+                    ec=(1.,0.5,0.5),
+                    fc=(1.,0.8,0.8),
+                )
+            )
         [ax.spines[loc_ax].set_color(cs_dwt[i]) \
             for loc_ax in ax.spines] # axis color
         [ax.spines[loc_ax].set_linewidth(3) \
@@ -115,50 +122,55 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
         
     # add the colorbar
     cbar_ax = fig.add_axes([0.135,0.10,0.75,0.02])
-    cb = fig.colorbar(pslp,cax=cbar_ax,orientation='horizontal')
+    cb = fig.colorbar(p,cax=cbar_ax,orientation='horizontal')
     if kind=='mean':
-        cb.set_label('Pressure [mbar]',fontsize=_fontsize_label)
+        cb.set_label('Pressure [mbar]',fontsize=_fontsize_label,fontweight='bold') \
+            if var=='slp' else \
+                cb.set_label('Storm surge [m]',fontsize=_fontsize_label,fontweight='bold')
     elif kind=='anom':
-        cb.set_label('Pressure anomalies [mbar]',fontsize=_fontsize_label)
+        cb.set_label('Pressure anomalies [mbar]',fontsize=_fontsize_label,fontweight='bold') \
+            if var=='slp' else \
+                cb.set_label('Storm surge anomalies [m]',fontsize=_fontsize_label,fontweight='bold')
 
-    # plotting the ss mean clusters
-    fig, axes = plt.subplots(
-        ncols=n_cols,nrows=n_rows,
-        figsize=(n_cols*(_figsize_width/1.6),
-                 n_rows*(_figsize_height/2.0)),
-        subplot_kw={
-            'projection': ccrs.PlateCarree(
-                central_longitude=default_location[0]
-            )
-        }
-    )
-    fig.subplots_adjust(hspace=0.02,wspace=0.02)
-    for i,ax in enumerate(axes.flatten()):
-        pss = xds_KMA.ss_clusters_mean.isel(n_clusters=i).plot(
-            cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
-            vmin=-0.2,vmax=0.3,add_colorbar=False,
-            ax=ax,transform=ccrs.PlateCarree(),
+    if False:
+        # plotting the ss mean clusters
+        fig, axes = plt.subplots(
+            ncols=n_cols,nrows=n_rows,
+            figsize=(n_cols*(_figsize_width/1.6),
+                    n_rows*(_figsize_height/2.0)),
+            subplot_kw={
+                'projection': ccrs.PlateCarree(
+                    central_longitude=default_location[0]
+                )
+            }
         )
-        # axis customization
-        ax.coastlines(linewidth=2)
-        ax.set_title('')
-        ax.text(
-            182,-33.3,str(i), # add better text?
-            transform=ccrs.PlateCarree(),
-            zorder=100,size=12,
-            bbox=dict(boxstyle='round',
-                ec=(1.,0.5,0.5),
-                fc=(1.,0.8,0.8),
+        fig.subplots_adjust(hspace=0.02,wspace=0.02)
+        for i,ax in enumerate(axes.flatten()):
+            pss = xds_KMA.ss_clusters_mean.isel(n_clusters=i).plot(
+                cmap=custom_cmap(15,'YlOrRd',0.15,0.9,'YlGnBu_r',0,0.85),
+                vmin=-0.2,vmax=0.3,add_colorbar=False,
+                ax=ax,transform=ccrs.PlateCarree(),
             )
-        )
-        [ax.spines[loc_ax].set_color(cs_dwt[i]) \
-            for loc_ax in ax.spines] # axis color
-        [ax.spines[loc_ax].set_linewidth(3) \
-            for loc_ax in ax.spines] # axis linewidth
-    # add the colorbar
-    cbar_ax = fig.add_axes([0.135,0.10,0.75,0.02])
-    cb = fig.colorbar(pss,cax=cbar_ax,orientation='horizontal')
-    cb.set_label('Storm surge mean [m]',fontsize=_fontsize_label)
+            # axis customization
+            ax.coastlines(linewidth=2)
+            ax.set_title('')
+            ax.text(
+                182,-33.3,str(i+1), # add better text?
+                transform=ccrs.PlateCarree(),
+                zorder=100,size=12,
+                bbox=dict(boxstyle='round',
+                    ec=(1.,0.5,0.5),
+                    fc=(1.,0.8,0.8),
+                )
+            )
+            [ax.spines[loc_ax].set_color(cs_dwt[i]) \
+                for loc_ax in ax.spines] # axis color
+            [ax.spines[loc_ax].set_linewidth(3) \
+                for loc_ax in ax.spines] # axis linewidth
+        # add the colorbar
+        cbar_ax = fig.add_axes([0.135,0.10,0.75,0.02])
+        cb = fig.colorbar(pss,cax=cbar_ax,orientation='horizontal')
+        cb.set_label('Storm surge mean [m]',fontsize=_fontsize_label)
 
     # plot gev stats
     if plot_gev_uhslc[0]:
@@ -244,6 +256,67 @@ def Plot_DWTs_Mean_Anom(xds_KMA, kind='anom',
     return return_data
 
 
+def Plot_Probs_WT_WT(series_1, series_2, n_clusters_1, n_clusters_2, ttl='',
+                     wt_colors=False, show=True, figsize=[15,15], vmax=0.1):
+    '''
+    Plot WTs_1 / WTs_2 probabilities
+
+    both categories series should start at 0
+    '''
+
+    # set of daily weather types
+    set_2 = np.arange(n_clusters_2)
+
+    # dailt weather types matrix rows and cols
+    n_rows, n_cols = GetBestRowsCols(n_clusters_2)
+
+    # get cluster colors
+    cmap, cs_wt = get_n_colors(
+        dwts_colors, # dwts_colors in .config
+        n_clusters_1
+    )
+
+    # plot figure
+    fig = plt.figure(figsize=figsize) if figsize else plt.figure(
+        figsize=(n_clusters_1*0.3,n_clusters_2*0.35)
+    )
+    gs = gridspec.GridSpec(np.sqrt(n_clusters_1).astype('int'), 
+                           np.sqrt(n_clusters_1).astype('int'), 
+                           wspace=0.10, hspace=0.15)
+
+    for ic in range(n_clusters_1):
+
+        # select DWT bmus at current AWT indexes
+        index_1 = np.where(series_1==ic)[0][:]
+        sel_2 = series_2[index_1]
+
+        # get DWT cluster probabilities
+        cps = cluster_probabilities(sel_2, set_2)
+        C_T = np.reshape(cps, (n_rows, n_cols))
+
+        # axis colors
+        if wt_colors:
+            caxis = cs_wt[ic]
+        else:
+            caxis = 'black'
+
+        # plot axes
+        ax = fig.add_subplot(gs[ic])
+        axplot_WT_Probs(
+            ax, C_T,
+            ttl = 'WT {0}'.format(ic+1),
+            cmap = 'Reds', caxis = caxis, vmax=vmax,
+        )
+        ax.set_aspect('equal')
+
+    # add fig title
+    fig.suptitle(ttl, fontsize=14, fontweight='bold')
+
+    # show and return figure
+    if show: plt.show()
+    return fig
+
+
 def Plot_DWTs_Probs(bmus, n_clusters, show_cbar=True):
     '''
     Plot Daily Weather Types bmus probabilities
@@ -282,24 +355,26 @@ def Plot_DWTs_Probs(bmus, n_clusters, show_cbar=True):
         ([6, 7, 8],   'JJA', gs[3,5]),
         ([9, 10, 11], 'SON', gs[3,6]),
     ]
+    
+    vmax = 0.07
 
     # plot total probabilities
     c_T = cluster_probabilities(bmus, wt_set)
     C_T = np.reshape(c_T, (n_rows, n_cols))
 
     ax_probs_T = plt.subplot(gs[:2, :3])
-    pc = axplot_WT_Probs(ax_probs_T, C_T, ttl = 'DWT Probabilities')
+    pc = axplot_WT_Probs(ax_probs_T, C_T, ttl = 'DWT Probabilities', vmax=vmax)
 
     # plot counts histogram
     ax_hist = plt.subplot(gs[2:, :3])
     axplot_WT_Hist(ax_hist, bmus, n_clusters, ttl = 'DWT Counts')
 
     # plot probabilities by month
-    vmax = 0.15
+    # vmax = 0.10
     for m_ix, m_name, m_gs in l_months:
 
         # get probs matrix
-        c_M = ClusterProbs_Month(bmus, bmus.train_time.values, wt_set, m_ix)
+        c_M = ClusterProbs_Month(bmus, bmus.time.values, wt_set, m_ix)
         C_M = np.reshape(c_M, (n_rows, n_cols))
 
         # plot axes
@@ -309,11 +384,11 @@ def Plot_DWTs_Probs(bmus, n_clusters, show_cbar=True):
     # TODO: add second colorbar?
 
     # plot probabilities by 3 month sets
-    vmax = 0.15
+    # vmax = 0.10
     for m_ix, m_name, m_gs in l_3months:
 
         # get probs matrix
-        c_M = ClusterProbs_Month(bmus, bmus.train_time.values, wt_set, m_ix)
+        c_M = ClusterProbs_Month(bmus, bmus.time.values, wt_set, m_ix)
         C_M = np.reshape(c_M, (n_rows, n_cols))
 
         # plot axes

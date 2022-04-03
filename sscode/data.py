@@ -488,7 +488,7 @@ def load_moana_hindcast(file_path: str =
         [xarray.Dataset]: xarray dataset with all the moana data
     """
 
-    print('\n loading the Moana v2 hindcast data... \n')
+    # print('\n loading the Moana v2 hindcast data... \n')
 
     # load moana
     moana = xr.open_zarr(file_path)

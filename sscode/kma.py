@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # time
 from datetime import datetime
 
@@ -18,25 +19,31 @@ from sklearn.linear_model import LinearRegression
 from .config import data_path
 from .statistical import gev_matrix
 from .plotting.config import dwts_colors
-from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs, Chrono_dwts_hist
+from .plotting.kma import Plot_DWTs_Mean_Anom, Plot_DWTs_Probs, \
+    Chrono_dwts_hist, Plot_Probs_WT_WT
 
 
-def KMA_simple(slp_data, ss_data, pca_data, 
+def KMA_simple(slp_data, ss_data, ss_data_coast,
+               pca_slp_data, pca_ss_data,
                n_clusters=64, plot: bool = True,
-               calculate_gev_stats: bool = True,
+               calculate_gev_stats: bool = False,
                plot_gev_uhslc: bool = (False,None,None)):
     """
     This function performs the commonly known weather typing
     analysis (daily), where given the PCs of the sea-level-pressure
-    fields, this slp and the ss are classified
+    fields and the SS, this slp and the SS are classified
+
+    TODO: pass DAILY resampled data!!
 
     Args:
         slp_data (xarray.Dataset): These are the sea-level-pressure fields
             data
         ss_data (xarray.Dataset): This is the storm surge in the region where
             the daily-wt will be applied
-        pca_data (xarray.Dataset): These are the PCs that were previously calculated
+        pca_slp_data (xarray.Dataset): These are the PCs that were previously calculated
             with the PCA_DynamicPred
+        pca_ss_data (xarray.Dataset): These are the PCs that were previously calculated
+            with the PCA_DynamicPred for the storm surge
         n_clusters (int, optional): Number of clusters to get. Defaults to 64.
         plot (bool, optional): Wheter to plot or not the results. Defaults to True.
         calculate_gev_stats (bool, optional): Wheter to adjust or not the
@@ -51,69 +58,92 @@ def KMA_simple(slp_data, ss_data, pca_data,
     """
 
     # check time coherence
-    common_times_pslp = np.intersect1d(
+    common_times_slp = np.intersect1d(
         pd.to_datetime(slp_data.time.values).round('D'), # add D??
-        pd.to_datetime(pca_data.time.values).round('D'),
-        return_indices=True
+        pd.to_datetime(pca_slp_data.time.values).round('D')
     )
-    common_times = np.intersect1d(
-        common_times_pslp[0],
+    common_times_ss = np.intersect1d(
         pd.to_datetime(ss_data.time.values).round('D'),
-        return_indices=True
+        pd.to_datetime(pca_ss_data.time.values).round('D')
     )
+    common_times = np.intersect1d(common_times_slp, common_times_ss)
 
     # number of PCs to use
-    num_pcs = int(
-        np.where(np.cumsum(pca_data.variance.values/\
-            np.sum(pca_data.variance.values))>0.9
+    num_slp_pcs = int(
+        np.where(np.cumsum(pca_slp_data.variance.values/\
+            np.sum(pca_slp_data.variance.values))>0.90
         )[0][0]
-    ) +1 # number of Pcs to use
+    ) +1 # number of SLP-Pcs to use
+    num_ss_pcs = int(
+        np.where(np.cumsum(pca_ss_data.variance.values/\
+            np.sum(pca_ss_data.variance.values))>0.98
+        )[0][0]
+    ) +1 # number of SS-Pcs to use
         
-    # split predictors into train and test
-    X_train, X_test, t_train, t_test = \
-    train_test_split(
-        pca_data.PCs[
-            common_times_pslp[2][common_times[1]], :num_pcs
-        ].values,
-        common_times_pslp[0][common_times[1]], 
-        train_size=0.9, 
-        shuffle=False
-    )
+    # # split predictors into train and test
+    # X_train, X_test, t_train, t_test = \
+    # train_test_split(
+    #     pca_slp_data.PCs.sel(
+    #         time=common_times,n_components=slice(None,num_slp_pcs)).values,
+    #     common_times, # these are the times in all the datasets
+    #     train_size=0.9, 
+    #     shuffle=False
+    # )
 
     # calculate the kma
-    kma = KMeans(n_clusters=n_clusters).fit(X_train)
-
-    # predict
-    prediction = kma.predict(X_test)
+    slp_kma = KMeans(n_clusters=n_clusters).fit(
+        pca_slp_data.PCs.sel(
+            time=common_times,n_components=slice(None,num_slp_pcs)).values
+    )
+    ss_kma = KMeans(n_clusters=n_clusters).fit(
+        pca_ss_data.PCs.sel(
+            time=common_times,n_components=slice(None,num_ss_pcs)).values
+    )
 
     # order the clusters (km, x and var_centers)
-    centers = kma.cluster_centers_
-    bmus = kma.labels_
-    kma_order = np.argsort(np.mean(-centers,axis=1))
-    sorted_bmus = np.zeros((len(bmus),),)*np.nan
-    sorted_pred = np.zeros((len(prediction),),)*np.nan
+    slp_centers, ss_centers = slp_kma.cluster_centers_, ss_kma.cluster_centers_
+    slp_bmus, ss_bmus = slp_kma.labels_, ss_kma.labels_
+    slp_kma_order = np.argsort(np.mean(-slp_centers,axis=1))
+    ss_kma_order = np.argsort(np.mean(-ss_centers,axis=1))
+    sorted_slp_bmus = np.zeros((len(slp_bmus),),)*np.nan
+    sorted_ss_bmus = np.zeros((len(ss_bmus),),)*np.nan
     for i in range(n_clusters):
-        posc = np.where(bmus==kma_order[i])
-        sorted_bmus[posc] = i
-        posc = np.where(prediction==kma_order[i])
-        sorted_pred[posc] = i
+        posc = np.where(slp_bmus==slp_kma_order[i])
+        sorted_slp_bmus[posc] = i
+        posc = np.where(ss_bmus==ss_kma_order[i])
+        sorted_ss_bmus[posc] = i
 
     # save slp and ss clusters + gev stats
-    slp_clusters_list = []
+    slp_clusters_list, ss_clusters_list = [] , []
+    ss_clusters_coast_list = []
     ss_clusters_list_mean, ss_clusters_list_max = [], []
     if calculate_gev_stats:
-        gev_stats_list = [] # save gev stats by cluster
         print('\n lets calculate the GEV parameters for each cluster... \n')
-    for clus in np.unique(sorted_bmus):
+        gev_stats_list = [] # save gev stats by cluster
+    for clus in range(n_clusters):
         slp_clusters_list.append(
-            slp_data.sel(time=t_train).isel(
-                time=np.where(sorted_bmus==clus)[0]
+            slp_data.sel(time=common_times).isel(
+                time=np.where(sorted_slp_bmus==clus)[0]
             ).mean(dim='time').expand_dims(
                 {'n_clusters':[clus]}
             )
         )
-        ss_cluster = ss_data.sel(time=t_train).isel(
-            time=np.where(sorted_bmus==clus)[0]
+        ss_clusters_list.append(
+            ss_data.sel(time=common_times).isel(
+                time=np.where(sorted_ss_bmus==clus)[0]
+            ).mean(dim='time').expand_dims(
+                {'n_clusters':[clus]}
+            )
+        )
+        ss_clusters_coast_list.append(
+            ss_data_coast.sel(time=common_times).isel(
+                time=np.where(sorted_ss_bmus==clus)[0]
+            ).mean(dim='time').expand_dims(
+                {'n_clusters':[clus]}
+            )
+        )
+        ss_cluster = ss_data.sel(time=common_times).isel(
+            time=np.where(sorted_slp_bmus==clus)[0]
         )
         ss_clusters_list_mean.append(
             ss_cluster.mean(dim='time').expand_dims(
@@ -128,15 +158,15 @@ def KMA_simple(slp_data, ss_data, pca_data,
         if calculate_gev_stats:
             gev_stats_list.append(
                 gev_matrix(
-                    (ss_cluster * xr.open_dataarray(
-                        data_path+'/bathymetry/nz_300m_elev_mask.nc'
-                    )).dropna(dim='lon',how='all').dropna(dim='lat',how='all'), 
-                    # .interp(
-                    #     lon=np.arange(160,185,0.7),
-                    #     lat=np.arange(-52,-30,0.7)
-                    # ),
-                    'lon','lat',plot=False,
-                    cluster_number=clus # just to verbose
+                    (
+                        ss_cluster * xr.open_dataarray(
+                            data_path+'/bathymetry/nz_300m_elev_mask.nc'
+                        )
+                    ).interp(
+                        lon=np.arange(160,185,0.7),
+                        lat=np.arange(-52,-30,0.7)
+                    ), 'lon','lat',
+                    plot=False, cluster_number=clus # just to verbose
                 )[['mu','phi','xi']].expand_dims( # ss could be added as var
                     {'n_clusters':[clus]}
                 )
@@ -145,6 +175,12 @@ def KMA_simple(slp_data, ss_data, pca_data,
     # concat all cluster lists
     slp_clusters = xr.concat(
         slp_clusters_list,dim='n_clusters'
+    ).sortby('n_clusters')
+    ss_clusters = xr.concat(
+        ss_clusters_list,dim='n_clusters'
+    ).sortby('n_clusters')
+    ss_clusters_coast = xr.concat(
+        ss_clusters_coast_list,dim='n_clusters'
     ).sortby('n_clusters')
     ss_clusters_mean = xr.concat(
         ss_clusters_list_mean,dim='n_clusters'
@@ -160,26 +196,33 @@ def KMA_simple(slp_data, ss_data, pca_data,
     # save and plot results
     KMA_data = xr.Dataset(
         data_vars={
-            'bmus': (('train_time'), kma.labels_.astype(int)),
-            'sorted_bmus': (('train_time'), sorted_bmus.astype(int)),
-            'bmus_pred': (('test_time'), sorted_pred.astype(int)),
-            'cluster_centers': (('n_clusters','n_components'),
-                kma.cluster_centers_),
+            'slp_bmus': (('time'), slp_kma.labels_.astype(int)),
+            'slp_sorted_bmus': (('time'), sorted_slp_bmus.astype(int)),
+            'slp_cluster_centers': (('n_slp_clusters','n_slp_components'),
+                slp_kma.cluster_centers_),
+            'ss_bmus': (('time'), ss_kma.labels_.astype(int)),
+            'ss_sorted_bmus': (('time'), sorted_ss_bmus.astype(int)),
+            'ss_cluster_centers': (('n_ss_clusters','n_ss_components'),
+                ss_kma.cluster_centers_),
             'slp_clusters': slp_clusters,
+            'ss_clusters': ss_clusters,
             'ss_clusters_mean': ss_clusters_mean,
             'ss_clusters_max': ss_clusters_max
         },
         coords={
-            'train_time': t_train, 'test_time': t_test
+            'time': common_times
         }
     )
+    # conditioned_prob = calculate_conditioned_probabilities(
+    #     KMA_data, n_clusters, KMA_data, n_clusters)
+
 
     # plot if specified
     if plot:
         # plot all the wheather types
         ss_clusters_gev = ss_clusters_gev if calculate_gev_stats else None
         plottting_data = Plot_DWTs_Mean_Anom(
-            KMA_data,cmap=dwts_colors,plot_gev_uhslc=plot_gev_uhslc
+            KMA_data,plot_gev_uhslc=plot_gev_uhslc,var_diff=30
             # plot_gev_uhslc=(True,(lons[::3],lats[::3]),
             #     load_cfsr_moana_uhslc.predictand.sel(site=sites[::3]).load()\
             #     .resample(time='1D').max()
@@ -188,13 +231,79 @@ def KMA_simple(slp_data, ss_data, pca_data,
             #     load_cfsr_moana_uhslc.predictand
             # )
         )
-        Plot_DWTs_Probs(KMA_data.sorted_bmus,n_clusters)
-        Chrono_dwts_hist(KMA_data)
+        plotting_data = Plot_DWTs_Mean_Anom(
+            KMA_data,kind='anom',var='ss',scale_=False,var_diff=0.2,
+            gev_data = None,plot_gev_uhslc=(False,None,None))
+        Plot_DWTs_Probs(KMA_data.slp_sorted_bmus,n_clusters)
+        Plot_DWTs_Probs(KMA_data.ss_sorted_bmus,n_clusters)
+        Plot_Probs_WT_WT(
+            KMA_data.slp_sorted_bmus, KMA_data.ss_sorted_bmus, 
+            n_clusters, n_clusters,
+            wt_colors = False, 
+            ttl = 'SS bmus conditioned to SLP',
+            figsize = False,
+            vmax = 0.1,
+        )
+        # Chrono_dwts_hist(KMA_data)
 
     # return calculated data
-    return_data = [KMA_data,ss_clusters_gev] if calculate_gev_stats else [KMA_data]
+    return_data = [KMA_data,ss_clusters_coast,ss_clusters_gev] \
+        if calculate_gev_stats else [KMA_data,ss_clusters_coast]
 
     return return_data
+
+
+def calculate_conditioned_probabilities(slp, num_clusters_slp, ss, num_clusters_ss):
+    '''
+    Calculate probabilities of the predictand clusters conditioned
+    to the predictor clusters.
+
+    slp -
+    num_clusters_slp -
+    sp -
+    num_clusters_sp -
+    '''
+
+    C_T = np.full(
+        [
+            np.sqrt(num_clusters_ss).astype('int'),
+            np.sqrt(num_clusters_ss).astype('int'),
+            num_clusters_slp,
+        ],
+        np.nan,
+    )
+
+    for ic in range(num_clusters_slp):
+
+        sel_2 = ss.ss_sorted_bmus.values[np.where(slp.slp_sorted_bmus == ic)[0][:]]
+
+        # get DWT cluster probabilities
+        cps = cluster_probabilities(sel_2, range(num_clusters_ss))
+        C_T[:, :, ic] = np.reshape(
+            cps,
+            (np.sqrt(num_clusters_ss).astype('int'),
+             np.sqrt(num_clusters_ss).astype('int')),
+        )
+
+    groups = np.reshape(
+        range(num_clusters_ss),
+        (np.sqrt(num_clusters_ss).astype('int'),
+         np.sqrt(num_clusters_ss).astype('int')),
+    )
+
+    conditioned_prob = xr.Dataset(
+        {
+            'prob_sp': (['ir', 'ic','bmus_slp'], C_T),
+            'kma_sp': (['ir', 'ic'], groups),
+        },
+        coords={
+            'ir': range(np.sqrt(num_clusters_ss).astype('int')),
+            'ic': range(np.sqrt(num_clusters_ss).astype('int')),
+            'bmus_slp': range(num_clusters_slp),
+        },
+    )
+
+    return conditioned_prob
 
 
 def persistences(series):

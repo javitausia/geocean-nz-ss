@@ -100,7 +100,10 @@ def calculate_relative_winds(location: tuple = default_location,
 
     return return_winds.assign({
         'wind_proj_mask': return_winds.wind_proj * \
-            xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc')
+            xr.open_dataarray(data_path+'/cfsr/cfsr_mapsta.nc').sel(
+                lat=return_winds[lat_name].values,
+                lon=return_winds[lon_name].values,
+                method='nearest')
     })
 
 

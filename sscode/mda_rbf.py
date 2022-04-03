@@ -31,7 +31,7 @@ from .plotting.validation import scatterplot, qqplot
 
 class MDA_RBF_Model(object):
     """
-    This MDA+RBF model allows the user to perform a model which consists in
+    This MDA+RBF model allows the user to tarin a model which consists in
     reconstructing / interpolating the storm surge in different locations or
     shores around New Zealand.
     
@@ -46,10 +46,9 @@ class MDA_RBF_Model(object):
         several locations from a desired shore. In this case, we will use
         the slp fields pcs to interpolate the non-linear surface of these
         ss-pcs, and then we will reconstruct the real ss in all the locations
-
     """
 
-    def __init__(self, ss_data, # this should be the loaded moana with Loader class
+    def __init__(self, ss_data, # this might be the loaded moana with Loader class
         slp_data, # this will be used to calculate the local predictors
         dict_to_pca, # this is the parameters dictionary to calculate pca from the slp
         model_metrics=default_evaluation_metrics, # model metrics to evaluate performance
@@ -65,7 +64,7 @@ class MDA_RBF_Model(object):
               176.6, 175.5, 173.7,  # north-north
               172.8, 173.9, 174.9,  # west-north
               183.5                 # east island
-        ][::5],
+        ][::7],
         lats=[-41.5, -43.3, -44.8, 
               -46.0, -47.1, 
               -50.8,
@@ -75,17 +74,17 @@ class MDA_RBF_Model(object):
               -37.8, -35.8, -34.5, 
               -35.6, -36.8, -38.3,
               -43.9
-        ][::5],
-        min_dist_th=[110,100,100,
-                     100,60,
-                     110,
-                     100,100,100,
-                     90,90,100,
-                     120,120,130,
-                     100,120,110,
-                     100,80,100,
-                     110
-        ][::5],
+        ][::7],
+        min_dist_th=[120,110,110,
+                     110,70,
+                     120,
+                     110,110,110,
+                     100,100,110,
+                     130,130,140,
+                     110,130,120,
+                     110,90,110,
+                     120
+        ][::7],
         extra_help=[ # this helps to stay in the wanted shore of NZ
             ('lat',0.9),('lat',0.9),('lat',0.9),
             ('lat',0.7),('lat',0.5),
@@ -96,7 +95,7 @@ class MDA_RBF_Model(object):
             ('lon',0.7),('lon',0.5),('lat',0.5),
             ('lon',0.8),('lon',0.8),('lat',0.8),
             ('lon',0.5)
-        ][::5], # be careful when playing with this tool
+        ], # be careful when playing with this tool
         time_resample: str = '1D',
         verbose: bool = True, plot: bool = True):
 
@@ -166,10 +165,10 @@ class MDA_RBF_Model(object):
             self.raw_ss_data = ss_data # this could be the moana dataset
             self.ss_attrs = ss_data_attrs # moana / other, vars and coords
             self.ss_real_data = [ss_data.sel({ss_data_attrs[2]:[site]}) \
-                .ss.load().resample(time=time_resample).max() \
+                [ss_data_attrs[3]].load().resample(time=time_resample).max() \
                 .dropna(dim='time',how='all') for site in sites_to_analyze
             ] # to mantain code workflow 2.0
-            self.ss_pcs_data = self.ss_real_data.copy() 
+            self.ss_pcs_data = self.ss_real_data.copy()
             # to mantain coding workflow, there are not PCs!!
             self.ss_scalers = None # no SS-pcs will be calculated in this case
 
@@ -180,6 +179,7 @@ class MDA_RBF_Model(object):
                 \n\n for the specified middle locations / shores !!'.format(
                 lons, lats # output lon/lat values
             )) if verbose else None
+            self.sites_to_analyze = None
 
             if len(self.lons)==len(self.lats):
                 self.num_locs = len(self.lons) # TODO: add RaiseError
@@ -252,18 +252,18 @@ class MDA_RBF_Model(object):
         for sites_in_shore in sites:
             sites_in_list += list(sites_in_shore)
 
-        # lets find, not founded sites
-        sites_out_list = []  # these are the sites which are not in the shores
-        for site in self.raw_ss_data.site.values:
-            if site not in sites_in_list:
-                sites_out_list.append(site)
-        # and calculate closest shores to new found nodes
-        closest_shores = calc_closest_data2_in_data1(
-            (self.lons,self.lats),
-            (self.raw_ss_data.sel(site=sites_out_list)[self.ss_attrs[0]].values,
-             self.raw_ss_data.sel(site=sites_out_list)[self.ss_attrs[1]].values),
-            min_dist_th=200, extra_help=('lon',3) # dont avoid any node
-        )[0]
+        # # lets find, not founded sites
+        # sites_out_list = []  # these are the sites which are not in the shores
+        # for site in self.raw_ss_data.site.values:
+        #     if site not in sites_in_list:
+        #         sites_out_list.append(site)
+        # # and calculate closest shores to new found nodes
+        # closest_shores = calc_closest_data2_in_data1(
+        #     (self.lons,self.lats),
+        #     (self.raw_ss_data.sel(site=sites_out_list)[self.ss_attrs[0]].values,
+        #      self.raw_ss_data.sel(site=sites_out_list)[self.ss_attrs[1]].values),
+        #     min_dist_th=100, extra_help=('lon',3) # dont avoid any node
+        # )[0]
         # for site_out, shore in zip(sites_out_list, closest_shores):
         #     # INFO: we avoid the shore with difficult structures
         #     # for sh in [0,1,2,3,6,7,8,12,14,16,17]:
@@ -285,7 +285,7 @@ class MDA_RBF_Model(object):
         # save as list with all the data for the pcs
         raw_ss_locs = [self.raw_ss_data.sel(
                 {self.ss_attrs[2]:sites[i]}
-            ).ss.load().resample(time=self.time_resample).max() \
+            )[self.ss_attrs[3]].load().resample(time=self.time_resample).max() \
             .dropna(dim='time',how='all') for i in range(self.num_locs)
         ] # num_locs==len(sites) if working
 
@@ -335,11 +335,11 @@ class MDA_RBF_Model(object):
                 'navy','blue','royalblue','darkorange','orange','gold','indianred','red','darkred',
                 'purple','blueviolet','mediumslateblue','pink','palevioletred','mediumorchid',
                 'yellowgreen','limegreen','darkgreen','darkolivegreen','greenyellow','lightgreen','yellow'
-            ][::5] # set shore colors manually
+            ] # set shore colors manually
             for axi,ax in enumerate(axes):
                 if axi==0:
                     xr.plot.scatter(
-                        self.raw_ss_data.max(dim='time'),
+                        self.raw_ss_data.isel(site=slice(None,None,10)).max(dim='time'),
                         x=self.ss_attrs[0],y=self.ss_attrs[1],
                         hue=self.ss_attrs[3],ax=ax,
                         transform=ccrs.PlateCarree()
@@ -444,6 +444,8 @@ class MDA_RBF_Model(object):
                     self.raw_slp_data, # this is always the same
                     region=local_region, # pass the calculated local region
                     site_location=site_location, # pass the site location
+                    site_id=self.sites_to_analyze[ipc] if self.sites_to_analyze \
+                        else ipc, # TODO: check this!!
                     **dict_to_pca # extra arguments without the winds
                 ).pcs_get()
             else:
@@ -459,9 +461,12 @@ class MDA_RBF_Model(object):
         return pcs_for_each_shore
 
 
-    def calc_MDA_RBF(self, selected_shores=None,
+    def calc_MDA_RBF(self, 
+                     save_coeffs_path: str = None,
+                     selected_shores=None,
                      percentage_pcs_ini=[0.99],
                      num_samples_ini=[750], ss_pcs=1,
+                     validate_rbf_kfold=(False,None),
                      try_all=False, append_extremes=None,
                      plot: bool = False, verbose: bool = True):
 
@@ -472,18 +477,18 @@ class MDA_RBF_Model(object):
 
         Args:
             selected_shores (list): List with ilocs for the shores, but could
-                be range(n) being n the number of individual locations
+                be range(n) being n the number of individual locations.
             percentage_pcs_ini (list): List with all the percentage of pcs
-                that will be used to interpolate
+                that will be used to interpolate.
             num_samples_ini (list): List with all the number of samples that
-                will be used to create the subset
+                will be used to create the subset.
             ss_pcs (int): This indicates the number of SS pcs that will be used
                 when interpolating, set this parameter to 1 if we will directly
-                interpolate the SS in individual locations
-            try_all (bool): Whether to try all the different combinations or not
+                interpolate the SS in individual locations.
+            try_all (bool): Whether to try all the different combinations or not.
             append_extremes (int,None): This indicates the number of extremes that
-                will be used to create the subset, but can be set to None
-            plot / verbose (bools): Whether to plot / log or not results
+                will be used to create the subset, but can be set to None.
+            plot / verbose (bools): Whether to plot / log or not results.
         """
 
         print('\n Lets interpolate the SS using all the calculated \
@@ -495,131 +500,156 @@ class MDA_RBF_Model(object):
 
         for sel_loc in selected_shores: # could be individual locations
 
-            print('\n Lets reconstruct the SS for location {}!! \n'.format(
-                sel_loc+1 # this is the shore            
-            ))
+            if validate_rbf_kfold[0]:
 
-            # perform the RBF interpolation, using MDA too
-            self.real_ss_rbf = MDA_RBF_algorithm(
-                self.slp_pcs_data[sel_loc], 
-                self.ss_pcs_data[sel_loc], ss_pcs=ss_pcs, 
-                ss_scaler=self.ss_scalers[sel_loc] if \
-                    isinstance(self.ss_scalers,list) else None,
-                try_all=try_all, append_extremes=append_extremes,
-                percentage_pcs_ini=percentage_pcs_ini,
-                num_samples_ini=num_samples_ini,
-                plot=plot, verbose=verbose, 
-                sel_loc=sel_loc if ss_pcs!=1 else \
-                    self.sites_to_analyze[sel_loc] # which is just 0, 1... in the first case
-            )
+                for val_kfold in range(validate_rbf_kfold[1]):
 
-            print('\n Lets plot the SS reconstructions for location {}!! \n'.format(
-                sel_loc+1 # this is the shore            
-            )) if plot else None
+                    print('\n KFold={} || Lets reconstruct the SS for location {}!! \n'.format(
+                        val_kfold,sel_loc+1 # this is the shore            
+                    ))
 
-            # iterate over all the shores / just one location
-            for isite, site in enumerate(
-                self.ss_real_data[sel_loc].site.values if ss_pcs==1 else
-                    self.ss_real_data[sel_loc].site.values[::1] # TODO: Be careful with number of stations!!!
-            ):  
-
-                experiment_datasets = []
-
-                # iterate over all the available experiments
-                for exp in range(len(self.real_ss_rbf.experiment)):
-
-                    # loop copy to avoid problems
-                    experiment_dataset = self.real_ss_rbf\
-                        .isel(site=isite,experiment=exp).copy()
-
-                    # try for available nodes or continue
-                    try:
-                        title, stats = generate_stats(
-                            self.ss_real_data[sel_loc].sel(site=site).values,
-                            experiment_dataset.ss_interp.values.reshape(-1), # mda+rbf ss values
-                            metrics=self.model_metrics,
-                            ext_quantile=([0.9,0.95,0.99,0.999],0)
-                        )
-                    except:
-                        title, stats = generate_stats(
-                            self.ss_real_data[sel_loc].sel(site=site).values,
-                            experiment_dataset.ss_interp.values.reshape(-1),
-                            not_nan_idxs=np.where(
-                                (~np.isnan(self.ss_real_data[sel_loc].sel(site=site).values) &
-                                 ~np.isnan(experiment_dataset.ss_interp.values.reshape(-1)))
-                            )[0],
-                            metrics=self.model_metrics,
-                            ext_quantile=([0.9,0.95,0.99,0.999],0)
-                        )
-                        continue
-
-                    # save results in list
-                    for metric in list(stats.keys()):
-                        experiment_dataset[metric] = experiment_dataset.perpcs*0 + \
-                            stats[metric]
-                    experiment_datasets.append(
-                        experiment_dataset # TODO: drop ss, .drop_vars('ss_interp')
+                    # perform the RBF interpolation, using MDA too
+                    self.real_ss_rbf, idxs_not_in_subset = MDA_RBF_algorithm(
+                        self.slp_pcs_data[sel_loc], 
+                        self.ss_pcs_data[sel_loc], ss_pcs=ss_pcs, 
+                        ss_scaler=self.ss_scalers[sel_loc] if \
+                            isinstance(self.ss_scalers,list) else None,
+                        try_all=try_all, append_extremes=append_extremes,
+                        percentage_pcs_ini=percentage_pcs_ini,
+                        num_samples_ini=num_samples_ini,
+                        validate_rbf_kfold=validate_rbf_kfold,
+                        plot=plot, verbose=verbose, 
+                        sel_loc=sel_loc if ss_pcs!=1 else \
+                            self.sites_to_analyze[sel_loc] # which is just 0, 1... in the first case
                     )
+                    # print(self.real_ss_rbf)
 
-                    if False:
-                        # figure spec-grid
-                        fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
-                        gs = gridspec.GridSpec(nrows=1,ncols=3)
-                        # time regular plot
-                        ax_time = fig.add_subplot(gs[:,:2])
-                        self.ss_real_data[sel_loc].sel(site=site).plot(
-                            ax=ax_time,c='navy',label='Real SS measures',alpha=1.0,lw=2
-                        )
-                        ax_time.plot(
-                            self.ss_real_data[sel_loc].sel(site=site).time.values,
-                            self.real_ss_rbf.isel(site=isite,experiment=0)\
-                                .ss_interp.values.reshape(-1),
-                            c='royalblue',alpha=1.0,lw=2,label='Reconstructed SS -- MDA + RBF'
-                        )
-                        ax_time.set_xlim(
-                            datetime(2010,1,1), # self.ss_real_data[sel_loc].sel(site=site).time.values[0],
-                            datetime(2011,1,1)  # self.ss_real_data[sel_loc].sel(site=site).time.values[-1]
-                        ) # delete white spaces
-                        ax_time.legend(ncol=2,fontsize=20) # _fontsize_legend
-                        # validation plot
-                        ax_vali = fig.add_subplot(gs[:,2:])
-                        ax_vali.set_xlabel('Observation')
-                        ax_vali.set_ylabel('Prediction')
-                        scatterplot(
-                            self.ss_real_data[sel_loc].sel(site=site),
-                            self.real_ss_rbf.isel(site=isite,experiment=0)\
-                                .ss_interp.values.reshape(-1),
-                            ax=ax_vali
-                        )
-                        qqplot(
-                            self.ss_real_data[sel_loc].sel(site=site),
-                            self.real_ss_rbf.isel(site=isite,experiment=0)\
-                                .ss_interp.values.reshape(-1),
-                            ax=ax_vali
-                        )
-                        # add title
-                        fig.suptitle(
-                            title+' -- SITE: {}'.format(site),fontsize=_fontsize_title,y=1.1
-                        )
-                        # show the results
-                        plt.show()
+                    print('\n Lets plot the SS reconstructions for location {}!! \n'.format(
+                        sel_loc+1 # this is the shore            
+                    )) if plot else None
 
-                final_datasets.append(
-                    xr.concat(experiment_datasets,dim='experiment')
-                )
+                    # iterate over all the shores / just one location
+                    for isite, site in enumerate(self.ss_real_data[sel_loc].site.values):  
+
+                        experiment_datasets = []
+
+                        # iterate over all the available experiments
+                        for exp in range(len(self.real_ss_rbf.experiment)):
+
+                            # loop copy to avoid problems
+                            experiment_dataset = self.real_ss_rbf\
+                                .isel(site=isite,experiment=exp).copy()
+                            times_to_validate = experiment_dataset.time.values[
+                                idxs_not_in_subset # validate times not used in MDA+RBF model
+                            ]
+
+                            # try for available nodes or continue
+                            try:
+                                title, stats = generate_stats(
+                                    self.ss_real_data[sel_loc].sel(
+                                        site=site,time=times_to_validate).values,
+                                    experiment_dataset.ss_interp.sel(
+                                        time=times_to_validate).values.reshape(-1), # mda+rbf ss values
+                                    metrics=self.model_metrics,
+                                    ext_quantile=([0.9,0.95,0.99,0.999],0)
+                                )
+                            except:
+                                try:
+                                    title, stats = generate_stats(
+                                        self.ss_real_data[sel_loc].sel(
+                                            site=site,time=times_to_validate).values,
+                                        experiment_dataset.ss_interp.sel(
+                                            time=times_to_validate).values.reshape(-1), # mda+rbf ss values
+                                        not_nan_idxs=np.where(
+                                            (~np.isnan(self.ss_real_data[sel_loc].sel(
+                                                site=site,time=times_to_validate).values) &
+                                            ~np.isnan(experiment_dataset.ss_interp.sel(
+                                                time=times_to_validate).values.reshape(-1)))
+                                        )[0],
+                                        metrics=self.model_metrics,
+                                        ext_quantile=([0.9,0.95,0.99,0.999],0)
+                                    )
+                                except:
+                                    title, stats = generate_stats(
+                                        np.arange(100),
+                                        np.arange(100), # invented values
+                                        metrics=self.model_metrics,
+                                        ext_quantile=([0.9,0.95,0.99,0.999],0)
+                                    )
+
+                            # save results in list
+                            # print(experiment_dataset)
+                            for metric in list(stats.keys()):
+                                try:
+                                    experiment_dataset[metric] = experiment_dataset.perpcs*0 + \
+                                        stats[metric]
+                                except:
+                                    experiment_dataset[metric] = experiment_dataset.perpcs*0 + \
+                                        stats[metric][0]
+                            experiment_datasets.append(
+                                experiment_dataset # TODO: drop ss, .drop_vars('ss_interp')
+                            )
+
+                            if False:
+                                # figure spec-grid
+                                fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
+                                gs = gridspec.GridSpec(nrows=1,ncols=3)
+                                # time regular plot
+                                ax_time = fig.add_subplot(gs[:,:2])
+                                self.ss_real_data[sel_loc].sel(site=site).plot(
+                                    ax=ax_time,c='navy',label='Real SS measures',alpha=1.0,lw=2
+                                )
+                                ax_time.plot(
+                                    self.ss_real_data[sel_loc].sel(site=site).time.values,
+                                    self.real_ss_rbf.isel(site=isite,experiment=0)\
+                                        .ss_interp.values.reshape(-1),
+                                    c='royalblue',alpha=1.0,lw=2,label='Reconstructed SS -- MDA + RBF'
+                                )
+                                ax_time.set_xlim(
+                                    datetime(2010,1,1), # self.ss_real_data[sel_loc].sel(site=site).time.values[0],
+                                    datetime(2011,1,1)  # self.ss_real_data[sel_loc].sel(site=site).time.values[-1]
+                                ) # delete white spaces
+                                ax_time.legend(ncol=2,fontsize=20) # _fontsize_legend
+                                # validation plot
+                                ax_vali = fig.add_subplot(gs[:,2:])
+                                ax_vali.set_xlabel('Observation')
+                                ax_vali.set_ylabel('Prediction')
+                                scatterplot(
+                                    self.ss_real_data[sel_loc].sel(site=site),
+                                    self.real_ss_rbf.isel(site=isite,experiment=0)\
+                                        .ss_interp.values.reshape(-1),
+                                    ax=ax_vali
+                                )
+                                qqplot(
+                                    self.ss_real_data[sel_loc].sel(site=site),
+                                    self.real_ss_rbf.isel(site=isite,experiment=0)\
+                                        .ss_interp.values.reshape(-1),
+                                    ax=ax_vali
+                                )
+                                # add title
+                                fig.suptitle(
+                                    title+' -- SITE: {}'.format(site),fontsize=_fontsize_title,y=1.1
+                                )
+                                # show the results
+                                plt.show()
+
+                        final_datasets.append(
+                            xr.concat(experiment_datasets,dim='experiment')\
+                                .expand_dims({'val_kfold':[val_kfold]})
+                        )
 
         return xr.concat(final_datasets,dim='site') if ss_pcs==1 \
             else xr.concat(final_datasets,dim='shore')
 
 
 def MDA_RBF_algorithm(
-    pcs_data, ss_data, ss_pcs: int = 2,
+    pcs_data, ss_data, ss_pcs: int = 1,
     ss_scaler = None, # to de-standarize the pcs
-    percentage_pcs_ini: list = [0.6,0.9],
-    num_samples_ini: list = [100,500],
+    percentage_pcs_ini: list = [0.6,0.8],
+    num_samples_ini: list = [100,200],
     try_all: bool = False, append_extremes: int = 10,
     validate_rbf_kfold: bool = False,
-    plot: bool = False, verbose: bool = True,
+    plot: bool = True, verbose: bool = True,
     sel_loc = None):
 
     """
@@ -631,7 +661,7 @@ def MDA_RBF_algorithm(
         pcs_data (xarray.Dataset): These are the pcs of the slp fields, that can
             be previously calculate using generate_slp_data
         ss_data (xarray.Dataset): This is the variable/s to interpolate, and might 
-            be the storm surge or the pcs of the ss, in case the shore related
+            be the storm surge or the pcs of the SS, in case the shore related
             analysis is done over NZ
         ss_pcs (int, optional): This is the number of pcs that is wanted to be
             used when the ss-pcs are calculated. Defaults to 1, which means
@@ -639,10 +669,10 @@ def MDA_RBF_algorithm(
         ss_scaler (sklearn.Scaler, optional): This is the scikit-learn scaler
             that will be used to recalculate the real ss. Defaults to None.
         percentage_pcs_ini (list, optional): List with all the percentages that
-            will be used to crop the slp pcs. Defaults to [0.6,0.9].
+            will be used to crop the slp pcs. Defaults to [0.6,0.8].
         num_samples_ini (list, optional): List with all the integer numbers that
             represent the number of points the MDA algorithm will search for, and
-            then the RBF interpolation will use. Defaults to [100,500].
+            then the RBF interpolation will use. Defaults to [100,200].
         try_all (bool, optional): Whether to try or not all the possible combinations
             of the 2 previous defined parameters. Defaults to False.
         append_extremes (int, optional): Wheter to add or not the ss/pcs extreme values
@@ -651,13 +681,15 @@ def MDA_RBF_algorithm(
             once the process is done. Defaults to False.
         plot (bool, optional): Whether to plot or not the results. Defaults to True.
         verbose (bool, optional): Wheter to plot or not logs. Defaults to True.
-        sel_loc (int, None): This is the for loop iteration in calc_MDA_RBF
+        sel_loc (int, None): This is the for loop iteration in calc_MDA_RBF.
+            Defaults to None, but provided in calc_MDA_RBF().
 
     Returns:
         [xarray.Datasets]: xarray datasets with the data reconstructed
     """
 
     outs, real_sss = [], []
+    rbf_coeffs = []
 
     # try or not all different possibilities
     if try_all:
@@ -698,13 +730,12 @@ def MDA_RBF_algorithm(
             ss_data.time.values
         )
 
-        # get predictor and target with common times
-        # prepare datasets
+        # get predictor and target with common times and prepare datasets
         predictor_dataset = predictor_dataset.sel(time=common_times)
         target_dataset = ss_data.sel(time=common_times) if ss_pcs==1 else \
             ss_data.PCs.sel(time=common_times).isel(n_components=slice(0,ss_pcs))
         # use MDA to generate a demo dataset and subset for RBF interpolation
-        pcs_to_mda = num_pcs # used SLP pcs...
+        pcs_to_mda = 5 # used SLP pcs...
         ix_scalar_pred_mda = list(np.arange(pcs_to_mda+ss_pcs))
         ix_directional_pred = []
         # perform the mda analysis (this is the mda input data)
@@ -807,19 +838,9 @@ def MDA_RBF_algorithm(
             print('\n the RBF reconstruction did not converge... \n')
             continue
 
-        # TODO: add training metrics
-
-        # RBF Validation: using k-fold mean squared error methodology
-        if validate_rbf_kfold:
-            test = rbf_validation(
-                predictor_subset.values, ix_scalar_pred_rbf, ix_directional_pred,
-                target_subset.values.reshape(-1,ss_pcs), ix_scalar_t, ix_directional_t,
-                n_splits=3, shuffle=True
-            )
-
         # plot output results
         if plot:
-            for i_ss in range(1):
+            for i_ss in range(ss_pcs):
                 # figure spec-grid
                 fig = plt.figure(figsize=(_figsize_width*4.5,_figsize_height))
                 gs = gridspec.GridSpec(nrows=1,ncols=3)
@@ -830,7 +851,7 @@ def MDA_RBF_algorithm(
                 ) if ss_pcs==1 else target_dataset.isel(
                     time=idxs_not_in_subset,n_components=i_ss
                 ).plot(
-                    ax=ax_time,alpha=0.8,c=real_obs_col,label='Real SS observations'
+                    ax=ax_time,alpha=0.8,c=real_obs_col,label='Storm Surge PCs'
                 )
                 ax_time.plot(
                     common_times[idxs_not_in_subset],
@@ -863,10 +884,19 @@ def MDA_RBF_algorithm(
                 fig.suptitle(
                     'SS interpolation \n '+title,fontsize=_fontsize_title,y=1.1
                 ) if ss_pcs==1 else fig.suptitle(
-                    'PC1 interpolation',fontsize=_fontsize_title,y=1.1
+                    f'PC{i_ss} interpolation',fontsize=_fontsize_title,y=1.1
                 )
         # show the results
         plt.show()
+
+        # RBF Validation: using k-fold mean squared error methodology
+        if validate_rbf_kfold[0]:
+            test = rbf_validation(
+                predictor_subset.values, ix_scalar_pred_rbf, ix_directional_pred,
+                target_subset.values.reshape(-1,ss_pcs), ix_scalar_t, ix_directional_t,
+                n_splits=validate_rbf_kfold[1], shuffle=True
+            )
+            print(test)
 
         if ss_scaler:
             # reconstruct the ss values
@@ -899,5 +929,5 @@ def MDA_RBF_algorithm(
     real_ss_to_return = xr.concat(outs,dim='experiment') if ss_pcs==1 else \
         xr.concat(real_sss,dim='experiment') 
 
-    return real_ss_to_return
+    return real_ss_to_return, idxs_not_in_subset
 

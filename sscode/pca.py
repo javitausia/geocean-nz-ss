@@ -1,6 +1,6 @@
 # basics
 import os, sys
-# import progressbar
+# from progressbar import progressbar
 
 # arrays
 import numpy as np
@@ -94,7 +94,8 @@ class PCA_DynamicPred(object):
         if self.wind:
             winds = (True,
                 calculate_relative_winds(
-                    location=self.site_location, # this is the location of site
+                    location=self.site_location if 'proj' in wind_vars[0] \
+                        else None, # this is the location of site
                     uw=self.wind[self.wind_vars[3]].sel({
                         wind_vars[1]:slice(region[1][0],region[1][1]),
                         wind_vars[2]:slice(region[1][2],region[1][3])
@@ -105,13 +106,13 @@ class PCA_DynamicPred(object):
                     }),
                     lat_name=self.wind_vars[2],
                     lon_name=self.wind_vars[1]
-                )
+                ).load()
             )
         else:
-            winds = (False, None)
+            winds = (False,None)
         
         print('Assembling matrix') if self.verbose else None
-        print('Start', os.system('free -h')) if self.verbose else None
+        # print('Start', os.system('free -h')) if self.verbose else None
         # crop slp and winds to the region selected                                         
         if region[0]:
             pres = pres.sel({
@@ -131,7 +132,7 @@ class PCA_DynamicPred(object):
         else:
             pres = pres.resample(time=time_resample).mean().dropna(dim='time',how='all')
         if winds[0]:
-            wind = wind[wind_vars[0]].resample(time=time_resample).mean().fillna(0.0)\
+            wind = wind[wind_vars[0]].resample(time=time_resample).max().fillna(0.0)\
                 .interp(coords={wind_vars[1]:pres[pres_vars[1]],
                                 wind_vars[2]:pres[pres_vars[2]]}
                         )\
@@ -172,6 +173,8 @@ class PCA_DynamicPred(object):
                 if wind_add:
                     pcs_matrix[t,y_shape*(tl+grad_add):y_shape*(tl+grad_add+1)] = \
                         wind.isel(time=t-tl).values.reshape(-1)
+        print('\n pcs_matrix with shape: \n {} \n'.format(pcs_matrix.shape)) \
+            if self.verbose else None
                     
         # Might not be necessary but in some cases keeping memory usage
         # to a minimum is critical
@@ -479,17 +482,17 @@ class PCA_DynamicPred(object):
         pca_data_file, pca_scaler_file = self._pca_file_name()
         print("FILE", pca_data_file)
         
-        if not os.path.isfile(pca_data_file) or \
-            not os.path.isfile(pca_scaler_file):
+        if not os.path.isfile(pca_data_file): # or \
+            # not os.path.isfile(pca_scaler_file):
             return None, None
         
         # open a file, where you stored the pickled data
-        with open(pca_scaler_file, 'rb') as fin:
-            pca_scaler = pickle.load(fin)
+        # with open(pca_scaler_file, 'rb') as fin:
+        #     pca_scaler = pickle.load(fin)
             
         pca_data = xr.open_dataset(pca_data_file)
 
-        return pca_data, pca_scaler
+        return pca_data, True # pca_scaler
     
     
     def pcs_save(self,

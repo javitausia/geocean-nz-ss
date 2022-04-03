@@ -126,9 +126,6 @@ def rbf_reconstruction(
     sigma_max = 0.8 # edit ...
 
     # normalize subset and dataset
-    # print(dataset)
-    # print(ix_scalar_subset)
-    # print(ix_directional_subset)
     dataset_norm, mins, maxs = normalize(
         dataset, ix_scalar_subset, ix_directional_subset, [], []
     )
