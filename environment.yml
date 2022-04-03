@@ -29,3 +29,4 @@ dependencies:
     - great_circle_calculator
     - geopy
     - hydroeval
+    - cmocean
