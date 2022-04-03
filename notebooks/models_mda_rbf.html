@@ -491,13 +491,59 @@ in the precision of the technique. In the methodology of propagation of the mari
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from [&#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/Volumes/ToshibaJT/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;] 
 
 
  loading the Moana v2 hindcast data... 
 
 
  loading the UHSLC tidal guages... 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;xarray.Dataset&gt;
+ Dimensions:    (time: 11354, longitude: 101, latitude: 101)
+ Coordinates:
+   * time       (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-01-31
+   * longitude  (longitude) float32 140.0 140.5 141.0 141.5 ... 189.0 189.5 190.0
+   * latitude   (latitude) float32 -70.0 -69.5 -69.0 -68.5 ... -21.0 -20.5 -20.0
+ Data variables:
+     SLP        (time, latitude, longitude) float64 ...,
+ &lt;xarray.Dataset&gt;
+ Dimensions:          (time: 11444, lat: 160, lon: 161)
+ Coordinates:
+   * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
+   * lat              (lat) float32 -69.78 -69.47 -69.16 ... -20.76 -20.45 -20.14
+   * lon              (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
+ Data variables:
+     U_GRD_L103       (time, lat, lon) float32 ...
+     V_GRD_L103       (time, lat, lon) float32 ...
+     wind_proj        (time, lat, lon) float64 ...
+     bearings         (lat, lon) float64 ...
+     direc_proj_math  (lat, lon) float64 ...
+     wind_proj_mask   (time, lat, lon) float64 ...,
+ &lt;xarray.Dataset&gt;
+ Dimensions:  (site: 1448, time: 209736)
+ Coordinates:
+   * site     (site) int64 0 1 2 3 4 5 6 7 ... 1441 1442 1443 1444 1445 1446 1447
+   * time     (time) datetime64[ns] 1994-01-17 1994-01-17T01:00:00 ... 2017-12-09
+ Data variables:
+     elev     (site, time) float32 ...
+     lat      (site) float64 ...
+     lon      (site) float64 ...
+     msea     (site, time) float32 ...
+     res      (site, time) float32 ...
+     ss       (site, time) float32 ...
+     tide     (site, time) float32 ...
+     trend    (site, time) float32 ...)
 </pre></div>
 </div>
 </div>
@@ -620,10 +666,12 @@ in the precision of the technique. In the methodology of propagation of the mari
 <span class="n">pca_attrs_default</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;pres_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;SLP&#39;</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span>
     <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span> 
+    <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+        <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+    <span class="p">),</span> 
     <span class="s1">&#39;wind_vars&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;wind_proj_mask&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;U_GRD_L103&#39;</span><span class="p">,</span><span class="s1">&#39;V_GRD_L103&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
-    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)),</span>
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay,</span>
+    <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="n">default_region_reduced</span><span class="p">,</span>
     <span class="s1">&#39;pca_plot&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="s1">&#39;pca_ttls&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
@@ -641,14 +689,17 @@ in the precision of the technique. In the methodology of propagation of the mari
 
 <span class="c1"># construct the MDA + RBF object</span>
 <span class="n">mda_rbf_model</span> <span class="o">=</span> <span class="n">MDA_RBF_Model</span><span class="p">(</span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="p">,</span> <span class="c1"># this is the storm surge </span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">50</span><span class="p">)),</span> <span class="c1"># this is the storm surge </span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+        <span class="n">longitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="n">latitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+    <span class="p">),</span>
     <span class="n">pca_attrs_default</span><span class="p">,</span> <span class="c1"># all params to calculate the pcs</span>
     <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span>
     <span class="c1"># -------------------------------------------------------- #</span>
     <span class="c1"># set sites_to_analyze to None to shore analysis</span>
-    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="kc">None</span> <span class="c1"># list(sites_to_analyze)</span>
+    <span class="n">sites_to_analyze</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># list(sites_to_analyze)</span>
     <span class="c1"># -------------------------------------------------------- #</span>
+    <span class="n">lons</span><span class="o">=</span><span class="p">[</span><span class="mi">173</span><span class="p">],</span><span class="n">lats</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">41.58</span><span class="p">],</span><span class="n">min_dist_th</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">],</span><span class="n">extra_help</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">)]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -657,286 +708,126 @@ in the precision of the technique. In the methodology of propagation of the mari
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Initializing the MDA + RBF constructor... 
 
 
- with longitudes = [171.2, 166.0, 174.5, 176.6, 174.9] 
+ with longitudes = [173] 
  
  and 
  
- latitudes = [-41.5, -50.8, -39.9, -37.8, -38.3] !!                 
+ latitudes = [-41.58] !!                 
 
  for the specified middle locations / shores !!
 
  lets calculate the storm surge pcs... 
-
-
- All the SS pcs have been calculated, lets plot what we got!! 
 </pre></div>
 </div>
-<img alt="../_images/models_mda_rbf_6_1.png" src="../_images/models_mda_rbf_6_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> data will be resampled to 1D 
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Input</span> <span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>       <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>       <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="p">)[::</span><span class="mi">10</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="c1"># construct the MDA + RBF object</span>
+<span class="ne">---&gt; </span><span class="mi">27</span> <span class="n">mda_rbf_model</span> <span class="o">=</span> <span class="n">MDA_RBF_Model</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">50</span><span class="p">)),</span> <span class="c1"># this is the storm surge </span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span>     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>         <span class="n">longitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="n">latitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>     <span class="p">),</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="n">pca_attrs_default</span><span class="p">,</span> <span class="c1"># all params to calculate the pcs</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">34</span>     <span class="c1"># -------------------------------------------------------- #</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span>     <span class="c1"># set sites_to_analyze to None to shore analysis</span>
+<span class="g g-Whitespace">     </span><span class="mi">36</span>     <span class="n">sites_to_analyze</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># list(sites_to_analyze)</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span>     <span class="c1"># -------------------------------------------------------- #</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span>     <span class="n">lons</span><span class="o">=</span><span class="p">[</span><span class="mi">173</span><span class="p">],</span><span class="n">lats</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">41.58</span><span class="p">],</span><span class="n">min_dist_th</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">],</span><span class="n">extra_help</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">)]</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="p">)</span>
 
- and the PC analysis             will be calculated using the parameters 
+<span class="nn">File ~/Documents/geocean-nz-ss/sscode/mda_rbf.py:192,</span> in <span class="ni">MDA_RBF_Model.__init__</span><span class="nt">(self, ss_data, slp_data, dict_to_pca, model_metrics, ss_data_attrs, sites_to_analyze, lons, lats, min_dist_th, extra_help, time_resample, verbose, plot)</span>
+<span class="g g-Whitespace">    </span><span class="mi">189</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_attrs</span> <span class="o">=</span> <span class="n">ss_data_attrs</span> <span class="c1"># moana / other, vars and coords</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> lets calculate the storm surge pcs... </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> \
+<span class="g g-Whitespace">    </span><span class="mi">191</span>     <span class="k">if</span> <span class="kc">True</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="ne">--&gt; </span><span class="mi">192</span> <span class="n">ss_tuple_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_ss_data</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">193</span>     <span class="n">min_dist_th</span><span class="p">,</span> <span class="n">extra_help</span>
+<span class="g g-Whitespace">    </span><span class="mi">194</span> <span class="p">)</span> <span class="c1"># generate the lists with the ss pcs...</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span> <span class="c1"># save all the returned lists</span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_pcs_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_real_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_scalers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shore_sites</span> <span class="o">=</span> <span class="n">ss_tuple_data</span>
 
- {&#39;pres_vars&#39;: (&#39;SLP&#39;, &#39;longitude&#39;, &#39;latitude&#39;), &#39;calculate_gradient&#39;: True, &#39;wind&#39;: &lt;xarray.Dataset&gt;
-Dimensions:          (time: 11444, lat: 160, lon: 161)
-Coordinates:
-  * time             (time) datetime64[ns] 1990-01-01 1990-01-02 ... 2021-05-01
-  * lat              (lat) float32 -69.78 -69.47 -69.16 ... -20.76 -20.45 -20.14
-  * lon              (lon) float32 140.0 140.3 140.6 140.9 ... 189.4 189.7 190.0
-Data variables:
-    U_GRD_L103       (time, lat, lon) float32 ...
-    V_GRD_L103       (time, lat, lon) float32 ...
-    wind_proj        (time, lat, lon) float64 ...
-    bearings         (lat, lon) float64 ...
-    direc_proj_math  (lat, lon) float64 ...
-    wind_proj_mask   (time, lat, lon) float64 ..., &#39;wind_vars&#39;: (&#39;wind_proj_mask&#39;, &#39;lon&#39;, &#39;lat&#39;, &#39;U_GRD_L103&#39;, &#39;V_GRD_L103&#39;), &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5)), &#39;pca_plot&#39;: (True, False, 1), &#39;verbose&#39;: True, &#39;pca_ttls&#39;: [&#39;SLP in t&#39;, &#39;Grad in t&#39;, &#39;Winds in t&#39;]} 
+<span class="nn">File ~/Documents/geocean-nz-ss/sscode/mda_rbf.py:286,</span> in <span class="ni">MDA_RBF_Model.generate_ss_data</span><span class="nt">(self, min_dist_th, extra_help)</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span>     <span class="n">sites_in_list</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sites_in_shore</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span> <span class="c1"># # lets find, not founded sites</span>
+<span class="g g-Whitespace">    </span><span class="mi">256</span> <span class="c1"># sites_out_list = []  # these are the sites which are not in the shores</span>
+<span class="g g-Whitespace">    </span><span class="mi">257</span> <span class="c1"># for site in self.raw_ss_data.site.values:</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">284</span> 
+<span class="g g-Whitespace">    </span><span class="mi">285</span> <span class="c1"># save as list with all the data for the pcs</span>
+<span class="ne">--&gt; </span><span class="mi">286</span> <span class="n">raw_ss_locs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_ss_data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">287</span>         <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_attrs</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span>
+<span class="g g-Whitespace">    </span><span class="mi">288</span>     <span class="p">)</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_resample</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> \
+<span class="nn">    289     .dropna(dim=&#39;time&#39;,how=&#39;all&#39;) for i</span> in <span class="ni">range</span><span class="nt">(self.num_locs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span> <span class="p">]</span> <span class="c1"># num_locs==len(sites) if working</span>
+<span class="g g-Whitespace">    </span><span class="mi">292</span> <span class="c1"># calculate the pcs of all the shores</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="n">ss_pcs_locs</span><span class="p">,</span> <span class="n">ss_scalers_locs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span> <span class="c1"># lists to save the data</span>
 
+<span class="nn">File ~/Documents/geocean-nz-ss/sscode/mda_rbf.py:286,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span>     <span class="n">sites_in_list</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sites_in_shore</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span> <span class="c1"># # lets find, not founded sites</span>
+<span class="g g-Whitespace">    </span><span class="mi">256</span> <span class="c1"># sites_out_list = []  # these are the sites which are not in the shores</span>
+<span class="g g-Whitespace">    </span><span class="mi">257</span> <span class="c1"># for site in self.raw_ss_data.site.values:</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">284</span> 
+<span class="g g-Whitespace">    </span><span class="mi">285</span> <span class="c1"># save as list with all the data for the pcs</span>
+<span class="ne">--&gt; </span><span class="mi">286</span> <span class="n">raw_ss_locs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_ss_data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">287</span>         <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_attrs</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span>
+<span class="g g-Whitespace">    </span><span class="mi">288</span>     <span class="p">)</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_resample</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> \
+<span class="nn">    289     .dropna(dim=&#39;time&#39;,how=&#39;all&#39;) for i</span> in <span class="ni">range</span><span class="nt">(self.num_locs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span> <span class="p">]</span> <span class="c1"># num_locs==len(sites) if working</span>
+<span class="g g-Whitespace">    </span><span class="mi">292</span> <span class="c1"># calculate the pcs of all the shores</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="n">ss_pcs_locs</span><span class="p">,</span> <span class="n">ss_scalers_locs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span> <span class="c1"># lists to save the data</span>
 
- lets calculate the slp pcs... 
+<span class="nn">File /opt/miniconda3/envs/ssnz/lib/python3.8/site-packages/xarray/core/dataset.py:2500,</span> in <span class="ni">Dataset.sel</span><span class="nt">(self, indexers, method, tolerance, drop, **indexers_kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2439</span> <span class="sd">&quot;&quot;&quot;Returns a new dataset with each array indexed by tick labels</span>
+<span class="g g-Whitespace">   </span><span class="mi">2440</span><span class="sd"> along the specified dimension(s).</span>
+<span class="g g-Whitespace">   </span><span class="mi">2441</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2497</span><span class="sd"> DataArray.sel</span>
+<span class="g g-Whitespace">   </span><span class="mi">2498</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">2499</span> <span class="n">indexers</span> <span class="o">=</span> <span class="n">either_dict_or_kwargs</span><span class="p">(</span><span class="n">indexers</span><span class="p">,</span> <span class="n">indexers_kwargs</span><span class="p">,</span> <span class="s2">&quot;sel&quot;</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">2500</span> <span class="n">pos_indexers</span><span class="p">,</span> <span class="n">new_indexes</span> <span class="o">=</span> <span class="n">remap_label_indexers</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2501</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">indexers</span><span class="o">=</span><span class="n">indexers</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span>
+<span class="g g-Whitespace">   </span><span class="mi">2502</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2503</span> <span class="c1"># TODO: benbovy - flexible indexes: also use variables returned by Index.query</span>
+<span class="g g-Whitespace">   </span><span class="mi">2504</span> <span class="c1"># (temporary dirty fix).</span>
+<span class="g g-Whitespace">   </span><span class="mi">2505</span> <span class="n">new_indexes</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_indexes</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
- 
+<span class="nn">File /opt/miniconda3/envs/ssnz/lib/python3.8/site-packages/xarray/core/coordinates.py:421,</span> in <span class="ni">remap_label_indexers</span><span class="nt">(obj, indexers, method, tolerance, **indexers_kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">414</span> <span class="n">indexers</span> <span class="o">=</span> <span class="n">either_dict_or_kwargs</span><span class="p">(</span><span class="n">indexers</span><span class="p">,</span> <span class="n">indexers_kwargs</span><span class="p">,</span> <span class="s2">&quot;remap_label_indexers&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span> <span class="n">v_indexers</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">417</span>     <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DataArray</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
+<span class="nn">    418     for k, v</span> in <span class="ni">indexers.items</span><span class="nt">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">419</span> <span class="p">}</span>
+<span class="ne">--&gt; </span><span class="mi">421</span> <span class="n">pos_indexers</span><span class="p">,</span> <span class="n">new_indexes</span> <span class="o">=</span> <span class="n">indexing</span><span class="o">.</span><span class="n">remap_label_indexers</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">422</span>     <span class="n">obj</span><span class="p">,</span> <span class="n">v_indexers</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span>
+<span class="g g-Whitespace">    </span><span class="mi">423</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">424</span> <span class="c1"># attach indexer&#39;s coordinate to pos_indexers</span>
+<span class="g g-Whitespace">    </span><span class="mi">425</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">indexers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-             The slp pcs will be calculated for all the locations / shores...             
+<span class="nn">File /opt/miniconda3/envs/ssnz/lib/python3.8/site-packages/xarray/core/indexing.py:121,</span> in <span class="ni">remap_label_indexers</span><span class="nt">(data_obj, indexers, method, tolerance)</span>
+<span class="g g-Whitespace">    </span><span class="mi">119</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indexes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">120</span>     <span class="n">labels</span> <span class="o">=</span> <span class="n">grouped_indexers</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">121</span>     <span class="n">idxr</span><span class="p">,</span> <span class="n">new_idx</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">122</span>     <span class="n">pos_indexers</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">idxr</span>
+<span class="g g-Whitespace">    </span><span class="mi">123</span>     <span class="k">if</span> <span class="n">new_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-Assembling matrixation for site / shore 1
-Start 32512
+<span class="nn">File /opt/miniconda3/envs/ssnz/lib/python3.8/site-packages/xarray/core/indexes.py:247,</span> in <span class="ni">PandasIndex.query</span><span class="nt">(self, labels, method, tolerance)</span>
+<span class="g g-Whitespace">    </span><span class="mi">245</span>         <span class="n">indexer</span> <span class="o">=</span> <span class="n">get_indexer_nd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">246</span>         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">indexer</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">247</span>             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not all values found in index </span><span class="si">{</span><span class="n">coord_name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">249</span> <span class="k">return</span> <span class="n">indexer</span><span class="p">,</span> <span class="kc">None</span>
 
- adding the wind to the predictor... 
+<span class="ne">KeyError</span>: &quot;not all values found in index &#39;site&#39;&quot;
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
- (11354, 11, 10) 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 11, 10) 
-
-
- calculating PCs matrix with shape: 
- (11353, 330) 
-
-Computing using CPU
-matrix (11353, 330)
-PCs (11353, 330)
-comp (330, 330)
-var (330,)
-lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
-array([169. , 169.5, 170. , 170.5, 171. , 171.5, 172. , 172.5, 173. , 173.5],
-      dtype=float32)
-Coordinates:
-  * longitude  (longitude) float32 169.0 169.5 170.0 170.5 ... 172.5 173.0 173.5
-lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 11)&gt;
-array([-44. , -43.5, -43. , -42.5, -42. , -41.5, -41. , -40.5, -40. , -39.5,
-       -39. ], dtype=float32)
-Coordinates:
-  * latitude  (latitude) float32 -44.0 -43.5 -43.0 -42.5 ... -40.0 -39.5 -39.0
-time (11353,)
-
- plotting 1 components with 3 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_6_5.png" src="../_images/models_mda_rbf_6_5.png" />
-<img alt="../_images/models_mda_rbf_6_6.png" src="../_images/models_mda_rbf_6_6.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 2
-Start 32512
-
- adding the wind to the predictor... 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
- (11354, 10, 11) 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 10, 11) 
-
-
- calculating PCs matrix with shape: 
- (11353, 330) 
-
-Computing using CPU
-matrix (11353, 330)
-PCs (11353, 330)
-comp (330, 330)
-var (330,)
-lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 11)&gt;
-array([163.5, 164. , 164.5, 165. , 165.5, 166. , 166.5, 167. , 167.5, 168. ,
-       168.5], dtype=float32)
-Coordinates:
-  * longitude  (longitude) float32 163.5 164.0 164.5 165.0 ... 167.5 168.0 168.5
-lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
-array([-53. , -52.5, -52. , -51.5, -51. , -50.5, -50. , -49.5, -49. , -48.5],
-      dtype=float32)
-Coordinates:
-  * latitude  (latitude) float32 -53.0 -52.5 -52.0 -51.5 ... -49.5 -49.0 -48.5
-time (11353,)
-
- plotting 1 components with 3 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_6_10.png" src="../_images/models_mda_rbf_6_10.png" />
-<img alt="../_images/models_mda_rbf_6_11.png" src="../_images/models_mda_rbf_6_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 3
-Start 32512
-
- adding the wind to the predictor... 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
- (11354, 10, 11) 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 10, 11) 
-
-
- calculating PCs matrix with shape: 
- (11353, 330) 
-
-Computing using CPU
-matrix (11353, 330)
-PCs (11353, 330)
-comp (330, 330)
-var (330,)
-lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 11)&gt;
-array([172. , 172.5, 173. , 173.5, 174. , 174.5, 175. , 175.5, 176. , 176.5,
-       177. ], dtype=float32)
-Coordinates:
-  * longitude  (longitude) float32 172.0 172.5 173.0 173.5 ... 176.0 176.5 177.0
-lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
-array([-42. , -41.5, -41. , -40.5, -40. , -39.5, -39. , -38.5, -38. , -37.5],
-      dtype=float32)
-Coordinates:
-  * latitude  (latitude) float32 -42.0 -41.5 -41.0 -40.5 ... -38.5 -38.0 -37.5
-time (11353,)
-
- plotting 1 components with 3 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_6_15.png" src="../_images/models_mda_rbf_6_15.png" />
-<img alt="../_images/models_mda_rbf_6_16.png" src="../_images/models_mda_rbf_6_16.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 4
-Start 32512
-
- adding the wind to the predictor... 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
- (11354, 10, 10) 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 10, 10) 
-
-
- calculating PCs matrix with shape: 
- (11353, 300) 
-
-Computing using CPU
-matrix (11353, 300)
-PCs (11353, 300)
-comp (300, 300)
-var (300,)
-lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
-array([174.5, 175. , 175.5, 176. , 176.5, 177. , 177.5, 178. , 178.5, 179. ],
-      dtype=float32)
-Coordinates:
-  * longitude  (longitude) float32 174.5 175.0 175.5 176.0 ... 178.0 178.5 179.0
-lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
-array([-40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5],
-      dtype=float32)
-Coordinates:
-  * latitude  (latitude) float32 -40.0 -39.5 -39.0 -38.5 ... -36.5 -36.0 -35.5
-time (11353,)
-
- plotting 1 components with 3 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_6_20.png" src="../_images/models_mda_rbf_6_20.png" />
-<img alt="../_images/models_mda_rbf_6_21.png" src="../_images/models_mda_rbf_6_21.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrixation for site / shore 5
-Start 32512
-
- adding the wind to the predictor... 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sh: free: command not found
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> winds predictor with shape: 
- (11354, 10, 10) 
-
-
- calculating the gradient of the sea-level-pressure fields... 
-
-
- pressure/gradient predictor both with shape: 
- (11354, 10, 10) 
-
-
- calculating PCs matrix with shape: 
- (11353, 300) 
-
-Computing using CPU
-matrix (11353, 300)
-PCs (11353, 300)
-comp (300, 300)
-var (300,)
-lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
-array([172.5, 173. , 173.5, 174. , 174.5, 175. , 175.5, 176. , 176.5, 177. ],
-      dtype=float32)
-Coordinates:
-  * longitude  (longitude) float32 172.5 173.0 173.5 174.0 ... 176.0 176.5 177.0
-lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
-array([-40.5, -40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. ],
-      dtype=float32)
-Coordinates:
-  * latitude  (latitude) float32 -40.5 -40.0 -39.5 -39.0 ... -37.0 -36.5 -36.0
-time (11353,)
-
- plotting 1 components with 3 EOFs + PC... 
-
-
- being the EOFs the slp, the gradient, in steps t, t-1 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_6_25.png" src="../_images/models_mda_rbf_6_25.png" />
-<img alt="../_images/models_mda_rbf_6_26.png" src="../_images/models_mda_rbf_6_26.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -944,16 +835,6 @@ time (11353,)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">mda_rbf_model</span><span class="o">.</span><span class="n">shore_sites</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
-[]
-[]
-[]
-[]
-[]
 </pre></div>
 </div>
 </div>
@@ -980,521 +861,6 @@ time (11353,)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets interpolate the SS using all the calculated             pcs (slp + ss) and the MDA+RBF technique!!             This interpolation will be performed in all the locations!! 
-
-
- Lets reconstruct the SS for location 1!! 
-
-
- ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 50 samples!! 
-
- which means 5 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_1.png" src="../_images/models_mda_rbf_9_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.52 | interpolation: 0.49 | sigma: 0.4936
-ix_scalar: 1,  optimization: 0.61 | interpolation: 0.37 | sigma: 0.3711
-ix_scalar: 2,  optimization: 0.46 | interpolation: 0.35 | sigma: 0.3462
-ix_scalar: 3,  optimization: 0.67 | interpolation: 0.68 | sigma: 0.6833
-ix_scalar: 4,  optimization: 0.49 | interpolation: 0.38 | sigma: 0.3847
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_3.png" src="../_images/models_mda_rbf_9_3.png" />
-<img alt="../_images/models_mda_rbf_9_4.png" src="../_images/models_mda_rbf_9_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 50 samples!! 
-
- which means 14 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_6.png" src="../_images/models_mda_rbf_9_6.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 58 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.39 | interpolation: 0.39 | sigma: 0.3913
-ix_scalar: 1,  optimization: 0.38 | interpolation: 0.39 | sigma: 0.3902
-ix_scalar: 2,  optimization: 1.04 | interpolation: 0.45 | sigma: 0.4494
-ix_scalar: 3,  optimization: 0.38 | interpolation: 0.45 | sigma: 0.4540
-ix_scalar: 4,  optimization: 0.45 | interpolation: 0.67 | sigma: 0.6670
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_8.png" src="../_images/models_mda_rbf_9_8.png" />
-<img alt="../_images/models_mda_rbf_9_9.png" src="../_images/models_mda_rbf_9_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 100 samples!! 
-
- which means 5 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_11.png" src="../_images/models_mda_rbf_9_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 1.69 | interpolation: 0.39 | sigma: 0.3910
-ix_scalar: 1,  optimization: 2.89 | interpolation: 0.43 | sigma: 0.4276
-ix_scalar: 2,  optimization: 1.45 | interpolation: 0.49 | sigma: 0.4863
-ix_scalar: 3,  optimization: 2.37 | interpolation: 0.38 | sigma: 0.3798
-ix_scalar: 4,  optimization: 3.03 | interpolation: 0.53 | sigma: 0.5294
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_13.png" src="../_images/models_mda_rbf_9_13.png" />
-<img alt="../_images/models_mda_rbf_9_14.png" src="../_images/models_mda_rbf_9_14.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 100 samples!! 
-
- which means 14 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_16.png" src="../_images/models_mda_rbf_9_16.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 108 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 1.57 | interpolation: 0.52 | sigma: 0.5204
-ix_scalar: 1,  optimization: 1.28 | interpolation: 0.67 | sigma: 0.6693
-ix_scalar: 2,  optimization: 4.02 | interpolation: 0.43 | sigma: 0.4334
-ix_scalar: 3,  optimization: 1.38 | interpolation: 0.54 | sigma: 0.5361
-ix_scalar: 4,  optimization: 1.34 | interpolation: 0.43 | sigma: 0.4307
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_18.png" src="../_images/models_mda_rbf_9_18.png" />
-<img alt="../_images/models_mda_rbf_9_19.png" src="../_images/models_mda_rbf_9_19.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 1!! 
-
-
- Lets reconstruct the SS for location 2!! 
-
-
- ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 50 samples!! 
-
- which means 3 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_21.png" src="../_images/models_mda_rbf_9_21.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.42 | interpolation: 0.34 | sigma: 0.3429
-ix_scalar: 1,  optimization: 0.82 | interpolation: 0.35 | sigma: 0.3456
-ix_scalar: 2,  optimization: 0.56 | interpolation: 0.34 | sigma: 0.3357
-ix_scalar: 3,  optimization: 0.75 | interpolation: 0.35 | sigma: 0.3495
-ix_scalar: 4,  optimization: 0.79 | interpolation: 0.38 | sigma: 0.3806
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_23.png" src="../_images/models_mda_rbf_9_23.png" />
-<img alt="../_images/models_mda_rbf_9_24.png" src="../_images/models_mda_rbf_9_24.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 50 samples!! 
-
- which means 7 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_26.png" src="../_images/models_mda_rbf_9_26.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.89 | interpolation: 0.36 | sigma: 0.3569
-ix_scalar: 1,  optimization: 0.88 | interpolation: 0.36 | sigma: 0.3560
-ix_scalar: 2,  optimization: 0.37 | interpolation: 0.38 | sigma: 0.3777
-ix_scalar: 3,  optimization: 1.06 | interpolation: 0.40 | sigma: 0.4013
-ix_scalar: 4,  optimization: 0.98 | interpolation: 0.40 | sigma: 0.3998
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_28.png" src="../_images/models_mda_rbf_9_28.png" />
-<img alt="../_images/models_mda_rbf_9_29.png" src="../_images/models_mda_rbf_9_29.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 100 samples!! 
-
- which means 3 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_31.png" src="../_images/models_mda_rbf_9_31.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 1.36 | interpolation: 0.37 | sigma: 0.3659
-ix_scalar: 1,  optimization: 2.55 | interpolation: 0.39 | sigma: 0.3883
-ix_scalar: 2,  optimization: 3.05 | interpolation: 0.36 | sigma: 0.3624
-ix_scalar: 3,  optimization: 2.93 | interpolation: 0.36 | sigma: 0.3649
-ix_scalar: 4,  optimization: 2.83 | interpolation: 0.37 | sigma: 0.3672
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_33.png" src="../_images/models_mda_rbf_9_33.png" />
-<img alt="../_images/models_mda_rbf_9_34.png" src="../_images/models_mda_rbf_9_34.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 100 samples!! 
-
- which means 7 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_36.png" src="../_images/models_mda_rbf_9_36.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 2.89 | interpolation: 0.39 | sigma: 0.3897
-ix_scalar: 1,  optimization: 2.77 | interpolation: 0.39 | sigma: 0.3905
-ix_scalar: 2,  optimization: 1.41 | interpolation: 0.46 | sigma: 0.4592
-ix_scalar: 3,  optimization: 1.53 | interpolation: 0.38 | sigma: 0.3807
-ix_scalar: 4,  optimization: 1.60 | interpolation: 0.38 | sigma: 0.3808
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_38.png" src="../_images/models_mda_rbf_9_38.png" />
-<img alt="../_images/models_mda_rbf_9_39.png" src="../_images/models_mda_rbf_9_39.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 2!! 
-
-
- Lets reconstruct the SS for location 3!! 
-
-
- ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 50 samples!! 
-
- which means 6 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_41.png" src="../_images/models_mda_rbf_9_41.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.53 | interpolation: 0.35 | sigma: 0.3491
-ix_scalar: 1,  optimization: 0.52 | interpolation: 0.37 | sigma: 0.3655
-ix_scalar: 2,  optimization: 0.77 | interpolation: 0.36 | sigma: 0.3650
-ix_scalar: 3,  optimization: 0.32 | interpolation: 0.36 | sigma: 0.3588
-ix_scalar: 4,  optimization: 0.91 | interpolation: 0.37 | sigma: 0.3655
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_43.png" src="../_images/models_mda_rbf_9_43.png" />
-<img alt="../_images/models_mda_rbf_9_44.png" src="../_images/models_mda_rbf_9_44.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 50 samples!! 
-
- which means 14 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_46.png" src="../_images/models_mda_rbf_9_46.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.94 | interpolation: 0.42 | sigma: 0.4197
-ix_scalar: 1,  optimization: 0.89 | interpolation: 0.39 | sigma: 0.3914
-ix_scalar: 2,  optimization: 0.91 | interpolation: 0.39 | sigma: 0.3897
-ix_scalar: 3,  optimization: 0.37 | interpolation: 0.39 | sigma: 0.3931
-ix_scalar: 4,  optimization: 1.03 | interpolation: 0.43 | sigma: 0.4271
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_48.png" src="../_images/models_mda_rbf_9_48.png" />
-<img alt="../_images/models_mda_rbf_9_49.png" src="../_images/models_mda_rbf_9_49.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 100 samples!! 
-
- which means 6 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_51.png" src="../_images/models_mda_rbf_9_51.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 2.02 | interpolation: 0.39 | sigma: 0.3876
-ix_scalar: 1,  optimization: 1.27 | interpolation: 0.39 | sigma: 0.3920
-ix_scalar: 2,  optimization: 1.25 | interpolation: 0.38 | sigma: 0.3823
-ix_scalar: 3,  optimization: 1.19 | interpolation: 0.39 | sigma: 0.3899
-ix_scalar: 4,  optimization: 1.89 | interpolation: 0.40 | sigma: 0.4017
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_53.png" src="../_images/models_mda_rbf_9_53.png" />
-<img alt="../_images/models_mda_rbf_9_54.png" src="../_images/models_mda_rbf_9_54.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 100 samples!! 
-
- which means 14 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_56.png" src="../_images/models_mda_rbf_9_56.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 110 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 1.73 | interpolation: 0.47 | sigma: 0.4654
-ix_scalar: 1,  optimization: 3.48 | interpolation: 0.48 | sigma: 0.4752
-ix_scalar: 2,  optimization: 4.51 | interpolation: 0.49 | sigma: 0.4856
-ix_scalar: 3,  optimization: 1.37 | interpolation: 0.48 | sigma: 0.4773
-ix_scalar: 4,  optimization: 3.76 | interpolation: 0.42 | sigma: 0.4233
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_58.png" src="../_images/models_mda_rbf_9_58.png" />
-<img alt="../_images/models_mda_rbf_9_59.png" src="../_images/models_mda_rbf_9_59.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 3!! 
-
-
- Lets reconstruct the SS for location 4!! 
-
-
- ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 50 samples!! 
-
- which means 6 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_61.png" src="../_images/models_mda_rbf_9_61.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.59 | interpolation: 0.48 | sigma: 0.4758
-ix_scalar: 1,  optimization: 0.58 | interpolation: 0.48 | sigma: 0.4805
-ix_scalar: 2,  optimization: 0.41 | interpolation: 0.43 | sigma: 0.4278
-ix_scalar: 3,  optimization: 1.11 | interpolation: 0.45 | sigma: 0.4508
-ix_scalar: 4,  optimization: 0.94 | interpolation: 0.37 | sigma: 0.3700
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_63.png" src="../_images/models_mda_rbf_9_63.png" />
-<img alt="../_images/models_mda_rbf_9_64.png" src="../_images/models_mda_rbf_9_64.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 50 samples!! 
-
- which means 15 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_66.png" src="../_images/models_mda_rbf_9_66.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 59 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 1.18 | interpolation: 0.46 | sigma: 0.4618
-ix_scalar: 1,  optimization: 0.44 | interpolation: 0.65 | sigma: 0.6550
-ix_scalar: 2,  optimization: 0.88 | interpolation: 0.81 | sigma: 0.8067
-ix_scalar: 3,  optimization: 0.57 | interpolation: 0.50 | sigma: 0.4986
-ix_scalar: 4,  optimization: 0.64 | interpolation: 0.62 | sigma: 0.6219
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_68.png" src="../_images/models_mda_rbf_9_68.png" />
-<img alt="../_images/models_mda_rbf_9_69.png" src="../_images/models_mda_rbf_9_69.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 100 samples!! 
-
- which means 6 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_71.png" src="../_images/models_mda_rbf_9_71.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 2.76 | interpolation: 0.47 | sigma: 0.4741
-ix_scalar: 1,  optimization: 2.33 | interpolation: 0.46 | sigma: 0.4616
-ix_scalar: 2,  optimization: 1.88 | interpolation: 0.53 | sigma: 0.5322
-ix_scalar: 3,  optimization: 3.18 | interpolation: 0.53 | sigma: 0.5256
-ix_scalar: 4,  optimization: 1.86 | interpolation: 1.53 | sigma: 1.5324
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_73.png" src="../_images/models_mda_rbf_9_73.png" />
-<img alt="../_images/models_mda_rbf_9_74.png" src="../_images/models_mda_rbf_9_74.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 100 samples!! 
-
- which means 15 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_76.png" src="../_images/models_mda_rbf_9_76.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 109 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 2.18 | interpolation: 0.56 | sigma: 0.5579
-ix_scalar: 1,  optimization: 1.48 | interpolation: 0.50 | sigma: 0.5034
-ix_scalar: 2,  optimization: 3.08 | interpolation: 0.54 | sigma: 0.5358
-ix_scalar: 3,  optimization: 1.48 | interpolation: 0.51 | sigma: 0.5052
-ix_scalar: 4,  optimization: 1.15 | interpolation: 0.51 | sigma: 0.5150
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_78.png" src="../_images/models_mda_rbf_9_78.png" />
-<img alt="../_images/models_mda_rbf_9_79.png" src="../_images/models_mda_rbf_9_79.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 4!! 
-
-
- Lets reconstruct the SS for location 5!! 
-
-
- ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 50 samples!! 
-
- which means 6 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_81.png" src="../_images/models_mda_rbf_9_81.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.36 | interpolation: 0.37 | sigma: 0.3731
-ix_scalar: 1,  optimization: 0.30 | interpolation: 0.36 | sigma: 0.3572
-ix_scalar: 2,  optimization: 0.41 | interpolation: 0.37 | sigma: 0.3728
-ix_scalar: 3,  optimization: 0.47 | interpolation: 0.38 | sigma: 0.3812
-ix_scalar: 4,  optimization: 0.86 | interpolation: 0.35 | sigma: 0.3524
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_83.png" src="../_images/models_mda_rbf_9_83.png" />
-<img alt="../_images/models_mda_rbf_9_84.png" src="../_images/models_mda_rbf_9_84.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 50 samples!! 
-
- which means 14 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_86.png" src="../_images/models_mda_rbf_9_86.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 60 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 0.84 | interpolation: 0.45 | sigma: 0.4519
-ix_scalar: 1,  optimization: 1.14 | interpolation: 0.61 | sigma: 0.6144
-ix_scalar: 2,  optimization: 0.59 | interpolation: 0.42 | sigma: 0.4153
-ix_scalar: 3,  optimization: 0.42 | interpolation: 0.47 | sigma: 0.4714
-ix_scalar: 4,  optimization: 0.32 | interpolation: 0.39 | sigma: 0.3948
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_88.png" src="../_images/models_mda_rbf_9_88.png" />
-<img alt="../_images/models_mda_rbf_9_89.png" src="../_images/models_mda_rbf_9_89.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.95 per of pcs and 100 samples!! 
-
- which means 6 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_91.png" src="../_images/models_mda_rbf_9_91.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 110 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 2.43 | interpolation: 0.46 | sigma: 0.4585
-ix_scalar: 1,  optimization: 1.78 | interpolation: 0.39 | sigma: 0.3870
-ix_scalar: 2,  optimization: 1.64 | interpolation: 0.44 | sigma: 0.4356
-ix_scalar: 3,  optimization: 2.27 | interpolation: 0.38 | sigma: 0.3793
-ix_scalar: 4,  optimization: 1.86 | interpolation: 0.43 | sigma: 0.4262
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_93.png" src="../_images/models_mda_rbf_9_93.png" />
-<img alt="../_images/models_mda_rbf_9_94.png" src="../_images/models_mda_rbf_9_94.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ------------------------------------------------------------- 
-
-
- MDA + RBF with 0.99 per of pcs and 100 samples!! 
-
- which means 14 PCs... 
-
-
- ------------------------------------------------------------- 
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_96.png" src="../_images/models_mda_rbf_9_96.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We finally have 110 points to interpolate with RBF!! 
-
-
-ix_scalar: 0,  optimization: 3.34 | interpolation: 0.43 | sigma: 0.4324
-ix_scalar: 1,  optimization: 1.18 | interpolation: 0.43 | sigma: 0.4252
-ix_scalar: 2,  optimization: 1.20 | interpolation: 0.65 | sigma: 0.6473
-ix_scalar: 3,  optimization: 1.21 | interpolation: 0.50 | sigma: 0.5041
-ix_scalar: 4,  optimization: 0.83 | interpolation: 0.42 | sigma: 0.4187
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_9_98.png" src="../_images/models_mda_rbf_9_98.png" />
-<img alt="../_images/models_mda_rbf_9_99.png" src="../_images/models_mda_rbf_9_99.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Lets plot the SS reconstructions for location 5!! 
-</pre></div>
-</div>
-</div>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1517,24 +883,6 @@ ix_scalar: 4,  optimization: 0.83 | interpolation: 0.42 | sigma: 0.4187
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_12_1.png" src="../_images/models_mda_rbf_12_1.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_12_3.png" src="../_images/models_mda_rbf_12_3.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_12_5.png" src="../_images/models_mda_rbf_12_5.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-</pre></div>
-</div>
-<img alt="../_images/models_mda_rbf_12_7.png" src="../_images/models_mda_rbf_12_7.png" />
 </div>
 </div>
 </div>

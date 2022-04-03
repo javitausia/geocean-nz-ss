@@ -441,7 +441,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">pca_attrs_exp</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;calculate_gradient&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
     <span class="s1">&#39;winds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
-    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
+    <span class="s1">&#39;time_lapse&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> 
     <span class="s1">&#39;time_resample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">],</span> <span class="c1"># 6H and 12H available...</span>
     <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;local&#39;</span><span class="p">,(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">))]</span>
 <span class="p">}</span>
@@ -488,7 +488,7 @@ const thebe_selector_output = ".output, .cell_output"
 
  and model evaluation metrics = [&#39;bias&#39;, &#39;si&#39;, &#39;rmse&#39;, &#39;rel_rmse&#39;, &#39;ext_rmse&#39;, &#39;ext_rel_rmse&#39;, &#39;pearson&#39;, &#39;rscore&#39;, &#39;spearman&#39;, &#39;ext_pearson&#39;, &#39;ext_rscore&#39;, &#39;ext_spearman&#39;, &#39;pocid&#39;, &#39;tu_test&#39;, &#39;expl_var&#39;, &#39;nse&#39;, &#39;kge&#39;, &#39;kgeprime&#39;, &#39;ext_nse&#39;, &#39;ext_kge&#39;, &#39;ext_kgeprime&#39;]             
 
- pca_params = {&#39;calculate_gradient&#39;: [True], &#39;winds&#39;: [True], &#39;time_lapse&#39;: [1], &#39;time_resample&#39;: [&#39;1D&#39;], &#39;region&#39;: [(&#39;local&#39;, (2.5, 2.5))]} 
+ pca_params = {&#39;calculate_gradient&#39;: [True], &#39;winds&#39;: [True], &#39;time_lapse&#39;: [2], &#39;time_resample&#39;: [&#39;1D&#39;], &#39;region&#39;: [(&#39;local&#39;, (2.5, 2.5))]} 
 
  model_params = {&#39;train_size&#39;: [0.7], &#39;percentage_PCs&#39;: [0.98]}             
 
@@ -519,18 +519,56 @@ const thebe_selector_output = ".output, .cell_output"
 
  Experiment 1 in site 116, coords = (array(168.34508816), array(-46.62520765)) ......                         
 
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5))} 
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5))} 
 
  linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98}                         
 
  and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
 
- ---------------------------------------------------------
-/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
-FILE /Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_116_winds_gradients_1D_tl1.nc
-PCs loaded from file
+/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl2&#39;]
+FILE /Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_116_winds_gradients_1D_tl2.nc
+Assembling matrix
 
- plotting 1 components with 3 EOFs + PC... 
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ pcs_matrix with shape: 
+ (11352, 600) 
+
+
+ calculating PCs matrix with shape: 
+ (11352, 600) 
+
+Computing using CPU
+matrix (11352, 600)
+PCs (11352, 600)
+comp (600, 600)
+var (600,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([166. , 166.5, 167. , 167.5, 168. , 168.5, 169. , 169.5, 170. , 170.5],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 166.0 166.5 167.0 167.5 ... 169.5 170.0 170.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-49. , -48.5, -48. , -47.5, -47. , -46.5, -46. , -45.5, -45. , -44.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -49.0 -48.5 -48.0 -47.5 ... -45.5 -45.0 -44.5
+time (11352,)
+/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl2&#39;]
+
+ plotting 1 components with 6 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
@@ -538,37 +576,75 @@ PCs loaded from file
 </div>
 <img alt="../_images/experiments_10_1.png" src="../_images/experiments_10_1.png" />
 <img alt="../_images/experiments_10_2.png" src="../_images/experiments_10_2.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 8 PCs (0.98 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 15 PCs (0.98 expl. variance) will be used to train the model!! 
 
 
  A forward selection will be performed... 
 
- where 6 PCs : [0 1 7 3 6 5], 
+ where 12 PCs : [ 1  0  2  3  4 14  5  7 11  6 12 10], 
  will be finally used to train the model!! 
 </pre></div>
 </div>
 <img alt="../_images/experiments_10_4.png" src="../_images/experiments_10_4.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.57, Relative - RMSE: 0.30
- and Correlations (Pearson, Rscore): (0.79, 0.61)
- NSE = [0.61390877], KGE = [0.68524777] and KGE_PRIME = [0.6128871]
- R score: 0.61 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.50, Relative - RMSE: 0.26
+ and Correlations (Pearson, Rscore): (0.84, 0.71)
+ NSE = [0.7098943], KGE = [0.74142102] and KGE_PRIME = [0.66610434]
+ R score: 0.71 -- in TEST data
 
  ---------------------------------------------------------                         
 
  Experiment 1 in site 1146, coords = (array(178.13853904), array(-37.51451809)) ......                         
 
- pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 1, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5))} 
+ pca_params = {&#39;calculate_gradient&#39;: True, &#39;winds&#39;: True, &#39;time_lapse&#39;: 2, &#39;time_resample&#39;: &#39;1D&#39;, &#39;region&#39;: (&#39;local&#39;, (2.5, 2.5))} 
 
  linear_model_params = {&#39;train_size&#39;: 0.7, &#39;percentage_PCs&#39;: 0.98}                         
 
  and iteration with indexes = (0, 0, 0, 0, 0, 0, 0)                         
 
- ---------------------------------------------------------
-/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
-FILE /Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1146_winds_gradients_1D_tl1.nc
-PCs loaded from file
+/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl2&#39;]
+FILE /Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1146_winds_gradients_1D_tl2.nc
+Assembling matrix
 
- plotting 1 components with 3 EOFs + PC... 
+ adding the wind to the predictor... 
+
+
+ winds predictor with shape: 
+ (11354, 10, 10) 
+
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 10, 10) 
+
+
+ pcs_matrix with shape: 
+ (11352, 600) 
+
+
+ calculating PCs matrix with shape: 
+ (11352, 600) 
+
+Computing using CPU
+matrix (11352, 600)
+PCs (11352, 600)
+comp (600, 600)
+var (600,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 10)&gt;
+array([176. , 176.5, 177. , 177.5, 178. , 178.5, 179. , 179.5, 180. , 180.5],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 176.0 176.5 177.0 177.5 ... 179.5 180.0 180.5
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 10)&gt;
+array([-40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5],
+      dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -40.0 -39.5 -39.0 -38.5 ... -36.5 -36.0 -35.5
+time (11352,)
+/Volumes/ToshibaJT/geocean-nz-ss/data/pcs_to_seb [&#39;local_2.5_2.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl2&#39;]
+
+ plotting 1 components with 6 EOFs + PC... 
 
 
  being the EOFs the slp, the gradient, in steps t, t-1 
@@ -576,20 +652,20 @@ PCs loaded from file
 </div>
 <img alt="../_images/experiments_10_6.png" src="../_images/experiments_10_6.png" />
 <img alt="../_images/experiments_10_7.png" src="../_images/experiments_10_7.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 9 PCs (0.98 expl. variance) will be used to train the model!! 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 17 PCs (0.98 expl. variance) will be used to train the model!! 
 
 
  A forward selection will be performed... 
 
- where 9 PCs : [0 3 2 1 4 8 6 7 5], 
+ where 14 PCs : [ 1  0  7  4  2  5  3  6 15  8 16 12 10  9], 
  will be finally used to train the model!! 
 </pre></div>
 </div>
 <img alt="../_images/experiments_10_9.png" src="../_images/experiments_10_9.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.57, Relative - RMSE: 0.29
- and Correlations (Pearson, Rscore): (0.80, 0.64)
- NSE = [0.64490337], KGE = [0.69575669] and KGE_PRIME = [0.66505665]
- R score: 0.64 -- in TEST data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.55, Relative - RMSE: 0.28
+ and Correlations (Pearson, Rscore): (0.82, 0.67)
+ NSE = [0.6682044], KGE = [0.73397192] and KGE_PRIME = [0.71275677]
+ R score: 0.67 -- in TEST data
 
  -------------------------------------------------------------------             
 
@@ -599,27 +675,27 @@ PCs loaded from file
 
  BIAS, SI, RMSE, Pearson and Spearman coorelations and the R2 score... 
 
- [[[[[[[[-3.90393524e-03  5.70287981e-01  5.17494338e-02
-         2.94826566e-01  6.84160693e-02  7.41985200e-02
-         9.63573774e-02  2.52609446e-01  2.42168504e-01
-         2.61686325e-01  7.95426665e-01  6.29406072e-01
-         7.81209890e-01  5.96144851e-01  5.89535668e-01
-         5.29216120e-01 -1.27260318e+00 -2.17865038e+00
-        -1.00114135e+01  4.66843660e-01  4.63927614e-01
-         5.26137734e-01  8.25863487e+01  6.23700381e-01
-         6.31471224e-01  6.29406072e-01  6.90502234e-01
-         7.95426666e-01  8.01143118e-01  1.10505313e+00
-         6.38971875e-01  7.95426666e-01  7.25378088e-01
-         1.10505313e+00 -1.27260318e+00 -2.17865038e+00
-        -1.00114135e+01  4.54879172e-01  5.96144852e-01
-         1.23798912e+00  7.30425456e-01  4.03111188e-01
-         5.89535666e-01  1.31981424e+00  7.28630429e-01
-        -1.82694906e-01  5.29216121e-01  2.03216536e+00
-         7.26867102e-01  1.42408669e-01  5.96144852e-01
-         1.69979723e+00  7.30425456e-01  4.36878830e-02
-         5.89535666e-01  1.81022604e+00  7.28630429e-01
-        -8.89774578e-01  5.29216121e-01  2.80345621e+00
-         7.26867102e-01]]]]]]]]             
+ [[[[[[[[-3.63947551e-03  5.22315553e-01  4.66386610e-02
+         2.70041936e-01  6.09433261e-02  6.48866900e-02
+         7.98512008e-02  2.26720164e-01  2.13505750e-01
+         2.19413235e-01  8.31188310e-01  6.89049351e-01
+         8.16569831e-01  6.42874156e-01  6.28575736e-01
+         6.36763720e-01 -8.31907888e-01 -1.44457778e+00
+        -6.17336712e+00  5.22226759e-01  4.81592040e-01
+         5.58831499e-01  8.18667763e+01  5.29324820e-01
+         6.90926014e-01  6.89049351e-01  7.37696469e-01
+         8.31188311e-01  8.34578170e-01  1.09415382e+00
+         6.89430557e-01  8.31188311e-01  7.63680295e-01
+         1.09415382e+00 -8.31907888e-01 -1.44457778e+00
+        -6.17336712e+00  5.11705340e-01  6.42874157e-01
+         1.23529310e+00  7.68848350e-01  4.68916078e-01
+         6.28575733e-01  1.29330713e+00  7.71097592e-01
+         1.56180508e-01  6.36763722e-01  1.71446660e+00
+         7.67813996e-01  2.51538046e-01  6.42874157e-01
+         1.61162485e+00  7.68848350e-01  1.88407447e-01
+         6.28575733e-01  1.67799812e+00  7.71097592e-01
+        -3.10883299e-01  6.36763722e-01  2.23452937e+00
+         7.67813996e-01]]]]]]]]             
 
  -------------------------------------------------------------------
 </pre></div>
@@ -668,373 +744,10 @@ PCs loaded from file
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">save_final_results</span><span class="p">()</span><span class="o">.</span><span class="n">kgeprime</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save_final_results().kgeprime.squeeze()</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
-<defs>
-<symbol id="icon-database" viewBox="0 0 32 32">
-<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
-<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-</symbol>
-<symbol id="icon-file-text2" viewBox="0 0 32 32">
-<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
-<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-</symbol>
-</defs>
-</svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
-
-:root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
-}
-
-html[theme=dark],
-body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1F1F1F;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
-}
-
-.xr-wrap {
-  display: block !important;
-  min-width: 300px;
-  max-width: 700px;
-}
-
-.xr-text-repr-fallback {
-  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
-  display: none;
-}
-
-.xr-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 4px;
-  border-bottom: solid 1px var(--xr-border-color);
-}
-
-.xr-header > div,
-.xr-header > ul {
-  display: inline;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.xr-obj-type,
-.xr-array-name {
-  margin-left: 2px;
-  margin-right: 10px;
-}
-
-.xr-obj-type {
-  color: var(--xr-font-color2);
-}
-
-.xr-sections {
-  padding-left: 0 !important;
-  display: grid;
-  grid-template-columns: 150px auto auto 1fr 20px 20px;
-}
-
-.xr-section-item {
-  display: contents;
-}
-
-.xr-section-item input {
-  display: none;
-}
-
-.xr-section-item input + label {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-item input:enabled + label {
-  cursor: pointer;
-  color: var(--xr-font-color2);
-}
-
-.xr-section-item input:enabled + label:hover {
-  color: var(--xr-font-color0);
-}
-
-.xr-section-summary {
-  grid-column: 1;
-  color: var(--xr-font-color2);
-  font-weight: 500;
-}
-
-.xr-section-summary > span {
-  display: inline-block;
-  padding-left: 0.5em;
-}
-
-.xr-section-summary-in:disabled + label {
-  color: var(--xr-font-color2);
-}
-
-.xr-section-summary-in + label:before {
-  display: inline-block;
-  content: '►';
-  font-size: 11px;
-  width: 15px;
-  text-align: center;
-}
-
-.xr-section-summary-in:disabled + label:before {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-summary-in:checked + label:before {
-  content: '▼';
-}
-
-.xr-section-summary-in:checked + label > span {
-  display: none;
-}
-
-.xr-section-summary,
-.xr-section-inline-details {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.xr-section-inline-details {
-  grid-column: 2 / -1;
-}
-
-.xr-section-details {
-  display: none;
-  grid-column: 1 / -1;
-  margin-bottom: 5px;
-}
-
-.xr-section-summary-in:checked ~ .xr-section-details {
-  display: contents;
-}
-
-.xr-array-wrap {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 20px auto;
-}
-
-.xr-array-wrap > label {
-  grid-column: 1;
-  vertical-align: top;
-}
-
-.xr-preview {
-  color: var(--xr-font-color3);
-}
-
-.xr-array-preview,
-.xr-array-data {
-  padding: 0 5px !important;
-  grid-column: 2;
-}
-
-.xr-array-data,
-.xr-array-in:checked ~ .xr-array-preview {
-  display: none;
-}
-
-.xr-array-in:checked ~ .xr-array-data,
-.xr-array-preview {
-  display: inline-block;
-}
-
-.xr-dim-list {
-  display: inline-block !important;
-  list-style: none;
-  padding: 0 !important;
-  margin: 0;
-}
-
-.xr-dim-list li {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
-.xr-dim-list:before {
-  content: '(';
-}
-
-.xr-dim-list:after {
-  content: ')';
-}
-
-.xr-dim-list li:not(:last-child):after {
-  content: ',';
-  padding-right: 5px;
-}
-
-.xr-has-index {
-  font-weight: bold;
-}
-
-.xr-var-list,
-.xr-var-item {
-  display: contents;
-}
-
-.xr-var-item > div,
-.xr-var-item label,
-.xr-var-item > .xr-var-name span {
-  background-color: var(--xr-background-color-row-even);
-  margin-bottom: 0;
-}
-
-.xr-var-item > .xr-var-name:hover span {
-  padding-right: 5px;
-}
-
-.xr-var-list > li:nth-child(odd) > div,
-.xr-var-list > li:nth-child(odd) > label,
-.xr-var-list > li:nth-child(odd) > .xr-var-name span {
-  background-color: var(--xr-background-color-row-odd);
-}
-
-.xr-var-name {
-  grid-column: 1;
-}
-
-.xr-var-dims {
-  grid-column: 2;
-}
-
-.xr-var-dtype {
-  grid-column: 3;
-  text-align: right;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-preview {
-  grid-column: 4;
-}
-
-.xr-var-name,
-.xr-var-dims,
-.xr-var-dtype,
-.xr-preview,
-.xr-attrs dt {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
-
-.xr-var-name:hover,
-.xr-var-dims:hover,
-.xr-var-dtype:hover,
-.xr-attrs dt:hover {
-  overflow: visible;
-  width: auto;
-  z-index: 1;
-}
-
-.xr-var-attrs,
-.xr-var-data {
-  display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
-}
-
-.xr-var-attrs-in:checked ~ .xr-var-attrs,
-.xr-var-data-in:checked ~ .xr-var-data {
-  display: block;
-}
-
-.xr-var-data > table {
-  float: right;
-}
-
-.xr-var-name span,
-.xr-var-data,
-.xr-attrs {
-  padding-left: 25px !important;
-}
-
-.xr-attrs,
-.xr-var-attrs,
-.xr-var-data {
-  grid-column: 1 / -1;
-}
-
-dl.xr-attrs {
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 125px auto;
-}
-
-.xr-attrs dt,
-.xr-attrs dd {
-  padding: 0;
-  margin: 0;
-  float: left;
-  padding-right: 10px;
-  width: auto;
-}
-
-.xr-attrs dt {
-  font-weight: normal;
-  grid-column: 1;
-}
-
-.xr-attrs dt:hover span {
-  display: inline-block;
-  background: var(--xr-background-color);
-  padding-right: 10px;
-}
-
-.xr-attrs dd {
-  grid-column: 2;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.xr-icon-database,
-.xr-icon-file-text2 {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em;
-  height: 1.5em !important;
-  stroke-width: 0;
-  stroke: currentColor;
-  fill: currentColor;
-}
-</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray &#x27;kgeprime&#x27; (site: 2)&gt;
-array([0.6128871, 0.6128871])
-Coordinates:
-  * site       (site) int64 116 116
-    grad       bool True
-    winds      bool True
-    tlapse     int64 1
-    tresample  &lt;U2 &#x27;1D&#x27;
-    region     &lt;U13 &#x27;local_2.5_2.5&#x27;
-    tsize      float64 0.7
-    perpcs     float64 0.98</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'kgeprime'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>site</span>: 2</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-33fe368d-7d53-45a1-9432-b14467806bd8' class='xr-array-in' type='checkbox' checked><label for='section-33fe368d-7d53-45a1-9432-b14467806bd8' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>0.6129 0.6129</span></div><div class='xr-array-data'><pre>array([0.6128871, 0.6128871])</pre></div></div></li><li class='xr-section-item'><input id='section-6c075361-df25-471c-ad2a-5bda5d573d37' class='xr-section-summary-in' type='checkbox'  checked><label for='section-6c075361-df25-471c-ad2a-5bda5d573d37' class='xr-section-summary' >Coordinates: <span>(8)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>116 116</div><input id='attrs-4d359c5c-1614-4cdf-82a1-0a2769cea4b5' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4d359c5c-1614-4cdf-82a1-0a2769cea4b5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0a0af9ab-cd7b-4150-b15f-7f4c9c5d0fb1' class='xr-var-data-in' type='checkbox'><label for='data-0a0af9ab-cd7b-4150-b15f-7f4c9c5d0fb1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([116, 116])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>grad</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>bool</div><div class='xr-var-preview xr-preview'>True</div><input id='attrs-185f0aec-b182-44ba-b736-319bd8d3285d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-185f0aec-b182-44ba-b736-319bd8d3285d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-859941c0-1040-4589-b746-bdea289726cf' class='xr-var-data-in' type='checkbox'><label for='data-859941c0-1040-4589-b746-bdea289726cf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(True)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>winds</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>bool</div><div class='xr-var-preview xr-preview'>True</div><input id='attrs-10d8e0b5-5bc8-43ad-9f33-596e8e9409ad' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-10d8e0b5-5bc8-43ad-9f33-596e8e9409ad' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c7d249d3-f48a-4009-b52e-1d8ddb7c17cd' class='xr-var-data-in' type='checkbox'><label for='data-c7d249d3-f48a-4009-b52e-1d8ddb7c17cd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(True)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tlapse</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-092385d3-03e3-41a9-b277-19244a918d8a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-092385d3-03e3-41a9-b277-19244a918d8a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bc3a683f-5105-4fc3-90b0-fb0942f3cbb2' class='xr-var-data-in' type='checkbox'><label for='data-bc3a683f-5105-4fc3-90b0-fb0942f3cbb2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tresample</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U2</div><div class='xr-var-preview xr-preview'>&#x27;1D&#x27;</div><input id='attrs-c626bbdc-97ce-4f2c-b46c-8f29fc56347f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c626bbdc-97ce-4f2c-b46c-8f29fc56347f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9fd3f058-bd59-4e05-a17d-8a9daab4cd0d' class='xr-var-data-in' type='checkbox'><label for='data-9fd3f058-bd59-4e05-a17d-8a9daab4cd0d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;1D&#x27;, dtype=&#x27;&lt;U2&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>region</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U13</div><div class='xr-var-preview xr-preview'>&#x27;local_2.5_2.5&#x27;</div><input id='attrs-9e5726dc-d569-43ab-a681-ac534a37e5bf' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9e5726dc-d569-43ab-a681-ac534a37e5bf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e95e3324-c6a9-4dfb-a0ef-dd48f8cb9b20' class='xr-var-data-in' type='checkbox'><label for='data-e95e3324-c6a9-4dfb-a0ef-dd48f8cb9b20' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;local_2.5_2.5&#x27;, dtype=&#x27;&lt;U13&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tsize</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.7</div><input id='attrs-884787a4-074b-42a7-a443-086bd162f22a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-884787a4-074b-42a7-a443-086bd162f22a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8959aebe-6509-4604-8973-6723befd5831' class='xr-var-data-in' type='checkbox'><label for='data-8959aebe-6509-4604-8973-6723befd5831' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(0.7)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>perpcs</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.98</div><input id='attrs-cd248b0b-9aea-42ba-b586-0fbc7512ac5d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-cd248b0b-9aea-42ba-b586-0fbc7512ac5d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-aec0e613-10c1-4ff7-8d6e-629f73a5c838' class='xr-var-data-in' type='checkbox'><label for='data-aec0e613-10c1-4ff7-8d6e-629f73a5c838' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(0.98)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-994789bc-d872-4138-b824-4cfbf633c90b' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-994789bc-d872-4138-b824-4cfbf633c90b' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
 </div>
 </div>
