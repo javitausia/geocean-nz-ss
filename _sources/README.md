@@ -1,4 +1,6 @@
-# geoocean-nz-ss
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/HEAD)
+
+# StormSurge Predictions in New Zealand
 
 This repository will contain all the updated information in the shared project between [GeoOcean](https://geoocean.unican.es/)-[MetOcean](https://www.metocean.co.nz/)
 
