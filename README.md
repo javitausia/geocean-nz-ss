@@ -15,14 +15,6 @@ related repos:
 * https://github.com/metocean/storm_surge_data (all storm surge data is hosted here)
 * https://gitlab.com/geoocean/teslakit (some math tools were created here)
 
-## TODO (or doing)
-
-* Preparing the FINAL experiments visualizations tools to evaluate results (run in server)
-* Add extra theory to repo [explanatory notebook](/notebooks/repo_workflow_theory.ipynb) and [xgboost](/notebooks/models_xgboost.ipynb)
-* Write first machine learning paper (in process)
-* Integrate all python classes to work with experiment_new.py and pca_new.py (in process, cuasi-finished)
-* When paper is done, finish jupyter book, with final images and code runnig
-
 ## Description
 
 With over 15000 km of coastline and around 150000 people living in low-lying coastal areas, coastal inundation is a major hazard to New Zealand. The cost to defend the associated buildings, infrastructure and assets is of the order of \$10 billion. With global sea level rise and the increase in the intensity and frequency of extreme weather events, the threat posed by coastal flooding is only expected to become greater.
@@ -39,6 +31,10 @@ Below, a summary of how the the different lineal models behave with different pr
 ![pearson-knn](/media/images/all-preds.png)
 
 This image with more results can be seen [here](/notebooks/models_results.ipynb).
+
+Finally, time series and scatter plots can be seen in different locations:
+
+![time-series](/media/images/time-series-plot.png)
 
 ## Data explanation
 
