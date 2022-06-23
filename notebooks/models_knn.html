@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>7. KNN regression models &#8212; Storm Surge NZ - Summary</title>
+    <title>6. KNN regression models &#8212; Storm Surge NZ - Summary</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -60,8 +60,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="8. XGBoost regression models" href="models_xgboost.html" />
-    <link rel="prev" title="6. MultiLinear regression models" href="models_linear.html" />
+    <link rel="next" title="7. XGBoost regression models" href="models_xgboost.html" />
+    <link rel="prev" title="5. MultiLinear regression models" href="models_linear.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -143,38 +143,28 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="more_validations.html">
-   4. LINZ and OTHER data analysis
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   5. PC analysis
+   4. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   6. MultiLinear regression models
+   5. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   7. KNN regression models
+   6. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   8. XGBoost regression models
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="experiments.html">
-   9. RUN experiments
+   7. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   10. VISUALIZE experiments results
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -421,32 +411,32 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-nearest-neighbors-theory">
-   7.1. K-nearest-neighbors theory
+   6.1. K-nearest-neighbors theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   7.2. Load the data
+   6.2. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-regional-pca">
-   7.3. Calculate regional PCA
+   6.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#knn-regression-with-regional-predictor">
-   7.4. KNN regression with regional predictor
+   6.4. KNN regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#knn-regression-in-the-uhslc-tidal-gauges-validation">
-     7.4.1. KNN regression in the UHSLC tidal gauges + validation
+     6.4.1. KNN regression in the UHSLC tidal gauges + validation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#check-knn-reconstructions">
-     7.4.2. Check KNN reconstructions
+     6.4.2. Check KNN reconstructions
     </a>
    </li>
   </ul>
@@ -472,32 +462,32 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-nearest-neighbors-theory">
-   7.1. K-nearest-neighbors theory
+   6.1. K-nearest-neighbors theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   7.2. Load the data
+   6.2. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-regional-pca">
-   7.3. Calculate regional PCA
+   6.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#knn-regression-with-regional-predictor">
-   7.4. KNN regression with regional predictor
+   6.4. KNN regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#knn-regression-in-the-uhslc-tidal-gauges-validation">
-     7.4.1. KNN regression in the UHSLC tidal gauges + validation
+     6.4.1. KNN regression in the UHSLC tidal gauges + validation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#check-knn-reconstructions">
-     7.4.2. Check KNN reconstructions
+     6.4.2. Check KNN reconstructions
     </a>
    </li>
   </ul>
@@ -513,9 +503,9 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="knn-regression-models">
-<h1><span class="section-number">7. </span>KNN regression models<a class="headerlink" href="#knn-regression-models" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6. </span>KNN regression models<a class="headerlink" href="#knn-regression-models" title="Permalink to this headline">#</a></h1>
 <section id="k-nearest-neighbors-theory">
-<h2><span class="section-number">7.1. </span>K-nearest-neighbors theory<a class="headerlink" href="#k-nearest-neighbors-theory" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1. </span>K-nearest-neighbors theory<a class="headerlink" href="#k-nearest-neighbors-theory" title="Permalink to this headline">#</a></h2>
 <p>The k-nearest neighbors algorithm, commonly known as <span class="math notranslate nohighlight">\(k-NN\)</span>, is a non-parametric approach where the response of a data point is determined by the nature of its k-neighbors from the training set. It can be used in both classification and regression settings.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -524,7 +514,7 @@ title="Print to PDF"
 <figure class="align-default" id="k-nn">
 <a class="reference internal image-reference" href="../_images/k-nearest-neighbors.png"><img alt="../_images/k-nearest-neighbors.png" src="../_images/k-nearest-neighbors.png" style="width: 550px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 7.1 </span><span class="caption-text">This picture shows the bias-variance trad-off with the knn regressor (<a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/illustrations/k-nearest-neighbors.png?02f80a524bb11e2b7a70b58c9ed3b0f4">image reference</a>)</span><a class="headerlink" href="#k-nn" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.1 </span><span class="caption-text">This picture shows the bias-variance trad-off with the knn regressor (<a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-229/illustrations/k-nearest-neighbors.png?02f80a524bb11e2b7a70b58c9ed3b0f4">image reference</a>)</span><a class="headerlink" href="#k-nn" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell docutils container">
@@ -592,7 +582,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="load-the-data">
-<h2><span class="section-number">7.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">#</a></h2>
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -620,7 +610,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="calculate-regional-pca">
-<h2><span class="section-number">7.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">#</a></h2>
 <p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -645,7 +635,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="knn-regression-with-regional-predictor">
-<h2><span class="section-number">7.4. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4. </span>KNN regression with regional predictor<a class="headerlink" href="#knn-regression-with-regional-predictor" title="Permalink to this headline">#</a></h2>
 <p>In the following cell, a knn regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics/knn</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_knn_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -735,7 +725,7 @@ title="Print to PDF"
 </div>
 </div>
 <section id="knn-regression-in-the-uhslc-tidal-gauges-validation">
-<h3><span class="section-number">7.4.1. </span>KNN regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#knn-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.4.1. </span>KNN regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#knn-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">#</a></h3>
 <p>This part explanation is similar to the one available at <strong>MultiLinear regression models (models_linear.ipynb)</strong>!!</p>
 <p>But in this case, we could also use the trained agent to see what are the best parameters for our KNN model, in all the locations of the tidal gauges, but training the model with the Moana v2 hindcast.</p>
 <div class="cell docutils container">
@@ -921,7 +911,7 @@ Fitting 5 folds for each of 29 candidates, totalling 145 fits
 </div>
 </section>
 <section id="check-knn-reconstructions">
-<h3><span class="section-number">7.4.2. </span>Check KNN reconstructions<a class="headerlink" href="#check-knn-reconstructions" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.4.2. </span>Check KNN reconstructions<a class="headerlink" href="#check-knn-reconstructions" title="Permalink to this headline">#</a></h3>
 <p>Now, we visualize how the knn algorithm works in the prediction task…</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1002,13 +992,13 @@ Fitting 5 folds for each of 29 candidates, totalling 145 fits
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">6. </span>MultiLinear regression models</p>
+            <p class="prev-next-title"><span class="section-number">5. </span>MultiLinear regression models</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_xgboost.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>XGBoost regression models</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>XGBoost regression models</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
