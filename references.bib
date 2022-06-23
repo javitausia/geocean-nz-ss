@@ -1,4 +1,90 @@
-@article{CID20179,
+@book{holthuijsen, 
+place={Cambridge}, 
+title={Waves in Oceanic and Coastal Waters}, DOI={10.1017/CBO9780511618536}, publisher={Cambridge University Press}, author={Holthuijsen, Leo H.}, year={2007}}
+
+@article {Calafat1877,
+	author = {Calafat, Francisco M. and Marcos, Marta},
+	title = {Probabilistic reanalysis of storm surge extremes in Europe},
+	volume = {117},
+	number = {4},
+	pages = {1877--1883},
+	year = {2020},
+	doi = {10.1073/pnas.1913049117},
+	publisher = {National Academy of Sciences},
+	abstract = {Occurrence probabilities of extreme sea-level events are required in the design of flood protection measures. Estimation of these probabilities, however, is challenging due to the small sample of extreme events in the historical sea-level record. We address this challenge by exploiting spatial dependences in the extreme data through a spatiotemporal probabilistic model. Our approach leads to estimates of event probabilities with high accuracy and precision, allows for estimation at ungauged locations, and involves a comprehensive treatment of uncertainties. These three properties make the reanalysis presented here a valuable tool to support both planning decisions in relation to coastal flooding and current efforts to understand the link between extreme events and climate change.Extreme sea levels are a significant threat to life, property, and the environment. These threats are managed by coastal planers through the implementation of risk mitigation strategies. Central to such strategies is knowledge of extreme event probabilities. Typically, these probabilities are estimated by fitting a suitable distribution to the observed extreme data. Estimates, however, are often uncertain due to the small number of extreme events in the tide gauge record and are only available at gauged locations. This restricts our ability to implement cost-effective mitigation. A remarkable fact about sea-level extremes is the existence of spatial dependences, yet the vast majority of studies to date have analyzed extremes on a site-by-site basis. Here we demonstrate that spatial dependences can be exploited to address the limitations posed by the spatiotemporal sparseness of the observational record. We achieve this by pooling all of the tide gauge data together through a Bayesian hierarchical model that describes how the distribution of surge extremes varies in time and space. Our approach has two highly desirable advantages: 1) it enables sharing of information across data sites, with a consequent drastic reduction in estimation uncertainty; 2) it permits interpolation of both the extreme values and the extreme distribution parameters at any arbitrary ungauged location. Using our model, we produce an observation-based probabilistic reanalysis of surge extremes covering the entire Atlantic and North Sea coasts of Europe for the period 1960{\textendash}2013.},
+	issn = {0027-8424},
+	URL = {https://www.pnas.org/content/117/4/1877},
+	eprint = {https://www.pnas.org/content/117/4/1877.full.pdf},
+	journal = {Proceedings of the National Academy of Sciences}
+}
+
+@article{mdapaper,
+author = {Kanner, Samuel and Aubault, Alexia and Peiffer, Antoine and Yu, Bingbin},
+year = {2018},
+month = {06},
+pages = {V010T09A062},
+title = {Maximum Dissimilarity-Based Algorithm for Discretization of Metocean Data Into Clusters of Arbitrary Size and Dimension},
+doi = {10.1115/OMAE2018-77977}
+}
+
+@article{rippa,
+author = {Rippa, Shmuel},
+year = {1999},
+month = {11},
+pages = {193-210},
+title = {An algorithm for selecting a good parameter c in radial basis function interpolation},
+volume = {11},
+journal = {Advances in Computational Mathematics},
+doi = {10.1023/A:1018975909870}
+}
+
+@article{mdanigga,
+author = {Kennard, R. and Stone, LA},
+year = {2012},
+month = {04},
+pages = {137-148},
+title = {Computer Aided Design of Experiments},
+volume = {11},
+journal = {Technometrics},
+doi = {10.1080/00401706.1969.10490666}
+}
+
+@article{franke,
+author = {Oqielat, Moa'Ath},
+year = {2017},
+month = {10},
+pages = {},
+title = {Radial Basis Function Method For Modelling Leaf Surface from Real Leaf Data},
+journal = {Australian Journal of Basic and Applied Sciences}
+}
+
+@article{sommdakmeans,
+title = "Analysis of clustering and selection algorithms for the study of multivariate wave climate",
+journal = "Coastal Engineering",
+volume = "58",
+number = "6",
+pages = "453 - 462",
+year = "2011",
+issn = "0378-3839",
+doi = "https://doi.org/10.1016/j.coastaleng.2011.02.003",
+url = "http://www.sciencedirect.com/science/article/pii/S0378383911000354",
+author = "Paula Camus and Fernando J. Mendez and Raul Medina and Antonio S. Cofiño",
+keywords = "Data mining, K-means, Maximum dissimilarity algorithm, Probability density function, Reanalysis database, Self-organizing maps",
+abstract = "Recent wave reanalysis databases require the application of techniques capable of managing huge amounts of information. In this paper, several clustering and selection algorithms: K-Means (KMA), self-organizing maps (SOM) and Maximum Dissimilarity (MDA) have been applied to analyze trivariate hourly time series of met-ocean parameters (significant wave height, mean period, and mean wave direction). A methodology has been developed to apply the aforementioned techniques to wave climate analysis, which implies data pre-processing and slight modifications in the algorithms. Results show that: a) the SOM classifies the wave climate in the relevant “wave types” projected in a bidimensional lattice, providing an easy visualization and probabilistic multidimensional analysis; b) the KMA technique correctly represents the average wave climate and can be used in several coastal applications such as longshore drift or harbor agitation; c) the MDA algorithm allows selecting a representative subset of the wave climate diversity quite suitable to be implemented in a nearshore propagation methodology."
+}
+
+@article{tidy,
+author = {Wickham, Hadley},
+year = {2014},
+month = {09},
+pages = {},
+title = {Tidy data},
+volume = {14},
+journal = {The American Statistician},
+doi = {10.18637/jss.v059.i10}
+}
+
+@article{cidglobal,
 title = {Global reconstructed daily surge levels from the 20th Century Reanalysis (1871–2010)},
 journal = {Global and Planetary Change},
 volume = {148},
@@ -11,7 +97,7 @@ author = {Alba Cid and Paula Camus and Sonia Castanedo and Fernando J. Méndez a
 abstract = {Studying the effect of global patterns of wind and pressure gradients on the sea level variation (storm surge) is a key issue in understanding the recent climate change effect on the dynamical state of the ocean. The analysis of the spatial and temporal variability of storm surges from observations is a difficult task to accomplish since observations are not homogeneous in time, scarce in space, and moreover, their temporal coverage is limited. A recent global surge database developed by AVISO (DAC, Dynamic Atmospheric Correction) fulfilled the lack of data in terms of spatial coverage, but not regarding time extent, since it only includes the last two decades (1992–2014). In this work, we use the 20th Century Reanalysis V2 (20CR), which spans the years 1871 to 2010, to statistically reconstruct daily maximum surge levels at a global scale. A multivariate linear regression model is fitted between daily mean ERA-interim sea level pressure fields and daily maximum surge levels from DAC. Following, the statistical model is used to reconstruct daily surges using mean sea level pressure fields from 20CR. The verification of the statistical model shows good agreements between DAC levels and the reconstructed surge levels from the 20CR. The validation of the reconstructed surge with tide gauges, distributed throughout the domain, shows good accuracy both in terms of high correlations and small errors. A time series comparison is also depicted at specific tide gauges for the beginning of the 20th century, showing a high concordance. Therefore, this work provides to the scientific community, a daily database of maximum surge levels; which correspond to an extension of the DAC database, from 1871 to 2010. This database can be used to improve the knowledge on historical storm surge conditions, allowing the study of their temporal and spatial variability.}
 }
 
-@article{Cid2018,
+@article{cidasia,
 author = {Cid, Alba and Wahl, Thomas and Chambers, Don P. and Muis, Sanne},
 title = {Storm Surge Reconstruction and Return Water Level Estimation in Southeast Asia for the 20th Century},
 journal = {Journal of Geophysical Research: Oceans},
@@ -26,7 +112,7 @@ abstract = {Abstract We present a methodology to reconstruct the daily maximum s
 year = {2018}
 }
 
-﻿@article{Cid2016,
+@article{cidextremes,
 author={Cid, Alba and Menéndez, Melisa and Castanedo, Sonia and Abascal, Ana J. and Méndez, Fernando J. and Medina, Raúl},
 title={Long-term changes in the frequency, intensity and duration of extreme storm surge events in southern Europe},
 journal={Climate Dynamics},
@@ -36,13 +122,13 @@ day={01},
 volume={46},
 number={5},
 pages={1503-1516},
-abstract={Storm surges are one of the major hazards in coastal regions; positive surge events are added to tidal levels, increasing the risk of coastal flooding by extreme water levels. In this study, changes in the frequency (occurrence rate per year), intensity (magnitude of the extremes) and duration of extreme storm surge events from 1948 to 2013 are investigated using a non-stationary statistical model. To fully model extremes, the time-dependent statistical model combines the Generalized Pareto Distribution (GPD) for studying exceedances over the threshold, and the non-homogeneous Poisson (P) process for studying the occurrence rate of these exceedances. Long-term trends and the association between storm surges and the North Atlantic Oscillation (NAO) are represented in the model by allowing the parameters in the GPD--P model to be time-dependent. Different spatial patterns in the three analysed properties of storm surges are found in the Atlantic region and the Mediterranean Sea. The up to now uncharted regional patterns of storm surge duration show completely different values between the Atlantic and the Mediterranean regions, being the duration of storms surges in the Atlantic two times longer than the duration in the Mediterranean. For the last half century, we detect positive and negative spatial trends in terms of intensity of storm surge but only significant decreasing rates, of around 2%, in the number of extreme events per year. Regarding duration, we find positive trends in certain Mediterranean areas, with durations of extreme events increasing at a rate of 0.5--1.5 h/year. Values for the 50-year return level are also estimated, showing a large spatial variability with relatively higher values along the coast. A clear sensitivity of extreme storm surges to negative NAO index is detected, specifically in the western Mediterranean basin. Results show that negative NAO phases lead to an increase in the number of extreme events and also in their intensity.},
+abstract={Storm surges are one of the major hazards in coastal regions; positive surge events are added to tidal levels, increasing the risk of coastal flooding by extreme water levels. In this study, changes in the frequency (occurrence rate per year), intensity (magnitude of the extremes) and duration of extreme storm surge events from 1948 to 2013 are investigated using a non-stationary statistical model. To fully model extremes, the time-dependent statistical model combines the Generalized Pareto Distribution (GPD) for studying exceedances over the threshold, and the non-homogeneous Poisson (P) process for studying the occurrence rate of these exceedances. Long-term trends and the association between storm surges and the North Atlantic Oscillation (NAO) are represented in the model by allowing the parameters in the GPD--P model to be time-dependent. Different spatial patterns in the three analysed properties of storm surges are found in the Atlantic region and the Mediterranean Sea. The up to now uncharted regional patterns of storm surge duration show completely different values between the Atlantic and the Mediterranean regions, being the duration of storms surges in the Atlantic two times longer than the duration in the Mediterranean. For the last half century, we detect positive and negative spatial trends in terms of intensity of storm surge but only significant decreasing rates, of around 2\%, in the number of extreme events per year. Regarding duration, we find positive trends in certain Mediterranean areas, with durations of extreme events increasing at a rate of 0.5--1.5 h/year. Values for the 50-year return level are also estimated, showing a large spatial variability with relatively higher values along the coast. A clear sensitivity of extreme storm surges to negative NAO index is detected, specifically in the western Mediterranean basin. Results show that negative NAO phases lead to an increase in the number of extreme events and also in their intensity.},
 issn={1432-0894},
 doi={10.1007/s00382-015-2659-1},
 url={https://doi.org/10.1007/s00382-015-2659-1}
 }
 
-@article{Rueda2019,
+@article{ruedanewzealand,
 author = {Rueda, Ana and Cagigal, Laura and Antolínez, Jose A. A. and Albuquerque, Joao C. and Castanedo, Sonia and Coco, Giovanni and Méndez, Fernando J.},
 title = {Marine climate variability based on weather patterns for a complicated island setting: The New Zealand case},
 journal = {International Journal of Climatology},
@@ -82,7 +168,7 @@ number = {12},
 pages = {1028},
 url = {https://www.mdpi.com/2077-1312/8/12/1028},
 issn = {2077-1312},
-abstract = {Increasing our capacity to predict extreme storm surges is one of the key issues in terms of coastal flood risk prevention and adaptation. Dynamically forecasting storm surges is computationally expensive. Here, we focus on an alternative data-driven approach and set up a weather-type statistical downscaling for daily maximum storm surge (SS) prediction, using atmospheric hindcasts (CFSR and CFSv2) and 15 years of tidal gauge station measurements. We focus on predicting the storm surge at La Rochelle&ndash;La Pallice tidal gauge station. First, based on a sensitivity analysis to the various parameters of the weather-type approach, we find that the model configuration providing the best performance in SS prediction relies on a fully supervised classification using minimum daily sea level pressure (SLP) and maximum SLP gradient, with 1&deg; resolution in the northeast Atlantic domain as the predictor. Second, we compare the resulting optimal model with the inverse barometer approach and other statistical models (multi-linear regression; semi-supervised and unsupervised weather-types based approaches). The optimal configuration provides more accurate predictions for extreme storm surges, but also the capacity to identify unusual atmospheric storm patterns that can lead to extreme storm surges, as the Xynthia storm for instance (a decrease in the maximum absolute error of 50%).},
+abstract = {Increasing our capacity to predict extreme storm surges is one of the key issues in terms of coastal flood risk prevention and adaptation. Dynamically forecasting storm surges is computationally expensive. Here, we focus on an alternative data-driven approach and set up a weather-type statistical downscaling for daily maximum storm surge (SS) prediction, using atmospheric hindcasts (CFSR and CFSv2) and 15 years of tidal gauge station measurements. We focus on predicting the storm surge at La Rochelle&ndash;La Pallice tidal gauge station. First, based on a sensitivity analysis to the various parameters of the weather-type approach, we find that the model configuration providing the best performance in SS prediction relies on a fully supervised classification using minimum daily sea level pressure (SLP) and maximum SLP gradient, with 1&deg; resolution in the northeast Atlantic domain as the predictor. Second, we compare the resulting optimal model with the inverse barometer approach and other statistical models (multi-linear regression; semi-supervised and unsupervised weather-types based approaches). The optimal configuration provides more accurate predictions for extreme storm surges, but also the capacity to identify unusual atmospheric storm patterns that can lead to extreme storm surges, as the Xynthia storm for instance (a decrease in the maximum absolute error of 50\%).},
 doi = {10.3390/jmse8121028}
 }
 
@@ -109,7 +195,7 @@ pages = {1025-1038},
 year = {2014},
 issn = {1616-7228},
 doi = {https://doi.org/10.1007/s10236-014-0737-2},
-url = {https://link.springer.com/article/10.1007%2Fs10236-014-0737-2},
+url = {https://link.springer.com/article/10.1007\%2Fs10236-014-0737-2},
 author = {Camus, Paula and Méndez, Fernando J. and Losada, Inigo J. and Menéndez, Melisa and Espejo, Antonio and Pérez, Jorge and Rueda, Ana and Guanche, Yanira},
 abstract = {In this study, a method to obtain local wave predictor indices that take into account the wave generation process is described and applied to several locations. The method is based on a statistical model that relates significant wave height with an atmospheric predictor, defined by sea level pressure fields. The predictor is composed of a local and a regional part, representing the sea and the swell wave components, respectively. The spatial domain of the predictor is determined using the Evaluation of Source and Travel-time of wave Energy reaching a Local Area (ESTELA) method. The regional component of the predictor includes the recent historical atmospheric conditions responsible for the swell wave component at the target point. The regional predictor component has a historical temporal coverage (n-days) different to the local predictor component (daily coverage). Principal component analysis is applied to the daily predictor in order to detect the dominant variability patterns and their temporal coefficients. Multivariate regression model, fitted at daily scale for different n-days of the regional predictor, determines the optimum historical coverage. The monthly wave predictor indices are selected applying a regression model using the monthly values of the principal components of the daily predictor, with the optimum temporal coverage for the regional predictor. The daily predictor can be used in wave climate projections, while the monthly predictor can help to understand wave climate variability or long-term coastal morphodynamic anomalies.}
 }
@@ -137,13 +223,13 @@ journal={Frontiers in Marine Science},
 volume={7},      
 pages={260},     
 year={2020},        
-url={https://www.frontiersin.org/article/10.3389/fmars.2020.00260},       	
+url={https://www.frontiersin.org/article/10.3389/fmars.2020.00260},
 doi={10.3389/fmars.2020.00260},      	
 issn={2296-7745},   
-abstract={In many areas, storm surges caused by tropical or extratropical cyclones are the main contributors to critical extreme sea level events. Storm surges can be simulated using numerical models that are based on the underlying physical processes, or by using data-driven models that quantify the relationship between the predictand (storm surge) and relevant predictors (wind speed, mean sea-level pressure, etc.). This study explores the potential of data-driven models to simulate storm surges globally. A multitude of predictors (obtained from remote sensing and climate reanalysis) along with predictands (from tide gage observations and storm surge reanalysis) are utilized to train and validate data-driven models to simulate daily maximum surge for the global coastline. Data-driven models simulate daily maximum surge better in extratropical and sub-tropical regions [average correlation and root-mean-square error (RMSE) of 0.79 and 7.5 cm, respectively], than in the tropics (average correlation and RMSE of 0.45 and 5.3 cm, respectively). For extreme events, the average correlation decreases to 0.54 (0.33) and RMSE increases to 14.5 (13.1) cm for extratropical (tropical) regions. Models forced with remotely sensed predictors showed a slightly better performance (average correlation of 0.69) than models forced with predictors obtained from reanalysis products (average correlation of 0.68). Results also highlight a significant improvement (i.e., average correlation increases from 0.54 to 0.68; RMSE reduces from 11 to 7 cm) over the Global Tide and Surge Reanalysis (GTSR), derived from the only global hydrodynamic model. For approximately 70% of tide gages, mean sea-level pressure is the most important predictor to model daily maximum surge. Our results highlight the added value of data-driven models in the context of simulating storm surges at the global scale, in addition to existing hydrodynamic numerical models.}
+abstract={In many areas, storm surges caused by tropical or extratropical cyclones are the main contributors to critical extreme sea level events. Storm surges can be simulated using numerical models that are based on the underlying physical processes, or by using data-driven models that quantify the relationship between the predictand (storm surge) and relevant predictors (wind speed, mean sea-level pressure, etc.). This study explores the potential of data-driven models to simulate storm surges globally. A multitude of predictors (obtained from remote sensing and climate reanalysis) along with predictands (from tide gage observations and storm surge reanalysis) are utilized to train and validate data-driven models to simulate daily maximum surge for the global coastline. Data-driven models simulate daily maximum surge better in extratropical and sub-tropical regions [average correlation and root-mean-square error (RMSE) of 0.79 and 7.5 cm, respectively], than in the tropics (average correlation and RMSE of 0.45 and 5.3 cm, respectively). For extreme events, the average correlation decreases to 0.54 (0.33) and RMSE increases to 14.5 (13.1) cm for extratropical (tropical) regions. Models forced with remotely sensed predictors showed a slightly better performance (average correlation of 0.69) than models forced with predictors obtained from reanalysis products (average correlation of 0.68). Results also highlight a significant improvement (i.e., average correlation increases from 0.54 to 0.68; RMSE reduces from 11 to 7 cm) over the Global Tide and Surge Reanalysis (GTSR), derived from the only global hydrodynamic model. For approximately 70\% of tide gages, mean sea-level pressure is the most important predictor to model daily maximum surge. Our results highlight the added value of data-driven models in the context of simulating storm surges at the global scale, in addition to existing hydrodynamic numerical models.}
 }
 
-﻿@article{Tadesse2021,
+@article{Tadesse2021,
 author={Tadesse, Michael Getachew and Wahl, Thomas},
 title={A database of global storm surge reconstructions},
 journal={Scientific Data},
@@ -169,10 +255,71 @@ day={27},
 volume={7},
 number={1},
 pages={11969},
-abstract={Extreme sea levels, caused by storm surges and high tides, can have devastating societal impacts. To effectively protect our coasts, global information on coastal flooding is needed. Here we present the first global reanalysis of storm surges and extreme sea levels (GTSR data set) based on hydrodynamic modelling. GTSR covers the entire world's coastline and consists of time series of tides and surges, and estimates of extreme sea levels. Validation shows that there is good agreement between modelled and observed sea levels, and that the performance of GTSR is similar to that of many regional hydrodynamic models. Due to the limited resolution of the meteorological forcing, extremes are slightly underestimated. This particularly affects tropical cyclones, which requires further research. We foresee applications in assessing flood risk and impacts of climate change. As a first application of GTSR, we estimate that 1.3% of the global population is exposed to a 1 in 100-year flood.},
+abstract={Extreme sea levels, caused by storm surges and high tides, can have devastating societal impacts. To effectively protect our coasts, global information on coastal flooding is needed. Here we present the first global reanalysis of storm surges and extreme sea levels (GTSR data set) based on hydrodynamic modelling. GTSR covers the entire world's coastline and consists of time series of tides and surges, and estimates of extreme sea levels. Validation shows that there is good agreement between modelled and observed sea levels, and that the performance of GTSR is similar to that of many regional hydrodynamic models. Due to the limited resolution of the meteorological forcing, extremes are slightly underestimated. This particularly affects tropical cyclones, which requires further research. We foresee applications in assessing flood risk and impacts of climate change. As a first application of GTSR, we estimate that 1.3\% of the global population is exposed to a 1 in 100-year flood.},
 issn={2041-1723},
 doi={10.1038/ncomms11969},
 url={https://doi.org/10.1038/ncomms11969}
+}
+
+@article{tausi,
+author = {J. Tausia and Méndez, Fernando J. and González, Juan José},
+title = {Spatial and temporal variability of Surfing in Cantabria},
+year = {2020},
+url = {https://github.com/javitausia/DeliWaves/blob/master/TausiaHoyalJavier-Surfing.pdf}
+}
+
+@article{Bruneau_2020,
+	doi = {10.1088/1748-9326/ab89d6},
+	url = {https://doi.org/10.1088/1748-9326/ab89d6},
+	year = 2020,
+	month = {jul},
+	publisher = {{IOP} Publishing},
+	volume = {15},
+	number = {7},
+	pages = {074030},
+	author = {Nicolas Bruneau and Jeff Polton and Joanne Williams and Jason Holt},
+	title = {Estimation of global coastal sea level extremes using neural networks},
+	journal = {Environmental Research Letters},
+	abstract = {Accurately predicting total sea-level including tides and storm surges is key to protecting and managing our coastal environment. However, dynamically forecasting sea level extremes is computationally expensive. Here a novel alternative based on ensembles of artificial neural networks independently trained at over 600 tide gauges around the world, is used to predict the total sea-level based on tidal harmonics and atmospheric conditions at each site. The results show globally-consistent high skill of the neural networks (NNs) to capture the sea variability at gauges around the globe. While the main atmosphere-driven dynamics can be captured with multivariate linear regressions, atmospheric-driven intensification, tide-surge and tide-tide non-linearities in complex coastal environments are only predicted with the NNs. In addition, the non-linear NN approach provides a simple and consistent framework to assess the uncertainty through a probabilistic forecast. These new and cheap methods are relatively easy to setup and could be a valuable tool combined with more expensive dynamical model in order to improve local resilience.}
+}
+
+@book{THOMSON2014ix,
+title = {Data Analysis Methods in Physical Oceanography},
+editor = {Richard E. Thomson and William J. Emery},
+booktitle = {Data Analysis Methods in Physical Oceanography (Third Edition)},
+publisher = {Elsevier},
+edition = {Third Edition},
+address = {Boston},
+year = {2014},
+isbn = {978-0-12-387782-6},
+doi = {https://doi.org/10.1016/B978-0-12-387782-6.05001-8},
+url = {https://www.sciencedirect.com/science/article/pii/B9780123877826050018},
+author = {Richard E. Thomson and William J. Emery}
+}
+
+@article{codiga,
+author = {Codiga, Daniel},
+year = {2011},
+month = {09},
+pages = {},
+title = {Unified tidal analysis and prediction using the UTide Matlab functions},
+doi = {10.13140/RG.2.1.3761.2008}
+}
+
+@article{HAIDVOGEL20083595,
+title = {Ocean forecasting in terrain-following coordinates: Formulation and skill assessment of the Regional Ocean Modeling System},
+journal = {Journal of Computational Physics},
+volume = {227},
+number = {7},
+pages = {3595-3624},
+year = {2008},
+note = {Predicting weather, climate and extreme events},
+issn = {0021-9991},
+doi = {https://doi.org/10.1016/j.jcp.2007.06.016},
+url = {https://www.sciencedirect.com/science/article/pii/S0021999107002549},
+author = {D.B. Haidvogel and H. Arango and W.P. Budgell and B.D. Cornuelle and E. Curchitser and E. {Di Lorenzo} and K. Fennel and W.R. Geyer and A.J. Hermann and L. Lanerolle and J. Levin and J.C. McWilliams and A.J. Miller and A.M. Moore and T.M. Powell and A.F. Shchepetkin and C.R. Sherwood and R.P. Signell and J.C. Warner and J. Wilkin},
+keywords = {Regional ocean prediction, Incompressible Navier–Stokes equations, Split-explicit time stepping, Sea ice modeling, Biogeochemical cycles},
+abstract = {Systematic improvements in algorithmic design of regional ocean circulation models have led to significant enhancement in simulation ability across a wide range of space/time scales and marine system types. As an example, we briefly review the Regional Ocean Modeling System, a member of a general class of three-dimensional, free-surface, terrain-following numerical models. Noteworthy characteristics of the ROMS computational kernel include: consistent temporal averaging of the barotropic mode to guarantee both exact conservation and constancy preservation properties for tracers; redefined barotropic pressure-gradient terms to account for local variations in the density field; vertical interpolation performed using conservative parabolic splines; and higher-order, quasi-monotone advection algorithms. Examples of quantitative skill assessment are shown for a tidally driven estuary, an ice-covered high-latitude sea, a wind- and buoyancy-forced continental shelf, and a mid-latitude ocean basin. The combination of moderate-order spatial approximations, enhanced conservation properties, and quasi-monotone advection produces both more robust and accurate, and less diffusive, solutions than those produced in earlier terrain-following ocean models. Together with advanced methods of data assimilation and novel observing system technologies, these capabilities constitute the necessary ingredients for multi-purpose regional ocean prediction systems.}
 }
 
 @article{Bell1996,
@@ -245,4 +392,376 @@ publisher = {Taylor & Francis},
 doi = {10.1080/00288306.1979.10424224},
 URL = {https://doi.org/10.1080/00288306.1979.10424224},
 eprint = {https://doi.org/10.1080/00288306.1979.10424224}
+}
+
+@book{siek2019predicting,
+  title={Predicting Storm Surges: Chaos, Computational Intelligence, Data Assimilation and Ensembles: UNESCO-IHE PhD Thesis},
+  author={Siek, Michael},
+  year={2019},
+  publisher={CRC Press}
+}
+
+﻿@Article{Jumper2021,
+author={Jumper, John
+and Evans, Richard
+and Pritzel, Alexander
+and Green, Tim
+and Figurnov, Michael
+and Ronneberger, Olaf
+and Tunyasuvunakool, Kathryn
+and Bates, Russ
+and {\v{Z}}{\'i}dek, Augustin
+and Potapenko, Anna
+and Bridgland, Alex
+and Meyer, Clemens
+and Kohl, Simon A. A.
+and Ballard, Andrew J.
+and Cowie, Andrew
+and Romera-Paredes, Bernardino
+and Nikolov, Stanislav
+and Jain, Rishub
+and Adler, Jonas
+and Back, Trevor
+and Petersen, Stig
+and Reiman, David
+and Clancy, Ellen
+and Zielinski, Michal
+and Steinegger, Martin
+and Pacholska, Michalina
+and Berghammer, Tamas
+and Bodenstein, Sebastian
+and Silver, David
+and Vinyals, Oriol
+and Senior, Andrew W.
+and Kavukcuoglu, Koray
+and Kohli, Pushmeet
+and Hassabis, Demis},
+title={Highly accurate protein structure prediction with AlphaFold},
+journal={Nature},
+year={2021},
+month={Aug},
+day={01},
+volume={596},
+number={7873},
+pages={583-589},
+abstract={Proteins are essential to life, and understanding their structure can facilitate a mechanistic understanding of their function. Through an enormous experimental effort1--4, the structures of around 100,000 unique proteins have been determined5, but this represents a small fraction of the billions of known protein sequences6,7. Structural coverage is bottlenecked by the months to years of painstaking effort required to determine a single protein structure. Accurate computational approaches are needed to address this gap and to enable large-scale structural bioinformatics. Predicting the three-dimensional structure that a protein will adopt based solely on its amino acid sequence---the structure prediction component of the `protein folding problem'8---has been an important open research problem for more than 50 years9. Despite recent progress10--14, existing methods fall far short of atomic accuracy, especially when no homologous structure is available. Here we provide the first computational method that can regularly predict protein structures with atomic accuracy even in cases in which no similar structure is known. We validated an entirely redesigned version of our neural network-based model, AlphaFold, in the challenging 14th Critical Assessment of protein Structure Prediction (CASP14)15, demonstrating accuracy competitive with experimental structures in a majority of cases and greatly outperforming other methods. Underpinning the latest version of AlphaFold is a novel machine learning approach that incorporates physical and biological knowledge about protein structure, leveraging multi-sequence alignments, into the design of the deep learning algorithm.},
+issn={1476-4687},
+doi={10.1038/s41586-021-03819-2},
+url={https://doi.org/10.1038/s41586-021-03819-2}
+}
+
+@online{gaumar,
+  author = {Wikipedia},
+  title = {Gauss-Markov theorem},
+  url = {https://en.wikipedia.org/wiki/Gauss\%E2\%80\%93Markov_theorem}
+}
+
+@book{elestats,
+  added-at = {2008-05-16T16:17:42.000+0200},
+  address = {New York, NY, USA},
+  author = {Hastie, Trevor and Tibshirani, Robert and Friedman, Jerome},
+  biburl = {https://www.bibsonomy.org/bibtex/2f58afc5c9793fcc8ad8389824e57984c/sb3000},
+  interhash = {d585aea274f2b9b228fc1629bc273644},
+  intrahash = {f58afc5c9793fcc8ad8389824e57984c},
+  keywords = {ml statistics},
+  publisher = {Springer New York Inc.},
+  series = {Springer Series in Statistics},
+  timestamp = {2008-05-16T16:17:43.000+0200},
+  title = {The Elements of Statistical Learning},
+  year = 2001
+}
+
+@article{Fix1989DiscriminatoryA,
+  title={Discriminatory Analysis - Nonparametric Discrimination: Consistency Properties},
+  author={Evelyn Fix and Joseph L. Hodges},
+  journal={International Statistical Review},
+  year={1989},
+  volume={57},
+  pages={238}
+}
+
+@article{altmanknn,
+ ISSN = {00031305},
+ URL = {http://www.jstor.org/stable/2685209},
+ abstract = {Nonparametric regression is a set of techniques for estimating a regression curve without making strong assumptions about the shape of the true regression function. These techniques are therefore useful for building and checking parametric models, as well as for data description. Kernel and nearest-neighbor regression estimators are local versions of univariate location estimators, and so they can readily be introduced to beginning students and consulting clients who are familiar with such summaries as the sample mean and median.},
+ author = {N. S. Altman},
+ journal = {The American Statistician},
+ number = {3},
+ pages = {175--185},
+ publisher = {[American Statistical Association, Taylor & Francis, Ltd.]},
+ title = {An Introduction to Kernel and Nearest-Neighbor Nonparametric Regression},
+ volume = {46},
+ year = {1992}
+}
+
+@article{nse,
+title = {River flow forecasting through conceptual models part I — A discussion of principles},
+journal = {Journal of Hydrology},
+volume = {10},
+number = {3},
+pages = {282-290},
+year = {1970},
+issn = {0022-1694},
+doi = {https://doi.org/10.1016/0022-1694(70)90255-6},
+url = {https://www.sciencedirect.com/science/article/pii/0022169470902556},
+author = {J.E. Nash and J.V. Sutcliffe},
+abstract = {The principles governing the application of the conceptual model technique to river flow forecasting are discussed. The necessity for a systematic approach to the development and testing of the model is explained and some preliminary ideas suggested.}
+}
+
+@article{kge,
+title = {Decomposition of the mean squared error and NSE performance criteria: Implications for improving hydrological modelling},
+journal = {Journal of Hydrology},
+volume = {377},
+number = {1},
+pages = {80-91},
+year = {2009},
+issn = {0022-1694},
+doi = {https://doi.org/10.1016/j.jhydrol.2009.08.003},
+url = {https://www.sciencedirect.com/science/article/pii/S0022169409004843},
+author = {Hoshin V. Gupta and Harald Kling and Koray K. Yilmaz and Guillermo F. Martinez},
+keywords = {Mean squared error, Nash–Sutcliffe efficiency, Model performance evaluation, Calibration, Multiple criteria, Criteria decomposition},
+abstract = {Summary
+The mean squared error (MSE) and the related normalization, the Nash–Sutcliffe efficiency (NSE), are the two criteria most widely used for calibration and evaluation of hydrological models with observed data. Here, we present a diagnostically interesting decomposition of NSE (and hence MSE), which facilitates analysis of the relative importance of its different components in the context of hydrological modelling, and show how model calibration problems can arise due to interactions among these components. The analysis is illustrated by calibrating a simple conceptual precipitation-runoff model to daily data for a number of Austrian basins having a broad range of hydro-meteorological characteristics. Evaluation of the results clearly demonstrates the problems that can be associated with any calibration based on the NSE (or MSE) criterion. While we propose and test an alternative criterion that can help to reduce model calibration problems, the primary purpose of this study is not to present an improved measure of model performance. Instead, we seek to show that there are systematic problems inherent with any optimization based on formulations related to the MSE. The analysis and results have implications to the manner in which we calibrate and evaluate environmental models; we discuss these and suggest possible ways forward that may move us towards an improved and diagnostically meaningful approach to model performance evaluation and identification.}
+}
+
+@ARTICLE{tadessegood,
+  
+AUTHOR={Tadesse, M. and Wahl, T. and Cid, A.},   
+	 
+TITLE={Data-Driven Modeling of Global Storm Surges},      
+	
+JOURNAL={Frontiers in Marine Science},      
+	
+VOLUME={7},      
+	
+YEAR={2020},      
+	  
+URL={https://www.frontiersin.org/article/10.3389/fmars.2020.00260},       
+	
+DOI={10.3389/fmars.2020.00260},      
+	
+ISSN={2296-7745},   
+   
+ABSTRACT={In many areas, storm surges caused by tropical or extratropical cyclones are the main contributors to critical extreme sea level events. Storm surges can be simulated using numerical models that are based on the underlying physical processes, or by using data-driven models that quantify the relationship between the predictand (storm surge) and relevant predictors (wind speed, mean sea-level pressure, etc.). This study explores the potential of data-driven models to simulate storm surges globally. A multitude of predictors (obtained from remote sensing and climate reanalysis) along with predictands (from tide gage observations and storm surge reanalysis) are utilized to train and validate data-driven models to simulate daily maximum surge for the global coastline. Data-driven models simulate daily maximum surge better in extratropical and sub-tropical regions [average correlation and root-mean-square error (RMSE) of 0.79 and 7.5 cm, respectively], than in the tropics (average correlation and RMSE of 0.45 and 5.3 cm, respectively). For extreme events, the average correlation decreases to 0.54 (0.33) and RMSE increases to 14.5 (13.1) cm for extratropical (tropical) regions. Models forced with remotely sensed predictors showed a slightly better performance (average correlation of 0.69) than models forced with predictors obtained from reanalysis products (average correlation of 0.68). Results also highlight a significant improvement (i.e., average correlation increases from 0.54 to 0.68; RMSE reduces from 11 to 7 cm) over the Global Tide and Surge Reanalysis (GTSR), derived from the only global hydrodynamic model. For approximately 70% of tide gages, mean sea-level pressure is the most important predictor to model daily maximum surge. Our results highlight the added value of data-driven models in the context of simulating storm surges at the global scale, in addition to existing hydrodynamic numerical models.}
+}
+
+@dataset{moana,
+  author       = {Joao Marcos Azevedo Correia de Souza},
+  title        = {Moana Ocean Hindcast},
+  month        = jan,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = 2,
+  doi          = {10.5281/zenodo.5895265},
+  url          = {https://doi.org/10.5281/zenodo.5895265}
+}
+
+@article{ministry,
+author = {Ministry for the Environment (NZ)},
+year = {2017},
+title = {Preparing for Coastal Change},
+journal = {ME 1335},
+pages = {36pp}
+}
+
+@book{statsocean,
+author = {Wilks, Daniel},
+year = {2005},
+month = {01},
+pages = {},
+title = {Statistical Methods in the Atmospheric Sciences, Volume 91, Second Edition (International Geophysics)},
+isbn = {0127519661}
+}
+
+@article{delange,
+author = {de Lange, Willem and Gibb, J.},
+year = {2000},
+month = {09},
+pages = {419-434},
+title = {Seasonal, interannual, and decadal variability of storm surges at Tauranga, New Zealand},
+volume = {34},
+journal = {New Zealand Journal of Marine and Freshwater Research - N Z J MAR FRESHWATER RES},
+doi = {10.1080/00288330.2000.9516945}
+}
+
+@article{brenstrum,
+author = {Brenstrum, E},
+year = {2000},
+pages = {23-27},
+title = {The cyclone of 1936: the most destructive storm of the Twentieth Century?},
+volume = {20},
+journal = {Weather and Climate}
+}
+
+@article{stephens1,
+author = {Stephens, S.A. and Bell, Rob and Haigh, Ivan},
+year = {2020},
+month = {03},
+pages = {783-796},
+title = {Spatial and temporal analysis of extreme storm-tide and skew-surge events around the coastline of New Zealand},
+volume = {20},
+journal = {Natural Hazards and Earth System Sciences},
+doi = {10.5194/nhess-20-783-2020}
+}
+
+@unknown{stephens2,
+author = {Stephens, S.A. and Bell, Rob and Haigh, Ivan},
+year = {2019},
+month = {11},
+pages = {},
+title = {Spatial and temporal analysis of extreme sea level and skew surge events around the coastline of New Zealand},
+doi = {10.5194/nhess-2019-353}
+}
+
+@article{stephenswaves,
+author = {Stephens, S.A. and Coco, Giovanni and Bryan, Karin},
+year = {2011},
+month = {07},
+title = {Numerical Simulations of Wave Setup over Barred Beach Profiles: Implications for Predictability},
+volume = {137},
+journal = {Journal of Waterway Port Coastal and Ocean Engineering},
+doi = {10.1061/(ASCE)WW.1943-5460.0000076}
+}
+
+@article{anaforcing,
+author={Rueda, Ana
+and Vitousek, Sean
+and Camus, Paula
+and Tom{\'a}s, Antonio
+and Espejo, Antonio
+and Losada, Inigo J.
+and Barnard, Patrick L.
+and Erikson, Li H.
+and Ruggiero, Peter
+and Reguero, Borja G.
+and Mendez, Fernando J.},
+title={A global classification of coastal flood hazard climates associated with large-scale oceanographic forcing},
+journal={Scientific Reports},
+year={2017},
+month={Jul},
+day={11},
+volume={7},
+number={1},
+pages={5038},
+abstract={Coastal communities throughout the world are exposed to numerous and increasing threats, such as coastal flooding and erosion, saltwater intrusion and wetland degradation. Here, we present the first global-scale analysis of the main drivers of coastal flooding due to large-scale oceanographic factors. Given the large dimensionality of the problem (e.g. spatiotemporal variability in flood magnitude and the relative influence of waves, tides and surge levels), we have performed a computer-based classification to identify geographical areas with homogeneous climates. Results show that 75{\%} of coastal regions around the globe have the potential for very large flooding events with low probabilities (unbounded tails), 82{\%} are tide-dominated, and almost 49{\%} are highly susceptible to increases in flooding frequency due to sea-level rise.},
+issn={2045-2322},
+doi={10.1038/s41598-017-05090-w},
+url={https://doi.org/10.1038/s41598-017-05090-w}
+}
+
+@article{statsnumer,
+author = {Wang, Xiaolan and Swail, Val and Cox, Andrew},
+year = {2009},
+month = {01},
+pages = {317 - 332},
+title = {Dynamical versus statistical downscaling methods for ocean wave heights},
+volume = {30},
+journal = {International Journal of Climatology},
+doi = {10.1002/joc.1899}
+}
+
+@article{cyclons,
+author = {Hodges, Kevin and Cobb, Alison and Vidale, P.L.},
+year = {2017},
+month = {07},
+pages = {5243-5264},
+title = {How Well Are Tropical Cyclones Represented in Reanalysis Datasets?},
+volume = {30},
+journal = {Journal of Climate},
+doi = {10.1175/JCLI-D-16-0557.1}
+}
+
+@article{nsekge,
+author = {Knoben, Wouter and Freer, Jim and Woods, Ross},
+year = {2019},
+month = {10},
+pages = {4323-4331},
+title = {Technical note: Inherent benchmark or not? Comparing Nash–Sutcliffe and Kling–Gupta efficiency scores},
+volume = {23},
+journal = {Hydrology and Earth System Sciences},
+doi = {10.5194/hess-23-4323-2019}
+}
+
+@article{storms,
+author = {Stephens, S.A. and Bell, Rob and Haigh, Ivan},
+year = {2019},
+month = {11},
+pages = {},
+title = {Spatial and temporal analysis of extreme sea level and skew surge events around the coastline of New Zealand},
+doi = {10.5194/nhess-2019-353}
+}
+
+@article{treesfriedman,
+author = {Friedman, Jerome},
+year = {2000},
+month = {11},
+pages = {},
+title = {Greedy Function Approximation: A Gradient Boosting Machine},
+volume = {29},
+journal = {The Annals of Statistics},
+doi = {10.1214/aos/1013203451}
+}
+
+@article{kgeprime,
+title = {Runoff conditions in the upper Danube basin under an ensemble of climate change scenarios},
+journal = {Journal of Hydrology},
+volume = {424-425},
+pages = {264-277},
+year = {2012},
+issn = {0022-1694},
+doi = {https://doi.org/10.1016/j.jhydrol.2012.01.011},
+url = {https://www.sciencedirect.com/science/article/pii/S0022169412000431},
+author = {Harald Kling and Martin Fuchs and Maria Paulin},
+keywords = {Climate change, Uncertainty, Water balance, Runoff simulation, Danube basin},
+abstract = {Summary
+Runoff conditions are strongly controlled by climate. Therefore, any uncertainties in the projections about future climate directly translate to uncertainties in future runoff. If several climate models are applied with the same emission scenario, there may be large differences in the climate projections due to model related biases and natural climate variability. To address this issue, an ensemble modelling approach – which considers a set of climate models – is applied in this study with a monthly, conceptual hydrological model for assessing future runoff conditions in the upper Danube basin (101,810km2). Observed data of the past 120years of the HISTALP data-set are used to evaluate runoff simulations under historic climate variations as well as to test the delta-change method for bias correction of climate data. Uncertainties caused by the hydrological model or by the method for bias correction appear to be small. Projections about future climate are obtained from 21 regional climate models (RCMs) of the ENSEMBLES project for the A1B emission scenario. Evaluation and ranking of the RCMs reveals that some of the models have considerable biases in simulation of spatio-temporal patterns of historic precipitation and temperature. There is however, no systematic relationship between historic performance and projected future change. Even for the better performing RCMs the differences in the simulation results are large. This is a strong argument for using an ensemble modelling approach, which yields a range of future runoff conditions instead of a deterministic projection. In general, a strong decrease of summer runoff is simulated, whereas there is no clear signal for changes in winter runoff. The spread between different RCMs in future seasonal runoff is larger than for the monthly flow duration curve. Overall, the projected changes in future runoff conditions become more pronounced towards the end of the 21st century.}
+}
+
+@article{PARMEZAN2019302,
+title = {Evaluation of statistical and machine learning models for time series prediction: Identifying the state-of-the-art and the best conditions for the use of each model},
+journal = {Information Sciences},
+volume = {484},
+pages = {302-337},
+year = {2019},
+issn = {0020-0255},
+doi = {https://doi.org/10.1016/j.ins.2019.01.076},
+url = {https://www.sciencedirect.com/science/article/pii/S0020025519300945},
+author = {Antonio Rafael Sabino Parmezan and Vinicius M.A. Souza and Gustavo E.A.P.A. Batista},
+keywords = {Univariate analysis, Automatic parameter tuning, Multi-step-ahead prediction, Time series forecasting, Data mining},
+abstract = {The choice of the most promising algorithm to model and predict a particular phenomenon is one of the most prominent activities of the temporal data forecasting. Forecasting (or prediction), similarly to other data mining tasks, uses empirical evidence to select the most suitable model for a problem at hand since no modeling method can be considered as the best. However, according to our systematic literature review of the last decade, few scientific publications rigorously expose the benefits and limitations of the most popular algorithms for time series prediction. At the same time, there is a limited performance record of these models when applied to complex and highly nonlinear data. In this paper, we present one of the most extensive, impartial and comprehensible experimental evaluations ever done in the time series prediction field. From 95 datasets, we evaluate eleven predictors, seven parametric and four non-parametric, employing two multi-step-ahead projection strategies and four performance evaluation measures. We report many lessons learned and recommendations concerning the advantages, drawbacks, and the best conditions for the use of each model. The results show that SARIMA is the only statistical method able to outperform, but without a statistical difference, the following machine learning algorithms: ANN, SVM, and kNN-TSPI. However, such forecasting accuracy comes at the expense of a larger number of parameters. The evaluated datasets, as well detailed results achieved by different indexes as MSE, Theil’s U coefficient, POCID, and a recently-proposed multi-criteria performance measure are available online in our repository. Such repository is another contribution of this paper since other researchers can replicate our results and evaluate their methods more rigorously. The findings of this study will impact further research on this topic since they provide a broad insight into models selection, parameters setting, evaluation measures, and experimental setup.}
+}
+
+@inproceedings{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  booktitle={Advances in neural information processing systems},
+  pages={5998--6008},
+  year={2017}
+}
+
+﻿@Article{Tiggeloven2021,
+author={Tiggeloven, Timothy
+and Couasnon, Ana{\"i}s
+and van Straaten, Chiem
+and Muis, Sanne
+and Ward, Philip J.},
+title={Exploring deep learning capabilities for surge predictions in coastal areas},
+journal={Scientific Reports},
+year={2021},
+month={Aug},
+day={26},
+volume={11},
+number={1},
+pages={17224},
+abstract={To improve coastal adaptation and management, it is critical to better understand and predict the characteristics of sea levels. Here, we explore the capabilities of artificial intelligence, from four deep learning methods to predict the surge component of sea-level variability based on local atmospheric conditions. We use an Artificial Neural Networks, Convolutional Neural Network, Long Short-Term Memory layer (LSTM) and a combination of the latter two (ConvLSTM), to construct ensembles of Neural Network (NN) models at 736 tide stations globally. The NN models show similar patterns of performance, with much higher skill in the mid-latitudes. Using our global model settings, the LSTM generally outperforms the other NN models. Furthermore, for 15 stations we assess the influence of adding complexity more predictor variables. This generally improves model performance but leads to substantial increases in computation time. The improvement in performance remains insufficient to fully capture observed dynamics in some regions. For example, in the tropics only modelling surges is insufficient to capture intra-annual sea level variability. While we focus on minimising mean absolute error for the full time series, the NN models presented here could be adapted for use in forecasting extreme sea levels or emergency response.},
+issn={2045-2322},
+doi={10.1038/s41598-021-96674-0},
+url={https://doi.org/10.1038/s41598-021-96674-0}
+}
+
+@book{cofino,
+author = {Gutiérrez, J.M. and Ancell, R. and Cofiño, A.S. and Sordo, C.M.},
+year = {2004},
+title = {Redes Neuronales y Probabilísticas en las Ciencias Atmosféricas},
+journal = {Monografías del Instituto Nacional de Meteorología}
 }

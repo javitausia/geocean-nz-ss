@@ -3,7 +3,7 @@
 
 # basic configurations
 title: Storm Surge NZ - Summary
-author: Javier Tausía Hoyal
+author: GeoOcean - MetOcean
 logo: media/images/logo.jpeg
 
 # Force re-execution of notebooks on each build.
