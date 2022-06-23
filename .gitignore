@@ -133,3 +133,6 @@ dmypy.json
 
 # Jupyter Book
 _build/
+
+# Visual Studio Code
+.vscode/
