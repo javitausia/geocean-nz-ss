@@ -1,4 +1,4 @@
 data/storm_surge_data/dac_reanalysis/DAC_SS_6H_1993_2020.tar.xz filter=lfs diff=lfs merge=lfs -text
 *.tar.gz filter=lfs diff=lfs merge=lfs -text
-data/cfsr/CFSR_MSLP_daily.nc
-data/cfsr/CFSR_WINDs_uv_daily.nc
+data/cfsr/CFSR_MSLP_daily.nc filter=lfs diff=lfs merge=lfs -text
+data/cfsr/CFSR_WINDs_uv_daily.nc filter=lfs diff=lfs merge=lfs -text
