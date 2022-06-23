@@ -65,7 +65,7 @@ class Experiment(object):
                  ext_quantile: tuple = default_ext_quantile,
                  pca_attrs: dict = pca_attrs_exp,
                  model_attrs: dict = linear_attrs_exp,
-                 pcs_folder: str = data_path+'/pcs',
+                 pcs_folder: str = data_path+'/pcs_experiments',
                  verbose: bool = True):
         """
         As the initializator, the __init__ function creates the instance of the class,
@@ -167,6 +167,7 @@ class Experiment(object):
         # these are the pca arguments to calculate the matrix
         dict_to_pca = dict(zip(list(self.pca_attrs.keys()),parameters[:5]))
         trash = dict_to_pca.pop('winds')
+        print(trash)
 
         # change region parameter if local area is required
         if dict_to_pca['region'][0]=='local':
@@ -177,19 +178,22 @@ class Experiment(object):
                 site_location[1]+dict_to_pca['region'][1][1]
             ))
             dict_to_pca['region'] = local_region
-        if site_id:
-            dict_to_pca['site_id'] = site_id
+            wind_var = 'wind_proj_mask'
+            dict_to_pca['site_id'] = site_id if site_id else None
+        else:
+            wind_var = 'wind_magnitude'
+            dict_to_pca['site_id'] = None
 
         # lets first calculate the pcs
         return PCA_DynamicPred(
             self.slp_data,pres_vars=('SLP','longitude','latitude'),
             wind=self.wind_data if trash else None,
-            wind_vars=('wind_proj_mask', # might change
+            wind_vars=(wind_var, # might change
                 datasets_attrs[self.predictor_data+'_winds'][0],
                 datasets_attrs[self.predictor_data+'_winds'][1],
                 datasets_attrs[self.predictor_data+'_winds'][4],
                 datasets_attrs[self.predictor_data+'_winds'][5]),
-            pca_plot=(plot,False,1),verbose=self.verbose,
+            pca_plot=(plot,False,1),verbose=True,
             site_location=site_location,
             pcs_folder=self.pcs_folder,
             **dict_to_pca # extra arguments without the winds
@@ -218,6 +222,8 @@ class Experiment(object):
         model_params_for_sites = []
 
         for isite,site in enumerate(self.ss_sites):
+            
+            print(f'\n Analyzing site {site}!! \n')
 
             # we first load in memmory the selected site
             ss_site = self.ss_data.isel(site=site)[[
@@ -247,6 +253,7 @@ class Experiment(object):
                     ]
                 )
             )
+            # print(f'\n Model params shape: {model_params_for_site.shape} \n')
 
             # lets iterate over all the pca_attrs + model_attrs
             if self.model=='linear':
@@ -311,7 +318,6 @@ class Experiment(object):
                     for istat,stat in enumerate(stats):
                         model_params_for_site[
                             tuple(list(i_parameters)+[istat])
-
                         ] = stats[stat] # append stat to each model / site
                     # sum 1 to counter
                     model_counter += 1

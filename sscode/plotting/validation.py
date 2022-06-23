@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # arrays
 import numpy as np
 import pandas as pd
@@ -21,7 +20,7 @@ from .config import _figsize_width, _figsize_height, _figsize, \
 from .utils import plot_ccrs_nz, get_n_colors
 
 
-def qqplot(x, y, min_value=-0.3, max_value=0.6,
+def qqplot(x, y, min_value=-0.3, max_value=0.5,
            quantiles=None, interpolation='nearest', ax=None, rug=False,
            rug_length=0.05, rug_kwargs=None, **kwargs):
 
@@ -99,15 +98,15 @@ def qqplot(x, y, min_value=-0.3, max_value=0.6,
     # Draw the q-q plot
     ax.plot([min_value,max_value],[min_value,max_value],
             c='gray',lw=2,ls='--')
-    ax.scatter(x_quantiles,y_quantiles,c=qqplot_points_col,s=8,
+    ax.scatter(x_quantiles,y_quantiles,c=qqplot_points_col,s=10,
                edgecolors=qqplot_edges_col,**kwargs)
     ax.set_xlim(min_value,max_value)
     ax.set_ylim(min_value,max_value)
     ax.axis('square')
-
+    
 
 def scatterplot(x, y, ax=None, density=True,
-                min_value=-0.3, max_value=0.6,
+                min_value=-0.3, max_value=0.5,
                 **kwargs):
     """
     Plots the data in a scatter plot
@@ -169,16 +168,11 @@ def plot_stats(statistics_data, plot_stats, **kwargs):
             statistics_data, # this is the data
             x='longitude',y='latitude',hue=var, #cmap='jet',
             ax=ax,transform=ccrs.PlateCarree(),zorder=40,
-            add_guide=False,
             **kwargs
         ) # TODO: add kwargs
         ax.set_facecolor('lightblue')
         ax.set_title(var,fontsize=20)
-        cbar = fig.colorbar(p,ax=ax) # colorbar definition
-        cbar.set_label('KGE',size=20)
-        cbar.set_ticks([0.60,0.65,0.70,0.75,0.80]) if var=='kgeprime' else None
-        cbar.ax.set_yticklabels(['0.60','0.65','0.70','0.75','0.80'],fontsize=16,fontweight='bold') \
-            if var=='kgeprime' else None
+        ax.coastlines(zorder=100)
     # plot map
     plot_ccrs_nz(axes.flatten(),plot_labels=(False,5,5),
                  plot_coastline=(False,None,None))

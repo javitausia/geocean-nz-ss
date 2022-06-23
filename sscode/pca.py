@@ -89,7 +89,7 @@ class PCA_DynamicPred(object):
         time_lapse = self.time_lapse
         time_resample = self.time_resample
         region = self.region
-
+        
         # if winds then calculate projected winds
         if self.wind:
             winds = (True,
@@ -132,7 +132,7 @@ class PCA_DynamicPred(object):
         else:
             pres = pres.resample(time=time_resample).mean().dropna(dim='time',how='all')
         if winds[0]:
-            wind = wind[wind_vars[0]].resample(time=time_resample).max().fillna(0.0)\
+            wind = wind[wind_vars[0]].resample(time=time_resample).mean().fillna(0.0)\
                 .interp(coords={wind_vars[1]:pres[pres_vars[1]],
                                 wind_vars[2]:pres[pres_vars[2]]}
                         )\
@@ -163,16 +163,16 @@ class PCA_DynamicPred(object):
             for tl in range(0,time_lapse*(grad_add+wind_add),grad_add+wind_add):
                 try:
                     pcs_matrix[t,y_shape*tl:y_shape*(tl+1)] = \
-                        pres.isel(time=t-tl)[pres_vars[0]].values.reshape(-1)
+                        pres.isel(time=t-int(tl/grad_add+wind_add))[pres_vars[0]].values.reshape(-1)
                 except:
                     pcs_matrix[t,y_shape*tl:y_shape*(tl+1)] = \
-                        pres.isel(time=t-tl).values.reshape(-1)
+                        pres.isel(time=t-int(tl/grad_add+wind_add)).values.reshape(-1)
                 if calculate_gradient:
                     pcs_matrix[t,y_shape*(tl+1):y_shape*(tl+2)] = \
-                        pres.isel(time=t-tl)[pres_vars[0]+'_gradient'].values.reshape(-1)
+                        pres.isel(time=t-int(tl/grad_add+wind_add))[pres_vars[0]+'_gradient'].values.reshape(-1)
                 if wind_add:
                     pcs_matrix[t,y_shape*(tl+grad_add):y_shape*(tl+grad_add+1)] = \
-                        wind.isel(time=t-tl).values.reshape(-1)
+                        wind.isel(time=t-int(tl/grad_add+wind_add)).values.reshape(-1)
         print('\n pcs_matrix with shape: \n {} \n'.format(pcs_matrix.shape)) \
             if self.verbose else None
                     
@@ -221,7 +221,7 @@ class PCA_DynamicPred(object):
             pca_data, pca_scaler = self.pcs_load()
 
             if pca_data and pca_scaler:
-                print('PCs loaded from file')
+                print('PCs loaded from file') if self.verbose else None
                 self.pcs_plot(pca_data, pca_scaler)
                 return pca_data, pca_scaler
         
@@ -299,7 +299,7 @@ class PCA_DynamicPred(object):
 
         name_attrs.append("tl"+str(self.time_lapse))
 
-        print(self.pcs_folder, name_attrs)
+        print(self.pcs_folder, name_attrs) if self.verbose else None
         
         return os.path.join(self.pcs_folder, "_".join(name_attrs) + ".nc"),\
                os.path.join(self.pcs_folder, "_".join(name_attrs) + ".pickle")
@@ -319,8 +319,9 @@ class PCA_DynamicPred(object):
         
         print("Computing using CPU") if self.verbose else None
         
-        pca_fit = PCA(n_components=min(pcs_stan.shape[0],
-                                       pcs_stan.shape[1]))
+        # pca_fit = PCA(n_components=min(pcs_stan.shape[0],
+        #                                pcs_stan.shape[1]))
+        pca_fit = PCA(n_components=0.98)
         
         PCs = pca_fit.fit_transform(pcs_stan)
     
@@ -482,17 +483,17 @@ class PCA_DynamicPred(object):
         pca_data_file, pca_scaler_file = self._pca_file_name()
         print("FILE", pca_data_file)
         
-        if not os.path.isfile(pca_data_file): # or \
-            # not os.path.isfile(pca_scaler_file):
+        if not os.path.isfile(pca_data_file) or \
+            not os.path.isfile(pca_scaler_file):
             return None, None
         
         # open a file, where you stored the pickled data
-        # with open(pca_scaler_file, 'rb') as fin:
-        #     pca_scaler = pickle.load(fin)
+        with open(pca_scaler_file, 'rb') as fin:
+            pca_scaler = pickle.load(fin)
             
         pca_data = xr.open_dataset(pca_data_file)
 
-        return pca_data, True # pca_scaler
+        return pca_data, pca_scaler
     
     
     def pcs_save(self,

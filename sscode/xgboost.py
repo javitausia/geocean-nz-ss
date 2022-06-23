@@ -27,8 +27,8 @@ def XGBoost_Regression(
     validator: tuple = (False,None,None),
     xgboost_parameters = {
         'n_estimators': 50,
-        'max_depth': 8,
-        'min_samples_split': 0.07,
+        'max_depth': 15,
+        'min_samples_split': 0.05,
         'learning_rate': 0.1,
         'loss': 'ls'
     }, # xgboost model parameters
@@ -134,6 +134,8 @@ def XGBoost_Regression(
             xgboost_parameters
         )) if verbose else None
         # perform the xgboost regression
+        if xgboost_parameters['loss']=='quantile':
+            xgboost_parameters['alpha'] = 0.9
         xgboost = ensemble.GradientBoostingRegressor(
             **xgboost_parameters, verbose=0
         ) # create xgboost object

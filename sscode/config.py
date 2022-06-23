@@ -23,4 +23,3 @@ default_evaluation_metrics = [
     'nse','kge','kgeprime','ext_nse','ext_kge','ext_kgeprime' # hydrologic metrics
 ] # add more metrics if required
 default_ext_quantile = ([0.9,0.95,0.99],0) # quantiles for extreme analysis
-

@@ -1,6 +1,5 @@
 # basic
 import os, glob, sys
-import re # regular expressions
 from datetime import datetime
 
 # arrays
@@ -30,23 +29,23 @@ warnings.filterwarnings('ignore')
 
 # loader dicts summary
 loader_dict_options = {
-    'predictor':  ('cfsr','era_5'),
-    'predictand': ('dac','moana','codec'),
-    'validator':  ('uhslc','linz','other','privtgs')
+    'predictor': ['cfsr','era_5'],
+    'predictand': ['dac','moana','codec'],
+    'validator': ['uhslc','linz','other','privtgs']
 }
 # dataset attrs
 datasets_attrs = {
-    'era_5':       ('longitude','latitude',None,'ERA 5 reanalysis'),
+    'era_5': ('longitude','latitude',None,'ERA 5 reanalysis'),
     'era_5_winds': ('longitude','latitude',None,'ERA 5 winds reanalysis','u10','v10'),
-    'cfsr':        ('longitude','latitude',None,'CFSR reanalysis'),
-    'cfsr_winds':  ('lon','lat',None,'CFSR winds reanalysis','U_GRD_L103','V_GRD_L103'),
-    'dac':         ('longitude','latitude',None,'DAC global reanalysis'),
-    'moana':       ('lon','lat','site','Moana v2 hindcast'),
-    'codec':       ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
-    'uhslc':       ('longitude','latitude','name','UHSLC tgs'),
-    'linz':        ('longitude','latitude','name','LINZ tgs'),
-    'other':       ('longitude','latitude','name','OTHER tgs'),
-    'privtgs':     ('longitude','latitude','name','Private tgs')
+    'cfsr': ('longitude','latitude',None,'CFSR reanalysis'),
+    'cfsr_winds': ('lon','lat',None,'CFSR winds reanalysis','U_GRD_L103','V_GRD_L103'),
+    'dac': ('longitude','latitude',None,'DAC global reanalysis'),
+    'moana': ('lon','lat','site','Moana v2 hindcast'),
+    'codec': ('codec_coords_lon','codec_coords_lat','name','CoDEC reanalysis'),
+    'uhslc': ('longitude','latitude','name','UHSLC tgs'),
+    'linz': ('longitude','latitude','name','LINZ tgs'),
+    'other': ('longitude','latitude','name','OTHER tgs'),
+    'privtgs': ('longitude','latitude','name','Private tgs')
 }
 
 
@@ -59,15 +58,15 @@ class Loader(object):
 
     """
 
-    def __init__(self, data_to_load: tuple = ('cfsr','moana','uhslc'),
+    def __init__(self, data_to_load: list = ('cfsr','moana','uhslc'),
                  time_resample: str = '1D', 
-                 load_winds: tuple = (True,None),
-                 plot: tuple = (True,True,True),
+                 load_winds: bool = (True,default_location),
+                 plot: bool = (True,True,True),
                  load_predictor_files: tuple = (False,None)):
         """
         Loader class constructor
 
-        This __init__ function loads the data that will be used in future parts.
+        This Loader function loads the data that will be used in future parts.
 
         Specifying the data_to_load parameter, it is possible to load all the
         datasets that are available in the data folder, the predictor, the predictand
@@ -83,9 +82,9 @@ class Loader(object):
         problems
 
         Args:
-            data_to_load (tuple, optional): List with the predictor, predictand 
+            data_to_load (list, optional): List with the predictor, predictand 
             and validator:
-                - Defaults to ('cfsr','moana','uhslc').
+                - Defaults to ['cfsr','moana','uhslc'].
             time_resample (str, optional): Time step to resample the data to, this might
                 also by a year / years to crop the data to. Notice that this time
                 resample is only used in the predictor, as the other datasets
@@ -186,20 +185,20 @@ def load_predictor(atmospheric_data: str = 'cfsr',
                    load_files: tuple = (False,None)):
     """
     This function loads the atmospheric data and crops it to a time frame
-    of a year/years, or resamples it daily, 12hourly... as it is very difficult to 
+    of a year, or resamples it daily, 12hourly... as it is very difficult to 
     work with all the data at the same time. The winds can be easily
     loaded, and also cropped and projected in the direction of a
     location if requested
 
     Args:
         atmospheric_data (str, optional): Dataset to load. 
-            - Defaults to 'cfsr'.
+            - Defaults to cfsr.
         time (str, optional): Year/s to crop the data. It can also be a time
             step to resample the data as 1H, 6H, 12H, 1D...
             - Defaults to '1D'.
         load_winds (tuple, optional): This indicates wether the winds are loaded or not, and
             the location of the projected winds.
-            - Defaults to (True,None)
+            - Defaults to (True,default_location)
         plot (bool, optional): Whether to plot or not the results.
             - Defaults to True.
         load_files (tuple, optional): Load or not the saved predictor files.
@@ -210,9 +209,17 @@ def load_predictor(atmospheric_data: str = 'cfsr',
         [list]: This is a list with the data loaded.
     """
 
-    # load previously saved data if specified
+    # specify dataset names for the different datasets available
+    slp_data = os.path.join(data_path,atmospheric_data,'CFSR_MSLP_1H_1990_2021.nc') \
+        if atmospheric_data=='cfsr' else os.path.join(data_path,atmospheric_data,'ERA5_MSLP_1H_1990_2021.nc')
+    winds_data = (os.path.join(data_path,atmospheric_data,'CFSR_uwnd_6H_1990_2021.nc'),
+                  os.path.join(data_path,atmospheric_data,'CFSR_vwnd_6H_1990_2021.nc')) \
+        if atmospheric_data=='cfsr' else (os.path.join(data_path,atmospheric_data,'ERA5_10mu_1H_1979_2021.nc'),
+                                          os.path.join(data_path,atmospheric_data,'ERA5_10mv_1H_1979_2021.nc'))
+
+    # load previously calculated data if specified
     if load_files[0]:
-        print(f'\n loading previously saved atmospheric data from {load_files[1]} \n')
+        print(f'\n loading previously saved atmospheric data from {load_files} \n')
         return [
             xr.open_dataset(file).sortby(
                 datasets_attrs[atmospheric_data][0],ascending=True).sortby(
@@ -223,26 +230,18 @@ def load_predictor(atmospheric_data: str = 'cfsr',
             for file in load_files[1]
         ]
 
-    # specify dataset names for the different datasets available
-    slp_data = os.path.join(data_path,atmospheric_data,'CFSR_MSLP_1H_1990_2021.nc') \
-        if atmospheric_data=='cfsr' else os.path.join(data_path,atmospheric_data,'ERA5_MSLP_1H_1990_2021.nc')
-    winds_data = (os.path.join(data_path,atmospheric_data,'CFSR_uwnd_1H_2011_2021.nc'),
-                  os.path.join(data_path,atmospheric_data,'CFSR_vwnd_1H_2011_2021.nc')) \
-        if atmospheric_data=='cfsr' else (os.path.join(data_path,atmospheric_data,'ERA5_10mu_1H_1979_2021.nc'),
-                                          os.path.join(data_path,atmospheric_data,'ERA5_10mv_1H_1979_2021.nc'))
-
     # load / calculate... xarray datasets
     print('\n loading and managing atmospheric data... \n')
     if time not in list(
-        np.arange(1988,2024,1).astype(str) # years of data +- 2
+        np.arange(1988,2024,1).astype(str) # years of data + 2
     ):
-        print(f'\n resampling data to {time}... \n')
+        print('\n resampling data to {}... \n'.format(time))
         print('\n loading the sea-level-pressure fields... \n')
         mslp = xr.open_dataarray(slp_data).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
         if load_winds[0]:
-            print('\n loading the winds... \n')
-            uw = xr.open_dataarray(winds_data[0]).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
-            vw = xr.open_dataarray(winds_data[1]).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
+            print('\n loading and calculating the winds... \n')
+            uw = xr.open_dataset(winds_data[0]).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
+            vw = xr.open_dataset(winds_data[1]).sel(time=slice(datetime(1990,1,1),None)).resample(time=time).mean()
             wind = calculate_relative_winds(location=load_winds[1],
                                             lat_name=datasets_attrs[atmospheric_data+'_winds'][1],
                                             lon_name=datasets_attrs[atmospheric_data+'_winds'][0],
@@ -258,13 +257,13 @@ def load_predictor(atmospheric_data: str = 'cfsr',
                 wind_proj='wind_proj_mask'
             ) if plot and load_winds[1] else None
         else:
-            print('\n winds will not be loaded... returning the SLP... \n')
+            print('\n projected winds will not be calculated... returning the SLP... \n')
     else:
-        print(f'\n cropping data to {time}... \n')
+        print('\n cropping data to {}... \n'.format(time))
         print('\n loading the sea-level-pressure fields... \n')
         mslp = xr.open_dataarray(slp_data).sel(time=time)
         if load_winds[0]:
-            print('\n loading the winds... \n')
+            print('\n loading and calculating the winds... \n')
             uw = xr.open_dataset(winds_data[0]).sel(time=time)
             vw = xr.open_dataset(winds_data[1]).sel(time=time)
             wind = calculate_relative_winds(location=load_winds[1],
@@ -282,7 +281,7 @@ def load_predictor(atmospheric_data: str = 'cfsr',
                 wind_proj='wind_proj_mask'
             ) if plot and load_winds[1] else None
         else:
-            print('\n winds will not be calculated... returning the SLP... \n')
+            print('\n projected winds will not be calculated... returning the SLP... \n')
 
     # return the loaded datasets
     return_data = [mslp.sortby(datasets_attrs[atmospheric_data][0],ascending=True)\
@@ -315,9 +314,9 @@ def join_load_uhslc_tgs(files_path: str =
         uhslc_tg = xr.open_dataset(file)
         uhslc_tgs_list.append(
             uhslc_tg.expand_dims(dim='name').assign_coords(
-                {'name':(('name'),[re.search('_(.*)_',file[-29:]).group(1)]),
-                 'latitude':(('name'),[uhslc_tg.latitude]),
-                 'longitude':(('name'),[uhslc_tg.longitude])}
+                {'name':(('name'),[file[file.find('/processed')+11:file.find('_processed')]]),
+                'latitude':(('name'),[uhslc_tg.latitude]),
+                'longitude':(('name'),[uhslc_tg.longitude])}
             )
         )
 
@@ -366,9 +365,9 @@ def join_load_linz_tgs(files_path: str =
         linz_tg = xr.open_dataset(file)
         linz_tgs_list.append(
             linz_tg.expand_dims(dim='name').assign_coords(
-                {'name':(('name'),[file[95:-13]]),
-                 'latitude':(('name'),[linz_tg.latitude]),
-                 'longitude':(('name'),[linz_tg.longitude])}
+                {'name':(('name'),[file[51:-13]]),
+                'latitude':(('name'),[linz_tg.latitude]),
+                'longitude':(('name'),[linz_tg.longitude])}
             )
         )
 
@@ -417,9 +416,9 @@ def join_load_other_tgs(files_path: str =
         other_tg = xr.open_dataset(file)
         other_tgs_list.append(
             other_tg.expand_dims(dim='name').assign_coords(
-                {'name':(('name'),[file[96:-13]]),
-                 'latitude':(('name'),[other_tg.latitude]),
-                 'longitude':(('name'),[other_tg.longitude])}
+                {'name':(('name'),[file[52:-13]]),
+                'latitude':(('name'),[other_tg.latitude]),
+                'longitude':(('name'),[other_tg.longitude])}
             )
         )
 
@@ -478,7 +477,9 @@ def load_private_tgs(file_path: str =
 
 
 def load_moana_hindcast(file_path: str = 
-    data_path+'/storm_surge_data/moana_hindcast_v2/moana_coast.zarr/',
+    '/data/storm_surge_data/moana_hindcast_v2/moana_coast_30h_20220430.zarr/',
+    # data_path+'/storm_surge_data/moana_hindcast_v2/moana_coast_30h.zarr/',
+    # '/home/javitausia/storm_surge_data/moana_hindcast_v2/moana_coast_30h.zarr/',
     plot: bool = False):
 
     """
@@ -488,10 +489,12 @@ def load_moana_hindcast(file_path: str =
         [xarray.Dataset]: xarray dataset with all the moana data
     """
 
-    # print('\n loading the Moana v2 hindcast data... \n')
+    print('\n loading the Moana v2 hindcast data... \n')
 
     # load moana
-    moana = xr.open_zarr(file_path)
+    moana = xr.open_dataset(
+        data_path+'/storm_surge_data/moana_hindcast_v2/moana_SS_daily_latest.nc'
+    ) if True else xr.open_zarr(file_path)
 
     if plot: # plot if specified
         # calculate 99% quantile

@@ -28,10 +28,10 @@ def MultiLinear_Regression(
     validator: tuple = (False,None,None),
     linear_model = LinearRegression, # this is the model to use
     linear_model_parameters: dict = {
-        'fit_intercept':True, 'normalize':True,
+        'fit_intercept':True, 'normalize':False,
         'n_jobs':None, 'positive':False
     }, # linear model parameters
-    forward_selection: bool = True,
+    forward_selection: bool = False,
     model_metrics: list = default_evaluation_metrics, 
     ext_quantile: tuple = default_ext_quantile,
     X_set_var: str = 'PCs', y_set_var: str = 'ss',
@@ -158,28 +158,41 @@ def MultiLinear_Regression(
     title += '\n R score: {} -- in TEST data'.format(
         round(stats['rscore'],2)
     )
+    props = dict(boxstyle='round', facecolor='w', edgecolor='grey', linewidth=0.8, alpha=0.5)
+    textstr = '\n'.join((
+        r'Pearson = %.2f' % (stats['pearson'], ),
+        r'RMSE = %.2f' % (stats['rmse'], ),
+        r'SI = %.2f' % (stats['si'], ),
+        r'KGE = %.2f' % (stats['kge'], )))
 
     # plot results
     if plot_results:
         # figure spec-grid
-        fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
+        # fig = plt.figure(figsize=(_figsize_width*5.0,_figsize_height))
+        fig = plt.figure(figsize=(16,4))
         gs = gridspec.GridSpec(nrows=1,ncols=3)
         # time regular plot
         ax_time = fig.add_subplot(gs[:,:2])
-        ax_time.plot(t_test,y_test,label='Numerical model data',c=real_obs_col)
-        ax_time.plot(t_test,prediction,label='Linear model predictions',
+        ax_time.plot(t_test[150:350],y_test[150:350],label='Numerical model data',c=real_obs_col)
+        ax_time.plot(t_test[150:350],prediction[150:350],label='Linear model predictions',
                      c=pred_val_col,linestyle='--')
-        ax_time.legend(fontsize=_fontsize_legend)
+        ax_time.set_xlim(t_test[150],t_test[350])
+        #ax_time.legend(fontsize=_fontsize_legend)
         # validation plot
         ax_vali = fig.add_subplot(gs[:,2:])
         ax_vali.set_xlabel('Observation')
         ax_vali.set_ylabel('Prediction')
         scatterplot(y_test,prediction,ax=ax_vali)
         qqplot(y_test,prediction,ax=ax_vali)
+        # place a text box in upper left in axes coords
+        ax_vali.text(0.05, 0.95, textstr, transform=ax_vali.transAxes, fontsize=12,
+            verticalalignment='top', bbox=props)
+        ax_vali.set_xlim(-0.3,0.5)
+        ax_vali.set_ylim(-0.3,0.5)
         # add title
-        fig.suptitle(
-            title,fontsize=_fontsize_title,y=1.15
-        )
+        #fig.suptitle(
+        #    title,fontsize=_fontsize_title,y=1.15
+        #)
         # show the results
         plt.show()
 
