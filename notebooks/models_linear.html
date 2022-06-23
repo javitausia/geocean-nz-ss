@@ -129,7 +129,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="repo_workflow.html">
-   1. Repository workflow + THEORY
+   1. Repository workflow
   </a>
  </li>
  <li class="toctree-l1">
@@ -523,8 +523,8 @@ title="Print to PDF"
 
 <span class="c1"># append sscode to path</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="c1"># custom</span>
@@ -556,7 +556,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /Users/administrador/Documents/geocean-nz-ss/data/
 </pre></div>
 </div>
 <div class="output text_html">
@@ -575,18 +575,19 @@ title="Print to PDF"
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
-    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
-    <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">),</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span><span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span>
+                                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">))</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/home/javitausia/Documentos/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, (&#39;/Users/administrador/Documents/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/Users/administrador/Documents/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;)) 
 
 
  loading the Moana v2 hindcast data... 
@@ -603,19 +604,75 @@ title="Print to PDF"
 <p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the regional pcs</span>
-<span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">pcs_scaler_regional</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">pcs_scaler_regional</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
     <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
     <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">wind</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
     <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
     <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">),</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># not needed now</span>
+    <span class="n">site_location</span><span class="o">=</span><span class="n">default_location</span><span class="p">,</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">),</span>
+    <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># look the simplicity of the function</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/ [&#39;default_region_reduced&#39;, &#39;no_winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/default_region_reduced_no_winds_gradients_1D_tl1.nc
+Assembling matrix
+
+ calculating the gradient of the sea-level-pressure fields... 
+
+
+ pressure/gradient predictor both with shape: 
+ (11354, 45, 51) 
+
+
+ pcs_matrix with shape: 
+ (11353, 4590) 
+
+
+ calculating PCs matrix with shape: 
+ (11353, 4590) 
+
+Computing using CPU
+matrix (11353, 4590)
+PCs (11353, 62)
+comp (62, 4590)
+var (62,)
+lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 51)&gt;
+array([160. , 160.5, 161. , 161.5, 162. , 162.5, 163. , 163.5, 164. , 164.5,
+       165. , 165.5, 166. , 166.5, 167. , 167.5, 168. , 168.5, 169. , 169.5,
+       170. , 170.5, 171. , 171.5, 172. , 172.5, 173. , 173.5, 174. , 174.5,
+       175. , 175.5, 176. , 176.5, 177. , 177.5, 178. , 178.5, 179. , 179.5,
+       180. , 180.5, 181. , 181.5, 182. , 182.5, 183. , 183.5, 184. , 184.5,
+       185. ], dtype=float32)
+Coordinates:
+  * longitude  (longitude) float32 160.0 160.5 161.0 161.5 ... 184.0 184.5 185.0
+lat &lt;xarray.DataArray &#39;latitude&#39; (latitude: 45)&gt;
+array([-52. , -51.5, -51. , -50.5, -50. , -49.5, -49. , -48.5, -48. , -47.5,
+       -47. , -46.5, -46. , -45.5, -45. , -44.5, -44. , -43.5, -43. , -42.5,
+       -42. , -41.5, -41. , -40.5, -40. , -39.5, -39. , -38.5, -38. , -37.5,
+       -37. , -36.5, -36. , -35.5, -35. , -34.5, -34. , -33.5, -33. , -32.5,
+       -32. , -31.5, -31. , -30.5, -30. ], dtype=float32)
+Coordinates:
+  * latitude  (latitude) float32 -52.0 -51.5 -51.0 -50.5 ... -31.0 -30.5 -30.0
+time (11353,)
+/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/ [&#39;default_region_reduced&#39;, &#39;no_winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
+
+ plotting 2 components with 2 EOFs + PC... 
+
+
+ being the EOFs the slp, the gradient, in steps t, t-1 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_6_1.png" src="../_images/models_linear_6_1.png" />
+<img alt="../_images/models_linear_6_2.png" src="../_images/models_linear_6_2.png" />
+<img alt="../_images/models_linear_6_3.png" src="../_images/models_linear_6_3.png" />
+<img alt="../_images/models_linear_6_4.png" src="../_images/models_linear_6_4.png" />
 </div>
 </div>
 </section>
@@ -628,21 +685,20 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
     <span class="c1"># perform the Multilinear-Regression (regional)</span>
     <span class="n">metrics_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save regional metrics</span>
     <span class="n">pcs_to_use_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save used pcs (f-regression)</span>
     <span class="n">sites_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
         <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
-    <span class="p">)[::</span><span class="mi">300</span><span class="p">]</span>
+    <span class="p">)[::</span><span class="mi">100</span><span class="p">]</span>
     <span class="c1"># perform the MultiLinear regression over all the sites</span>
     <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_regional</span><span class="p">):</span>
-        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">)</span>
         <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
             <span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="c1"># use default attributes</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span> <span class="c1"># using the regional-pre-loaded pcs</span>
         <span class="n">metrics_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="c1"># save site metrics</span>
         <span class="n">pcs_to_use_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pcs_to_use</span><span class="p">)</span> <span class="c1"># save used pcs</span>
@@ -661,7 +717,7 @@ title="Print to PDF"
         <span class="n">sites_metrics_regional</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:</span><span class="n">sites_regional</span><span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># local copys</span>
-    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
         <span class="n">metrics_dataset_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
             <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_lm_regional_daily.nc&#39;</span>
         <span class="p">)</span> <span class="c1"># save metrics in all the stations</span>
@@ -676,15 +732,201 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0% (0 of 15) |                         | Elapsed Time: 0:00:00 ETA:  --:--:--
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_2.png" src="../_images/models_linear_8_2.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  6% (1 of 15) |#                        | Elapsed Time: 0:00:00 ETA:   0:00:06
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.01, SI: 0.45, Relative - RMSE: 0.23
+ and Correlations (Pearson, Rscore): (0.87, 0.76)
+ NSE = [0.75701088], KGE = [0.7851156] and KGE_PRIME = [0.71523469]
+ R score: 0.76 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_5.png" src="../_images/models_linear_8_5.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 13% (2 of 15) |###                      | Elapsed Time: 0:00:00 ETA:   0:00:06
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.48, Relative - RMSE: 0.24
+ and Correlations (Pearson, Rscore): (0.86, 0.74)
+ NSE = [0.73793031], KGE = [0.79085764] and KGE_PRIME = [0.73748864]
+ R score: 0.74 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_8.png" src="../_images/models_linear_8_8.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 20% (3 of 15) |#####                    | Elapsed Time: 0:00:01 ETA:   0:00:05
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.47, Relative - RMSE: 0.24
+ and Correlations (Pearson, Rscore): (0.86, 0.74)
+ NSE = [0.74414972], KGE = [0.79558384] and KGE_PRIME = [0.73946609]
+ R score: 0.74 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_11.png" src="../_images/models_linear_8_11.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26% (4 of 15) |######                   | Elapsed Time: 0:00:01 ETA:   0:00:05
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.29
+ and Correlations (Pearson, Rscore): (0.80, 0.63)
+ NSE = [0.63203387], KGE = [0.69414078] and KGE_PRIME = [0.64686528]
+ R score: 0.63 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_14.png" src="../_images/models_linear_8_14.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 33% (5 of 15) |########                 | Elapsed Time: 0:00:02 ETA:   0:00:04
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.58, Relative - RMSE: 0.29
+ and Correlations (Pearson, Rscore): (0.79, 0.63)
+ NSE = [0.62558699], KGE = [0.6805487] and KGE_PRIME = [0.65677772]
+ R score: 0.63 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_17.png" src="../_images/models_linear_8_17.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 40% (6 of 15) |##########               | Elapsed Time: 0:00:03 ETA:   0:00:04
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.50, Relative - RMSE: 0.24
+ and Correlations (Pearson, Rscore): (0.85, 0.72)
+ NSE = [0.71959023], KGE = [0.79826116] and KGE_PRIME = [0.76085212]
+ R score: 0.72 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_20.png" src="../_images/models_linear_8_20.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46% (7 of 15) |###########              | Elapsed Time: 0:00:03 ETA:   0:00:04
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.51, Relative - RMSE: 0.25
+ and Correlations (Pearson, Rscore): (0.84, 0.70)
+ NSE = [0.70467653], KGE = [0.78199003] and KGE_PRIME = [0.76069203]
+ R score: 0.7 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_23.png" src="../_images/models_linear_8_23.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 53% (8 of 15) |#############            | Elapsed Time: 0:00:04 ETA:   0:00:03
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.52, Relative - RMSE: 0.27
+ and Correlations (Pearson, Rscore): (0.84, 0.71)
+ NSE = [0.70722239], KGE = [0.74267561] and KGE_PRIME = [0.6785094]
+ R score: 0.71 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_26.png" src="../_images/models_linear_8_26.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 60% (9 of 15) |###############          | Elapsed Time: 0:00:04 ETA:   0:00:03
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.51, Relative - RMSE: 0.26
+ and Correlations (Pearson, Rscore): (0.85, 0.71)
+ NSE = [0.71394509], KGE = [0.76882925] and KGE_PRIME = [0.74839808]
+ R score: 0.71 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_29.png" src="../_images/models_linear_8_29.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 66% (10 of 15) |################        | Elapsed Time: 0:00:05 ETA:   0:00:03
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.47, Relative - RMSE: 0.25
+ and Correlations (Pearson, Rscore): (0.87, 0.76)
+ NSE = [0.75619241], KGE = [0.77957818] and KGE_PRIME = [0.71731304]
+ R score: 0.76 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_32.png" src="../_images/models_linear_8_32.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 73% (11 of 15) |#################       | Elapsed Time: 0:00:06 ETA:   0:00:02
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.49, Relative - RMSE: 0.26
+ and Correlations (Pearson, Rscore): (0.86, 0.74)
+ NSE = [0.73587428], KGE = [0.7552107] and KGE_PRIME = [0.68372388]
+ R score: 0.74 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_35.png" src="../_images/models_linear_8_35.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80% (12 of 15) |###################     | Elapsed Time: 0:00:06 ETA:   0:00:01
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.51, Relative - RMSE: 0.26
+ and Correlations (Pearson, Rscore): (0.85, 0.72)
+ NSE = [0.7185531], KGE = [0.73986864] and KGE_PRIME = [0.67264339]
+ R score: 0.72 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_38.png" src="../_images/models_linear_8_38.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 86% (13 of 15) |####################    | Elapsed Time: 0:00:07 ETA:   0:00:01
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.52, Relative - RMSE: 0.26
+ and Correlations (Pearson, Rscore): (0.83, 0.70)
+ NSE = [0.69684824], KGE = [0.76335421] and KGE_PRIME = [0.77029932]
+ R score: 0.7 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_41.png" src="../_images/models_linear_8_41.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93% (14 of 15) |######################  | Elapsed Time: 0:00:07 ETA:   0:00:00
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.49, Relative - RMSE: 0.25
+ and Correlations (Pearson, Rscore): (0.86, 0.73)
+ NSE = [0.73149413], KGE = [0.78724491] and KGE_PRIME = [0.77809516]
+ R score: 0.73 -- in TEST data
+
+ 26 PCs (0.95 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
+<img alt="../_images/models_linear_8_44.png" src="../_images/models_linear_8_44.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (15 of 15) |########################| Elapsed Time: 0:00:08 Time:  0:00:08
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.54, Relative - RMSE: 0.28
+ and Correlations (Pearson, Rscore): (0.83, 0.68)
+ NSE = [0.68228697], KGE = [0.74109016] and KGE_PRIME = [0.77910606]
+ R score: 0.68 -- in TEST data
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
 <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
-    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_regional</span><span class="p">,</span>
-               <span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">],</span>
-               <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;rainbow&#39;</span><span class="p">)</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_regional</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+               <span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kge&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">],</span>
+               <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -753,35 +995,28 @@ title="Print to PDF"
 <span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="c1"># select sites and append closest to UHSLC tgs</span>
 <span class="n">clos_to_uhslc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">689</span><span class="p">,</span> <span class="mi">328</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">949</span><span class="p">,</span> <span class="mi">708</span><span class="p">]</span>
-<span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span> <span class="c1"># closest Moana v2 Hindcast to tidal gauges</span>
-    <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
-      <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
-      <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
-    <span class="p">]</span>
-<span class="p">)</span>
-<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">):</span>
-    <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
-        <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clos_to_uhslc</span><span class="p">):</span>
+    <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>
     <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">MultiLinear_Regression</span><span class="p">(</span>
         <span class="n">PCA_DynamicPred</span><span class="p">(</span>
             <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
             <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
             <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
-            <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
             <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
-                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
-                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">,</span>
-                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
-                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="o">+</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="o">+</span><span class="mf">2.5</span>
             <span class="p">)),</span>
             <span class="n">site_id</span><span class="o">=</span><span class="n">stat</span><span class="p">,</span>
-            <span class="n">pcs_folder</span><span class="o">=</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/pcs_to_seb/&#39;</span><span class="p">,</span>
+            <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;</span><span class="p">,</span>
             <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-2&#39;</span><span class="p">]</span>
             <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
         <span class="c1"># validator=(</span>
         <span class="c1">#     True,load_cfsr_moana_uhslc.validator.isel(name=istat),&#39;ss&#39;</span>
@@ -791,238 +1026,164 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;116&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_116_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_689_winds_gradients_1D_tl3.nc
 </pre></div>
 </div>
 <img alt="../_images/models_linear_15_1.png" src="../_images/models_linear_15_1.png" />
 <img alt="../_images/models_linear_15_2.png" src="../_images/models_linear_15_2.png" />
-<img alt="../_images/models_linear_15_3.png" src="../_images/models_linear_15_3.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;200&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_200_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 21 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_5.png" src="../_images/models_linear_15_5.png" />
+<img alt="../_images/models_linear_15_4.png" src="../_images/models_linear_15_4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.57, Relative - RMSE: 0.29
+ and Correlations (Pearson, Rscore): (0.80, 0.64)
+ NSE = [0.63671411], KGE = [0.68927323] and KGE_PRIME = [0.68009402]
+ R score: 0.64 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_328_winds_gradients_1D_tl3.nc
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_6.png" src="../_images/models_linear_15_6.png" />
 <img alt="../_images/models_linear_15_7.png" src="../_images/models_linear_15_7.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;224&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_224_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 22 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
 <img alt="../_images/models_linear_15_9.png" src="../_images/models_linear_15_9.png" />
-<img alt="../_images/models_linear_15_10.png" src="../_images/models_linear_15_10.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.54, Relative - RMSE: 0.28
+ and Correlations (Pearson, Rscore): (0.83, 0.68)
+ NSE = [0.68355969], KGE = [0.68430639] and KGE_PRIME = [0.71762063]
+ R score: 0.68 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_393_winds_gradients_1D_tl3.nc
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_11.png" src="../_images/models_linear_15_11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;328&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_328_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<img alt="../_images/models_linear_15_12.png" src="../_images/models_linear_15_12.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_13.png" src="../_images/models_linear_15_13.png" />
 <img alt="../_images/models_linear_15_14.png" src="../_images/models_linear_15_14.png" />
-<img alt="../_images/models_linear_15_15.png" src="../_images/models_linear_15_15.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;378&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_378_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.59, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.78, 0.61)
+ NSE = [0.61423934], KGE = [0.674946] and KGE_PRIME = [0.72664175]
+ R score: 0.61 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_1327_winds_gradients_1D_tl3.nc
 </pre></div>
 </div>
+<img alt="../_images/models_linear_15_16.png" src="../_images/models_linear_15_16.png" />
 <img alt="../_images/models_linear_15_17.png" src="../_images/models_linear_15_17.png" />
-<img alt="../_images/models_linear_15_18.png" src="../_images/models_linear_15_18.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18 PCs (0.98 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_19.png" src="../_images/models_linear_15_19.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;393&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_393_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.63, Relative - RMSE: 0.32
+ and Correlations (Pearson, Rscore): (0.76, 0.57)
+ NSE = [0.5705238], KGE = [0.65300573] and KGE_PRIME = [0.66028484]
+ R score: 0.57 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_393_winds_gradients_1D_tl3.nc
 </pre></div>
 </div>
 <img alt="../_images/models_linear_15_21.png" src="../_images/models_linear_15_21.png" />
 <img alt="../_images/models_linear_15_22.png" src="../_images/models_linear_15_22.png" />
-<img alt="../_images/models_linear_15_23.png" src="../_images/models_linear_15_23.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;480&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_480_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_25.png" src="../_images/models_linear_15_25.png" />
+<img alt="../_images/models_linear_15_24.png" src="../_images/models_linear_15_24.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.59, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.78, 0.61)
+ NSE = [0.61423934], KGE = [0.674946] and KGE_PRIME = [0.72664175]
+ R score: 0.61 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_480_winds_gradients_1D_tl3.nc
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_26.png" src="../_images/models_linear_15_26.png" />
 <img alt="../_images/models_linear_15_27.png" src="../_images/models_linear_15_27.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;488&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_488_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 23 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
 <img alt="../_images/models_linear_15_29.png" src="../_images/models_linear_15_29.png" />
-<img alt="../_images/models_linear_15_30.png" src="../_images/models_linear_15_30.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.55, Relative - RMSE: 0.27
+ and Correlations (Pearson, Rscore): (0.82, 0.67)
+ NSE = [0.66732828], KGE = [0.67763433] and KGE_PRIME = [0.71683116]
+ R score: 0.67 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_999_winds_gradients_1D_tl3.nc
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_31.png" src="../_images/models_linear_15_31.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;578&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_578_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<img alt="../_images/models_linear_15_32.png" src="../_images/models_linear_15_32.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 21 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_33.png" src="../_images/models_linear_15_33.png" />
 <img alt="../_images/models_linear_15_34.png" src="../_images/models_linear_15_34.png" />
-<img alt="../_images/models_linear_15_35.png" src="../_images/models_linear_15_35.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;613&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_613_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.56, Relative - RMSE: 0.27
+ and Correlations (Pearson, Rscore): (0.82, 0.66)
+ NSE = [0.66196146], KGE = [0.69714722] and KGE_PRIME = [0.74234863]
+ R score: 0.66 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_116_winds_gradients_1D_tl3.nc
 </pre></div>
 </div>
+<img alt="../_images/models_linear_15_36.png" src="../_images/models_linear_15_36.png" />
 <img alt="../_images/models_linear_15_37.png" src="../_images/models_linear_15_37.png" />
-<img alt="../_images/models_linear_15_38.png" src="../_images/models_linear_15_38.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 15 PCs (0.98 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_39.png" src="../_images/models_linear_15_39.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;689&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_689_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.59, Relative - RMSE: 0.30
+ and Correlations (Pearson, Rscore): (0.78, 0.60)
+ NSE = [0.60181932], KGE = [0.66675965] and KGE_PRIME = [0.65999301]
+ R score: 0.6 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_224_winds_gradients_1D_tl3.nc
 </pre></div>
 </div>
 <img alt="../_images/models_linear_15_41.png" src="../_images/models_linear_15_41.png" />
 <img alt="../_images/models_linear_15_42.png" src="../_images/models_linear_15_42.png" />
-<img alt="../_images/models_linear_15_43.png" src="../_images/models_linear_15_43.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;708&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_708_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_45.png" src="../_images/models_linear_15_45.png" />
+<img alt="../_images/models_linear_15_44.png" src="../_images/models_linear_15_44.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.55, Relative - RMSE: 0.28
+ and Correlations (Pearson, Rscore): (0.82, 0.67)
+ NSE = [0.66967715], KGE = [0.71035638] and KGE_PRIME = [0.72571431]
+ R score: 0.67 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_1124_winds_gradients_1D_tl3.nc
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_46.png" src="../_images/models_linear_15_46.png" />
 <img alt="../_images/models_linear_15_47.png" src="../_images/models_linear_15_47.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;744&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_744_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 21 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
 <img alt="../_images/models_linear_15_49.png" src="../_images/models_linear_15_49.png" />
-<img alt="../_images/models_linear_15_50.png" src="../_images/models_linear_15_50.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.63, Relative - RMSE: 0.32
+ and Correlations (Pearson, Rscore): (0.75, 0.56)
+ NSE = [0.55604869], KGE = [0.65868618] and KGE_PRIME = [0.66443301]
+ R score: 0.56 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_949_winds_gradients_1D_tl3.nc
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_51.png" src="../_images/models_linear_15_51.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;780&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_780_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<img alt="../_images/models_linear_15_52.png" src="../_images/models_linear_15_52.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 23 PCs (0.98 expl. variance) will be used to train the model!! 
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_53.png" src="../_images/models_linear_15_53.png" />
 <img alt="../_images/models_linear_15_54.png" src="../_images/models_linear_15_54.png" />
-<img alt="../_images/models_linear_15_55.png" src="../_images/models_linear_15_55.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;803&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_803_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: 0.00, SI: 0.57, Relative - RMSE: 0.29
+ and Correlations (Pearson, Rscore): (0.81, 0.65)
+ NSE = [0.64968726], KGE = [0.69825698] and KGE_PRIME = [0.71730566]
+ R score: 0.65 -- in TEST data
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_708_winds_gradients_1D_tl3.nc
 </pre></div>
 </div>
+<img alt="../_images/models_linear_15_56.png" src="../_images/models_linear_15_56.png" />
 <img alt="../_images/models_linear_15_57.png" src="../_images/models_linear_15_57.png" />
-<img alt="../_images/models_linear_15_58.png" src="../_images/models_linear_15_58.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26 PCs (0.98 expl. variance) will be used to train the model!! 
+</pre></div>
+</div>
 <img alt="../_images/models_linear_15_59.png" src="../_images/models_linear_15_59.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;949&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_949_winds_gradients_1D_tl3.nc
-PCs loaded from file
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data comparison is   --   BIAS: -0.00, SI: 0.65, Relative - RMSE: 0.32
+ and Correlations (Pearson, Rscore): (0.73, 0.53)
+ NSE = [0.53405327], KGE = [0.60226344] and KGE_PRIME = [0.59854972]
+ R score: 0.53 -- in TEST data
 </pre></div>
 </div>
-<img alt="../_images/models_linear_15_61.png" src="../_images/models_linear_15_61.png" />
-<img alt="../_images/models_linear_15_62.png" src="../_images/models_linear_15_62.png" />
-<img alt="../_images/models_linear_15_63.png" src="../_images/models_linear_15_63.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;999&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_999_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_65.png" src="../_images/models_linear_15_65.png" />
-<img alt="../_images/models_linear_15_66.png" src="../_images/models_linear_15_66.png" />
-<img alt="../_images/models_linear_15_67.png" src="../_images/models_linear_15_67.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1025&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1025_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_69.png" src="../_images/models_linear_15_69.png" />
-<img alt="../_images/models_linear_15_70.png" src="../_images/models_linear_15_70.png" />
-<img alt="../_images/models_linear_15_71.png" src="../_images/models_linear_15_71.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1064&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1064_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_73.png" src="../_images/models_linear_15_73.png" />
-<img alt="../_images/models_linear_15_74.png" src="../_images/models_linear_15_74.png" />
-<img alt="../_images/models_linear_15_75.png" src="../_images/models_linear_15_75.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1124&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1124_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_77.png" src="../_images/models_linear_15_77.png" />
-<img alt="../_images/models_linear_15_78.png" src="../_images/models_linear_15_78.png" />
-<img alt="../_images/models_linear_15_79.png" src="../_images/models_linear_15_79.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1146&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1146_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_81.png" src="../_images/models_linear_15_81.png" />
-<img alt="../_images/models_linear_15_82.png" src="../_images/models_linear_15_82.png" />
-<img alt="../_images/models_linear_15_83.png" src="../_images/models_linear_15_83.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1174&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1174_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_85.png" src="../_images/models_linear_15_85.png" />
-<img alt="../_images/models_linear_15_86.png" src="../_images/models_linear_15_86.png" />
-<img alt="../_images/models_linear_15_87.png" src="../_images/models_linear_15_87.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1177&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1177_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_89.png" src="../_images/models_linear_15_89.png" />
-<img alt="../_images/models_linear_15_90.png" src="../_images/models_linear_15_90.png" />
-<img alt="../_images/models_linear_15_91.png" src="../_images/models_linear_15_91.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1214&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1214_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_93.png" src="../_images/models_linear_15_93.png" />
-<img alt="../_images/models_linear_15_94.png" src="../_images/models_linear_15_94.png" />
-<img alt="../_images/models_linear_15_95.png" src="../_images/models_linear_15_95.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1217&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1217_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_97.png" src="../_images/models_linear_15_97.png" />
-<img alt="../_images/models_linear_15_98.png" src="../_images/models_linear_15_98.png" />
-<img alt="../_images/models_linear_15_99.png" src="../_images/models_linear_15_99.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1260&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1260_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_101.png" src="../_images/models_linear_15_101.png" />
-<img alt="../_images/models_linear_15_102.png" src="../_images/models_linear_15_102.png" />
-<img alt="../_images/models_linear_15_103.png" src="../_images/models_linear_15_103.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1296&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1296_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_105.png" src="../_images/models_linear_15_105.png" />
-<img alt="../_images/models_linear_15_106.png" src="../_images/models_linear_15_106.png" />
-<img alt="../_images/models_linear_15_107.png" src="../_images/models_linear_15_107.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1327&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1327_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_109.png" src="../_images/models_linear_15_109.png" />
-<img alt="../_images/models_linear_15_110.png" src="../_images/models_linear_15_110.png" />
-<img alt="../_images/models_linear_15_111.png" src="../_images/models_linear_15_111.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/ [&#39;local_2.5_2.5&#39;, &#39;1442&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl3&#39;]
-FILE /home/javitausia/Documentos/geocean-nz-ss/data/pcs_to_seb/local_2.5_2.5_1442_winds_gradients_1D_tl3.nc
-PCs loaded from file
-</pre></div>
-</div>
-<img alt="../_images/models_linear_15_113.png" src="../_images/models_linear_15_113.png" />
-<img alt="../_images/models_linear_15_114.png" src="../_images/models_linear_15_114.png" />
-<img alt="../_images/models_linear_15_115.png" src="../_images/models_linear_15_115.png" />
 </div>
 </div>
 </section>

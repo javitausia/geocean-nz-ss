@@ -129,7 +129,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="repo_workflow.html">
-   1. Repository workflow + THEORY
+   1. Repository workflow
   </a>
  </li>
  <li class="toctree-l1">
@@ -557,8 +557,8 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 
 <span class="c1"># append sscode to path</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
 <span class="c1"># custom</span>
@@ -573,7 +573,7 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /home/javitausia/Documentos/geocean-nz-ss/data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DATA PATH /Users/administrador/Documents/geocean-nz-ss/data/
 </pre></div>
 </div>
 </div>
@@ -584,17 +584,19 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <p>As always, we first load the data using our <code class="docutils literal notranslate"><span class="pre">Loader</span></code> python class, so then we can easily use all the datasets. Notice that here, we set the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameters to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data from pre-saved files</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
 <span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span>
-        <span class="kc">True</span><span class="p">,[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
-    <span class="p">),</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">),</span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span><span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span>
+                                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">))</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, [&#39;../data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;../data/cfsr/CFSR_WINDs_daily.nc&#39;]) 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> loading previously saved atmospheric data from (True, (&#39;/Users/administrador/Documents/geocean-nz-ss/data/cfsr/CFSR_MSLP_daily.nc&#39;, &#39;/Users/administrador/Documents/geocean-nz-ss/data/cfsr/CFSR_WINDs_daily.nc&#39;)) 
 
 
  loading the Moana v2 hindcast data... 
@@ -678,13 +680,15 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
     <span class="n">site_location</span><span class="o">=</span><span class="n">default_location</span><span class="p">,</span>
     <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
     <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">),</span>
+    <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;</span>
 <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># look the simplicity of the function</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
-Start 0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/ [&#39;default_region_reduced&#39;, &#39;None&#39;, &#39;winds&#39;, &#39;no_gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/default_region_reduced_None_winds_no_gradients_1D_tl1.nc
+Assembling matrix
 
  adding the wind to the predictor... 
 
@@ -693,14 +697,18 @@ Start 0
  (11354, 45, 51) 
 
 
+ pcs_matrix with shape: 
+ (11353, 4590) 
+
+
  calculating PCs matrix with shape: 
  (11353, 4590) 
 
 Computing using CPU
 matrix (11353, 4590)
-PCs (11353, 4590)
-comp (4590, 4590)
-var (4590,)
+PCs (11353, 27)
+comp (27, 4590)
+var (27,)
 lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 51)&gt;
 array([160. , 160.5, 161. , 161.5, 162. , 162.5, 163. , 163.5, 164. , 164.5,
        165. , 165.5, 166. , 166.5, 167. , 167.5, 168. , 168.5, 169. , 169.5,
@@ -719,6 +727,7 @@ array([-52. , -51.5, -51. , -50.5, -50. , -49.5, -49. , -48.5, -48. , -47.5,
 Coordinates:
   * latitude  (latitude) float32 -52.0 -51.5 -51.0 -50.5 ... -31.0 -30.5 -30.0
 time (11353,)
+/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/ [&#39;default_region_reduced&#39;, &#39;None&#39;, &#39;winds&#39;, &#39;no_gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
 
  plotting 2 components with 2 EOFs + PC... 
 
@@ -747,13 +756,15 @@ time (11353,)
     <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="mi">177</span><span class="p">,</span><span class="o">-</span><span class="mi">36</span><span class="p">),</span>
     <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
     <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">),</span>
+    <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;</span>
 <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># look the simplicity of the function</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Assembling matrix
-Start 0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/ [&#39;local_2.5_2.5&#39;, &#39;None&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
+FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_2.5_None_winds_gradients_1D_tl1.nc
+Assembling matrix
 
  adding the wind to the predictor... 
 
@@ -769,14 +780,18 @@ Start 0
  (11354, 11, 11) 
 
 
+ pcs_matrix with shape: 
+ (11353, 363) 
+
+
  calculating PCs matrix with shape: 
  (11353, 363) 
 
 Computing using CPU
 matrix (11353, 363)
-PCs (11353, 363)
-comp (363, 363)
-var (363,)
+PCs (11353, 10)
+comp (10, 363)
+var (10,)
 lon &lt;xarray.DataArray &#39;longitude&#39; (longitude: 11)&gt;
 array([175. , 175.5, 176. , 176.5, 177. , 177.5, 178. , 178.5, 179. , 179.5,
        180. ], dtype=float32)
@@ -788,6 +803,7 @@ array([-40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5,
 Coordinates:
   * latitude  (latitude) float32 -40.0 -39.5 -39.0 -38.5 ... -36.0 -35.5 -35.0
 time (11353,)
+/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/ [&#39;local_2.5_2.5&#39;, &#39;None&#39;, &#39;winds&#39;, &#39;gradients&#39;, &#39;1D&#39;, &#39;tl1&#39;]
 
  plotting 2 components with 3 EOFs + PC... 
 

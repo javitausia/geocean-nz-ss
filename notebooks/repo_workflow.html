@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>1. Repository workflow + THEORY &#8212; Storm Surge NZ - Summary</title>
+    <title>1. Repository workflow &#8212; Storm Surge NZ - Summary</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -127,7 +127,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   1. Repository workflow + THEORY
+   1. Repository workflow
   </a>
  </li>
  <li class="toctree-l1">
@@ -431,7 +431,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Repository workflow + THEORY</h1>
+                <h1>Repository workflow</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -466,8 +466,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="repository-workflow-theory">
-<h1><span class="section-number">1. </span>Repository workflow + THEORY<a class="headerlink" href="#repository-workflow-theory" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="repository-workflow">
+<h1><span class="section-number">1. </span>Repository workflow<a class="headerlink" href="#repository-workflow" title="Permalink to this headline">#</a></h1>
 <p>Before start running all the notebooks, it might be interesting to understand the whole repository as a single piece. In the README file, accesible <a class="reference external" href="https://javitausia.github.io/geocean-nz-ss/README.html">here</a>, the project organigram can be seen, but here we will focus in how all the notebooks / python scripts / datasets … are used / run.</p>
 <section id="repository-global-aspect">
 <h2><span class="section-number">1.1. </span>Repository GLOBAL aspect<a class="headerlink" href="#repository-global-aspect" title="Permalink to this headline">#</a></h2>
@@ -489,6 +489,7 @@ title="Print to PDF"
 <p>Regarding the pre-built python libraries that are mainly used in the project, we will briefly explain some of them:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://numpy.org/">NumPy</a>: NumPy is the fundamental package for scientific computing in Python. It is a Python library that provides a multidimensional array object, various derived objects (such as masked arrays and matrices), and an assortment of routines for fast operations on arrays, including mathematical, logical, shape manipulation, sorting, selecting, I/O, discrete Fourier transforms, basic linear algebra, basic statistical operations, random simulation and much more.</p></li>
+<li><p><a class="reference external" href="https://pandas.pydata.org/about/index.html">pandas</a>: pandas aims to be the fundamental high-level building block for doing practical, real world data analysis in Python. Additionally, it has the broader goal of becoming the most powerful and flexible open source data analysis / manipulation tool available in any language.</p></li>
 <li><p><a class="reference external" href="http://xarray.pydata.org/en/stable/">xarray</a>: xarray (formerly xray) is an open source project and Python package that makes working with labelled multi-dimensional arrays simple, efficient, and fun! Xarray introduces labels in the form of dimensions, coordinates and attributes on top of raw NumPy-like arrays, which allows for a more intuitive, more concise, and less error-prone developer experience. The package includes a large and growing library of domain-agnostic functions for advanced analytics and visualization with these data structures. Xarray is inspired by and borrows heavily from <a class="reference external" href="https://pandas.pydata.org/">pandas</a>, the popular data analysis package focused on labelled tabular data. It is particularly tailored to working with <a class="reference external" href="https://unidata.github.io/netcdf4-python/">netCDF</a> files, which were the source of xarray’s data model, and integrates tightly with dask for parallel computing.</p></li>
 <li><p><a class="reference external" href="https://matplotlib.org/stable/index.html">matplotlib</a>: Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. The majority of the plots are obtained using this plotting library.</p></li>
 <li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">cartopy</a>: Cartopy is a Python package designed for geospatial data processing in order to produce maps and other geospatial data analyses. Cartopy makes use of the powerful PROJ.4, NumPy and Shapely libraries and includes a programmatic interface built on top of Matplotlib for the creation of publication quality maps.</p></li>
