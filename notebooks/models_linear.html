@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>5. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
+    <title>4. MultiLinear regression models &#8212; Storm Surge NZ - Summary</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -60,8 +60,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. KNN regression models" href="models_knn.html" />
-    <link rel="prev" title="4. PC analysis" href="analysis_pca.html" />
+    <link rel="next" title="5. KNN regression models" href="models_knn.html" />
+    <link rel="prev" title="3. PC analysis" href="analysis_pca.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -102,7 +102,7 @@ const thebe_selector_output = ".output, .cell_output"
         
       
       
-      <img src="../_static/logo.jpeg" class="logo" alt="logo">
+      <img src="../_static/geo-met-ocean-logo.png" class="logo" alt="logo">
       
       
       <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
@@ -133,43 +133,38 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="useful_theory.html">
-   2. Useful theory
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   2. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   3. PC analysis
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   5. MultiLinear regression models
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   5. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost regression models
+   6. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="run_experiments.html">
-   8. RUN experiments
+   7. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   9. VISUALIZE experiments results
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -416,27 +411,27 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-theory">
-   5.1. Linear regression theory
+   4.1. Linear regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   5.2. Load the data
+   4.2. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-regional-pca">
-   5.3. Calculate regional PCA
+   4.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-regional-predictor">
-   5.4. Linear regression with regional predictor
+   4.4. Linear regression with regional predictor
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-in-the-uhslc-tidal-gauges-validation">
-   5.5. Linear regression in the UHSLC tidal gauges + validation
+   4.5. Linear regression in the UHSLC tidal gauges + validation
   </a>
  </li>
 </ul>
@@ -460,27 +455,27 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-theory">
-   5.1. Linear regression theory
+   4.1. Linear regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   5.2. Load the data
+   4.2. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-regional-pca">
-   5.3. Calculate regional PCA
+   4.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-with-regional-predictor">
-   5.4. Linear regression with regional predictor
+   4.4. Linear regression with regional predictor
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression-in-the-uhslc-tidal-gauges-validation">
-   5.5. Linear regression in the UHSLC tidal gauges + validation
+   4.5. Linear regression in the UHSLC tidal gauges + validation
   </a>
  </li>
 </ul>
@@ -494,9 +489,9 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="multilinear-regression-models">
-<h1><span class="section-number">5. </span>MultiLinear regression models<a class="headerlink" href="#multilinear-regression-models" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">4. </span>MultiLinear regression models<a class="headerlink" href="#multilinear-regression-models" title="Permalink to this headline">#</a></h1>
 <section id="linear-regression-theory">
-<h2><span class="section-number">5.1. </span>Linear regression theory<a class="headerlink" href="#linear-regression-theory" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.1. </span>Linear regression theory<a class="headerlink" href="#linear-regression-theory" title="Permalink to this headline">#</a></h2>
 <p>We assume here that <span class="math notranslate nohighlight">\( y | X ; \theta\sim\mathcal{N}(\mu,\sigma ^2)\)</span> !!</p>
 <ul class="simple">
 <li><p><strong>Normal equations</strong> - By noting <span class="math notranslate nohighlight">\(X\)</span> the design matrix, the value of <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes the cost function is a closed-form solution such that:</p></li>
@@ -509,7 +504,7 @@ title="Print to PDF"
 <figure class="align-default" id="linearmodel-sketch">
 <a class="reference internal image-reference" href="../_images/linear-model.png"><img alt="../_images/linear-model.png" src="../_images/linear-model.png" style="width: 550px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text">This is a sketch of a linear model, where just one independent variable predicts the target variable Y, based on the <a class="reference external" href="https://en.wikipedia.org/wiki/Least_squares">Least squares method</a></span><a class="headerlink" href="#linearmodel-sketch" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 4.1 </span><span class="caption-text">This is a sketch of a linear model, where just one independent variable predicts the target variable Y, based on the <a class="reference external" href="https://en.wikipedia.org/wiki/Least_squares">Least squares method</a></span><a class="headerlink" href="#linearmodel-sketch" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell docutils container">
@@ -576,7 +571,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="load-the-data">
-<h2><span class="section-number">5.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">#</a></h2>
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -605,7 +600,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="calculate-regional-pca">
-<h2><span class="section-number">5.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">#</a></h2>
 <p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -682,7 +677,7 @@ time (11353,)
 </div>
 </section>
 <section id="linear-regression-with-regional-predictor">
-<h2><span class="section-number">5.4. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4. </span>Linear regression with regional predictor<a class="headerlink" href="#linear-regression-with-regional-predictor" title="Permalink to this headline">#</a></h2>
 <p>In the following cell, a multilinear regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics/linear</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_lm_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -971,7 +966,7 @@ time (11353,)
 </div>
 </section>
 <section id="linear-regression-in-the-uhslc-tidal-gauges-validation">
-<h2><span class="section-number">5.5. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5. </span>Linear regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#linear-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">#</a></h2>
 <p>Here, we really use for the first time our “validators”, which are the main truth in the project. In coastal engineering, we usually use the buoys (if we are working with waves) and the tidal gauges (water elevation) as the real observations, and once they are processed, which is the case of these nodes shown here, they might be used as the data to validate with.</p>
 <p>Below, apart from plotting the location of the different tidal gauges that we will be working with, we show how the linear regression with the regional predictor behaves in the nearest locations to the tidal gauges, and how this pre-trained linear regression model performs in that tidal gauge too.</p>
 <p>To understand how good or bad the linear model might behave when predicting the storm surge of the tidal guages, we find the answer in the validations we performed in the first notebook, called <strong>Data visualization and validation (data_visualization.ipynb)</strong>, where the comparison of all the tidal gauges and the nearest moana nodes is shown.</p>
@@ -1225,13 +1220,13 @@ FILE /Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/local_2.5_
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">4. </span>PC analysis</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>PC analysis</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_knn.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>KNN regression models</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>KNN regression models</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

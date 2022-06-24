@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>7. XGBoost regression models &#8212; Storm Surge NZ - Summary</title>
+    <title>6. XGBoost regression models &#8212; Storm Surge NZ - Summary</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -58,8 +58,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="8. RUN experiments" href="run_experiments.html" />
-    <link rel="prev" title="6. KNN regression models" href="models_knn.html" />
+    <link rel="next" title="7. RUN experiments" href="run_experiments.html" />
+    <link rel="prev" title="5. KNN regression models" href="models_knn.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -100,7 +100,7 @@ const thebe_selector_output = ".output, .cell_output"
         
       
       
-      <img src="../_static/logo.jpeg" class="logo" alt="logo">
+      <img src="../_static/geo-met-ocean-logo.png" class="logo" alt="logo">
       
       
       <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
@@ -131,43 +131,38 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="useful_theory.html">
-   2. Useful theory
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   2. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   3. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   5. KNN regression models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   7. XGBoost regression models
+   6. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="run_experiments.html">
-   8. RUN experiments
+   7. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   9. VISUALIZE experiments results
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -414,27 +409,27 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xgboost-regression-theory">
-   7.1. XGBoost regression theory
+   6.1. XGBoost regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   7.2. Load the data
+   6.2. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-regional-pca">
-   7.3. Calculate regional PCA
+   6.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xgboost-regression-with-regional-predictor">
-   7.4. XGBoost regression with regional predictor
+   6.4. XGBoost regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation">
-     7.4.1. XGBoost regression in the UHSLC tidal gauges + validation
+     6.4.1. XGBoost regression in the UHSLC tidal gauges + validation
     </a>
    </li>
   </ul>
@@ -460,27 +455,27 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xgboost-regression-theory">
-   7.1. XGBoost regression theory
+   6.1. XGBoost regression theory
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data">
-   7.2. Load the data
+   6.2. Load the data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#calculate-regional-pca">
-   7.3. Calculate regional PCA
+   6.3. Calculate regional PCA
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xgboost-regression-with-regional-predictor">
-   7.4. XGBoost regression with regional predictor
+   6.4. XGBoost regression with regional predictor
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation">
-     7.4.1. XGBoost regression in the UHSLC tidal gauges + validation
+     6.4.1. XGBoost regression in the UHSLC tidal gauges + validation
     </a>
    </li>
   </ul>
@@ -496,15 +491,15 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="xgboost-regression-models">
-<h1><span class="section-number">7. </span>XGBoost regression models<a class="headerlink" href="#xgboost-regression-models" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6. </span>XGBoost regression models<a class="headerlink" href="#xgboost-regression-models" title="Permalink to this headline">#</a></h1>
 <section id="xgboost-regression-theory">
-<h2><span class="section-number">7.1. </span>XGBoost regression theory<a class="headerlink" href="#xgboost-regression-theory" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1. </span>XGBoost regression theory<a class="headerlink" href="#xgboost-regression-theory" title="Permalink to this headline">#</a></h2>
 <p>In machine learning, ensemble models perform better than individual models with high probability. An ensemble model combines different machine learning models into one. The Random Forest is a popular ensemble that takes the average of many Decision Trees via bagging. Bagging is short for “bootstrap aggregation”, meaning that samples are chosen with replacement (bootstrapping), and combined (aggregated) by taking their average.
 Boosting is a strong alternative to bagging. Instead of aggregating predictions, boosters turn weak learners into strong learners by focusing on where the individual models (usually Decision Trees) went wrong. In Gradient Boosting, individual models train upon the residuals, the difference between the prediction and the actual results.</p>
 <figure class="align-default" id="treeexpl">
 <a class="reference internal image-reference" href="../_images/treesexpl.png"><img alt="../_images/treesexpl.png" src="../_images/treesexpl.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 7.1 </span><span class="caption-text">This picture displays the final surface/f(x) a individual tree might generate</span><a class="headerlink" href="#treeexpl" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.1 </span><span class="caption-text">This picture displays the final surface/f(x) a individual tree might generate</span><a class="headerlink" href="#treeexpl" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Gradient_boosting">Gradient boosting</a> is a machine learning technique for regression, classification and other tasks, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees When a decision tree is the weak learner, the resulting algorithm is called gradient boosted trees, which usually outperforms random forest. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function.</p>
@@ -516,7 +511,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 <figure class="align-default" id="tree">
 <a class="reference internal image-reference" href="../_images/tree-example.png"><img alt="../_images/tree-example.png" src="../_images/tree-example.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 7.2 </span><span class="caption-text">This picture displays some leaves of a regression tree, where the input variables are the PCs of a regional predictor</span><a class="headerlink" href="#tree" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">This picture displays some leaves of a regression tree, where the input variables are the PCs of a regional predictor</span><a class="headerlink" href="#tree" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell docutils container">
@@ -581,7 +576,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </div>
 </section>
 <section id="load-the-data">
-<h2><span class="section-number">7.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2. </span>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">#</a></h2>
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -609,7 +604,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </div>
 </section>
 <section id="calculate-regional-pca">
-<h2><span class="section-number">7.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.3. </span>Calculate regional PCA<a class="headerlink" href="#calculate-regional-pca" title="Permalink to this headline">#</a></h2>
 <p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -634,7 +629,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </div>
 </section>
 <section id="xgboost-regression-with-regional-predictor">
-<h2><span class="section-number">7.4. </span>XGBoost regression with regional predictor<a class="headerlink" href="#xgboost-regression-with-regional-predictor" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4. </span>XGBoost regression with regional predictor<a class="headerlink" href="#xgboost-regression-with-regional-predictor" title="Permalink to this headline">#</a></h2>
 <p>In the following cell, a XGBoost regression is performed over all the domain of the Moana v2 hindcast nearshore, having the regional pcs (slp + gradient) as the predictor. Moreover, we plot the obtained results, which are also saved in our <code class="docutils literal notranslate"><span class="pre">data/statistics/regional_models</span></code> folder, with the name <code class="docutils literal notranslate"><span class="pre">stats_xgboost_regional_daily.nc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -733,7 +728,7 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </pre></div>
 </div>
 <section id="xgboost-regression-in-the-uhslc-tidal-gauges-validation">
-<h3><span class="section-number">7.4.1. </span>XGBoost regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.4.1. </span>XGBoost regression in the UHSLC tidal gauges + validation<a class="headerlink" href="#xgboost-regression-in-the-uhslc-tidal-gauges-validation" title="Permalink to this headline">#</a></h3>
 <p>This part explanation is similar to the one available at <strong>MultiLinear regression models (models_linear.ipynb)</strong> and <strong>KNN regressor models (models_knn.ipynb)</strong>!!</p>
 <p>But in this case, we could also use the trained agent to see what are the best parameters for our XGBoost model, in all the locations of the tidal gauges, but training the model with the Moana v2 hindcast.</p>
 <div class="cell docutils container">
@@ -946,13 +941,13 @@ time (11351,)
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">6. </span>KNN regression models</p>
+            <p class="prev-next-title"><span class="section-number">5. </span>KNN regression models</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="run_experiments.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>RUN experiments</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>RUN experiments</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2. Useful theory &#8212; Storm Surge NZ - Summary</title>
+    <title>Useful theory &#8212; Storm Surge NZ - Summary</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -60,8 +60,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Data visualization and validation" href="data_visualization.html" />
-    <link rel="prev" title="1. Repository workflow" href="repo_workflow.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -102,7 +100,7 @@ const thebe_selector_output = ".output, .cell_output"
         
       
       
-      <img src="../_static/logo.jpeg" class="logo" alt="logo">
+      <img src="../_static/geo-met-ocean-logo.png" class="logo" alt="logo">
       
       
       <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
@@ -126,50 +124,45 @@ const thebe_selector_output = ".output, .cell_output"
   Chapters
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="repo_workflow.html">
    1. Repository workflow
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   2. Useful theory
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   2. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   3. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   5. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost regression models
+   6. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="run_experiments.html">
-   8. RUN experiments
+   7. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   9. VISUALIZE experiments results
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -416,12 +409,12 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-metrics-for-regression">
-   2.1. Model metrics for Regression
+   Model metrics for Regression
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#gev-analysis-monthly">
-   2.2. GEV analysis (monthly)
+   GEV analysis (monthly)
   </a>
  </li>
 </ul>
@@ -445,12 +438,12 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-metrics-for-regression">
-   2.1. Model metrics for Regression
+   Model metrics for Regression
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#gev-analysis-monthly">
-   2.2. GEV analysis (monthly)
+   GEV analysis (monthly)
   </a>
  </li>
 </ul>
@@ -464,10 +457,10 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="useful-theory">
-<h1><span class="section-number">2. </span>Useful theory<a class="headerlink" href="#useful-theory" title="Permalink to this headline">#</a></h1>
+<h1>Useful theory<a class="headerlink" href="#useful-theory" title="Permalink to this headline">#</a></h1>
 <p>Below some useful theory to help project details…</p>
 <section id="model-metrics-for-regression">
-<h2><span class="section-number">2.1. </span>Model metrics for Regression<a class="headerlink" href="#model-metrics-for-regression" title="Permalink to this headline">#</a></h2>
+<h2>Model metrics for Regression<a class="headerlink" href="#model-metrics-for-regression" title="Permalink to this headline">#</a></h2>
 <p>Regarding one of the machine learning packages (scikit-learn), here is where all the interesting things happen, as all the algorithms and mathematics are hosted here. Different techniques are used, and they are briefly described in each notebook, but in the paragraph below, we will introduce the evaluation metrics that will be used in all the regression / interpolation models that will be used. This metrics can be found <a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html">here</a>.</p>
 <p>When measuring the goodness of a fit, we can calculate very different statistical metrics, such as the bias, the rmse or the pearson and spearman correlation coefficients. In this part, we will briefly describe how all of them work, and how they must be interpreted:</p>
 <ul class="simple">
@@ -551,7 +544,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="gev-analysis-monthly">
-<h2><span class="section-number">2.2. </span>GEV analysis (monthly)<a class="headerlink" href="#gev-analysis-monthly" title="Permalink to this headline">#</a></h2>
+<h2>GEV analysis (monthly)<a class="headerlink" href="#gev-analysis-monthly" title="Permalink to this headline">#</a></h2>
 <p>As we are still trying to understand the data we will be using, let’s plot some more data. In this case, let’s plot the results of the Generalized-Extreme-Value analysis performed over all the nodes of the Moana hindcast, for 2 different months in the year.</p>
 <p>To refresh our memories, this probability density function is usually used to statistically represent the distribution of extreme events (in this case, monthly maxima), where the equation can take the following aspects:</p>
 <div class="math notranslate nohighlight">
@@ -627,20 +620,6 @@ f(x)=\left\{\begin{matrix}
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="repo_workflow.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1. </span>Repository workflow</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="data_visualization.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Data visualization and validation</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

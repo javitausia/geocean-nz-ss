@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>8. RUN experiments &#8212; Storm Surge NZ - Summary</title>
+    <title>7. RUN experiments &#8212; Storm Surge NZ - Summary</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -58,8 +58,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="9. VISUALIZE experiments results" href="models_results.html" />
-    <link rel="prev" title="7. XGBoost regression models" href="models_xgboost.html" />
+    <link rel="next" title="8. VISUALIZE experiments results" href="models_results.html" />
+    <link rel="prev" title="6. XGBoost regression models" href="models_xgboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -100,7 +100,7 @@ const thebe_selector_output = ".output, .cell_output"
         
       
       
-      <img src="../_static/logo.jpeg" class="logo" alt="logo">
+      <img src="../_static/geo-met-ocean-logo.png" class="logo" alt="logo">
       
       
       <h1 class="site-logo" id="site-title">Storm Surge NZ - Summary</h1>
@@ -131,43 +131,38 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="useful_theory.html">
-   2. Useful theory
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="data_visualization.html">
-   3. Data visualization and validation
+   2. Data visualization and validation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="analysis_pca.html">
-   4. PC analysis
+   3. PC analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_linear.html">
-   5. MultiLinear regression models
+   4. MultiLinear regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_knn.html">
-   6. KNN regression models
+   5. KNN regression models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_xgboost.html">
-   7. XGBoost regression models
+   6. XGBoost regression models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   8. RUN experiments
+   7. RUN experiments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="models_results.html">
-   9. VISUALIZE experiments results
+   8. VISUALIZE experiments results
   </a>
  </li>
 </ul>
@@ -414,12 +409,12 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   8.1. Load the data, SLP and SS
+   7.1. Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   8.2. Create / Run – Experiment object
+   7.2. Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -443,12 +438,12 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-the-data-slp-and-ss">
-   8.1. Load the data, SLP and SS
+   7.1. Load the data, SLP and SS
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-run-experiment-object">
-   8.2. Create / Run – Experiment object
+   7.2. Create / Run – Experiment object
   </a>
  </li>
 </ul>
@@ -462,7 +457,7 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="run-experiments">
-<h1><span class="section-number">8. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">7. </span>RUN experiments<a class="headerlink" href="#run-experiments" title="Permalink to this headline">#</a></h1>
 <p>In this notebook, we will run all the required experiments using the <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class, which can be found at <code class="docutils literal notranslate"><span class="pre">sscode/experiment.py</span></code>, and can be seen below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -497,6 +492,13 @@ title="Print to PDF"
 <p>Be careful with the <a class="reference external" href="https://en.wikipedia.org/wiki/Curse_of_dimensionality">“curse of dimensionality”</a>, as it seems very easy to add more options for the parameters of the models, but once we have more than 3-4 parameters with 2-3 different values, the number of models that will be performed can increase to hundreds!!</p>
 </div>
 <p>Below, different code cells with imports, loading functions, visualizations… will appear, but the workflow is similar to all the notebooks in the repository. Once we load the data, we use the pre-built python classes to generate results!!</p>
+<p>In the figure below, some results for different locations in New Zealand, and the best performing predictor with multi-linear regression can be found:</p>
+<figure class="align-default" id="time-series-results">
+<a class="reference internal image-reference" href="../_images/time-series-plot.png"><img alt="../_images/time-series-plot.png" src="../_images/time-series-plot.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7.1 </span><span class="caption-text">Results for 5 different locations in the studied domain are shown. SLP panels show the aspect of two different storms approaching the islands of New Zealand, represented by colored lines in the time series plots. These time series show both the real storm surge signal and the reconstructed one with the best performing predictor and the linear model. The scatter plots in the right part show how the whole dataset is reconstructed, for the different locations.</span><a class="headerlink" href="#time-series-results" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
@@ -541,7 +543,7 @@ title="Print to PDF"
 </div>
 </div>
 <section id="load-the-data-slp-and-ss">
-<h2><span class="section-number">8.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.1. </span>Load the data, SLP and SS<a class="headerlink" href="#load-the-data-slp-and-ss" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
@@ -597,7 +599,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="create-run-experiment-object">
-<h2><span class="section-number">8.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2. </span>Create / Run – Experiment object<a class="headerlink" href="#create-run-experiment-object" title="Permalink to this headline">#</a></h2>
 <p>In the two cells below, we first choose all the values that will have the different parameters for the model that will be used, and then we create the instance of the class <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>, where different logs will appear before running all the models.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1865,13 +1867,13 @@ PCs loaded from file
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">7. </span>XGBoost regression models</p>
+            <p class="prev-next-title"><span class="section-number">6. </span>XGBoost regression models</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="models_results.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">9. </span>VISUALIZE experiments results</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>VISUALIZE experiments results</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
