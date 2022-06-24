@@ -4,7 +4,7 @@
 # basic configurations
 title: Storm Surge NZ - Summary
 author: GeoOcean - MetOcean
-logo: media/images/logo.jpeg
+logo: media/images/geo-met-ocean-logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -25,6 +25,7 @@ sphinx:
   config:
     html_js_files:
     - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+    bibtex_reference_style: author_year
   extra_extensions:
     - sphinx_thebe
     - jupyter_sphinx
