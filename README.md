@@ -1,6 +1,6 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/HEAD)
 
-![logo](/media/images/geo-met-ocean-logo.png | width=200)
+<img src="/media/images/geo-met-ocean-logo.png" width="200">
 
 # StormSurge Predictions in New Zealand
 
