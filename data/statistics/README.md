@@ -1,4 +1,5 @@
-# FINAL experiments are stored here (also some final metrics)
+FINAL experiments are stored here (also some final metrics)
+---------------------------------------------------
 
 **experiments** store all the final experiments in the project
 **final metrics** .csv files save final validations

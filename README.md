@@ -1,10 +1,10 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/javitausia/geocean-nz-ss/HEAD)
 
-<img src="/media/images/geo-met-ocean-logo.png" width="400">
+<img src="/media/images/geo-met-ocean-logo.png" width="350">
 
 # StormSurge Predictions in New Zealand
 
-This repository will contain all the updated information in the shared project between [GeoOcean](https://geoocean.unican.es/)-[MetOcean](https://www.metocean.co.nz/)
+This repository will contain all the updated information in the shared project between [GeoOcean](https://geoocean.unican.es/) - [MetOcean](https://www.metocean.co.nz/)
 
 more updated info at: https://drive.google.com/drive/folders/1P1fNSxZNj2Mv6H1cyK-QLoWC-QldzPZV?usp=sharing !!
 
@@ -37,7 +37,7 @@ Below, a summary of how the the different lineal models behave with different pr
 
 This image with more results can be seen [here](/notebooks/models_results.ipynb).
 
-Finally, time series and scatter plots can be seen in different locations:
+Finally, time series and scatter plots can be seen in different locations, for the best predictions found:
 
 ![time-series](/media/images/time-series-plot.png)
 
@@ -62,10 +62,6 @@ data format is available in the figure below:
 where also the spatial resolutions and explanations regarding the variables are shown:
 
 ![datasketch](/media/images/intro-data.png)
-
-## Main contents
-
-Statistical tools, notebooks, data ...
 
 ## Project organization
 
@@ -154,10 +150,9 @@ conda activate ssnz
 
 ## Additional support:
 
-Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com or tausiaj@unican.es !!
+Data used in the project and a detailed explanation of the acquisition can be requested from jtausiahoyal@gmail.com or tausiaj@unican.es (preferred) !!
 
 ## Authors
 
 * Sebastien Delaux (https://github.com/delauxs)
 * Javier Tausía Hoyal
-

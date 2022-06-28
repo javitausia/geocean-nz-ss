@@ -1,14 +1,12 @@
-This repository contains the data used in the MBIE funded smart ideas research project.
-
+The content of the different folders is the following:
 ---------------------------------------------------
 
-The content of the different folders is the following:
 - **moana_hindcast_v2**: Numerical data from version 2 of the Moana hindcast generated at MetOcean
 - **nz_tidal_gauges**:   Observation data collected for various tidal gauges around New Zealand
 
-Below, the daily validation metrics for different locations in the hindcast where UHSLC tidal gauges are located can be seen:
+Below, the hourly validation metrics for different locations in the hindcast where UHSLC tidal gauges are located can be seen:
 
-| **null**                      | Bias   | Si    | Rmse  | Rmse_99 | Pearson | Spearman | Kge   |
+|                               | Bias   | Si    | Rmse  | Rmse_99 | Pearson | Spearman | Kge   |
 |:-----------------------------:|:------:|:-----:|:-----:|:-------:|:-------:|:--------:|:-----:|
 | **H076a_Taranaki - 999**      | 0.001  | 0.338 | 0.034 | 0.093   | 0.935   | 0.93     | 0.912 |
 | **H072a_Bluff - 116**         | 0.002  | 0.357 | 0.046 | 0.126   | 0.925   | 0.925    | 0.904 |
