@@ -475,27 +475,27 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># common</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># common
+import os, sys
 
-<span class="c1"># arrays</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+# arrays
+import numpy as np
+import pandas as pd
+import xarray as xr
 
-<span class="c1"># append sscode to path</span>
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/&#39;</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
+# append sscode to path
+import sys, os
+sys.path.insert(0, &#39;/Users/administrador/Documents/geocean-nz-ss/&#39;)
+data_path = &#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;
+os.environ[&quot;SSURGE_DATA_PATH&quot;] = data_path
 
-<span class="c1"># custom</span>
-<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast</span><span class="p">,</span> <span class="n">load_predictor</span><span class="p">,</span> \
-    <span class="n">join_load_uhslc_tgs</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
+# custom
+from sscode.data import Loader, load_moana_hindcast, load_predictor, \
+    join_load_uhslc_tgs, load_moana_hindcast_ss
 
-<span class="c1"># warnings</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+# warnings
+import warnings
+warnings.filterwarnings(&#39;ignore&#39;)
 </pre></div>
 </div>
 </div>
@@ -535,18 +535,18 @@ title="Print to PDF"
 <p>Once the data is loaded, we validate the Moana v2 hindcast data (“moana”) with the University of Hawaii tidal guages (“uhslc”), for the specified variables, in this case, the storm surge, obtaining very good results!!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
-<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">),</span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span><span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span>
-                                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">))</span>
-<span class="p">)</span>
-<span class="c1"># validate the data</span>
-<span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validate_datasets</span><span class="p">(</span>
-    <span class="n">comparison_variables</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;ss&#39;</span><span class="p">],[</span><span class="s1">&#39;ss&#39;</span><span class="p">]],</span><span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># load the data using the Loader class
+load_cfsr_moana_uhslc = Loader(
+    data_to_load=(&#39;cfsr&#39;,&#39;moana&#39;,&#39;uhslc&#39;),
+    time_resample=&#39;1D&#39;,load_winds=(True,None),
+    plot=(False,True,True),
+    load_predictor_files=(True,(os.environ[&#39;SSURGE_DATA_PATH&#39;]+&#39;cfsr/CFSR_MSLP_daily.nc&#39;,
+                                os.environ[&#39;SSURGE_DATA_PATH&#39;]+&#39;cfsr/CFSR_WINDs_daily.nc&#39;))
+)
+# validate the data
+load_cfsr_moana_uhslc.validate_datasets(
+    comparison_variables=[[&#39;ss&#39;],[&#39;ss&#39;]],time_resample=&#39;1D&#39;
+)
 </pre></div>
 </div>
 </div>
@@ -623,15 +623,15 @@ Data variables:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># these are the validation metrics</span>
-<span class="n">val_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">ss_stats</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">val_metrics</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; - &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">site</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand_reduced</span><span class="o">.</span><span class="n">tg_names</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand_reduced</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span>
-    <span class="p">)</span>
-<span class="p">]</span>
-<span class="n">val_metrics</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># these are the validation metrics
+val_metrics = pd.DataFrame(load_cfsr_moana_uhslc.ss_stats).astype(float)
+val_metrics.index = [
+    str(name)+&#39; - &#39;+str(site) for name,site in zip(
+        load_cfsr_moana_uhslc.predictand_reduced.tg_names.values,
+        load_cfsr_moana_uhslc.predictand_reduced.site.values
+    )
+]
+val_metrics
 </pre></div>
 </div>
 </div>
@@ -973,8 +973,8 @@ Data variables:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># class attributes can be inspectioned below</span>
-<span class="n">load_cfsr_moana_uhslc</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># class attributes can be inspectioned below
+load_cfsr_moana_uhslc
 </pre></div>
 </div>
 </div>
@@ -986,14 +986,14 @@ Data variables:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lets plot the atmospheric data</span>
-<span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_pres_winds</span>
-<span class="n">plot_pres_winds</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span>
-        <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span>
-    <span class="p">]</span> <span class="c1"># pass list with SLP dataarray and winds dataset</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># lets plot the atmospheric data
+from sscode.plotting.data import plot_pres_winds
+plot_pres_winds(
+    [
+        load_cfsr_moana_uhslc.predictor_slp.SLP,
+        load_cfsr_moana_uhslc.predictor_wind
+    ] # pass list with SLP dataarray and winds dataset
+)
 </pre></div>
 </div>
 </div>
@@ -1007,14 +1007,14 @@ Data variables:
 <p>Finally, we have calculated how the projected winds affect a location in New Zealand, that can be seen below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot extra data if wanted</span>
-<span class="n">plot_extra_data</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="k">if</span> <span class="n">plot_extra_data</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_winds</span><span class="p">,</span> <span class="n">plot_pres_ibar</span>
-    <span class="n">plot_winds</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span> 
-               <span class="n">n_times</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">quiv_step</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># projected winds</span>
-    <span class="c1"># plot_pres_ibar(load_cfsr_moana_uhslc.predictor_slp.SLP,</span>
-    <span class="c1">#                load_moana_hindcast_ss(daily=True)) # inverse barometer</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># plot extra data if wanted
+plot_extra_data = True
+if plot_extra_data:
+    from sscode.plotting.data import plot_winds, plot_pres_ibar
+    plot_winds(load_cfsr_moana_uhslc.predictor_wind, 
+               n_times=4, quiv_step=5) # projected winds
+    # plot_pres_ibar(load_cfsr_moana_uhslc.predictor_slp.SLP,
+    #                load_moana_hindcast_ss(daily=True)) # inverse barometer
 </pre></div>
 </div>
 </div>

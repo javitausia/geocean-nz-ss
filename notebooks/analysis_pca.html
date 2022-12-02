@@ -552,23 +552,23 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <p>The very first step in all the notebooks we are using consists in importing all the necessary libraries.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># basics
+import os, sys
 
-<span class="c1"># append sscode to path</span>
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/&#39;</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
+# append sscode to path
+import sys, os
+sys.path.insert(0, &#39;/Users/administrador/Documents/geocean-nz-ss/&#39;)
+data_path = &#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;
+os.environ[&quot;SSURGE_DATA_PATH&quot;] = data_path
 
-<span class="c1"># custom</span>
-<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span>
-<span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
-<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">default_region_reduced</span><span class="p">,</span> <span class="n">default_location</span>
+# custom
+from sscode.data import Loader, load_moana_hindcast_ss
+from sscode.pca import PCA_DynamicPred
+from sscode.config import default_region_reduced, default_location
 
-<span class="c1"># warnings</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+# warnings
+import warnings
+warnings.filterwarnings(&#39;ignore&#39;)
 </pre></div>
 </div>
 </div>
@@ -584,14 +584,14 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <p>As always, we first load the data using our <code class="docutils literal notranslate"><span class="pre">Loader</span></code> python class, so then we can easily use all the datasets. Notice that here, we set the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameters to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data using the Loader class</span>
-<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
-    <span class="n">data_to_load</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">),</span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span><span class="n">load_winds</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
-    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span>
-                                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SSURGE_DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">))</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># load the data using the Loader class
+load_cfsr_moana_uhslc = Loader(
+    data_to_load=(&#39;cfsr&#39;,&#39;moana&#39;,&#39;uhslc&#39;),
+    time_resample=&#39;1D&#39;,load_winds=(True,None),
+    plot=(False,False,False),
+    load_predictor_files=(True,(os.environ[&#39;SSURGE_DATA_PATH&#39;]+&#39;cfsr/CFSR_MSLP_daily.nc&#39;,
+                                os.environ[&#39;SSURGE_DATA_PATH&#39;]+&#39;cfsr/CFSR_WINDs_daily.nc&#39;))
+)
 </pre></div>
 </div>
 </div>
@@ -670,18 +670,18 @@ X (x,t_i) = EOF_1(x)\times PC_1(t_i) + EOF_2(x)\times PC_2(t_i) + ... + EOF_d(x)
 <h3><span class="section-number">3.5.1. </span>Regional PCs analysis<a class="headerlink" href="#regional-pcs-analysis" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
-    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
-    <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
-    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
-    <span class="n">site_location</span><span class="o">=</span><span class="n">default_location</span><span class="p">,</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">),</span>
-    <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># look the simplicity of the function</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pcs_data, pcs_scaler = PCA_DynamicPred(
+    load_cfsr_moana_uhslc.predictor_slp.SLP, 
+    calculate_gradient=False,
+    wind=load_cfsr_moana_uhslc.predictor_wind,
+    time_lapse=1, # 1 equals to NO time delay                    
+    time_resample=&#39;1D&#39;, # daily resampling
+    region=(True,default_region_reduced),
+    site_location=default_location,
+    pca_plot=(True,False,2),
+    pca_ttls=(&#39;SLP in t&#39;,&#39;Winds in t&#39;),
+    pcs_folder=&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;
+).pcs_get() # look the simplicity of the function
 </pre></div>
 </div>
 </div>
@@ -746,18 +746,18 @@ time (11353,)
 <h3><span class="section-number">3.5.2. </span>Local PCs analysis<a class="headerlink" href="#local-pcs-analysis" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pcs_data</span><span class="p">,</span> <span class="n">pcs_scaler</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
-    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
-    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
-    <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
-    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
-    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,(</span><span class="mi">175</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span><span class="o">-</span><span class="mi">35</span><span class="p">)),</span>
-    <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="mi">177</span><span class="p">,</span><span class="o">-</span><span class="mi">36</span><span class="p">),</span>
-    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">),</span>
-    <span class="n">pcs_folder</span><span class="o">=</span><span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span> <span class="c1"># look the simplicity of the function</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pcs_data, pcs_scaler = PCA_DynamicPred(
+    load_cfsr_moana_uhslc.predictor_slp.SLP, 
+    calculate_gradient=True,
+    wind=load_cfsr_moana_uhslc.predictor_wind,
+    time_lapse=1, # 1 equals to NO time delay                    
+    time_resample=&#39;1D&#39;, # daily resampling
+    region=(True,(175,180,-40,-35)),
+    site_location=(177,-36),
+    pca_plot=(True,False,2),
+    pca_ttls=(&#39;SLP in t&#39;,&#39;Gradient in t&#39;,&#39;Winds in t&#39;),
+    pcs_folder=&#39;/Users/administrador/Documents/geocean-nz-ss/data/calculated_pcs/&#39;
+).pcs_get() # look the simplicity of the function
 </pre></div>
 </div>
 </div>
