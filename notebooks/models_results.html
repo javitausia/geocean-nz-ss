@@ -468,35 +468,35 @@ title="Print to PDF"
 <p>All models have similar and different behaviours. As an example, maybe all behave bad in certain locations, but some models might behave better with local predictors, while others might obtain better results when adding a regional + gradient predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># datasets
-import numpy as np
-import xarray as xr
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-import cartopy.crs as ccrs
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># datasets</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 
-# append sscode to path
-import sys, os
-sys.path.insert(0, &#39;/Users/administrador/Documents/geocean-nz-ss/&#39;)
-data_path = &#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;
-os.environ[&quot;SSURGE_DATA_PATH&quot;] = data_path
+<span class="c1"># append sscode to path</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss/data/&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
-from sscode.data import load_moana_hindcast
-from sscode.plotting.results import ResultsPlotter
-from sscode.plotting.validation import plot_stats
-%matplotlib inline
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">load_moana_hindcast</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.results</span> <span class="kn">import</span> <span class="n">ResultsPlotter</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 
-# this is to allow plots to be centered
-from IPython.core.display import HTML
-HTML(&quot;&quot;&quot;
-&lt;style&gt;
-.output_png {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-}
-&lt;/style&gt;
-&quot;&quot;&quot;)
+<span class="c1"># this is to allow plots to be centered</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;style&gt;</span>
+<span class="s2">.output_png {</span>
+<span class="s2">    display: table-cell;</span>
+<span class="s2">    text-align: center;</span>
+<span class="s2">    vertical-align: middle;</span>
+<span class="s2">}</span>
+<span class="s2">&lt;/style&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -516,40 +516,40 @@ HTML(&quot;&quot;&quot;
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># load the 3 models datasets
-linear_stats = xr.open_dataset(&#39;../data/statistics/experiments/experiment_linear_final_10062022_javi.nc&#39;)\
-    .sortby([&#39;grad&#39;,&#39;winds&#39;],ascending=True).sel(tresample=[&#39;1D&#39;])
-knn_stats = xr.merge(
-    [
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_noW_noG.nc&#39;),
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_noW_G.nc&#39;),
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_W_noG.nc&#39;),
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_W_G.nc&#39;)
-    ]
-).sortby([&#39;grad&#39;,&#39;winds&#39;],ascending=True).sel(tresample=[&#39;1D&#39;])
-xgb_stats = xr.merge(
-    [
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_noW_noG.nc&#39;),
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_noW_G.nc&#39;),
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_W_noG.nc&#39;),
-        xr.open_dataset(&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_W_G.nc&#39;)
-    ]
-).sortby([&#39;grad&#39;,&#39;winds&#39;],ascending=True).sel(tresample=[&#39;1D&#39;])
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the 3 models datasets</span>
+<span class="n">linear_stats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_linear_final_10062022_javi.nc&#39;</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">sortby</span><span class="p">([</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">tresample</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">])</span>
+<span class="n">knn_stats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_noW_noG.nc&#39;</span><span class="p">),</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_noW_G.nc&#39;</span><span class="p">),</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_W_noG.nc&#39;</span><span class="p">),</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_knn_final_10062022_javi_W_G.nc&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">([</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">tresample</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">])</span>
+<span class="n">xgb_stats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_noW_noG.nc&#39;</span><span class="p">),</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_noW_G.nc&#39;</span><span class="p">),</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_W_noG.nc&#39;</span><span class="p">),</span>
+        <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../data/statistics/experiments/experiment_xgboost_final_10062022_javi_W_G.nc&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">([</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span><span class="s1">&#39;winds&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">tresample</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1D&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(
-    &#39;The 3 statistical models have dimensions: \n&#39;,
-    f&#39;LINEAR model:  {list(linear_stats.dims)} \n&#39;,
-    f&#39;KNN model:     {list(knn_stats.dims)} \n&#39;,
-    f&#39;XGBOOST model: {list(xgb_stats.dims)} \n&#39;
-)
-print(
-    &#39;CHECK DIMENSIONS ARE CORRECTLY SORTED WITH SAME VALUES AND CROP TO COMMON ONES!!&#39;
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s1">&#39;The 3 statistical models have dimensions: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s1">&#39;LINEAR model:  </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">linear_stats</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s1">&#39;KNN model:     </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">knn_stats</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s1">&#39;XGBOOST model: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">xgb_stats</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s1">&#39;CHECK DIMENSIONS ARE CORRECTLY SORTED WITH SAME VALUES AND CROP TO COMMON ONES!!&#39;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -566,12 +566,12 @@ CHECK DIMENSIONS ARE CORRECTLY SORTED WITH SAME VALUES AND CROP TO COMMON ONES!!
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># crop datasets to same dimensions to compare
-linear_stats_red = linear_stats.squeeze().copy()
-knn_stats_red = knn_stats.max(
-    dim=[&#39;tsize&#39;,&#39;perpcs&#39;,&#39;k_neighbors&#39;]).copy()
-xgb_stats_red = xgb_stats.max(
-    dim=[&#39;tsize&#39;,&#39;perpcs&#39;,&#39;n_estimators&#39;,&#39;max_depth&#39;,&#39;min_samples_split&#39;,&#39;learning_rate&#39;,&#39;loss&#39;]).copy()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># crop datasets to same dimensions to compare</span>
+<span class="n">linear_stats_red</span> <span class="o">=</span> <span class="n">linear_stats</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">knn_stats_red</span> <span class="o">=</span> <span class="n">knn_stats</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+    <span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">,</span><span class="s1">&#39;k_neighbors&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">xgb_stats_red</span> <span class="o">=</span> <span class="n">xgb_stats</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+    <span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tsize&#39;</span><span class="p">,</span><span class="s1">&#39;perpcs&#39;</span><span class="p">,</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">,</span><span class="s1">&#39;max_depth&#39;</span><span class="p">,</span><span class="s1">&#39;min_samples_split&#39;</span><span class="p">,</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">,</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -580,21 +580,21 @@ xgb_stats_red = xgb_stats.max(
 <h2><span class="section-number">8.1. </span>Initialize the <code class="docutils literal notranslate"><span class="pre">class</span></code> to plot results<a class="headerlink" href="#initialize-the-class-to-plot-results" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>results = ResultsPlotter(
-    linear_stats=linear_stats,
-    knn_stats=knn_stats,
-    xgb_stats=xgb_stats,
-    linear_stats_red=linear_stats_red,
-    knn_stats_red=knn_stats_red,
-    xgb_stats_red=xgb_stats_red
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">ResultsPlotter</span><span class="p">(</span>
+    <span class="n">linear_stats</span><span class="o">=</span><span class="n">linear_stats</span><span class="p">,</span>
+    <span class="n">knn_stats</span><span class="o">=</span><span class="n">knn_stats</span><span class="p">,</span>
+    <span class="n">xgb_stats</span><span class="o">=</span><span class="n">xgb_stats</span><span class="p">,</span>
+    <span class="n">linear_stats_red</span><span class="o">=</span><span class="n">linear_stats_red</span><span class="p">,</span>
+    <span class="n">knn_stats_red</span><span class="o">=</span><span class="n">knn_stats_red</span><span class="p">,</span>
+    <span class="n">xgb_stats_red</span><span class="o">=</span><span class="n">xgb_stats_red</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>results.plot_histogram(metric=&#39;kge&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">plot_histogram</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;kge&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -604,8 +604,8 @@ xgb_stats_red = xgb_stats.max(
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># %matplotlib
-results.plot_studied_locations(metric=&#39;kge&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %matplotlib</span>
+<span class="n">results</span><span class="o">.</span><span class="n">plot_studied_locations</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;kge&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -618,8 +618,8 @@ results.plot_studied_locations(metric=&#39;kge&#39;)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>results.plot_allmodels_stats(stats_plot=&#39;xgb&#39;, # &#39;linear&#39;/&#39;knn&#39;/&#39;xgb&#39;
-                             metrics_to_plot=[&#39;kge&#39;,&#39;pearson&#39;])
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">plot_allmodels_stats</span><span class="p">(</span><span class="n">stats_plot</span><span class="o">=</span><span class="s1">&#39;xgb&#39;</span><span class="p">,</span> <span class="c1"># &#39;linear&#39;/&#39;knn&#39;/&#39;xgb&#39;</span>
+                             <span class="n">metrics_to_plot</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kge&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -630,7 +630,7 @@ results.plot_studied_locations(metric=&#39;kge&#39;)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>results.plot_best_stat(stat=&#39;kge&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">plot_best_stat</span><span class="p">(</span><span class="n">stat</span><span class="o">=</span><span class="s1">&#39;kge&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -641,7 +641,7 @@ results.plot_studied_locations(metric=&#39;kge&#39;)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>results.plot_knn_stats()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">plot_knn_stats</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

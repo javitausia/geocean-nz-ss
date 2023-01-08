@@ -516,50 +516,50 @@ Boosting is a strong alternative to bagging. Instead of aggregating predictions,
 </figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># basics
-import os, sys
-import progressbar
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basics</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">progressbar</span>
 
-# arrays
-import numpy as np
-import pandas as pd
-import xarray as xr
+<span class="c1"># arrays</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-# plotting
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-from sklearn.tree import plot_tree
+<span class="c1"># plotting</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">plot_tree</span>
 
-# append sscode to path
-import sys, os
-sys.path.insert(0, &#39;/Users/administrador/Documents/geocean-nz-ss&#39;)
-data_path = &#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;
-os.environ[&quot;SSURGE_DATA_PATH&quot;] = data_path
+<span class="c1"># append sscode to path</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/Users/administrador/Documents/geocean-nz-ss&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/ToshibaJT/geocean-nz-ss/data&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SSURGE_DATA_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_path</span>
 
-# custom
-from sscode.config import data_path, default_region_reduced, \
-    default_location, default_evaluation_metrics
-from sscode.data import Loader, load_moana_hindcast_ss, load_private_tgs
-from sscode.pca import PCA_DynamicPred
-from sscode.xgboost import XGBoost_Regression
-# https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html
-from sscode.plotting.data import plot_uhslc_locations
+<span class="c1"># custom</span>
+<span class="kn">from</span> <span class="nn">sscode.config</span> <span class="kn">import</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">default_region_reduced</span><span class="p">,</span> \
+    <span class="n">default_location</span><span class="p">,</span> <span class="n">default_evaluation_metrics</span>
+<span class="kn">from</span> <span class="nn">sscode.data</span> <span class="kn">import</span> <span class="n">Loader</span><span class="p">,</span> <span class="n">load_moana_hindcast_ss</span><span class="p">,</span> <span class="n">load_private_tgs</span>
+<span class="kn">from</span> <span class="nn">sscode.pca</span> <span class="kn">import</span> <span class="n">PCA_DynamicPred</span>
+<span class="kn">from</span> <span class="nn">sscode.xgboost</span> <span class="kn">import</span> <span class="n">XGBoost_Regression</span>
+<span class="c1"># https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html</span>
+<span class="kn">from</span> <span class="nn">sscode.plotting.data</span> <span class="kn">import</span> <span class="n">plot_uhslc_locations</span>
 
-# warnings
-import warnings
-warnings.filterwarnings(&#39;ignore&#39;)
+<span class="c1"># warnings</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
-# this is to allow plots to be centered
-from IPython.core.display import HTML
-HTML(&quot;&quot;&quot;
-&lt;style&gt;
-.output_png {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-}
-&lt;/style&gt;
-&quot;&quot;&quot;)
+<span class="c1"># this is to allow plots to be centered</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;style&gt;</span>
+<span class="s2">.output_png {</span>
+<span class="s2">    display: table-cell;</span>
+<span class="s2">    text-align: center;</span>
+<span class="s2">    vertical-align: middle;</span>
+<span class="s2">}</span>
+<span class="s2">&lt;/style&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -580,13 +580,13 @@ HTML(&quot;&quot;&quot;
 <p>As always, we load the three used datasets, which are the Moana v2 hindcast nearshore, the CFSR sea-level-pressure fields and winds (u10 and v10) and the UHSLC tgs validators, again setting the <code class="docutils literal notranslate"><span class="pre">plot</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># load the data
-load_cfsr_moana_uhslc = Loader(
-    data_to_load=[&#39;cfsr&#39;,&#39;moana&#39;,&#39;uhslc&#39;], plot=(False,False,False),
-    load_predictor_files=(True,
-        [data_path+&#39;/cfsr/CFSR_MSLP_daily.nc&#39;,data_path+&#39;/cfsr/CFSR_WINDs_daily.nc&#39;]
-    ) # load previously calculated winds
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<span class="n">load_cfsr_moana_uhslc</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span>
+    <span class="n">data_to_load</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cfsr&#39;</span><span class="p">,</span><span class="s1">&#39;moana&#39;</span><span class="p">,</span><span class="s1">&#39;uhslc&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">load_predictor_files</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_MSLP_daily.nc&#39;</span><span class="p">,</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/cfsr/CFSR_WINDs_daily.nc&#39;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="c1"># load previously calculated winds</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -608,17 +608,17 @@ load_cfsr_moana_uhslc = Loader(
 <p>Now, with the loaded data, we can calculate the regional PCs, so they can be used to reconstruct the storm surge all over New Zealand, using the same atmospheric predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># load / calculate the regional pcs
-pcs_data_regional, pcs_scaler_regional = PCA_DynamicPred(
-    load_cfsr_moana_uhslc.predictor_slp.SLP, 
-    calculate_gradient=True,
-    time_lapse=1, # 1 equals to NO time delay                    
-    time_resample=&#39;1D&#39;, # daily resampling
-    region=(True,default_region_reduced),
-    pca_plot=(True,False,1),
-    pca_ttls=(&#39;SLP in t&#39;,&#39;Gradient in t&#39;),
-    verbose=False
-).pcs_get()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load / calculate the regional pcs</span>
+<span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">pcs_scaler_regional</span> <span class="o">=</span> <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+    <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
+    <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">time_lapse</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># 1 equals to NO time delay                    </span>
+    <span class="n">time_resample</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">,</span> <span class="c1"># daily resampling</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">default_region_reduced</span><span class="p">),</span>
+    <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">pca_ttls</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Gradient in t&#39;</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -637,63 +637,63 @@ pcs_data_regional, pcs_scaler_regional = PCA_DynamicPred(
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>run = False
-if run:
-    # perform the XGBoost-Regression (regional)
-    metrics_regional = [] # save regional metrics
-    pcs_to_use_regional = [] # save used pcs (f-regression)
-    sites_regional = np.arange(
-        0,len(load_cfsr_moana_uhslc.predictand.site.values),1
-    )[::300]
-    # perform the XGBoost regression over all the sites
-    for site in progressbar.progressbar(sites_regional):
-        ss_moana = load_cfsr_moana_uhslc.predictand.sel(site=site)\
-            .load().resample(time=&#39;1D&#39;).max()
-        metrics, model, pcs_to_use = XGBoost_Regression(
-            pcs_data_regional, ss_moana, # use default attributes
-            verbose=False, plot_results=True
-        ) # using the regional-pre-loaded pcs
-        metrics_regional.append(list(metrics.values())) # save site metrics
-        pcs_to_use_regional.append(pcs_to_use) # save used pcs
-    # now, save all in xarray.Dataset
-    sites_metrics_regional = {}
-    for im,metric in enumerate(metrics.keys()):
-        sites_metrics_regional[metric] = ((&#39;site&#39;),np.array(metrics_regional)[:,im])
-    sites_metrics_regional[&#39;latitude&#39;] = (
-        (&#39;site&#39;),load_cfsr_moana_uhslc.predictand.sel(site=sites_regional).lat.values
-    )
-    sites_metrics_regional[&#39;longitude&#39;] = (
-        (&#39;site&#39;),load_cfsr_moana_uhslc.predictand.sel(site=sites_regional).lon.values
-    )
-    # save the metrics
-    metrics_dataset_regional = xr.Dataset(
-        sites_metrics_regional,coords={&#39;site&#39;:sites_regional}
-    )
-    # local copys
-    if True:
-        metrics_dataset_regional.to_netcdf(
-            data_path+&#39;/statistics/regional_models/stats_xgboost_regional_daily.nc&#39;
-        ) # save metrics in all the stations
-        np.save(
-            data_path+&#39;/statistics/regional_models/pcs_xgboost_regional_daily.npy&#39;,
-            np.array(pcs_to_use_regional)
-        ) # save pcs used in the xgboost regressions
-else:
-    metrics_dataset_regional = xr.open_dataset(
-        data_path+&#39;/statistics/regional_models/stats_xgboost_regional_daily.nc&#39;
-    )
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+    <span class="c1"># perform the XGBoost-Regression (regional)</span>
+    <span class="n">metrics_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save regional metrics</span>
+    <span class="n">pcs_to_use_regional</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save used pcs (f-regression)</span>
+    <span class="n">sites_regional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">values</span><span class="p">),</span><span class="mi">1</span>
+    <span class="p">)[::</span><span class="mi">300</span><span class="p">]</span>
+    <span class="c1"># perform the XGBoost regression over all the sites</span>
+    <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">progressbar</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">sites_regional</span><span class="p">):</span>
+        <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
+            <span class="n">pcs_data_regional</span><span class="p">,</span> <span class="n">ss_moana</span><span class="p">,</span> <span class="c1"># use default attributes</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span> <span class="c1"># using the regional-pre-loaded pcs</span>
+        <span class="n">metrics_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="c1"># save site metrics</span>
+        <span class="n">pcs_to_use_regional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pcs_to_use</span><span class="p">)</span> <span class="c1"># save used pcs</span>
+    <span class="c1"># now, save all in xarray.Dataset</span>
+    <span class="n">sites_metrics_regional</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">im</span><span class="p">,</span><span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metrics_regional</span><span class="p">)[:,</span><span class="n">im</span><span class="p">])</span>
+    <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
+    <span class="p">)</span>
+    <span class="n">sites_metrics_regional</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;site&#39;</span><span class="p">),</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">sites_regional</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
+    <span class="p">)</span>
+    <span class="c1"># save the metrics</span>
+    <span class="n">metrics_dataset_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">sites_metrics_regional</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;site&#39;</span><span class="p">:</span><span class="n">sites_regional</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="c1"># local copys</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">metrics_dataset_regional</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_xgboost_regional_daily.nc&#39;</span>
+        <span class="p">)</span> <span class="c1"># save metrics in all the stations</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
+            <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/pcs_xgboost_regional_daily.npy&#39;</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pcs_to_use_regional</span><span class="p">)</span>
+        <span class="p">)</span> <span class="c1"># save pcs used in the xgboost regressions</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">metrics_dataset_regional</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;/statistics/regional_models/stats_xgboost_regional_daily.nc&#39;</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># plot results
-if True:
-    from sscode.plotting.validation import plot_stats
-    plot_stats(metrics_dataset_regional,
-               plot_stats=[&#39;kgeprime&#39;,&#39;pearson&#39;,&#39;pocid&#39;],
-               cmap=&#39;rainbow&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
+<span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sscode.plotting.validation</span> <span class="kn">import</span> <span class="n">plot_stats</span>
+    <span class="n">plot_stats</span><span class="p">(</span><span class="n">metrics_dataset_regional</span><span class="p">,</span>
+               <span class="n">plot_stats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kgeprime&#39;</span><span class="p">,</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span><span class="s1">&#39;pocid&#39;</span><span class="p">],</span>
+               <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;rainbow&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -733,8 +733,8 @@ if True:
 <p>But in this case, we could also use the trained agent to see what are the best parameters for our XGBoost model, in all the locations of the tidal gauges, but training the model with the Moana v2 hindcast.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># plot the uhslc tidal-gauges locations
-plot_uhslc_locations(load_cfsr_moana_uhslc.validator)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the uhslc tidal-gauges locations</span>
+<span class="n">plot_uhslc_locations</span><span class="p">(</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -744,42 +744,42 @@ plot_uhslc_locations(load_cfsr_moana_uhslc.validator)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># validate model with tgs
-stats = []
-# select sites and append closest to UHSLC tgs
-clos_to_uhslc = [689, 328, 393, 1327, 393, 480, 999, 116, 224, 1124, 949, 708]
-sites_to_analyze = np.unique( # closest Moana v2 Hindcast to tidal gauges
-    [ 689,328,393,1327,393,480,999,116,224,1124,949,708, # UHSLC
-      1296,378,1124,780,613,488,1442,1217,578,200,1177,1025,689,949,224,1146, # LINZ
-      1174,1260,1217,744,1064,1214,803,999 # OTHER (ports...)
-    ]
-)[::20]
-for istat,stat in enumerate(sites_to_analyze):
-    ss_moana = load_cfsr_moana_uhslc.predictand.sel(site=stat)\
-        .load().resample(time=&#39;1D&#39;).max()
-    metrics, model, pcs_to_use = XGBoost_Regression(
-        PCA_DynamicPred(
-            load_cfsr_moana_uhslc.predictor_slp.SLP, 
-            calculate_gradient=True, time_lapse=3,
-            wind=load_cfsr_moana_uhslc.predictor_wind,
-            site_location=(ss_moana.lon.values[0],ss_moana.lat.values[0]),
-            region=(True, (
-                ss_moana.lon.values[0]-2.5,
-                ss_moana.lon.values[0]+2.5,
-                ss_moana.lat.values[0]-2.5,
-                ss_moana.lat.values[0]+2.5
-            )),
-            pca_plot=(True,False,1), verbose=True,
-            pca_ttls=[&#39;SLP in t&#39;,&#39;Grad in t&#39;,&#39;Winds in t&#39;,
-                      &#39;SLP in t-1&#39;,&#39;Grad in t-1&#39;,&#39;Winds in t-1&#39;,
-                      &#39;SLP in t-2&#39;,&#39;Grad in t-2&#39;,&#39;Winds in t-2&#39;]
-            ).pcs_get()[0],
-        ss_moana, percentage_PCs=0.98, plot_results=True, verbose=True,
-        model_metrics=default_evaluation_metrics, train_size=0.7,
-        validator=(
-            True,load_cfsr_moana_uhslc.validator.isel(name=istat),&#39;ss&#39;
-        )
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># validate model with tgs</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># select sites and append closest to UHSLC tgs</span>
+<span class="n">clos_to_uhslc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">689</span><span class="p">,</span> <span class="mi">328</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">1327</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1124</span><span class="p">,</span> <span class="mi">949</span><span class="p">,</span> <span class="mi">708</span><span class="p">]</span>
+<span class="n">sites_to_analyze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span> <span class="c1"># closest Moana v2 Hindcast to tidal gauges</span>
+    <span class="p">[</span> <span class="mi">689</span><span class="p">,</span><span class="mi">328</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">1327</span><span class="p">,</span><span class="mi">393</span><span class="p">,</span><span class="mi">480</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">708</span><span class="p">,</span> <span class="c1"># UHSLC</span>
+      <span class="mi">1296</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">1124</span><span class="p">,</span><span class="mi">780</span><span class="p">,</span><span class="mi">613</span><span class="p">,</span><span class="mi">488</span><span class="p">,</span><span class="mi">1442</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">578</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1177</span><span class="p">,</span><span class="mi">1025</span><span class="p">,</span><span class="mi">689</span><span class="p">,</span><span class="mi">949</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">1146</span><span class="p">,</span> <span class="c1"># LINZ</span>
+      <span class="mi">1174</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="mi">1217</span><span class="p">,</span><span class="mi">744</span><span class="p">,</span><span class="mi">1064</span><span class="p">,</span><span class="mi">1214</span><span class="p">,</span><span class="mi">803</span><span class="p">,</span><span class="mi">999</span> <span class="c1"># OTHER (ports...)</span>
+    <span class="p">]</span>
+<span class="p">)[::</span><span class="mi">20</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">istat</span><span class="p">,</span><span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sites_to_analyze</span><span class="p">):</span>
+    <span class="n">ss_moana</span> <span class="o">=</span> <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictand</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">stat</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">pcs_to_use</span> <span class="o">=</span> <span class="n">XGBoost_Regression</span><span class="p">(</span>
+        <span class="n">PCA_DynamicPred</span><span class="p">(</span>
+            <span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_slp</span><span class="o">.</span><span class="n">SLP</span><span class="p">,</span> 
+            <span class="n">calculate_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_lapse</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">wind</span><span class="o">=</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">predictor_wind</span><span class="p">,</span>
+            <span class="n">site_location</span><span class="o">=</span><span class="p">(</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="n">ss_moana</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">2.5</span>
+            <span class="p">)),</span>
+            <span class="n">pca_plot</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">pca_ttls</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SLP in t&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;SLP in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-1&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-1&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;SLP in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Grad in t-2&#39;</span><span class="p">,</span><span class="s1">&#39;Winds in t-2&#39;</span><span class="p">]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">pcs_get</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ss_moana</span><span class="p">,</span> <span class="n">percentage_PCs</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">model_metrics</span><span class="o">=</span><span class="n">default_evaluation_metrics</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
+            <span class="kc">True</span><span class="p">,</span><span class="n">load_cfsr_moana_uhslc</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">istat</span><span class="p">),</span><span class="s1">&#39;ss&#39;</span>
+        <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
